@@ -144,7 +144,7 @@ const autoTraderData = (
 									{data?.frequency === 'weekly'
 										? data?.week_days?.map((day) => {
 												return (
-													<span className="ml-1" kay={day}>
+													<span className="ml-1" key={day}>
 														<span className="trade-days">
 															{day === 0
 																? STRINGS['AUTO_TRADER.SUNDAY']

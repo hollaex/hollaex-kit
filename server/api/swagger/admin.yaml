@@ -4455,6 +4455,9 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - name
+              - otp_code
             properties:
               name:
                 type: string
@@ -4466,6 +4469,9 @@ paths:
                 type: array
               configs:
                 type: array
+              otp_code:
+                type: string
+                maxLength: 6
       responses:
         200:
           description: Success
@@ -4491,6 +4497,9 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - name
+              - otp_code
             properties:
               id:
                 type: integer
@@ -4504,6 +4513,9 @@ paths:
                 type: array
               configs:
                 type: array
+              otp_code:
+                type: string
+                maxLength: 6
       responses:
         200:
           description: Success
@@ -4529,10 +4541,16 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - id
+              - otp_code
             properties:
               id:
                 type: integer
                 format: int32
+              otp_code:
+                type: string
+                maxLength: 6
       responses:
         200:
           description: Success

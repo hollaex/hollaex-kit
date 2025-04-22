@@ -136,6 +136,7 @@ export const SET_ERROR = 'SET_ERROR';
 export const SET_ERROR_COUNT = 'SET_ERROR_COUNT';
 export const SET_SIGNUP_EMAIL = 'SET_SIGNUP_EMAIL';
 export const SET_EMAIL_DETAIL = 'SET_EMAIL_DETAIL';
+export const SET_IS_ACTIVE_FAV_QUICK_TRADE = 'SET_IS_ACTIVE_FAV_QUICK_TRADE';
 
 export const SORT = {
 	VOL: 'volume',
@@ -947,5 +948,12 @@ export const setEmailDetail = (emailDetail) => {
 	return {
 		type: SET_EMAIL_DETAIL,
 		payload: { emailDetail },
+	};
+};
+
+export const setIsActiveFavQuickTrade = (isActiveFavQuickTrade) => {
+	return {
+		type: SET_IS_ACTIVE_FAV_QUICK_TRADE,
+		payload: { isActiveFavQuickTrade },
 	};
 };

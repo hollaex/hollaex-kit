@@ -533,7 +533,10 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						ip,
 						'token ip',
 						decodedToken.ip,
-						decodedToken.sub
+						'user id',
+						decodedToken.sub?.id,
+						'email',
+						decodedToken.sub?.email,
 					);
 
 					if (decodedToken.iss !== ISSUER) {

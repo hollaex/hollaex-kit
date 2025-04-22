@@ -255,7 +255,13 @@
 		"COIN_NAME": "{0} ({1})",
 		"COIN_INFORMATION": "{0} information",
 		"PRICE_TREND": "Price Trend",
-		"VIEW_TREND": "View Trend"
+		"VIEW_TREND": "View Trend",
+		"HIGH_SLIPPAGE_DETECTED": " High Slippage Detected",
+		"HIGH_SLIPPAGE_DESC_1": "You may receive less than expected.",
+		"HIGH_SLIPPAGE_DESC_2": "Slippage occurs due to low liquidity, large order size or high volatility.",
+		"CONTINUE_TEXT": "Do you want to continue?",
+		"REVIEW_ORDER": "Review Order",
+		"SLIPPAGE_WARNING_TEXT": "This conversion has slippage price risk."
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",

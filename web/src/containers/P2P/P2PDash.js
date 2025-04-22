@@ -210,6 +210,7 @@ const P2PDash = ({
 					onCloseDialog={() => {
 						setDisplayUserFeedback(false);
 					}}
+					label="p2p-profile-popup"
 				>
 					<div className="vender-profile-popup-container">
 						{isMobile && (
@@ -349,6 +350,7 @@ const P2PDash = ({
 					isOpen={displayOrderCreation}
 					onCloseDialog={() => setDisplayOrderCreation(false)}
 					className="p2p-order-creation-popup-wrapper"
+					label="p2p-order-creation-popup"
 				>
 					<div className="order-creation-popup-container">
 						<div className="asset-order-creation-title important-text font-weight-bold fs-16">
@@ -616,8 +618,8 @@ const P2PDash = ({
 								}}
 							>
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-								{p2p_config?.fiat_currencies.map((coin) => (
-									<Select.Option value={coin}>
+								{p2p_config?.fiat_currencies.map((coin, index) => (
+									<Select.Option value={coin} key={index}>
 										{coin?.toUpperCase()}
 									</Select.Option>
 								))}
@@ -659,8 +661,8 @@ const P2PDash = ({
 								}}
 							>
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-								{methods.map((method) => (
-									<Select.Option value={method.system_name}>
+								{methods.map((method, index) => (
+									<Select.Option value={method.system_name} key={index}>
 										{method.system_name}
 									</Select.Option>
 								))}
@@ -685,8 +687,10 @@ const P2PDash = ({
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
 								{COUNTRIES_OPTIONS.filter((cn) =>
 									deals?.find((deal) => deal.region === cn.value)
-								).map((cn) => (
-									<Select.Option value={cn.value}>{cn.label}</Select.Option>
+								).map((cn, index) => (
+									<Select.Option value={cn.value} key={index}>
+										{cn.label}
+									</Select.Option>
 								))}
 							</Select>
 						</span>
@@ -711,8 +715,8 @@ const P2PDash = ({
 								}}
 							>
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-								{p2p_config?.fiat_currencies.map((coin) => (
-									<Select.Option value={coin}>
+								{p2p_config?.fiat_currencies.map((coin, index) => (
+									<Select.Option value={coin} key={index}>
 										{coin?.toUpperCase()}
 									</Select.Option>
 								))}
@@ -754,8 +758,8 @@ const P2PDash = ({
 								}}
 							>
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
-								{methods.map((method) => (
-									<Select.Option value={method.system_name}>
+								{methods.map((method, index) => (
+									<Select.Option value={method.system_name} key={index}>
 										{method.system_name}
 									</Select.Option>
 								))}
@@ -780,8 +784,10 @@ const P2PDash = ({
 								<Select.Option value={null}>{STRINGS['P2P.ALL']}</Select.Option>
 								{COUNTRIES_OPTIONS.filter((cn) =>
 									deals?.find((deal) => deal.region === cn.value)
-								).map((cn) => (
-									<Select.Option value={cn.value}>{cn.label}</Select.Option>
+								).map((cn, index) => (
+									<Select.Option value={cn.value} key={index}>
+										{cn.label}
+									</Select.Option>
 								))}
 							</Select>
 						</span>
@@ -822,7 +828,7 @@ const P2PDash = ({
 								</tr>
 							</thead>
 							<tbody className="p2p-table-body-container">
-								{filteredDeals?.map((deal) => {
+								{filteredDeals?.map((deal, index) => {
 									const isDisabled =
 										loading ||
 										!user?.id ||
@@ -839,6 +845,7 @@ const P2PDash = ({
 														? 'subTable p2p-expendable-row'
 														: 'p2p-table-row'
 												}
+												key={index}
 											>
 												<td
 													onClick={() => {
@@ -897,7 +904,7 @@ const P2PDash = ({
 														<EditWrapper stringId="P2P.AVAILABLE">
 															{STRINGS['P2P.AVAILABLE']}:
 														</EditWrapper>
-														<div className="mt-3" s>
+														<div className="mt-3">
 															<EditWrapper stringId="P2P.LIMIT">
 																{STRINGS['P2P.LIMIT']}:
 															</EditWrapper>
@@ -1076,15 +1083,18 @@ const P2PDash = ({
 																				);
 																			}}
 																		>
-																			{deal.payment_methods.map((method) => {
-																				return (
-																					<Select.Option
-																						value={method.system_name}
-																					>
-																						{method.system_name}
-																					</Select.Option>
-																				);
-																			})}
+																			{deal.payment_methods.map(
+																				(method, index) => {
+																					return (
+																						<Select.Option
+																							value={method.system_name}
+																							key={index}
+																						>
+																							{method.system_name}
+																						</Select.Option>
+																					);
+																				}
+																			)}
 																		</Select>
 																	</span>
 																</div>
@@ -1330,10 +1340,11 @@ const P2PDash = ({
 																								a.system_name?.toLowerCase()
 																						)
 																					)
-																					.map((method) => {
+																					.map((method, index) => {
 																						return (
 																							<Select.Option
 																								value={method.system_name}
+																								key={index}
 																							>
 																								{method.system_name}
 																							</Select.Option>

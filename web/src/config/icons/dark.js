@@ -373,6 +373,8 @@ const nestedIcons = {
 	WORLD_TRADE: '/assets/images/world-trade.svg',
 	API_BUILDER: '/assets/images/api-builder.svg',
 	LIVE_TRADE_ICON: '/assets/images/live-trade-icon.svg',
+
+	HIGH_SLIPPAGE_WARNING: '/assets/images/high-slippage-warning.svg',
 };
 
 const icons = flatten(nestedIcons, options);

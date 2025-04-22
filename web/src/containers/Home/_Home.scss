@@ -557,10 +557,9 @@ $trade-tab--arrow-size: 0.4rem;
 		display: flex;
 		justify-content: center;
 		padding: 1.5rem;
-		background: linear-gradient(to top, #000000, #2a2a2a);
 		min-height: 20rem;
 		border-radius: 15px;
-		box-shadow: 2px 2px #000000;
+		background-color: #333333;
 		transition: transform 0.3s ease-in-out;
 
 		&:hover {
@@ -571,6 +570,7 @@ $trade-tab--arrow-size: 0.4rem;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			justify-content: center;
 			width: 20rem;
 			color: #ffffff;
 			padding: 2%;

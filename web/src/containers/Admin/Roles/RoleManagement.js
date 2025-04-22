@@ -22,7 +22,9 @@ import {
 	deleteRoles,
 	fetchEndpoints,
 } from './action';
-
+import _toLower from 'lodash/toLower';
+import { CloseOutlined } from '@ant-design/icons';
+import { OtpForm } from 'components';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -377,13 +379,15 @@ const RoleForm = ({
 	);
 };
 
-const RoleManagement = ({ userId }) => {
+const RoleManagement = ({ userId, constants }) => {
 	const [roles, setRoles] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [currentRole, setCurrentRole] = useState(null);
 	// eslint-disable-next-line
 	const [loading, setLoading] = useState(false);
 	const [treeData, setTreeData] = useState([]);
+	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
+	const [payload, setPayload] = useState();
 	useEffect(() => {
 		fetchEndpoints()
 			.then((response) => {
@@ -438,7 +442,8 @@ const RoleManagement = ({ userId }) => {
 			onOk: async () => {
 				try {
 					setLoading(true);
-					await deleteRoles({ id: roleId });
+					setPayload({ action: 'delete', id: roleId });
+					await deleteRoles({ id: roleId, otp_code: '' });
 					// setRoles(roles.filter(role => role.id !== roleId));
 
 					fetchRoles()
@@ -453,8 +458,14 @@ const RoleManagement = ({ userId }) => {
 							message.error('Error fetching roles:', err);
 						});
 					message.success('Role deleted successfully');
-				} catch (error) {
-					message.error('Failed to delete role');
+				} catch (err) {
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					if (_error.toLowerCase().indexOf('otp') > -1) {
+						setOtpDialogIsOpen(true);
+					} else {
+						message.error(_error || 'Failed to delete role');
+					}
 				} finally {
 					setLoading(false);
 				}
@@ -466,19 +477,28 @@ const RoleManagement = ({ userId }) => {
 		try {
 			setLoading(true);
 			if (currentRole) {
-				await updateRoles({
+				setPayload({
 					...values,
 					id: currentRole.id,
 					user_id: userId,
 				});
-				// setRoles(roles.map(role => role.id === currentRole.id ? updatedRole : role));
+				await updateRoles({
+					...values,
+					id: currentRole.id,
+					user_id: userId,
+					otp_code: '',
+				});
 				message.success('Role updated successfully');
 			} else {
-				await createRoles({
+				setPayload({
 					...values,
 					user_id: userId,
 				});
-				// setRoles([...roles, newRole]);
+				await createRoles({
+					...values,
+					user_id: userId,
+					otp_code: '',
+				});
 				message.success('Role created successfully');
 			}
 
@@ -494,8 +514,14 @@ const RoleManagement = ({ userId }) => {
 					message.error('Error fetching roles:', err);
 				});
 			setIsModalVisible(false);
-		} catch (error) {
-			message.error(error.response?.data?.message || 'Failed to save role');
+		} catch (err) {
+			const _error =
+				err.data && err.data.message ? err.data.message : err.message;
+			if (_error.toLowerCase().indexOf('otp') > -1) {
+				setOtpDialogIsOpen(true);
+			} else {
+				message.error(_error || 'Failed to save role');
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -511,19 +537,108 @@ const RoleManagement = ({ userId }) => {
 	const formatPermissionName = (permission) => {
 		return permission.split(':').slice(1).join(':');
 	};
+	const handleUpgrade = (info = {}) => {
+		if (_toLower(info.plan) !== 'enterprise') {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
+	const onSubmitRoleOtp = async (values) => {
+		try {
+			if (payload.action === 'delete') {
+				await deleteRoles({ ...payload, otp_code: values.otp_code });
+				message.success('Role deleted successfully');
+			} else if (currentRole) {
+				await updateRoles({
+					...payload,
+					otp_code: values.otp_code,
+				});
+				message.success('Role updated successfully');
+			} else {
+				await createRoles({
+					...payload,
+					otp_code: values.otp_code,
+				});
+				message.success('Role created successfully');
+			}
+
+			fetchRoles()
+				.then((response) => {
+					const transformedRoles = response.data.map((role) =>
+						transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
+					);
+
+					setRoles(transformedRoles);
+				})
+				.catch((err) => {
+					message.error('Error fetching roles:', err);
+				});
+			setIsModalVisible(false);
+			setOtpDialogIsOpen(false);
+			setPayload();
+		} catch (err) {
+			const _error =
+				err.data && err.data.message ? err.data.message : err.message;
+
+			message.error(_error);
+		}
+	};
+
+	const isUpgrade = handleUpgrade(constants?.info);
 	return (
 		<div>
 			<Title level={2}>Role Management</Title>
+			{otpDialogIsOpen && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={otpDialogIsOpen}
+					footer={null}
+					onCancel={() => {
+						setOtpDialogIsOpen(false);
+					}}
+				>
+					<OtpForm onSubmit={onSubmitRoleOtp} />
+				</Modal>
+			)}
+			{isUpgrade && (
+				<div className="d-flex">
+					<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+						<div>
+							<div className="font-weight-bold">Create New Roles</div>
+							<div>Customize roles and create new ones for your exchange</div>
+						</div>
+						<div className="ml-5 button-wrapper">
+							<a
+								href="https://dash.hollaex.com/billing"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button type="primary" className="w-100">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
+					</div>
+				</div>
+			)}
 
-			<Button
-				type="primary"
-				icon={<PlusOutlined />}
-				onClick={handleCreate}
-				style={{ marginBottom: 16, backgroundColor: '#288501' }}
-			>
-				Create New Role
-			</Button>
+			{!isUpgrade && (
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={handleCreate}
+					style={{ marginBottom: 16, backgroundColor: '#288501' }}
+				>
+					Create New Role
+				</Button>
+			)}
 
 			<Row gutter={[16, 16]}>
 				{roles

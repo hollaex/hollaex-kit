@@ -606,7 +606,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}),
-					referrer,
+				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {
@@ -1156,9 +1156,27 @@ const getUserRole = (opts = {}) => {
 		});
 };
 
-const updateUserRole = async (user_id, role_name) => {
+const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 	const Role = getModel('role');
 	const User = getModel('user');
+
+	const admin = await User.findOne({ where: { id: admin_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) { 
+		throw new Error('OTP is not enabled');
+	} else {
+		try {
+			const validOtp = await verifyOtpBeforeAction(admin_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			if (!otp_code) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		}
+	}
 
 	const user = await User.findOne({ where: { id: user_id } });
 	if (!user) throw new Error('User not found');
@@ -1166,9 +1184,7 @@ const updateUserRole = async (user_id, role_name) => {
 	if (user.role == 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
 	}
-	if (!user.otp_enabled) {
-		throw new Error('OTP is not enabled');
-	}
+
 	if(role_name === 'user') {
 		user.role = null;
 		await user.save();
@@ -1181,7 +1197,7 @@ const updateUserRole = async (user_id, role_name) => {
 		user.role = role.role_name;
 		await user.save();
 		await revokeAllUserSessions(user_id);
-		return { message: "Success" };
+		return { message: 'Success' };
 	}
 
 };
@@ -3981,7 +3997,7 @@ const validateRoutePermissions = (inputPermissions) => {
 
 	if (invalidPerms.length > 0) {
 		throw new Error(
-			`Invalid permissions detected:\n` +
+			'Invalid permissions detected:\n' +
 			`- Invalid: ${invalidPerms.join(', ')}\n` +
 			`- Valid options: ${allValidPermissions.slice(0, 5).join(', ')}...` +
 			`(showing 5 of ${allValidPermissions.length})`
@@ -3990,11 +4006,11 @@ const validateRoutePermissions = (inputPermissions) => {
 
 
 	return true;
-}
+};
 
 const findDuplicates = (arr) => {
 	return arr.filter((item, index) => arr.indexOf(item) !== index);
-}
+};
 
 const flattenPermissionStructure = (permStructure) => {
 	let results = [];
@@ -4051,7 +4067,7 @@ const getExchangeUserRoles = async (opts = {
 	// 	attributes: ['id', 'email']
 	// }];
 
-	return dbQuery.findAndCountAllWithRows('Role', {})
+	return dbQuery.findAndCountAllWithRows('Role', {});
 };
 const validateConfigPermissions = (configPermissions) => {
 
@@ -4060,7 +4076,7 @@ const validateConfigPermissions = (configPermissions) => {
 			throw new Error(`Invalid config permission: ${permission}`);
 		}
 	});
-}
+};
 
 const validateSecretPermissions = (secretPermissions) => {
 	secretPermissions.forEach(permission => {
@@ -4068,13 +4084,38 @@ const validateSecretPermissions = (secretPermissions) => {
 			throw new Error(`Invalid secret permission: ${permission}`);
 		}
 	});
-}
-const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id }) => {
+};
+const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code }) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+
 	const Role = getModel('role');
+	const User = getModel('user');
 	if (!name) throw new Error('Role name is required');
 	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
-	if (!isArray(configs)) throw new Error('Permissions must be an array');
+	if (!isArray(configs)) throw new Error('Configs must be an array');
 
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			if (!otp_code) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		}
+	}
+	
 	const validationGroups = {
 		route: [],
 		config: [],
@@ -4169,8 +4210,15 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs,  user_id }) => {
+const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs, user_id, otp_code }) => {
+	
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+
 	const Role = getModel('role');
+	const User = getModel('user');
 
 	const role = await Role.findOne({
 		where: { id: roleId },
@@ -4181,9 +4229,27 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 		throw new Error('Role not found');
 	}
 
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			if (!otp_code) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		}
+	}
+
 	const updates = {};
 	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
-		updates.role_name = name.toLowerCase()
+		updates.role_name = name.toLowerCase();
 	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
@@ -4307,8 +4373,16 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	return updatedRole;
 };
 
-const deleteExchangeUserRole = async (id) => {
+const deleteExchangeUserRole = async (id, user_id, otp_code) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'enterprise')
+		throw new Error('Exchange plan does not support this feature');
+	
 	const Role = getModel('role');
+	const User = getModel('user');
+
 	const role = await Role.findOne({
 		where: { id },
 	});
@@ -4319,6 +4393,29 @@ const deleteExchangeUserRole = async (id) => {
 
 	if (role.role_name === 'admin') {
 		throw new Error('Cannot delete admin role');
+	}
+
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			if (!otp_code) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		}
+	}
+
+	const usersWithRole = await User.count({ where: { role: role.role_name } });
+	if (usersWithRole > 0) {
+		throw new Error('Cannot delete role: it is assigned to one or more users');
 	}
 
 	await role.destroy();
