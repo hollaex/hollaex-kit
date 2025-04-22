@@ -53,7 +53,7 @@ const Role = ({ constants }) => {
 
 	const handleSearch = _debounce(searchUser, 1000);
 	return (
-		<>
+		<div style={{ height: '70vh', overflowY: 'auto' }}>
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
 					<div style={{ color: 'white', fontSize: 20 }}>
@@ -226,7 +226,7 @@ const Role = ({ constants }) => {
 					</div>
 				</Modal>
 			)}
-		</>
+		</div>
 	);
 };
 
