@@ -1147,9 +1147,7 @@ const updateUserRole = async (user_id, role_name) => {
 	if (user.role == 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
 	}
-	if (!user.otp_enabled) {
-		throw new Error('OTP is not enabled');
-	}
+
 	if(role_name === 'user') {
 		user.role = null;
 		await user.save();
