@@ -606,7 +606,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}),
-					referrer,
+				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {
@@ -1181,7 +1181,7 @@ const updateUserRole = async (user_id, role_name) => {
 		user.role = role.role_name;
 		await user.save();
 		await revokeAllUserSessions(user_id);
-		return { message: "Success" };
+		return { message: 'Success' };
 	}
 
 };
@@ -3981,7 +3981,7 @@ const validateRoutePermissions = (inputPermissions) => {
 
 	if (invalidPerms.length > 0) {
 		throw new Error(
-			`Invalid permissions detected:\n` +
+			'Invalid permissions detected:\n' +
 			`- Invalid: ${invalidPerms.join(', ')}\n` +
 			`- Valid options: ${allValidPermissions.slice(0, 5).join(', ')}...` +
 			`(showing 5 of ${allValidPermissions.length})`
@@ -3990,11 +3990,11 @@ const validateRoutePermissions = (inputPermissions) => {
 
 
 	return true;
-}
+};
 
 const findDuplicates = (arr) => {
 	return arr.filter((item, index) => arr.indexOf(item) !== index);
-}
+};
 
 const flattenPermissionStructure = (permStructure) => {
 	let results = [];
@@ -4051,7 +4051,7 @@ const getExchangeUserRoles = async (opts = {
 	// 	attributes: ['id', 'email']
 	// }];
 
-	return dbQuery.findAndCountAllWithRows('Role', {})
+	return dbQuery.findAndCountAllWithRows('Role', {});
 };
 const validateConfigPermissions = (configPermissions) => {
 
@@ -4060,7 +4060,7 @@ const validateConfigPermissions = (configPermissions) => {
 			throw new Error(`Invalid config permission: ${permission}`);
 		}
 	});
-}
+};
 
 const validateSecretPermissions = (secretPermissions) => {
 	secretPermissions.forEach(permission => {
@@ -4068,12 +4068,12 @@ const validateSecretPermissions = (secretPermissions) => {
 			throw new Error(`Invalid secret permission: ${permission}`);
 		}
 	});
-}
+};
 const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id }) => {
 	const Role = getModel('role');
 	if (!name) throw new Error('Role name is required');
 	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
-	if (!isArray(configs)) throw new Error('Permissions must be an array');
+	if (!isArray(configs)) throw new Error('Configs must be an array');
 
 	const validationGroups = {
 		route: [],
@@ -4183,7 +4183,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 
 	const updates = {};
 	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
-		updates.role_name = name.toLowerCase()
+		updates.role_name = name.toLowerCase();
 	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
