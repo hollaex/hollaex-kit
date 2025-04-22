@@ -21,6 +21,7 @@ import { handleUpgrade } from 'utils/utils';
 import { Tabs } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
+import { OtpForm } from 'components';
 const TabPane = Tabs.TabPane;
 
 const getColumns = (handleEdit = () => {}) => [
@@ -120,6 +121,7 @@ const Roles = ({ constants, user }) => {
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [rolePayload, setRolePayload] = useState({});
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
+	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
@@ -175,15 +177,24 @@ const Roles = ({ constants, user }) => {
 
 	const handleUpdateRole = (formProps, user_id) => {
 		setButtonSubmitting(true);
-		updateRole(formProps, { user_id })
+		setRolePayload({
+			role_id: formProps.role,
+			user_id,
+		});
+		updateRole({ otp_code: '', ...formProps }, { user_id })
 			.then((res) => {
 				requestInitRole();
 				handleClose();
 				setButtonSubmitting(false);
 			})
 			.catch((err) => {
-				let error = err && err.data ? err.data.message : err.message;
-				message.error(error);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				if (_error.toLowerCase().indexOf('otp') > -1) {
+					setOtpDialogIsOpen(true);
+				} else {
+					message.error(_error);
+				}
 				setButtonSubmitting(false);
 			});
 	};
@@ -294,6 +305,29 @@ const Roles = ({ constants, user }) => {
 		getAllUserData({ search: searchText }, type);
 	};
 
+	const onSubmitRoleOtp = async (values) => {
+		try {
+			await updateRole(
+				{
+					role: rolePayload.role_id || rolePayload.role,
+					otp_code: values.otp_code,
+				},
+				{ user_id: rolePayload.user_id }
+			);
+			setRolePayload({});
+			setDisplayAssignRole(false);
+			requestInitRole();
+			setOtpDialogIsOpen(false);
+			handleClose();
+			setButtonSubmitting(false);
+			message.success('Changes Saved.');
+		} catch (err) {
+			const _error =
+				err.data && err.data.message ? err.data.message : err.message;
+
+			message.error(_error);
+		}
+	};
 	const handleSearch = _debounce(searchUser, 1000);
 	return (
 		<Tabs defaultActiveKey="0" style={{ width: '100%' }}>
@@ -490,7 +524,7 @@ const Roles = ({ constants, user }) => {
 												return;
 											}
 											await updateRole(
-												{ role: rolePayload.role_id },
+												{ role: rolePayload.role_id, otp_code: '' },
 												{ user_id: rolePayload.user_id }
 											);
 											setRolePayload({});
@@ -502,7 +536,11 @@ const Roles = ({ constants, user }) => {
 												err.data && err.data.message
 													? err.data.message
 													: err.message;
-											message.error(_error);
+											if (_error.toLowerCase().indexOf('otp') > -1) {
+												setOtpDialogIsOpen(true);
+											} else {
+												message.error(_error);
+											}
 										}
 									}}
 									style={{
@@ -516,6 +554,23 @@ const Roles = ({ constants, user }) => {
 									Proceed
 								</Button>
 							</div>
+						</Modal>
+					)}
+					{otpDialogIsOpen && (
+						<Modal
+							maskClosable={false}
+							closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+							bodyStyle={{
+								backgroundColor: '#27339D',
+								marginTop: 60,
+							}}
+							visible={otpDialogIsOpen}
+							footer={null}
+							onCancel={() => {
+								setOtpDialogIsOpen(false);
+							}}
+						>
+							<OtpForm onSubmit={onSubmitRoleOtp} />
 						</Modal>
 					)}
 					<Modal
