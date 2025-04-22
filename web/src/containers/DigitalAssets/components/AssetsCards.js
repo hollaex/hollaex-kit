@@ -124,7 +124,7 @@ const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
 								type={isMobile ? 'CS10' : 'CS8'}
 							/>
 							<div className="d-flex flex-column">
-								<span className={isMobile && 'font-weight-bold'}>
+								<span className={isMobile ? 'font-weight-bold' : ''}>
 									{coins[symbol]?.fullname}
 								</span>
 								<span className="asset-symbol">{symbol?.toUpperCase()}</span>

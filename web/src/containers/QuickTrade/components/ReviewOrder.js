@@ -3,9 +3,9 @@ import ReviewBlock from 'components/QuickTrade/ReviewBlock';
 import STRINGS from 'config/localizedStrings';
 import moment from 'moment';
 import classnames from 'classnames';
-import { Button } from 'components';
+import { Button, EditWrapper } from 'components';
 import { Progress } from 'antd';
-import { ClockCircleOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, WarningOutlined } from '@ant-design/icons';
 
 const ReviewOrder = ({
 	onCloseDialog,
@@ -19,7 +19,7 @@ const ReviewOrder = ({
 	disabled,
 	time,
 	expiry,
-	coins,
+	isActiveSlippage,
 }) => {
 	const [totalTime] = useState(moment(time).seconds());
 	const [timeToExpiry, setTimeToExpiry] = useState(
@@ -27,7 +27,7 @@ const ReviewOrder = ({
 	);
 
 	const [isExpired, setIsExpired] = useState(timeToExpiry <= 0);
-		
+
 	useEffect(() => {
 		// Update the timer every second
 		const timerInterval = setInterval(() => {
@@ -98,6 +98,14 @@ const ReviewOrder = ({
 						amount={targetAmount}
 						decimalPoint={targetDecimalPoint}
 					/>
+					{isActiveSlippage && (
+						<div className="slippage-warning-content">
+							<WarningOutlined className="slippage-warning-icon" />
+							<EditWrapper stringId="QUICK_TRADE_COMPONENT.SLIPPAGE_WARNING_TEXT">
+								{STRINGS['QUICK_TRADE_COMPONENT.SLIPPAGE_WARNING_TEXT']}
+							</EditWrapper>
+						</div>
+					)}
 				</div>
 				<footer className="d-flex pt-4">
 					<Button
@@ -113,7 +121,6 @@ const ReviewOrder = ({
 					/>
 				</footer>
 			</div>
-			
 		</div>
 	);
 };

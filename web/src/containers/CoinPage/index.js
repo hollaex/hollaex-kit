@@ -373,6 +373,7 @@ const CoinPage = ({
 							setIsDisplayMarketDetail(false);
 						}}
 						className="market-chart-details-popup-wrapper"
+						label="market-chart-details-popup"
 					>
 						<div className="market-chart-details-popup-container">
 							<div className="price-trend-title">

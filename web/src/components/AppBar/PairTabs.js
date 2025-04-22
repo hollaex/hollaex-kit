@@ -18,13 +18,16 @@ import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import {
+	changePair,
 	changeSparkLineChartData,
+	setIsActiveFavQuickTrade,
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
 	setMarketRefresh,
 } from 'actions/appActions';
 import icons from 'config/icons/dark';
 import { Loading } from 'containers/DigitalAssets/components/utils';
+import { flipPair } from 'containers/QuickTrade/components/utils';
 
 let isMounted = false;
 class PairTabs extends Component {
@@ -41,7 +44,11 @@ class PairTabs extends Component {
 		if (router && router.params.pair) {
 			active = router.params.pair;
 		}
-		this.setState({ activePairTab: active });
+		const activePair =
+			Object.keys(pairs).find(
+				(data) => data === active || data === flipPair(active)
+			) || null;
+		this.setState({ activePairTab: activePair });
 		this.initTabs(pairs, active);
 	}
 
@@ -84,14 +91,20 @@ class PairTabs extends Component {
 	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair, isQuickTrade) => {
-		const { router } = this.props;
+		const { router, pairs, setIsActiveFavQuickTrade, changePair } = this.props;
+		const activePair =
+			Object.keys(pairs).find(
+				(data) => data === pair || data === flipPair(pair)
+			) || null;
 		if (pair) {
 			if (isQuickTrade) {
+				setIsActiveFavQuickTrade(true);
+				changePair(pair);
 				router.push(`/quick-trade/${pair}`);
 			} else {
 				router.push(`/trade/${pair}`);
 			}
-			this.setState({ activePairTab: pair });
+			this.setState({ activePairTab: activePair });
 		}
 	};
 
@@ -384,6 +397,11 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
 	setMarketRefresh: bindActionCreators(setMarketRefresh, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
+	setIsActiveFavQuickTrade: bindActionCreators(
+		setIsActiveFavQuickTrade,
+		dispatch
+	),
 });
 
 export default connect(

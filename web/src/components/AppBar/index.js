@@ -426,6 +426,7 @@ class AppBar extends Component {
 						? 'announcement-popup-wrapper announcement-popup-mobile-wrapper'
 						: 'announcement-popup-wrapper'
 				}
+				label="announcement-popup"
 			>
 				<div className="announcement-popup-container">
 					<EditWrapper stringId="ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE">
@@ -595,12 +596,11 @@ class AppBar extends Component {
 														alt={label}
 														wrapperClassName="flag-icon mr-2"
 													/>
-													<span className="caps">
+													<span className="caps text-nowrap">
 														{value}
 														{user?.settings?.interface?.display_currency && (
 															<span>
-																{' '}
-																/ {user?.settings?.interface?.display_currency}
+																/{user?.settings?.interface?.display_currency}
 															</span>
 														)}
 													</span>
@@ -662,12 +662,11 @@ class AppBar extends Component {
 													alt={label}
 													wrapperClassName="flag-icon mr-2"
 												/>
-												<span className="caps">
+												<span className="caps text-nowrap">
 													{value}
 													{user?.settings?.interface?.display_currency && (
 														<span>
-															{' '}
-															/ {user?.settings?.interface?.display_currency}
+															/{user?.settings?.interface?.display_currency}
 														</span>
 													)}
 												</span>
@@ -733,7 +732,7 @@ class AppBar extends Component {
 														alt={label}
 														wrapperClassName="flag-icon mr-2"
 													/>
-													<span className="caps">
+													<span className="caps text-nowrap">
 														{value}
 														{user?.settings?.interface?.display_currency && (
 															<span>

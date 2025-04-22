@@ -240,9 +240,9 @@ const P2PMyDeals = ({
 							</tr>
 						</thead>
 						<tbody>
-							{myDeals.map((deal) => {
+							{myDeals.map((deal, index) => {
 								return (
-									<tr className="table-row">
+									<tr className="table-row" key={index}>
 										<td className="td-fit w-fit-content">
 											<Checkbox
 												checked={checks.find((id) => id === deal.id)}

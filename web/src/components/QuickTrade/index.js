@@ -1,29 +1,35 @@
 import React, { useRef, useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
+import { withRouter, browserHistory } from 'react-router';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
-import { withRouter, browserHistory } from 'react-router';
 import debounce from 'lodash.debounce';
-import { SwapOutlined } from '@ant-design/icons';
 
-import { changePair, setIsQuickTrade } from 'actions/appActions';
-import { isLoggedIn } from 'utils/token';
-import { Button, EditWrapper, Dialog, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import InputGroup from './InputGroup';
-import { getMiniCharts } from 'actions/chartAction';
-import { getDecimals } from 'utils/utils';
-import { MarketsSelector } from 'containers/Trade/utils';
 import Details from 'containers/QuickTrade/components/Details';
 import Header from 'containers/QuickTrade/components/Header';
 import Footer from 'containers/QuickTrade/components/Footer';
 import Balance from 'containers/QuickTrade/components/Balance';
 import QuoteResult from 'containers/QuickTrade/QuoteResult';
 import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
+import QuoteExpiredBlock from './QuoteExpiredBlock';
+import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	changePair,
+	setIsActiveFavQuickTrade,
+	setIsQuickTrade,
+} from 'actions/appActions';
+import { isLoggedIn } from 'utils/token';
+import { Button, EditWrapper, Dialog, Image } from 'components';
+import { getMiniCharts } from 'actions/chartAction';
+import { getDecimals } from 'utils/utils';
+import { MarketsSelector } from 'containers/Trade/utils';
 import { flipPair } from 'containers/QuickTrade/components/utils';
 import {
 	getSourceOptions,
@@ -32,8 +38,11 @@ import {
 import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
-import QuoteExpiredBlock from './QuoteExpiredBlock';
-import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	countDecimals,
+	formatPercentage,
+	formatToCurrency,
+} from 'utils/currency';
 
 export const PAIR2_STATIC_SIZE = 0.000001;
 export const SPENDING = {
@@ -61,8 +70,9 @@ const QuickTrade = ({
 	changePair,
 	icons: ICONS,
 	chain_trade_config,
-	constants,
 	setIsQuickTrade,
+	isActiveFavQuickTrade,
+	setIsActiveFavQuickTrade,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -107,6 +117,9 @@ const QuickTrade = ({
 	const [showPriceTrendModal, setShowPriceTrendModal] = useState(false);
 	const [isOpenTopField, setIsOpenTopField] = useState(false);
 	const [isOpenBottomField, setIsOpenBottomField] = useState(false);
+	const [isHighSlippageDetected, setIsHighSlippageDetected] = useState(false);
+	const [slippagePercentage, setSlippagePercentage] = useState(0);
+	const [isSwap, setSwap] = useState(true);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -173,18 +186,22 @@ const QuickTrade = ({
 		setSourceAmount();
 		setTargetAmount();
 		setSelectedSource(value);
+		setIsActiveFavQuickTrade(false);
 	};
 
 	const onSelectTarget = (value) => {
 		setSpending();
 		setSourceAmount();
 		setTargetAmount();
+		setIsActiveFavQuickTrade(true);
 		setSelectedTarget(value);
 	};
 
 	const goTo = (path) => {
 		router.push(path);
 	};
+
+	const isActiveSlippage = slippagePercentage > 5;
 
 	const onReview = () => {
 		if (preview) {
@@ -194,8 +211,12 @@ const QuickTrade = ({
 				goTo('/login');
 			}
 		} else {
-			setIsReview(true);
-			setShowModal(true);
+			if (isActiveSlippage) {
+				setIsHighSlippageDetected(true);
+			} else {
+				setIsReview(true);
+				setShowModal(true);
+			}
 		}
 	};
 
@@ -334,6 +355,65 @@ const QuickTrade = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coins, pair]);
 
+	const getPricingData = (price = []) => {
+		const firstPrice = price[0];
+		const lastPrice = price[price?.length - 1];
+		const priceDifference = lastPrice - firstPrice;
+		const priceDifferencePercent = formatPercentage(
+			(priceDifference / firstPrice) * 100
+		);
+		const minVal = Math.min(...price);
+		const high = Math.max(...price);
+
+		const formattedNumber = (val) =>
+			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
+
+		return {
+			priceDifference,
+			priceDifferencePercent,
+			low: formattedNumber(minVal),
+			high: formattedNumber(high),
+			lastPrice: formattedNumber(lastPrice),
+		};
+	};
+
+	const calculateSlippage = () => {
+		const { price = [] } = chartData[symbol] || chartData[flippedPair] || {};
+		const pricingData = getPricingData(price);
+		const lastPrice = parseFloat(pricingData?.lastPrice?.replace(/,/g, ''));
+
+		const sourcePrice = parseFloat(sourceAmount);
+		const targetPrice = parseFloat(targetAmount);
+		if (!sourcePrice || !targetPrice || isNaN(lastPrice) || lastPrice === 0) {
+			setSlippagePercentage(0);
+			return;
+		}
+
+		const isSourceFiat = coins[selectedSource]?.type === 'fiat';
+		const isTargetCrypto = coins[selectedTarget]?.type === 'blockchain';
+		const executedPrice =
+			!isSourceFiat && !isTargetCrypto
+				? targetPrice / sourcePrice
+				: sourcePrice / targetPrice;
+
+		const slippage = ((executedPrice - lastPrice) / lastPrice) * 100;
+		setSlippagePercentage(slippage);
+	};
+
+	useEffect(() => {
+		calculateSlippage();
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		sourceAmount,
+		targetAmount,
+		symbol,
+		flippedPair,
+		chartData,
+		selectedSource,
+		selectedTarget,
+		expiry,
+	]);
+
 	useEffect(() => {
 		if (mounted) {
 			const options = getTargetOptions(selectedSource);
@@ -341,15 +421,26 @@ const QuickTrade = ({
 				selectedSource !== sourceOptions[0]
 					? sourceOptions[0]
 					: sourceOptions[1];
+			const [baseCurrency = '', quoteCurrency = ''] = pair?.split('-') || [];
 			if (chain_trade_config?.active) {
-				setSelectedTarget(selectedOption);
+				if (isSwap) {
+					if (isActiveFavQuickTrade) {
+						setSelectedSource(baseCurrency);
+						setSelectedTarget(quoteCurrency);
+						resetForm();
+					} else {
+						setSelectedTarget(selectedOption);
+					}
+				} else {
+					setSwap(true);
+				}
 			} else {
 				setTargetOptions(options);
 				setSelectedTarget(options[0]);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedSource]);
+	}, [selectedSource, pair]);
 
 	useEffect(() => {
 		if (selectedSource === selectedTarget) return;
@@ -435,6 +526,7 @@ const QuickTrade = ({
 		onSelectSource(selectedTarget);
 		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
+		setSwap(false);
 	};
 
 	const onRequoteClick = () => {
@@ -454,6 +546,17 @@ const QuickTrade = ({
 	const handlePriceTrendClose = () => {
 		setShowPriceTrendModal(false);
 	};
+
+	const onHandleReview = () => {
+		setIsHighSlippageDetected(false);
+		setIsReview(true);
+		setShowModal(true);
+	};
+
+	const activeProTradePair =
+		Object.keys(pairs).filter(
+			(data) => data === pair || data === flipPair(pair)
+		) || [];
 
 	return (
 		<Fragment>
@@ -503,6 +606,55 @@ const QuickTrade = ({
 								networkName={display_name}
 								isNetwork={isNetwork}
 							/>
+						</div>
+					</Dialog>
+					<Dialog
+						isOpen={isHighSlippageDetected}
+						label="high-slippage-popup"
+						className="high-slippage-popup-wrapper"
+						onCloseDialog={() => setIsHighSlippageDetected(false)}
+					>
+						<div className="high-slippage-popup-container">
+							<div className="high-slippage-popup-title mt-2">
+								<Image
+									icon={ICONS['HIGH_SLIPPAGE_WARNING']}
+									wrapperClassName="high-slippage-warning-icon"
+								/>
+								<div className="mt-3 mb-2">
+									<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DETECTED">
+										<span className="title-text">
+											{STRINGS['QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DETECTED']}
+										</span>
+									</EditWrapper>
+								</div>
+							</div>
+							<div className="high-slippage-popup-content">
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DESC_1">
+									<span className="font-weight-bold">
+										{STRINGS['QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DESC_1']}
+									</span>
+								</EditWrapper>
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DESC_2">
+									{STRINGS['QUICK_TRADE_COMPONENT.HIGH_SLIPPAGE_DESC_2']}
+								</EditWrapper>
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.CONTINUE_TEXT">
+									{STRINGS['QUICK_TRADE_COMPONENT.CONTINUE_TEXT']}
+								</EditWrapper>
+							</div>
+							<div className="button-container">
+								<Button
+									label={STRINGS['CLOSE_TEXT']}
+									onClick={() => setIsHighSlippageDetected(false)}
+									type="button"
+									className="w-100"
+								/>
+								<Button
+									label={STRINGS['QUICK_TRADE_COMPONENT.REVIEW_ORDER']}
+									onClick={() => onHandleReview()}
+									type="button"
+									className="w-100"
+								/>
+							</div>
 						</div>
 					</Dialog>
 
@@ -669,6 +821,7 @@ const QuickTrade = ({
 								name={display_name}
 								isNetwork={isNetwork}
 								pair={pair}
+								activeProTradePair={activeProTradePair[0]}
 							/>
 						</div>
 					</div>
@@ -701,6 +854,7 @@ const QuickTrade = ({
 							time={time}
 							expiry={expiry}
 							coins={coins}
+							isActiveSlippage={isActiveSlippage}
 						/>
 					) : (
 						<QuoteResult
@@ -721,6 +875,10 @@ const QuickTrade = ({
 const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	setIsQuickTrade: bindActionCreators(setIsQuickTrade, dispatch),
+	setIsActiveFavQuickTrade: bindActionCreators(
+		setIsActiveFavQuickTrade,
+		dispatch
+	),
 });
 
 const mapStateToProps = (store) => {
@@ -739,6 +897,7 @@ const mapStateToProps = (store) => {
 		markets: MarketsSelector(store),
 		user: store.user,
 		chain_trade_config: store.app.constants.chain_trade_config,
+		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
 	};
 };
 

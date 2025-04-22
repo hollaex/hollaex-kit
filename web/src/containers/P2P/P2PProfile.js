@@ -474,6 +474,7 @@ const P2PProfile = ({
 					onCloseDialog={() => {
 						setAddMethodDetails(false);
 					}}
+					label="add-payment-method-detail-popup"
 				>
 					<div className="whiteTextP2P add-payment-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
@@ -586,6 +587,7 @@ const P2PProfile = ({
 						}}
 						shouldCloseOnOverlayClick={true}
 						showCloseText={true}
+						label="p2p-new-payment-pop-up"
 					>
 						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.CREATE_NEW_PAYMENT_METHODS">
@@ -808,6 +810,7 @@ const P2PProfile = ({
 						onCloseDialog={() => {
 							setPaymentFieldAdd(false);
 						}}
+						label="additional-payment-detail-popup"
 					>
 						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.ADDITIONAL_PAYMENT_DETAILS">
@@ -876,6 +879,7 @@ const P2PProfile = ({
 						}}
 						shouldCloseOnOverlayClick={true}
 						showCloseText={true}
+						label="p2p-new-payment-pop-up"
 					>
 						<div className="confirm-delete-popup-container">
 							<div className="confirm-popup-delete-title">

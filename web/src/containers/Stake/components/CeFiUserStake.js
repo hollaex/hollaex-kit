@@ -355,6 +355,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setReadBeforeAction(false);
 					}}
+					label="terms_condition_dialog"
 				>
 					<div className="action_model_popup_wrapper">
 						<div className="action_model_popup_content">
@@ -423,6 +424,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setStakeAmount(false);
 					}}
+					label="stake_amount_dialog"
 				>
 					<div className="stake_amount_popup_wrapper">
 						<div className="stake_theme stake_amount_theme">
@@ -540,6 +542,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setDuration(false);
 					}}
+					label="duration_model_dialog"
 				>
 					<div className="stake_duration_model_wrapper">
 						<div className="d-flex">
@@ -667,6 +670,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setStakeDetails(false);
 					}}
+					label="stake_details_dialog"
 				>
 					<div className="stake_detail_popup_wrapper">
 						<h1 className="stake_theme">
@@ -885,6 +889,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setConfirmation(false);
 					}}
+					label="confirmation_model_dialog"
 				>
 					<div className="confirmation_model_popup_wrapper">
 						<div className="confirmation_model_content">
@@ -974,6 +979,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setReviewUnstake(false);
 					}}
+					label="review_unstake_dialog"
 				>
 					<div className="review_unstake_popup_wrapper">
 						<div className="review_unstake_content">
@@ -1220,6 +1226,7 @@ const CeFiUserStake = ({ balance, coins, theme }) => {
 					onCloseDialog={() => {
 						setUnstakeConfirm(false);
 					}}
+					label="unstake_confirm_dialog"
 				>
 					<div className="unstake_confirm_popup_wrapper">
 						<div className="unstake_confirm_content">
