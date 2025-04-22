@@ -4455,6 +4455,8 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - name
             properties:
               name:
                 type: string
@@ -4491,6 +4493,8 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - name
             properties:
               id:
                 type: integer
@@ -4529,6 +4533,8 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - id
             properties:
               id:
                 type: integer
