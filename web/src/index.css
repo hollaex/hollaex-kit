@@ -2109,7 +2109,9 @@ table th {
           text-overflow: ellipsis;
           overflow: hidden;
           text-wrap: nowrap;
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+          font-family: system-ui, -apple-system, BlinkMacSystemFont,
+ 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+ 'Helvetica Neue', sans-serif; }
       .home_carousel_section .parent-slider .price-card-wrapper .price-card-content {
         justify-content: space-between; }
         .home_carousel_section .parent-slider .price-card-wrapper .price-card-content .last-price-label {
@@ -5226,6 +5228,17 @@ table th {
       border-radius: 0; }
   .quote-review-wrapper .expired-block {
     opacity: 0.25; }
+  .quote-review-wrapper .slippage-warning-content {
+    background-color: var(--specials_pending-waiting-caution);
+    padding: 2% 4%;
+    margin-top: 3%;
+    display: flex;
+    gap: 2%;
+    align-items: center;
+    color: #ffffff; }
+    .quote-review-wrapper .slippage-warning-content .slippage-warning-icon svg {
+      width: 1.5rem;
+      height: 1.5rem; }
 
 .quote-countdown-wrapper {
   display: flex;
@@ -6632,7 +6645,9 @@ table th {
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text,
   .digital-market-wrapper .market-list__block-table tbody tr td .last-price-label {
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+ 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+ 'Helvetica Neue', sans-serif; }
   .digital-market-wrapper .market-list__block-table tbody tr td .asset-text {
     text-wrap: nowrap; }
   .digital-market-wrapper .market-list__block-table tbody tr td .price-change,
@@ -20011,6 +20026,33 @@ table th {
   100% {
     width: 0;
     left: 100%; } }
+
+.high-slippage-popup-wrapper .ReactModal__Content {
+  width: 40rem; }
+  .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-title {
+    padding: 2% 0;
+    border-bottom: 2px solid var(--calculated_secondary-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; }
+    .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-title .high-slippage-warning-icon svg {
+      width: 4rem;
+      height: 4rem; }
+    .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-title .title-text {
+      font-size: 1.8rem; }
+  .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-content {
+    padding: 2% 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem; }
+  .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3%;
+    margin-top: 10%; }
 
 .layout-mobile .ReactModal__Overlay .ReactModal__Content {
   background-color: var(--base_background) !important; }
