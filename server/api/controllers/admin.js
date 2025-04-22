@@ -3303,14 +3303,15 @@ const getExchangeUserRoles = (req, res) => {
 const createExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/createExchangeUserRole/auth', req.auth.sub);
 
-	const { name, description, permissions, configs } = req.swagger.params.data.value;
+	const { name, description, permissions, configs, otp_code } = req.swagger.params.data.value;
 
 	toolsLib.user.createExchangeUserRole({
 		name,
 		description,
 		rolePermissions: permissions,
 		configs,
-		user_id: req.auth.sub.id
+		user_id: req.auth.sub.id,
+		otp_code
 	})
 		.then((role) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/createExchangeUserRole', 'post', role);
@@ -3327,14 +3328,15 @@ const createExchangeUserRole = (req, res) => {
 const updateExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
 
-	const { id, name, description, permissions, configs } = req.swagger.params.data.value;
+	const { id, name, description, permissions, configs, otp_code } = req.swagger.params.data.value;
 
 	toolsLib.user.updateExchangeUserRole(id, {
 		name,
 		description,
 		rolePermissions: permissions,
 		configs,
-		user_id: req.auth.sub.id
+		user_id: req.auth.sub.id,
+		otp_code
 	})
 		.then((role) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -3351,9 +3353,9 @@ const updateExchangeUserRole = (req, res) => {
 const deleteExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteExchangeUserRole/auth', req.auth.sub);
 
-	const { id } = req.swagger.params.data.value;
+	const { id, otp_code } = req.swagger.params.data.value;
 
-	toolsLib.user.deleteExchangeUserRole(id)
+	toolsLib.user.deleteExchangeUserRole(id, req.auth.sub.id, otp_code)
 		.then((result) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/deleteExchangeUserRole', 'delete', result);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));

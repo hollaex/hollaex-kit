@@ -23,6 +23,8 @@ import {
 	fetchEndpoints,
 } from './action';
 import _toLower from 'lodash/toLower';
+import { CloseOutlined } from '@ant-design/icons';
+import { OtpForm } from 'components';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -384,6 +386,8 @@ const RoleManagement = ({ userId, constants }) => {
 	// eslint-disable-next-line
 	const [loading, setLoading] = useState(false);
 	const [treeData, setTreeData] = useState([]);
+	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
+	const [payload, setPayload] = useState();
 	useEffect(() => {
 		fetchEndpoints()
 			.then((response) => {
@@ -438,7 +442,8 @@ const RoleManagement = ({ userId, constants }) => {
 			onOk: async () => {
 				try {
 					setLoading(true);
-					await deleteRoles({ id: roleId });
+					setPayload({ action: 'delete', id: roleId });
+					await deleteRoles({ id: roleId, otp_code: '' });
 					// setRoles(roles.filter(role => role.id !== roleId));
 
 					fetchRoles()
@@ -456,7 +461,11 @@ const RoleManagement = ({ userId, constants }) => {
 				} catch (err) {
 					const _error =
 						err.data && err.data.message ? err.data.message : err.message;
-					message.error(_error || 'Failed to delete role');
+					if (_error.toLowerCase().indexOf('otp') > -1) {
+						setOtpDialogIsOpen(true);
+					} else {
+						message.error(_error || 'Failed to delete role');
+					}
 				} finally {
 					setLoading(false);
 				}
@@ -468,19 +477,28 @@ const RoleManagement = ({ userId, constants }) => {
 		try {
 			setLoading(true);
 			if (currentRole) {
-				await updateRoles({
+				setPayload({
 					...values,
 					id: currentRole.id,
 					user_id: userId,
 				});
-				// setRoles(roles.map(role => role.id === currentRole.id ? updatedRole : role));
+				await updateRoles({
+					...values,
+					id: currentRole.id,
+					user_id: userId,
+					otp_code: '',
+				});
 				message.success('Role updated successfully');
 			} else {
-				await createRoles({
+				setPayload({
 					...values,
 					user_id: userId,
 				});
-				// setRoles([...roles, newRole]);
+				await createRoles({
+					...values,
+					user_id: userId,
+					otp_code: '',
+				});
 				message.success('Role created successfully');
 			}
 
@@ -499,7 +517,11 @@ const RoleManagement = ({ userId, constants }) => {
 		} catch (err) {
 			const _error =
 				err.data && err.data.message ? err.data.message : err.message;
-			message.error(_error || 'Failed to save role');
+			if (_error.toLowerCase().indexOf('otp') > -1) {
+				setOtpDialogIsOpen(true);
+			} else {
+				message.error(_error || 'Failed to save role');
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -522,11 +544,69 @@ const RoleManagement = ({ userId, constants }) => {
 			return false;
 		}
 	};
+
+	const onSubmitRoleOtp = async (values) => {
+		try {
+			if (payload.action === 'delete') {
+				await deleteRoles({ ...payload, otp_code: values.otp_code });
+				message.success('Role deleted successfully');
+			} else if (currentRole) {
+				await updateRoles({
+					...payload,
+					otp_code: values.otp_code,
+				});
+				message.success('Role updated successfully');
+			} else {
+				await createRoles({
+					...payload,
+					otp_code: values.otp_code,
+				});
+				message.success('Role created successfully');
+			}
+
+			fetchRoles()
+				.then((response) => {
+					const transformedRoles = response.data.map((role) =>
+						transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
+					);
+
+					setRoles(transformedRoles);
+				})
+				.catch((err) => {
+					message.error('Error fetching roles:', err);
+				});
+			setIsModalVisible(false);
+			setOtpDialogIsOpen(false);
+			setPayload();
+		} catch (err) {
+			const _error =
+				err.data && err.data.message ? err.data.message : err.message;
+
+			message.error(_error);
+		}
+	};
+
 	const isUpgrade = handleUpgrade(constants?.info);
 	return (
 		<div>
 			<Title level={2}>Role Management</Title>
-
+			{otpDialogIsOpen && (
+				<Modal
+					maskClosable={false}
+					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+					bodyStyle={{
+						backgroundColor: '#27339D',
+						marginTop: 60,
+					}}
+					visible={otpDialogIsOpen}
+					footer={null}
+					onCancel={() => {
+						setOtpDialogIsOpen(false);
+					}}
+				>
+					<OtpForm onSubmit={onSubmitRoleOtp} />
+				</Modal>
+			)}
 			{isUpgrade && (
 				<div className="d-flex">
 					<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
