@@ -453,8 +453,10 @@ const RoleManagement = ({ userId, constants }) => {
 							message.error('Error fetching roles:', err);
 						});
 					message.success('Role deleted successfully');
-				} catch (error) {
-					message.error('Failed to delete role');
+				} catch (err) {
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					message.error(_error || 'Failed to delete role');
 				} finally {
 					setLoading(false);
 				}
