@@ -107,7 +107,7 @@ const Role = ({ constants }) => {
 			</div>
 
 			<div style={{ display: 'flex', flexDirection: 'row', marginTop: 50 }}>
-				<RoleManagement />
+				<RoleManagement constants={constants} />
 			</div>
 
 			{displayAssignRole && (

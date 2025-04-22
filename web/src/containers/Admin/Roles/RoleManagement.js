@@ -22,7 +22,7 @@ import {
 	deleteRoles,
 	fetchEndpoints,
 } from './action';
-
+import _toLower from 'lodash/toLower';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -377,7 +377,7 @@ const RoleForm = ({
 	);
 };
 
-const RoleManagement = ({ userId }) => {
+const RoleManagement = ({ userId, constants }) => {
 	const [roles, setRoles] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [currentRole, setCurrentRole] = useState(null);
@@ -494,8 +494,10 @@ const RoleManagement = ({ userId }) => {
 					message.error('Error fetching roles:', err);
 				});
 			setIsModalVisible(false);
-		} catch (error) {
-			message.error(error.response?.data?.message || 'Failed to save role');
+		} catch (err) {
+			const _error =
+				err.data && err.data.message ? err.data.message : err.message;
+			message.error(_error || 'Failed to save role');
 		} finally {
 			setLoading(false);
 		}
@@ -511,19 +513,50 @@ const RoleManagement = ({ userId }) => {
 	const formatPermissionName = (permission) => {
 		return permission.split(':').slice(1).join(':');
 	};
-
+	const handleUpgrade = (info = {}) => {
+		if (_toLower(info.plan) !== 'enterprise') {
+			return true;
+		} else {
+			return false;
+		}
+	};
+	const isUpgrade = handleUpgrade(constants?.info);
 	return (
 		<div>
 			<Title level={2}>Role Management</Title>
 
-			<Button
-				type="primary"
-				icon={<PlusOutlined />}
-				onClick={handleCreate}
-				style={{ marginBottom: 16, backgroundColor: '#288501' }}
-			>
-				Create New Role
-			</Button>
+			{isUpgrade && (
+				<div className="d-flex">
+					<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+						<div>
+							<div className="font-weight-bold">Create New Roles</div>
+							<div>Customize roles and create new ones for your exchange</div>
+						</div>
+						<div className="ml-5 button-wrapper">
+							<a
+								href="https://dash.hollaex.com/billing"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Button type="primary" className="w-100">
+									Upgrade Now
+								</Button>
+							</a>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{!isUpgrade && (
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={handleCreate}
+					style={{ marginBottom: 16, backgroundColor: '#288501' }}
+				>
+					Create New Role
+				</Button>
+			)}
 
 			<Row gutter={[16, 16]}>
 				{roles
