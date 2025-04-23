@@ -538,7 +538,7 @@ const RoleManagement = ({ userId, constants }) => {
 		return permission.split(':').slice(1).join(':');
 	};
 	const handleUpgrade = (info = {}) => {
-		if (_toLower(info.plan) !== 'enterprise') {
+		if (_toLower(info.plan) !== 'fiat') {
 			return true;
 		} else {
 			return false;
