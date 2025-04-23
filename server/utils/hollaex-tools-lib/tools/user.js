@@ -4085,7 +4085,7 @@ const validateSecretPermissions = (secretPermissions) => {
 		}
 	});
 };
-const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code }) => {
+const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
 
 	const exchangeInfo = getKitConfig().info;
 
@@ -4207,10 +4207,11 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 		description,
 		permissions: permissionsToStore,
 		configs: configsToStore,
+		color, restrictions
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs, user_id, otp_code }) => {
+const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
 	
 	const exchangeInfo = getKitConfig().info;
 
@@ -4229,6 +4230,11 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 		throw new Error('Role not found');
 	}
 
+	if (role.role_name === 'admin') {
+		throw new Error('Admin role cannot be updated');
+	}
+
+	
 	const admin = await User.findOne({ where: { id: user_id } });
 	if (!admin) throw new Error('User not found');
 
@@ -4253,6 +4259,12 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
+	}
+	if (color !== undefined && color !== role.color) {
+		updates.color = color;
+	}
+	if (restrictions !== undefined && restrictions !== role.restrictions) {
+		updates.restrictions = restrictions;
 	}
 
 	if (rolePermissions !== undefined) {
