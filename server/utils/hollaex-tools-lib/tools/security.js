@@ -566,20 +566,6 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 
 					try {
 						if (!isSocket) {
-							const roles = getRoles();
-							const userRole = roles.find(role => role.role_name === decodedToken?.sub?.role);
-							if (userRole) {
-								decodedToken = {
-									...decodedToken,
-									sub: {
-										...decodedToken.sub,
-										permissions: userRole.permissions,
-										configs: userRole.configs,
-										restrictions: userRole.restrictions,
-									}
-								}
-							}
-
 							checkPermission(req, decodedToken);
 						}
 					} catch (err) {
@@ -728,19 +714,6 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				}
 
 				try {
-					const roles = getRoles();
-					const userRole = roles.find(role => role.role_name === decodedToken?.sub?.role);
-					if (userRole) {
-						decodedToken = {
-							...decodedToken,
-							sub: {
-								...decodedToken.sub,
-								permissions: userRole.permissions,
-								configs: userRole.configs,
-								restrictions: userRole.restrictions,
-							}
-						}
-					}
 					checkPermission({ swagger: { apiPath: req.originalUrl || req?.swagger?.apiPath }, method: req.method }, decodedToken);
 				} catch (err) {
 					return sendError(err.message);
@@ -860,18 +833,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					if (!isSignatureValid) {
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
-						const roles = getRoles();
-						const userRole = roles.find(role => role.role_name === token.role);
-						if (userRole) {
-							token = {
-								...token,
-								sub: {
-									permissions: userRole.permissions,
-									configs: userRole.configs,
-									restrictions: userRole.restrictions,
-								}
-							}
-						}
 						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
@@ -1372,7 +1333,12 @@ const checkPermission = (req, user) => {
 }
 
 const checkUserPermission = (user, requiredPermission) => {
-	return user?.sub?.permissions?.includes(requiredPermission);
+	const roles = getRoles();
+	const userRole = roles.find(role => role.role_name ===  user?.role|| user?.sub?.role);
+	if (!userRole) {
+		throw new Error('User role not found');
+	}
+	return userRole.permissions.includes(requiredPermission);
 }
 
 module.exports = {
