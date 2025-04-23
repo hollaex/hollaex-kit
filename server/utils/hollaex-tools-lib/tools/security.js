@@ -566,6 +566,20 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 
 					try {
 						if (!isSocket) {
+							const roles = getRoles();
+							const userRole = roles.find(role => role.role_name === decodedToken?.sub?.role);
+							if (userRole) {
+								decodedToken = {
+									...decodedToken,
+									sub: {
+										...decodedToken.sub,
+										permissions: userRole.permissions,
+										configs: userRole.configs,
+										restrictions: userRole.restrictions,
+									}
+								}
+							}
+
 							checkPermission(req, decodedToken);
 						}
 					} catch (err) {
@@ -714,11 +728,24 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				}
 
 				try {
+					const roles = getRoles();
+					const userRole = roles.find(role => role.role_name === decodedToken?.sub?.role);
+					if (userRole) {
+						decodedToken = {
+							...decodedToken,
+							sub: {
+								...decodedToken.sub,
+								permissions: userRole.permissions,
+								configs: userRole.configs,
+								restrictions: userRole.restrictions,
+							}
+						}
+					}
 					checkPermission({ swagger: { apiPath: req.originalUrl || req?.swagger?.apiPath }, method: req.method }, decodedToken);
 				} catch (err) {
 					return sendError(err.message);
 				}
-		
+
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -841,6 +868,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 								sub: {
 									permissions: userRole.permissions,
 									configs: userRole.configs,
+									restrictions: userRole.restrictions,
 								}
 							}
 						}
@@ -1007,12 +1035,8 @@ const issueToken = (
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
-	let userPermissions = [];
-	let userConfigs = [];
 
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		userPermissions = permissions;
-		userConfigs = configs;
 		scopes.push(role);
 	}
 
@@ -1023,8 +1047,6 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				permissions: userPermissions,
-				configs: userConfigs,
 				role
 			},
 			scopes,

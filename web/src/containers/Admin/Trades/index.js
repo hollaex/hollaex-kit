@@ -11,7 +11,7 @@ import OtcDeskContainer from './otcdesk';
 import QuickTradeTab from './QuickTradeConfig';
 import ExchangeOrdersContainer from '../Orders';
 import P2P from './p2p';
-import { getPermissions } from 'utils/token';
+//import { getPermissions } from 'utils/token';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -89,7 +89,7 @@ const PairsTab = (props) => {
 				onChange={handleTabChange}
 				renderTabBar={renderTabBar}
 			>
-				{getPermissions().includes('/admin/pairs/network:get') && (
+				{props?.user?.permissions?.includes('/admin/pairs/network:get') && (
 					<TabPane tab="Public markets" key="0">
 						<PairsSummary
 							router={props.router}
@@ -99,12 +99,12 @@ const PairsTab = (props) => {
 						/>
 					</TabPane>
 				)}
-				{getPermissions().includes('/admin/orders:get') && (
+				{props?.user?.permissions?.includes('/admin/orders:get') && (
 					<TabPane tab="Orders" key="1">
 						<ExchangeOrdersContainer />
 					</TabPane>
 				)}
-				{getPermissions().includes('/admin/broker:get') && (
+				{props?.user?.permissions?.includes('/admin/broker:get') && (
 					<TabPane tab="OTC desk" key="2">
 						<OtcDeskContainer
 							coins={coinData}
@@ -116,7 +116,7 @@ const PairsTab = (props) => {
 						/>
 					</TabPane>
 				)}
-				{getPermissions().includes('/admin/p2p/dispute:get') && (
+				{props?.user?.permissions?.includes('/admin/p2p/dispute:get') && (
 					<TabPane tab="P2P" key="3">
 						<P2P
 							coins={props.coinObjects}
@@ -133,7 +133,7 @@ const PairsTab = (props) => {
 						/>
 					</TabPane>
 				)}
-				{getPermissions().includes('/admin/exchange:put') && (
+				{props?.user?.permissions?.includes('/admin/exchange:put') && (
 					<TabPane tab="Quick Trade" key="4">
 						<QuickTradeTab
 							coins={props.coinObjects}
