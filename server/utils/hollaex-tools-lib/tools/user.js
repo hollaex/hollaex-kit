@@ -4089,7 +4089,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 
 	const exchangeInfo = getKitConfig().info;
 
-	if (exchangeInfo.plan !== 'enterprise')
+	if (exchangeInfo.plan !== 'fiat')
 		throw new Error('Exchange plan does not support this feature');
 
 	const Role = getModel('role');
@@ -4214,7 +4214,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	
 	const exchangeInfo = getKitConfig().info;
 
-	if (exchangeInfo.plan !== 'enterprise')
+	if (exchangeInfo.plan !== 'fiat')
 		throw new Error('Exchange plan does not support this feature');
 
 	const Role = getModel('role');
@@ -4377,7 +4377,7 @@ const deleteExchangeUserRole = async (id, user_id, otp_code) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-	if (exchangeInfo.plan !== 'enterprise')
+	if (exchangeInfo.plan !== 'fiat')
 		throw new Error('Exchange plan does not support this feature');
 	
 	const Role = getModel('role');
