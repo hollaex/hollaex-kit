@@ -316,9 +316,9 @@ const loginPost = (req, res) => {
 
 			const successfulRecords = lastLogins.filter(login => login.status);
 
-			// if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
-			// 	suspiciousLogin = true;
-			// }
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+				suspiciousLogin = true;
+			}
 
 
 			const geo = geoip.lookup(ip);
