@@ -1340,11 +1340,12 @@ const P2PPostDeal = ({
 				)}
 				<Dialog
 					className="stake_theme payment-method-details-popup-wrapper"
-					isOpen={addMethodDetails}
+					isOpen={!!addMethodDetails}
 					onCloseDialog={() => {
 						setAddMethodDetails(false);
 						setIsEditMode(false);
 					}}
+					label="payment-method-details"
 				>
 					<div className="whiteTextP2P add-payment-method-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">

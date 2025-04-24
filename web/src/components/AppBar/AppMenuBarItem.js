@@ -16,6 +16,7 @@ import {
 } from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { setActiveBalanceHistory } from 'actions/walletActions';
+import { flipPair } from 'containers/QuickTrade/components/utils';
 
 const AppMenuBarItem = ({
 	path,
@@ -33,7 +34,12 @@ const AppMenuBarItem = ({
 	getStake,
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
+	pairs,
 }) => {
+	const filteredMarkets = getFavourites?.filter((fav) =>
+		Object.keys(pairs).some((data) => data === fav || data === flipPair(fav))
+	);
+
 	const summaryOptions = [
 		{
 			icon: 'INTERFACE_OPTION_ICON',
@@ -124,8 +130,8 @@ const AppMenuBarItem = ({
 			title: 'SUMMARY.MARKETS',
 			description: 'DESKTOP_NAVIGATION.MARKET_DESC',
 			path:
-				getFavourites && getFavourites.length
-					? `/trade/${getFavourites[0]}`
+				getFavourites && getFavourites?.length && filteredMarkets?.length > 0
+					? `/trade/${filteredMarkets[0]}`
 					: `/trade/${getMarkets[0]?.key}`,
 			isDisplay: features?.pro_trade,
 		},
@@ -402,6 +408,7 @@ const mapStateToProps = (state) => ({
 	pair: state.app.pair,
 	getRemoteRoutes: state.app.remoteRoutes,
 	getStake: state.app.selectedStake,
+	pairs: state.app.pairs,
 });
 
 const mapDispatchToProps = (dispatch) => ({

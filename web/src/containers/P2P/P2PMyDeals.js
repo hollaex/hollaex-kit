@@ -67,9 +67,10 @@ const P2PMyDeals = ({
 			)}
 		>
 			<Dialog
-				isOpen={dealRemoveConfirmation}
+				isOpen={!!dealRemoveConfirmation}
 				onCloseDialog={() => setDealRemoveConfirmation(false)}
 				className="confirmation-remove-deal-popup-wrapper"
+				label="confirmation-remove-deal"
 			>
 				<div className="remove-deal-popup-container">
 					<span className="remove-description fs-16">
