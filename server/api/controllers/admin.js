@@ -3303,7 +3303,7 @@ const getExchangeUserRoles = (req, res) => {
 const createExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/createExchangeUserRole/auth', req.auth.sub);
 
-	const { name, description, permissions, configs, otp_code } = req.swagger.params.data.value;
+	const { name, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
 
 	toolsLib.user.createExchangeUserRole({
 		name,
@@ -3311,7 +3311,8 @@ const createExchangeUserRole = (req, res) => {
 		rolePermissions: permissions,
 		configs,
 		user_id: req.auth.sub.id,
-		otp_code
+		otp_code,
+		color, restrictions
 	})
 		.then((role) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, 'controllers/admin/createExchangeUserRole', 'post', role);
@@ -3328,7 +3329,7 @@ const createExchangeUserRole = (req, res) => {
 const updateExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
 
-	const { id, name, description, permissions, configs, otp_code } = req.swagger.params.data.value;
+	const { id, name, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
 
 	toolsLib.user.updateExchangeUserRole(id, {
 		name,
@@ -3336,7 +3337,8 @@ const updateExchangeUserRole = (req, res) => {
 		rolePermissions: permissions,
 		configs,
 		user_id: req.auth.sub.id,
-		otp_code
+		otp_code,
+		color, restrictions
 	})
 		.then((role) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));

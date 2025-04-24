@@ -576,7 +576,7 @@ class AppWrapper extends React.Component {
 		} = this.state;
 		let pathNames = [];
 
-		const userPermissions = getPermissions();
+		const userPermissions = this.props?.user?.permissions || [];
 
 		pathNames = ADMIN_PATHS.filter((item) => {
 			if (item.path === '/admin') return true;

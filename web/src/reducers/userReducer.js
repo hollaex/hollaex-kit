@@ -140,6 +140,9 @@ const INITIAL_STATE = {
 	affiliation: {},
 	is_hap: false,
 	meta: {},
+	configs: [],
+	permissions: [],
+	restrictions: [],
 	network_id: null,
 	...USER_DATA,
 };
@@ -173,6 +176,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				nationality,
 				meta,
 				network_id,
+				configs,
+				permissions,
+				restrictions,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -213,6 +219,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				meta,
 				network_id,
 				nationality,
+				configs,
+				permissions,
+				restrictions,
 			};
 		}
 		case 'SET_USER_DATA': {

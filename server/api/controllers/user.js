@@ -601,6 +601,13 @@ const getUser = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+			const roles = toolsLib.getRoles();
+			const userRole = roles.find(role => role.role_name === user.role);
+			if (userRole) {
+				user.configs = userRole?.configs;
+				user.permissions = userRole?.permissions;
+				user.restrictions = userRole?.restrictions;
+			}
 			return res.json(toolsLib.user.omitUserFields(user));
 		})
 		.catch((err) => {
