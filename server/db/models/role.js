@@ -21,9 +21,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         restrictions: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+            type: DataTypes.JSONB,
             allowNull: true,
-            defaultValue: []
         },
         permissions: {
             type: DataTypes.ARRAY(DataTypes.STRING),
