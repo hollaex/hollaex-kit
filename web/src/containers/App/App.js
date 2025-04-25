@@ -1030,9 +1030,11 @@ class App extends Component {
 						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
-				{hasPermissions() && isBrowser && !isChartEmbed && (
-					<OperatorControls initialData={this.props.location} />
-				)}
+				{this.props?.user?.permissions?.length > 0 &&
+					isBrowser &&
+					!isChartEmbed && (
+						<OperatorControls initialData={this.props.location} />
+					)}
 				<Dialog
 					label="successful_dialog"
 					isOpen={isCustomNotification}
@@ -1052,6 +1054,7 @@ class App extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
+	user: store.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

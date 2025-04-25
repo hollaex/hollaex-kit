@@ -312,7 +312,10 @@ const P2PDash = ({
 										<tbody className="p2p-feedback-table-body">
 											{userFeedback.map((deal, index) => {
 												return (
-													<tr className="table-row feedback-table-body-row">
+													<tr
+														className="table-row feedback-table-body-row"
+														key={`feedback-${index}`}
+													>
 														<td className="td-fit feedback-comment w-25">
 															{isLoading ? (
 																<Loading index={index} />
@@ -367,17 +370,7 @@ const P2PDash = ({
 							</EditWrapper>
 						</div>
 						<div className="order-creation-description mt-3">
-							<EditWrapper
-								stringId={STRINGS.formatString(
-									STRINGS['P2P.ORDER_CREATION_DESC_1'],
-									STRINGS['P2P.ORDER_CREATION_DESC_2'],
-									STRINGS['P2P.YOU_HAVE_TEXT'],
-									<span className="important-text text-decoration-underline">
-										15 {STRINGS['P2P.MINUTES']}
-									</span>,
-									STRINGS['P2P.COMPLETE_PAYMENT_PROCESS']
-								)}
-							>
+							<EditWrapper stringId={'P2P.ORDER_CREATION_DESC_1'}>
 								{STRINGS.formatString(
 									STRINGS['P2P.ORDER_CREATION_DESC_1'],
 									STRINGS['P2P.ORDER_CREATION_DESC_2'],
@@ -414,14 +407,7 @@ const P2PDash = ({
 								</span>
 							</div>
 							<div className="confirm-order-creation mt-3 mb-5">
-								<EditWrapper
-									stringId={STRINGS.formatString(
-										STRINGS['P2P.CONFIRM_ORDER_CREATION'],
-										selectedDeal?.side === 'sell'
-											? STRINGS['P2P.SEND_MONEY']
-											: STRINGS['P2P.RECEIVE_MONEY']
-									)}
-								>
+								<EditWrapper stringId={'P2P.CONFIRM_ORDER_CREATION'}>
 									{STRINGS.formatString(
 										STRINGS['P2P.CONFIRM_ORDER_CREATION'],
 										selectedDeal?.side === 'sell'
@@ -838,14 +824,14 @@ const P2PDash = ({
 										deal?.min_order_value > amountFiat ||
 										deal?.max_order_value < amountFiat;
 									return (
-										<>
+										<React.Fragment key={`deal-${index}`}>
 											<tr
 												className={
 													expandRow && expandRow && deal.id === selectedDeal.id
 														? 'subTable p2p-expendable-row'
 														: 'p2p-table-row'
 												}
-												key={index}
+												key={`deal-row-${index}`}
 											>
 												<td
 													onClick={() => {
@@ -1015,7 +1001,10 @@ const P2PDash = ({
 												</td>
 											</tr>
 											{expandRow && expandRow && deal.id === selectedDeal.id && (
-												<tr className="subTable p2p-expendable-row">
+												<tr
+													className="subTable p2p-expendable-row"
+													key={`deal-sub-row-${index}`}
+												>
 													<td className="td-fit title-description">
 														<div
 															className="ml-3 mb-4 vendor-profile-description"
@@ -1027,10 +1016,7 @@ const P2PDash = ({
 														</div>
 														<div className="payment-description secondary-text ml-3">
 															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
-																	STRINGS['P2P.30_MINUTES']
-																)}
+																stringId={'P2P.PAYMENT_TIME_LIMIT_LABEL'}
 															>
 																{STRINGS.formatString(
 																	STRINGS['P2P.PAYMENT_TIME_LIMIT_LABEL'],
@@ -1054,7 +1040,7 @@ const P2PDash = ({
 													</td>
 													<td
 														className="td-fit payment-details-container"
-														colspan="4"
+														colSpan="4"
 													>
 														{selectedDeal?.side === 'sell' ? (
 															<div className="payment-details">
@@ -1145,13 +1131,7 @@ const P2PDash = ({
 																		<div className="error-message">
 																			<ExclamationCircleFilled />
 																			<EditWrapper
-																				stringId={STRINGS.formatString(
-																					STRINGS['P2P.MINIMUM_AMOUNT_WARNING'],
-																					STRINGS[
-																						'P2P.SPEND_AMOUNT'
-																					].toLowerCase(),
-																					deal.min_order_value
-																				)}
+																				stringId={'P2P.MINIMUM_AMOUNT_WARNING'}
 																			>
 																				<span className="error-message ml-1">
 																					{STRINGS.formatString(
@@ -1171,13 +1151,7 @@ const P2PDash = ({
 																		<div className="error-message">
 																			<ExclamationCircleFilled />
 																			<EditWrapper
-																				stringId={STRINGS.formatString(
-																					STRINGS['P2P.MAXIMUM_AMOUNT_WARNING'],
-																					STRINGS[
-																						'P2P.SPEND_AMOUNT'
-																					].toLowerCase(),
-																					deal.max_order_value
-																				)}
+																				stringId={'P2P.MAXIMUM_AMOUNT_WARNING'}
 																			>
 																				<span className="error-message ml-1">
 																					{STRINGS.formatString(
@@ -1407,13 +1381,7 @@ const P2PDash = ({
 																		<div className="error-message">
 																			<ExclamationCircleFilled />
 																			<EditWrapper
-																				stringId={STRINGS.formatString(
-																					STRINGS['P2P.MINIMUM_AMOUNT_WARNING'],
-																					STRINGS[
-																						'P2P.SPEND_AMOUNT'
-																					].toLowerCase(),
-																					deal.min_order_value
-																				)}
+																				stringId={'P2P.MINIMUM_AMOUNT_WARNING'}
 																			>
 																				<span className="error-message ml-1">
 																					{STRINGS.formatString(
@@ -1433,13 +1401,7 @@ const P2PDash = ({
 																		<div className="error-message">
 																			<ExclamationCircleFilled />
 																			<EditWrapper
-																				stringId={STRINGS.formatString(
-																					STRINGS['P2P.MAXIMUM_AMOUNT_WARNING'],
-																					STRINGS[
-																						'P2P.SPEND_AMOUNT'
-																					].toLowerCase(),
-																					deal.max_order_value
-																				)}
+																				stringId={'P2P.MAXIMUM_AMOUNT_WARNING'}
 																			>
 																				<span className="error-message ml-1">
 																					{STRINGS.formatString(
@@ -1540,7 +1502,7 @@ const P2PDash = ({
 													</td>
 												</tr>
 											)}
-										</>
+										</React.Fragment>
 									);
 								})}
 							</tbody>

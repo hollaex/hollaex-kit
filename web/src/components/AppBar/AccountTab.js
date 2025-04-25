@@ -208,6 +208,7 @@ const AccountList = ({
 			<Dialog
 				isOpen={isHelpResources}
 				onCloseDialog={() => setIsHelpResources(false)}
+				label="helpful-resources"
 			>
 				<HelpfulResourcesForm
 					onSubmitSuccess={() => setIsHelpResources(false)}

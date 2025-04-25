@@ -316,9 +316,9 @@ const loginPost = (req, res) => {
 
 			const successfulRecords = lastLogins.filter(login => login.status);
 
-			// if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
-			// 	suspiciousLogin = true;
-			// }
+			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+				suspiciousLogin = true;
+			}
 
 
 			const geo = geoip.lookup(ip);
@@ -600,6 +600,13 @@ const getUser = (req, res) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			}
+			const roles = toolsLib.getRoles();
+			const userRole = roles.find(role => role.role_name === user.role);
+			if (userRole) {
+				user.configs = userRole?.configs;
+				user.permissions = userRole?.permissions;
+				user.restrictions = userRole?.restrictions;
 			}
 			return res.json(toolsLib.user.omitUserFields(user));
 		})

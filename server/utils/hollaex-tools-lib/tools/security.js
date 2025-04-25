@@ -718,7 +718,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 				} catch (err) {
 					return sendError(err.message);
 				}
-		
+
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -833,17 +833,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 					if (!isSignatureValid) {
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
-						const roles = getRoles();
-						const userRole = roles.find(role => role.role_name === token.role);
-						if (userRole) {
-							token = {
-								...token,
-								sub: {
-									permissions: userRole.permissions,
-									configs: userRole.configs,
-								}
-							}
-						}
 						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
@@ -1007,12 +996,8 @@ const issueToken = (
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
-	let userPermissions = [];
-	let userConfigs = [];
 
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		userPermissions = permissions;
-		userConfigs = configs;
 		scopes.push(role);
 	}
 
@@ -1023,8 +1008,6 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				permissions: userPermissions,
-				configs: userConfigs,
 				role
 			},
 			scopes,
@@ -1350,7 +1333,12 @@ const checkPermission = (req, user) => {
 }
 
 const checkUserPermission = (user, requiredPermission) => {
-	return user?.sub?.permissions?.includes(requiredPermission);
+	const roles = getRoles();
+	const userRole = roles.find(role => role.role_name ===  user?.role|| user?.sub?.role);
+	if (!userRole) {
+		throw new Error('User role not found');
+	}
+	return userRole.permissions.includes(requiredPermission);
 }
 
 module.exports = {
