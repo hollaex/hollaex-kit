@@ -476,8 +476,11 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 		where: {
 			user_id: user.id,
 			status: false,
-			// device,
-			country
+			device,
+			country,
+			created_at: {
+				[Op.gte]: moment().subtract(5, 'minutes').toDate()
+			}
 		}
 	});
 
