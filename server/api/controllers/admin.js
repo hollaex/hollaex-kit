@@ -235,7 +235,7 @@ const putUserRole = (req, res) => {
 
 	toolsLib.user.updateUserRole(user_id, role, req.auth.sub.id, otp_code)
 		.then((user) => {
-			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id, ...req?.swagger?.params?.data?.value });
 			return res.json(user);
 		})
 		.catch((err) => {
