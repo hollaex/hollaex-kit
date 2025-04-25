@@ -1163,6 +1163,10 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 	const Role = getModel('role');
 	const User = getModel('user');
 
+	if (role_name === 'admin') {
+		throw new Error('Cannot assign admin role');
+	}
+
 	const admin = await User.findOne({ where: { id: admin_id } });
 	if (!admin) throw new Error('User not found');
 
