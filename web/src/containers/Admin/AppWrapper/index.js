@@ -463,7 +463,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								src={STATIC_ICONS.SUPERVISOR_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -477,10 +477,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-grey">
 						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_KYC}
-								className="sider-icons"
-							/>
+							<ReactSVG src={STATIC_ICONS.KYC_ROLE} className="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label black">Role:</div>
@@ -493,7 +490,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								src={STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -508,7 +505,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								src={STATIC_ICONS.SUPPORT_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -523,7 +520,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section">
 						<div>
 							<img
-								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+								src={STATIC_ICONS.ADMIN_ROLE}
 								className="sider-icons"
 								alt="EyeIcon"
 							/>

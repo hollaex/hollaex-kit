@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
+import { ReactSVG } from 'react-svg';
 import { Button, Modal, Select, message } from 'antd';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import _debounce from 'lodash/debounce';
-import { CloseOutlined } from '@ant-design/icons';
+import _toLower from 'lodash/toLower';
 
 import RoleManagement from './RoleManagement';
 import { requestUsers } from '../Stakes/actions';
-// eslint-disable-next-line
-import { assignRole, fetchRoles } from './action';
-const Role = ({ constants }) => {
+import { assignRole } from './action';
+import { STATIC_ICONS } from 'config/icons';
+
+const Role = ({ constants, onHandleTabChange, isColorDark, user }) => {
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [rolePayload, setRolePayload] = useState({});
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [currentRole, setCurrentRole] = useState(null);
 	// eslint-disable-next-line
 	const [roles, setRoles] = useState([]);
 
@@ -52,14 +57,28 @@ const Role = ({ constants }) => {
 	};
 
 	const handleSearch = _debounce(searchUser, 1000);
+
+	const handleCreate = () => {
+		setCurrentRole(null);
+		setIsModalVisible(true);
+	};
+
+	const handleUpgrade = (info = {}) => {
+		if (_toLower(info.plan) !== 'fiat') {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const isUpgrade = handleUpgrade(constants?.info);
+
 	return (
-		<div style={{ height: '70vh', overflowY: 'auto' }}>
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-				<div>
-					<div style={{ color: 'white', fontSize: 20 }}>
-						Role permissions & customizations
-					</div>
-					<div style={{ color: '#ccc', marginTop: 10 }}>
+		<div className="operator-roles-wrapper">
+			<div className="header-section">
+				<div className="title-content">
+					<div className="title">Role permissions & customizations</div>
+					<div className="description">
 						Degisn a custom-fit role that seamlessly integrates into your team,
 						with permissions tailored to match your unique requirements
 					</div>
@@ -90,24 +109,64 @@ const Role = ({ constants }) => {
 					>
 						Assign Role to Users
 					</Button> */}
+					{!isUpgrade && (
+						<Button
+							type="primary"
+							icon={<PlusOutlined />}
+							onClick={handleCreate}
+							style={{ marginBottom: 16, backgroundColor: '#288501' }}
+							className="create-btn"
+						>
+							Create New Role
+						</Button>
+					)}
 				</div>
 			</div>
 
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-				<div style={{ marginLeft: 15, marginTop: 10 }}>
-					<div style={{ marginBottom: 5 }}>
+			<div className="description-wrapper">
+				<ReactSVG
+					src={STATIC_ICONS.OPERATOR_ROLES}
+					className="operator-roles-icon"
+				/>
+				<div className="operator-role-description">
+					<div className="description-text">
 						To complete your team structure, simply add your team and assign a
-						role to the appropriate operator here.
+						role to the appropriate{' '}
+						<span
+							className="text-decoration-underline pointer"
+							onClick={() => onHandleTabChange('0')}
+						>
+							operator here
+						</span>
+						.
 					</div>
-					<div>
-						(Only the Admin and Enterprise platforms can edit permissions and
-						creatae new roles.)
+					<div className="description-text edit-permission-text">
+						(Only the Admin and{' '}
+						<a
+							className="enterprise-text pointer"
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://www.hollaex.com/pricing"
+						>
+							Enterprise
+						</a>{' '}
+						platforms can edit permissions and create new roles.)
 					</div>
 				</div>
 			</div>
 
 			<div style={{ display: 'flex', flexDirection: 'row', marginTop: 50 }}>
-				<RoleManagement constants={constants} />
+				<RoleManagement
+					constants={constants}
+					isModalVisible={isModalVisible}
+					setIsModalVisible={setIsModalVisible}
+					currentRole={currentRole}
+					setCurrentRole={setCurrentRole}
+					handleCreate={handleCreate}
+					isUpgrade={isUpgrade}
+					isColorDark={isColorDark}
+					user={user}
+				/>
 			</div>
 
 			{displayAssignRole && (
@@ -195,6 +254,7 @@ const Role = ({ constants }) => {
 								height: 35,
 							}}
 							type="default"
+							className="no-border"
 						>
 							Back
 						</Button>
@@ -219,6 +279,7 @@ const Role = ({ constants }) => {
 								flex: 1,
 								height: 35,
 							}}
+							className="no-border"
 							type="default"
 						>
 							Proceed

@@ -18,9 +18,14 @@
 }
 .admin-roles-wrapper .role-description-box {
 	border-bottom: 1px solid #c4c4c4;
-	height: 135px;
+	min-height: 135px;
 	position: relative;
 }
+
+.admin-roles-wrapper .role-description-box .description {
+	font-size: 14px;
+}
+
 .admin-roles-wrapper .role-label {
 	font-size: 20px;
 	font-weight: bold;
@@ -29,7 +34,7 @@
 	background-color: #000000;
 }
 .admin-roles-wrapper .role-kyc {
-	background-color: #dadada;
+	background-color: #00edff;
 	color: #000000;
 }
 .admin-roles-wrapper .role-communication {
@@ -202,4 +207,462 @@
 
 .authentication-wrapper p {
 	margin-bottom: 0px;
+}
+
+.operator-roles-wrapper {
+	height: 70vh;
+	overflow-y: auto;
+}
+
+.operator-roles-wrapper .header-section {
+	display: flex;
+	justify-content: space-between;
+}
+
+.operator-roles-wrapper .header-section .title-content .title {
+	color: #ffffff;
+	font-size: 20px;
+}
+
+.operator-roles-wrapper .header-section .title-content .description {
+	color: #ccc;
+}
+
+.operator-roles-wrapper .description-wrapper {
+	margin-top: 1.5%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.operator-roles-wrapper .description-wrapper .operator-roles-icon {
+	padding: 0 2%;
+}
+
+.operator-roles-wrapper .description-wrapper .operator-roles-icon svg {
+	width: 4rem;
+	height: 4rem;
+}
+
+.operator-roles-wrapper
+	.description-wrapper
+	.operator-role-description
+	.description-text {
+	font-size: 1.1rem;
+}
+
+.operator-roles-wrapper
+	.description-wrapper
+	.operator-role-description
+	.description-text
+	.enterprise-text {
+	text-decoration: underline;
+}
+
+.operator-roles-wrapper
+	.description-wrapper
+	.operator-role-description
+	.edit-permission-text {
+	font-size: 1rem;
+	color: #ccc;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.roles-management-title-wrapper
+	.create-btn {
+	border: none;
+}
+
+.operator-roles-wrapper .roles-management-wrapper .operator-cards-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2%;
+}
+
+.operator-roles-wrapper .roles-management-wrapper .operator-card-wrapper,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card {
+	margin-top: 5%;
+	min-width: 28rem;
+	padding: 5% 8%;
+	box-sizing: border-box;
+	background-color: var(--admin_panel_sidebar_background);
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.card-content {
+	display: flex;
+	justify-content: space-between;
+	gap: 1%;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.button-container {
+	margin-top: 4%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.customize-role-operator-card-wrapper {
+	background-color: transparent;
+	border: 1px solid #ccc;
+	opacity: 0.6;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	min-height: 14rem;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.operator-roles-wrapper .roles-management-wrapper .operator-card-wrapper p,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card,
+.operator-role-card-details p {
+	margin-bottom: unset;
+	margin-top: unset;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.card-content
+	.permissions {
+	font-size: 12px;
+}
+
+.supervisor-operator-card-wrapper {
+	background-color: #000000 !important;
+}
+
+.kyc-operator-card-wrapper {
+	background-color: #00edff !important;
+	color: #000000 !important;
+}
+
+.support-operator-card-wrapper {
+	background-color: #ffff00 !important;
+	color: #000000 !important;
+}
+
+.communication-operator-card-wrapper {
+	background-color: #e66b00 !important;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.permission-btn {
+	padding: 2% 1.5rem;
+	border: 1px solid #ffffff;
+	border-radius: 25px;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.highlight-btn {
+	border: 1px solid #000000;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.card-description,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card,
+.operator-role-card-details .role-description {
+	max-width: 15rem;
+	text-wrap: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.role-icon-wrapper
+	svg,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card
+	img,
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.role-badge-wrapper
+	.role-badge
+	svg {
+	width: 7rem;
+	height: 7rem;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.card-title {
+	font-weight: 600;
+	font-size: 20px;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.delete-btn {
+	opacity: 0.6;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
+	.delete-btn:hover {
+	opacity: 1;
+}
+
+.confirm-roles-delete-wrapper .title {
+	font-size: 18px;
+}
+
+.confirm-roles-delete-wrapper .warning-icon svg {
+	width: 2rem;
+	height: 2rem;
+}
+
+.confirm-roles-delete-wrapper .button-container {
+	margin-top: 3%;
+	gap: 5%;
+}
+
+.ant-modal-close {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	color: #ffffff !important;
+}
+
+.operator-roles-detail-popup .roles-detail-form-wrapper .ant-form-item,
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.ant-form-item-label
+	> label,
+.operator-roles-detail-popup .roles-detail-form-wrapper .ant-divider {
+	color: #ffffff !important;
+}
+
+.operator-roles-detail-popup .roles-detail-form-wrapper .role-badge-wrapper {
+	margin: 4% 0;
+	display: flex;
+	gap: 2%;
+	padding: 3% 5%;
+	background-color: #7d9ac9;
+	align-items: center;
+}
+
+.operator-roles-detail-popup .roles-detail-form-wrapper .button-container,
+.roles-images-popup-wrapper .roles-image-popup-details .button-container {
+	display: flex;
+	justify-content: space-between;
+	gap: 5%;
+}
+
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.button-container
+	.role-btn {
+	border: none;
+}
+
+.operator-roles-detail-popup .roles-detail-form-wrapper input,
+textarea,
+.ant-collapse,
+.ant-collapse-header,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.ant-select-selector,
+.admin-roles-wrapper .ant-select-selector {
+	background-color: transparent !important;
+	color: #ffffff !important;
+	border: 1px solid #ffffff;
+}
+
+.operator-roles-detail-popup .roles-detail-form-wrapper .ant-collapse {
+	border: none !important;
+}
+
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.assign-role-title,
+.ant-select,
+.ant-select-arrow {
+	color: #ffffff;
+}
+
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card {
+	display: flex;
+	justify-content: space-between;
+	max-width: 25rem !important;
+	min-width: 20rem !important;
+	align-items: flex-start;
+	margin: 3% 0;
+	padding: 5% 1.5rem;
+	gap: 1%;
+}
+
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.operator-role-card {
+	margin-top: unset !important;
+}
+
+.assign-role-popup-wrapper .operator-card-wrapper {
+	margin-top: 5%;
+	display: flex;
+	align-items: flex-start;
+	gap: 2%;
+}
+
+.operator-control-card-light {
+	color: #ffffff !important;
+}
+
+.operator-control-card-dark {
+	color: #000000 !important;
+}
+
+.operator-control-card-dark .permission-btn {
+	border-color: #000000 !important;
+}
+
+.operator-control-card-dark svg path {
+	fill: #000000 !important;
+}
+
+.operator-control-card-dark svg path {
+	fill: #ffffff;
+}
+
+.operator-roles-detail-popup
+	.warning-verification-popup-details
+	.warning-message-wrapper {
+	display: flex;
+	gap: 2%;
+	padding: 2% 4%;
+	background-color: var(--specials_pending-waiting-caution);
+	margin-bottom: 2%;
+}
+
+.operator-roles-detail-popup
+	.warning-verification-popup-details
+	.warning-message-wrapper
+	.anticon-exclamation-circle {
+	position: relative;
+	top: 5px;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.roles-image-title-wrapper
+	.role-title {
+	font-size: 24px;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.roles-image-title-wrapper
+	.roles-image-description {
+	display: flex;
+	justify-content: space-between;
+	gap: 3%;
+	align-items: center;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.roles-image-title-wrapper
+	.roles-image-description
+	.ant-input,
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.roles-image-title-wrapper
+	.roles-image-description
+	.ant-input:focus {
+	width: 30%;
+	background-color: transparent;
+	border: none;
+	color: #ffffff !important;
+	border-bottom: 1px solid #ffffff;
+	box-shadow: unset;
+}
+
+.roles-images-popup-wrapper .roles-image-popup-details .badge-lists {
+	padding: 2%;
+	background-color: #ccc;
+	gap: 2%;
+	justify-content: space-around;
+	height: 25rem;
+	overflow-y: scroll;
+	margin: 5% 0;
+	scrollbar-color: #888 #ccc;
+	align-items: center;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.badge-lists::-webkit-scrollbar {
+	width: 8px;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.badge-lists::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 4px;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.badge-lists::-webkit-scrollbar-track {
+	background-color: #ccc;
+}
+
+.roles-images-popup-wrapper
+	.roles-image-popup-details
+	.badge-lists
+	.roles-image {
+	padding: 5%;
+	margin: 1%;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+	max-height: 8rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.admin-roles-wrapper .table-wrapper .operator-role-image img {
+	height: 3rem;
+	width: 3rem;
 }
