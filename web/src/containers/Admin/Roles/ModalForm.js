@@ -20,34 +20,42 @@ export const renderRoleImage = (
 	type = checkRole()
 ) => {
 	switch (type) {
-		case 'Supervisor':
+		case 'supervisor':
 			return (
 				<img
-					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+					src={STATIC_ICONS.SUPERVISOR_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
 			);
-		case 'Kyc':
+		case 'kyc':
 			return (
 				<img
-					src={STATIC_ICONS.BLUE_SCREEN_KYC}
+					src={STATIC_ICONS.KYC_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
 			);
-		case 'Communicator':
+		case 'communicator':
 			return (
 				<img
-					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+					src={STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
 			);
-		case 'Support':
+		case 'support':
 			return (
 				<img
-					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+					src={STATIC_ICONS.SUPPORT_ROLE}
+					className={className}
+					alt="role-icon"
+				/>
+			);
+		case 'admin':
+			return (
+				<img
+					src={STATIC_ICONS.ADMIN_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
@@ -144,7 +152,7 @@ export const OperatorRole = ({
 					<Button
 						type="primary"
 						htmlType="submit"
-						className="green-btn w-100"
+						className="green-btn w-100 no-border"
 						disabled={buttonSubmitting}
 					>
 						Save
@@ -165,7 +173,8 @@ export const OperatorRole = ({
 export const RoleAccess = ({ handleClose, isUpgrade }) => {
 	return (
 		<div className="admin-roles-wrapper">
-			<h3>Operator role access</h3>
+			<h3>Default Roles</h3>
+			<p>More Role Permission Info Here</p>
 			<div className="role-type-container">
 				<div className="d-flex role-description-box">
 					<div className="f-1 d-flex align-items-center pl-3">
@@ -266,7 +275,7 @@ export const RoleAccess = ({ handleClose, isUpgrade }) => {
 			<div className="mt-4">
 				<Button
 					type="primary"
-					className="green-btn w-100"
+					className="green-btn w-100 no-border"
 					onClick={handleClose}
 				>
 					Back
@@ -300,12 +309,13 @@ export const EditModal = ({
 					role: getRoleType(editData),
 				}}
 				buttonText={'Save'}
-				buttonClass="green-btn mini-btn mt-2"
+				buttonClass="green-btn mini-btn mt-2 no-border"
 				fields={{
 					role: {
 						type: 'select',
 						label: 'Change roles',
 						options: roles,
+						value: getRoleType(editData),
 					},
 				}}
 			/>
@@ -314,7 +324,7 @@ export const EditModal = ({
 			<div className="mt-2">
 				<Button
 					type="primary"
-					className="revoke-btn"
+					className="revoke-btn no-border"
 					onClick={() => onTypeChange('revoke-role')}
 				>
 					Revoke role

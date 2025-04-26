@@ -22,6 +22,7 @@ import { Tabs } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
 import { OtpForm } from 'components';
+import { STATIC_ICONS } from 'config/icons';
 const TabPane = Tabs.TabPane;
 
 const getColumns = (handleEdit = () => {}) => [
@@ -30,9 +31,23 @@ const getColumns = (handleEdit = () => {}) => [
 		dataIndex: 'email',
 	},
 	{
+		title: 'Color & Symbol',
+		render: (data) => {
+			return (
+				<div className="operator-role-image">{renderRoleImage(data?.role)}</div>
+			);
+		},
+	},
+	{
+		title: 'Description',
+		render: (data) => {
+			return <div>{data?.description}</div>;
+		},
+	},
+	{
 		title: 'Role',
 		render: (data) => {
-			return <div>{data.role}</div>;
+			return <div className="text-capitalize">{data?.role}</div>;
 		},
 	},
 	{
@@ -122,6 +137,7 @@ const Roles = ({ constants, user }) => {
 	const [rolePayload, setRolePayload] = useState({});
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
 	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
+	const [activeTab, setActiveTab] = useState('0');
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
@@ -149,8 +165,17 @@ const Roles = ({ constants, user }) => {
 				const roleNames = response.data.map((role) => ({
 					label: role.role_name,
 					value: role.role_name,
+					description: role?.description,
+					permission: [...role?.permissions, ...role?.configs],
+					color: role?.color,
 				}));
 				setRoles(roleNames);
+				setRolePayload({
+					role_id: roleNames[0]?.label,
+					description: roleNames[0]?.description,
+					permission: roleNames[0]?.permission,
+					color: roleNames[0]?.color,
+				});
 			})
 			.catch((err) => {
 				message.error('Error fetching roles:', err);
@@ -158,7 +183,7 @@ const Roles = ({ constants, user }) => {
 
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [displayAssignRole]);
 
 	const handleInvite = (values) => {
 		setButtonSubmitting(true);
@@ -176,10 +201,16 @@ const Roles = ({ constants, user }) => {
 	};
 
 	const handleUpdateRole = (formProps, user_id) => {
+		const selectedRole =
+			roles.find((role) => role?.value === formProps.role) || {};
+		const { permission = '', description = '', color } = selectedRole;
 		setButtonSubmitting(true);
 		setRolePayload({
 			role_id: formProps.role,
 			user_id,
+			description,
+			permission,
+			color,
 		});
 		updateRole({ otp_code: '', ...formProps }, { user_id })
 			.then((res) => {
@@ -249,6 +280,12 @@ const Roles = ({ constants, user }) => {
 		setOpen(true);
 		setType('edit');
 		setData(data);
+		setRolePayload({
+			role_id: data?.role,
+			description: data?.description,
+			permission: data?.permission,
+			color: data?.color,
+		});
 	};
 
 	const handleClose = () => {
@@ -329,8 +366,94 @@ const Roles = ({ constants, user }) => {
 		}
 	};
 	const handleSearch = _debounce(searchUser, 1000);
+
+	const onHandleTabChange = (tab) => {
+		setActiveTab(tab);
+	};
+
+	const roleDetails = roles.reduce(
+		(acc, { value, description, color, permission }) => ({
+			...acc,
+			[value]: { description, permission, color },
+		}),
+		{}
+	);
+
+	const filteredDetails = operatorList.map((data) => ({
+		...data,
+		description: roleDetails[data?.role]?.description || '',
+		permission: roleDetails[data?.role]?.permission || [],
+		color: roleDetails[data?.role]?.color || '',
+	}));
+
+	const roleStyles = {
+		admin: {
+			cardWrapper: 'operator-card-wrapper admin-operator-card-wrapper',
+			rolesImage: STATIC_ICONS.ADMIN_ROLE,
+		},
+		supervisor: {
+			cardWrapper: 'supervisor-operator-card-wrapper operator-card-wrapper',
+			rolesImage: STATIC_ICONS.SUPERVISOR_ROLE,
+		},
+		kyc: {
+			cardWrapper: 'operator-card-wrapper kyc-operator-card-wrapper',
+			rolesImage: STATIC_ICONS.KYC_ROLE,
+		},
+		support: {
+			cardWrapper: 'support-operator-card-wrapper operator-card-wrapper',
+			rolesImage: STATIC_ICONS.SUPPORT_ROLE,
+		},
+		communicator: {
+			cardWrapper: 'communication-operator-card-wrapper operator-card-wrapper',
+			rolesImage: STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE,
+		},
+		'Customize a Role': {
+			cardWrapper: 'customize-role-operator-card-wrapper operator-card-wrapper',
+		},
+		default: {
+			cardWrapper: 'operator-card-wrapper',
+			rolesImage: STATIC_ICONS.OPERATOR_ROLES,
+		},
+	};
+
+	const onHandleRoleSelect = (selectedRolr) => {
+		const filteredRole = roles.find(
+			(role) => role?.value?.toLowerCase() === selectedRolr?.toLowerCase()
+		);
+		if (filteredRole) {
+			const { description = '', permission = '', color } = filteredRole;
+			setRolePayload({
+				role_id: selectedRolr,
+				description,
+				permission,
+				color,
+			});
+		}
+	};
+
+	const isColorDark = (hexColor) => {
+		if (hexColor) {
+			const hex = hexColor?.replace('#', '');
+
+			const r = parseInt(hex.substr(0, 2), 16);
+			const g = parseInt(hex.substr(2, 2), 16);
+			const b = parseInt(hex.substr(4, 2), 16);
+
+			const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+			// If luminance < 0.5, it's dark
+			return luminance < 0.5;
+		}
+		return true;
+	};
+
 	return (
-		<Tabs defaultActiveKey="0" style={{ width: '100%' }}>
+		<Tabs
+			defaultActiveKey="0"
+			style={{ width: '100%' }}
+			activeKey={activeTab}
+			onChange={onHandleTabChange}
+		>
 			<TabPane tab="Operator" key="0">
 				<div
 					style={{ maxHeight: '70vh', overflowY: 'auto' }}
@@ -347,7 +470,7 @@ const Roles = ({ constants, user }) => {
 						<div>
 							<Button
 								type="primary"
-								className="green-btn"
+								className="green-btn no-border"
 								onClick={() => {
 									setDisplayAssignRole(true);
 								}}
@@ -396,7 +519,7 @@ const Roles = ({ constants, user }) => {
 					<div className="table-wrapper">
 						<Table
 							columns={getColumns(handleEdit)}
-							dataSource={operatorList}
+							dataSource={filteredDetails}
 							rowKey={(data) => {
 								return data.id;
 							}}
@@ -405,6 +528,7 @@ const Roles = ({ constants, user }) => {
 								onChange: pageChange,
 							}}
 							loading={isLoading}
+							className="exchange-operator-role-details"
 						/>
 					</div>
 					{displayAssignRole && (
@@ -420,18 +544,15 @@ const Roles = ({ constants, user }) => {
 							onCancel={() => {
 								setDisplayAssignRole(false);
 							}}
+							wrapClassName="assign-role-popup-wrapper"
 						>
-							<h2 style={{ fontWeight: '600', color: 'white' }}>
-								Assign a role to user
-							</h2>
-							<div style={{ fontWeight: '400', color: 'white' }}>
-								You can assign roles to users below
+							<h2 className="assign-role-title">Add Operator</h2>
+							<div className="assign-role-title">
+								Select the role you’d like to assign and enter the new team
+								member's email address.
 							</div>
 							{!user.otp_enabled && (
-								<div
-									className="authentication-wrapper"
-									style={{ marginBottom: 15 }}
-								>
+								<div className="authentication-wrapper mb-3">
 									<div>
 										<p>
 											<WarningOutlined />
@@ -445,20 +566,75 @@ const Roles = ({ constants, user }) => {
 								</div>
 							)}
 							{user.otp_enabled && (
-								<div style={{ marginBottom: 30, marginTop: 10 }}>
-									<div style={{ marginBottom: 10 }}>
-										<div className="mb-2">User</div>
+								<div className="mt-1 mb-3">
+									<div className="mb-1">
+										<div className="mb-1">Role</div>
+										<Select
+											onChange={(value) => onHandleRoleSelect(value)}
+											value={rolePayload?.role_id}
+											placeholder="Select Role Type"
+											className="w-100"
+											dropdownClassName="select-roles-dropdown"
+										>
+											{roles.map((role) => (
+												<Select.Option value={role.value}>
+													{role.label}
+												</Select.Option>
+											))}
+										</Select>
+									</div>
+									<div className="operator-card-wrapper">
+										{rolePayload && (
+											<div
+												className={
+													rolePayload?.color && isColorDark(rolePayload?.color)
+														? 'operator-role-card operator-control-card-light'
+														: roleStyles[rolePayload?.role_id]
+														? `operator-role-card ${
+																roleStyles[rolePayload?.role_id]?.cardWrapper
+														  }`
+														: 'operator-role-card operator-control-card-dark'
+												}
+												style={{ backgroundColor: rolePayload?.color }}
+											>
+												<div className="operator-role-card-details">
+													<p className="font-weight-bold">
+														{rolePayload?.role_id?.toUpperCase()}
+													</p>
+													<p className="role-description">
+														{rolePayload?.description}
+													</p>
+												</div>
+												{rolePayload?.role_id &&
+													renderRoleImage('', rolePayload?.role_id)}
+											</div>
+										)}
+										<div>
+											<p>Permissions: {rolePayload?.permission?.length || 0}</p>
+											<p
+												className="text-decoration-underline pointer"
+												onClick={() => {
+													onHandleTabChange('1');
+													setDisplayAssignRole(false);
+												}}
+											>
+												OPEN THE ROLES PAGE
+											</p>
+										</div>
+									</div>
+									<div className="mb-1">
+										<div className="mb-2">Email</div>
 										<div className="d-flex align-items-center">
 											<Select
 												showSearch
 												placeholder="user@exchange.com"
-												className="user-search-field"
+												className="user-search-field w-100"
 												onSearch={(text) => handleSearch(text)}
 												filterOption={() => true}
-												style={{ width: '100%' }}
 												value={selectedEmailData && selectedEmailData.label}
 												onChange={(text) => handleEmailChange(text)}
 												showAction={['focus', 'click']}
+												dropdownClassName="select-roles-dropdown"
 											>
 												{emailOptions &&
 													emailOptions.map((email) => (
@@ -468,27 +644,6 @@ const Roles = ({ constants, user }) => {
 													))}
 											</Select>
 										</div>
-									</div>
-
-									<div style={{ marginBottom: 10 }}>
-										<div className="mb-1">Role</div>
-										<Select
-											onChange={(value) =>
-												setRolePayload({
-													...rolePayload,
-													role_id: value,
-												})
-											}
-											value={rolePayload?.role_id}
-											style={{ width: '100%' }}
-											placeholder="Select Role Type"
-										>
-											{roles.map((role) => (
-												<Select.Option value={role.value}>
-													{role.label}
-												</Select.Option>
-											))}
-										</Select>
 									</div>
 								</div>
 							)}
@@ -513,6 +668,7 @@ const Roles = ({ constants, user }) => {
 										height: 35,
 									}}
 									type="default"
+									className="no-border"
 								>
 									Back
 								</Button>
@@ -550,6 +706,8 @@ const Roles = ({ constants, user }) => {
 										height: 35,
 									}}
 									type="default"
+									disabled={!user.otp_enabled}
+									className="no-border"
 								>
 									Proceed
 								</Button>
@@ -591,7 +749,12 @@ const Roles = ({ constants, user }) => {
 			</TabPane>
 
 			<TabPane tab="Roles" key="1">
-				<Role constants={constants} />
+				<Role
+					constants={constants}
+					onHandleTabChange={onHandleTabChange}
+					isColorDark={isColorDark}
+					user={user}
+				/>
 			</TabPane>
 		</Tabs>
 	);
