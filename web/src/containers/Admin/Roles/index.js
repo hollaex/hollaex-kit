@@ -120,7 +120,7 @@ const renderItems = () => {
 	}
 };
 
-const Roles = ({ constants, user }) => {
+const Roles = ({ constants, user, coins }) => {
 	const limit = 50;
 	const [operatorList, setOperatorList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -754,6 +754,7 @@ const Roles = ({ constants, user }) => {
 					onHandleTabChange={onHandleTabChange}
 					isColorDark={isColorDark}
 					user={user}
+					coins={coins}
 				/>
 			</TabPane>
 		</Tabs>
@@ -763,6 +764,7 @@ const Roles = ({ constants, user }) => {
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	user: state.user,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(Roles);
