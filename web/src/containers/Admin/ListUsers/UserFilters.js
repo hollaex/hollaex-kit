@@ -151,6 +151,7 @@ const UseFilters = ({ applyFilters }) => {
 								display: filter.displayNone ? 'none' : 'flex',
 								flexDirection: 'column',
 							}}
+							key={index}
 						>
 							<label>
 								{filter.label}:{' '}
@@ -293,8 +294,10 @@ const UseFilters = ({ applyFilters }) => {
 								.filter(
 									(key) => !filters.find((filter) => filter.field === key)
 								)
-								.map((key) => (
-									<Option value={key}>{fieldKeyValue[key].label}</Option>
+								.map((key, index) => (
+									<Option value={key} key={index}>
+										{fieldKeyValue[key].label}
+									</Option>
 								))}
 						</Select>
 					)}

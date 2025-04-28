@@ -498,12 +498,7 @@ const P2PPostDeal = ({
 									<div className="toggle-container">
 										{p2pSide === 'sell' ? (
 											<div className="toggle-sell-text">
-												<EditWrapper
-													stringId={STRINGS.formatString(
-														STRINGS['P2P.SELLING'],
-														<span>{buyingAsset?.toUpperCase()}</span>
-													)}
-												>
+												<EditWrapper stringId="P2P.SELLING">
 													{STRINGS.formatString(
 														STRINGS['P2P.SELLING'],
 														<span>{buyingAsset?.toUpperCase()}</span>
@@ -512,12 +507,7 @@ const P2PPostDeal = ({
 											</div>
 										) : (
 											<div className="toggle-buy-text">
-												<EditWrapper
-													stringId={STRINGS.formatString(
-														STRINGS['P2P.BUYING'],
-														<span>{spendingAsset?.toUpperCase()}</span>
-													)}
-												>
+												<EditWrapper stringId="P2P.BUYING">
 													{STRINGS.formatString(
 														STRINGS['P2P.BUYING'],
 														<span>{spendingAsset?.toUpperCase()}</span>
@@ -774,12 +764,7 @@ const P2PPostDeal = ({
 													</div>
 													<div className="secondary-text mt-2">
 														{p2pSide === 'sell' ? (
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.PRICE_ADVERTISE'],
-																	<span>{STRINGS['SIDES.SELL']}</span>
-																)}
-															>
+															<EditWrapper stringId="P2P.PRICE_ADVERTISE">
 																{STRINGS.formatString(
 																	STRINGS['P2P.PRICE_ADVERTISE'],
 																	<span className="sell-text">
@@ -788,12 +773,7 @@ const P2PPostDeal = ({
 																)}
 															</EditWrapper>
 														) : (
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.PRICE_ADVERTISE'],
-																	<span>{STRINGS['SIDES.BUY']}</span>
-																)}
-															>
+															<EditWrapper stringId="P2P.PRICE_ADVERTISE">
 																{STRINGS.formatString(
 																	STRINGS['P2P.PRICE_ADVERTISE'],
 																	<span className="buy-text">
@@ -820,12 +800,7 @@ const P2PPostDeal = ({
 													</div>
 													<div className="secondary-text mt-2">
 														{p2pSide === 'sell' ? (
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.PRICE_ADVERTISE'],
-																	<span>{STRINGS['SIDES.SELL']}</span>
-																)}
-															>
+															<EditWrapper stringId="P2P.PRICE_ADVERTISE">
 																{STRINGS.formatString(
 																	STRINGS['P2P.PRICE_ADVERTISE'],
 																	<span className="sell-text">
@@ -834,12 +809,7 @@ const P2PPostDeal = ({
 																)}
 															</EditWrapper>
 														) : (
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.PRICE_ADVERTISE'],
-																	<span>{STRINGS['SIDES.BUY']}</span>
-																)}
-															>
+															<EditWrapper stringId="P2P.PRICE_ADVERTISE">
 																{STRINGS.formatString(
 																	STRINGS['P2P.PRICE_ADVERTISE'],
 																	<span className="buy-text">
@@ -872,12 +842,7 @@ const P2PPostDeal = ({
 																<span className="mr-1">
 																	{buyingAsset?.toUpperCase()}
 																</span>
-																<EditWrapper
-																	stringId={STRINGS.formatString(
-																		STRINGS['P2P.BUY_SELL_DESC'],
-																		STRINGS['SIDES_VALUES.sell']
-																	)}
-																>
+																<EditWrapper stringId="P2P.BUY_SELL_DESC">
 																	{STRINGS.formatString(
 																		STRINGS['P2P.BUY_SELL_DESC'],
 																		STRINGS['SIDES_VALUES.sell']
@@ -896,12 +861,7 @@ const P2PPostDeal = ({
 																<span className="mr-1">
 																	{spendingAsset?.toUpperCase()}
 																</span>
-																<EditWrapper
-																	stringId={STRINGS.formatString(
-																		STRINGS['P2P.BUY_SELL_DESC'],
-																		STRINGS['SIDES_VALUES.buy']
-																	)}
-																>
+																<EditWrapper stringId="P2P.BUY_SELL_DESC">
 																	{STRINGS.formatString(
 																		STRINGS['P2P.BUY_SELL_DESC'],
 																		STRINGS['SIDES_VALUES.buy']
@@ -958,13 +918,7 @@ const P2PPostDeal = ({
 
 													{p2pSide === 'sell' ? (
 														<div className="buy-sell-description-text secondary-text">
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.MIN_MAX_ORDER_VALUE_1'],
-																	<span>{spendingAsset?.toUpperCase()}</span>,
-																	STRINGS['P2P.MIN_MAX_ORDER_VALUE_3']
-																)}
-															>
+															<EditWrapper stringId="P2P.MIN_MAX_ORDER_VALUE_1">
 																{STRINGS.formatString(
 																	STRINGS['P2P.MIN_MAX_ORDER_VALUE_1'],
 																	<span>{spendingAsset?.toUpperCase()}</span>,
@@ -974,13 +928,7 @@ const P2PPostDeal = ({
 														</div>
 													) : (
 														<div className="buy-sell-description-text secondary-text">
-															<EditWrapper
-																stringId={STRINGS.formatString(
-																	STRINGS['P2P.MIN_MAX_ORDER_VALUE_1'],
-																	<span>{buyingAsset?.toUpperCase()}</span>,
-																	STRINGS['P2P.MIN_MAX_ORDER_VALUE_2']
-																)}
-															></EditWrapper>{' '}
+															<EditWrapper stringId="P2P.MIN_MAX_ORDER_VALUE_1"></EditWrapper>{' '}
 															{STRINGS.formatString(
 																STRINGS['P2P.MIN_MAX_ORDER_VALUE_1'],
 																<span>{buyingAsset?.toUpperCase()}</span>,
@@ -1392,11 +1340,12 @@ const P2PPostDeal = ({
 				)}
 				<Dialog
 					className="stake_theme payment-method-details-popup-wrapper"
-					isOpen={addMethodDetails}
+					isOpen={!!addMethodDetails}
 					onCloseDialog={() => {
 						setAddMethodDetails(false);
 						setIsEditMode(false);
 					}}
+					label="payment-method-details"
 				>
 					<div className="whiteTextP2P add-payment-method-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">

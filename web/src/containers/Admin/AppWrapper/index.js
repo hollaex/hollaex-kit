@@ -7,8 +7,16 @@ import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
-
-import { PATHS, ADMIN_PATHS, SUPERVISOR_PATH } from '../paths';
+// eslint-disable-next-line
+import {
+	// eslint-disable-next-line
+	PATHS,
+	ADMIN_PATHS,
+	// eslint-disable-next-line
+	SUPERVISOR_PATH,
+	// eslint-disable-next-line
+	pathToPermissionMap,
+} from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
@@ -16,7 +24,11 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
+	// eslint-disable-next-line
 	checkRole,
+	getRole,
+	// eslint-disable-next-line
+	getPermissions,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
 import { logout } from 'actions/authAction';
@@ -445,13 +457,13 @@ class AppWrapper extends React.Component {
 	};
 
 	renderItems = () => {
-		switch (checkRole()) {
+		switch (getRole()) {
 			case 'supervisor':
 				return (
 					<div className="role-section bg-black">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
+								src={STATIC_ICONS.SUPERVISOR_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -465,10 +477,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section bg-grey">
 						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_KYC}
-								className="sider-icons"
-							/>
+							<ReactSVG src={STATIC_ICONS.KYC_ROLE} className="sider-icons" />
 						</div>
 						<div>
 							<div className="main-label black">Role:</div>
@@ -481,7 +490,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-orange">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
+								src={STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -496,7 +505,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section bg-yellow">
 						<div>
 							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
+								src={STATIC_ICONS.SUPPORT_ROLE}
 								className="sider-icons"
 							/>
 						</div>
@@ -511,7 +520,7 @@ class AppWrapper extends React.Component {
 					<div className="role-section">
 						<div>
 							<img
-								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+								src={STATIC_ICONS.ADMIN_ROLE}
 								className="sider-icons"
 								alt="EyeIcon"
 							/>
@@ -563,13 +572,26 @@ class AppWrapper extends React.Component {
 			isConfigure,
 		} = this.state;
 		let pathNames = [];
-		if (checkRole() === 'admin') {
-			pathNames = ADMIN_PATHS;
-		} else if (checkRole() === 'supervisor') {
-			pathNames = [...PATHS, ...SUPERVISOR_PATH];
-		} else {
-			pathNames = PATHS;
-		}
+
+		const userPermissions = this.props?.user?.permissions || [];
+
+		pathNames = ADMIN_PATHS.filter((item) => {
+			if (item.path === '/admin') return true;
+			const requiredPrefixes = pathToPermissionMap[item.path] || [
+				`${item.path}:`,
+			];
+			return requiredPrefixes.some((prefix) =>
+				userPermissions.some((p) => p.startsWith(prefix))
+			);
+		});
+
+		// if (checkRole() === 'admin') {
+		// 	pathNames = ADMIN_PATHS;
+		// } else if (checkRole() === 'supervisor') {
+		// 	pathNames = [...PATHS, ...SUPERVISOR_PATH];
+		// } else {
+		// 	pathNames = PATHS;
+		// }
 
 		if (features.apps) {
 			pathNames = [

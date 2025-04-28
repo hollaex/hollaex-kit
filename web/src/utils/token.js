@@ -30,7 +30,7 @@ export const decodeToken = (token) => jwtDecode(token);
 export const checkRole = () => {
 	const token = getToken();
 	if (!token || token === undefined) return '';
-	const roles = jwtDecode(token).scopes;
+	const roles = [jwtDecode(token)?.sub?.role?.toLowerCase()];
 	let role = '';
 	if (roles.includes('admin')) {
 		role = 'admin';
@@ -44,6 +44,17 @@ export const checkRole = () => {
 		role = 'communicator';
 	}
 	return role;
+};
+
+export const getPermissions = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.permissions;
+};
+export const getConfigs = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.configs;
 };
 
 export const isUser = () => {
@@ -70,6 +81,16 @@ export const isAdmin = () => {
 		role === 'supervisor' ||
 		role === 'communicator'
 	);
+};
+
+export const hasPermissions = () => {
+	return getPermissions()?.length > 0;
+};
+
+export const getRole = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.role?.toLowerCase();
 };
 
 export const getDashToken = () => {

@@ -34,7 +34,8 @@ import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
-import { isLoggedIn, isAdmin } from 'utils/token';
+// eslint-disable-next-line
+import { isLoggedIn, isAdmin, hasPermissions } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -841,7 +842,7 @@ class App extends Component {
 										onMenuChange={this.handleMenuChange}
 										isHome={isHome}
 									>
-										{isBrowser && isMenubar && (
+										{isBrowser && (
 											<AppMenuBar
 												menuItems={menuItems}
 												activePath={this.state.activeMenu}
@@ -1029,9 +1030,11 @@ class App extends Component {
 						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && !isChartEmbed && (
-					<OperatorControls initialData={this.props.location} />
-				)}
+				{this.props?.user?.permissions?.length > 0 &&
+					isBrowser &&
+					!isChartEmbed && (
+						<OperatorControls initialData={this.props.location} />
+					)}
 				<Dialog
 					label="successful_dialog"
 					isOpen={isCustomNotification}
@@ -1051,6 +1054,7 @@ class App extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
+	user: store.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

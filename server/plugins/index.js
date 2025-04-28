@@ -188,7 +188,10 @@ checkStatus()
 			target: defaultURL,
 			router: customRouter,
 			changeOrigin: true,
-			onProxyReq: fixRequestBody
+			onProxyReq: fixRequestBody,
+			bodyParser: {
+				limit: '20mb'
+			},
 		};
 
 
