@@ -10,7 +10,7 @@ import { requestUsers } from '../Stakes/actions';
 import { assignRole } from './action';
 import { STATIC_ICONS } from 'config/icons';
 
-const Role = ({ constants, onHandleTabChange, isColorDark, user }) => {
+const Role = ({ constants, onHandleTabChange, isColorDark, user, coins }) => {
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [rolePayload, setRolePayload] = useState({});
@@ -166,6 +166,7 @@ const Role = ({ constants, onHandleTabChange, isColorDark, user }) => {
 					isUpgrade={isUpgrade}
 					isColorDark={isColorDark}
 					user={user}
+					coins={coins}
 				/>
 			</div>
 
