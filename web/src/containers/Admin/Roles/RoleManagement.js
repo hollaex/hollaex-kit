@@ -13,6 +13,9 @@ import {
 	Typography,
 	Tabs,
 	Collapse,
+	Select,
+	Card,
+	InputNumber,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -30,7 +33,7 @@ import { STATIC_ICONS } from 'config/icons';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
-
+const { Option } = Select;
 const KIT_CONFIG_KEYS = [
 	'captcha',
 	'api_name',
@@ -164,7 +167,14 @@ const kitSecretsPermissions = KIT_SECRETS_KEYS.map((key) => ({
 	isLeaf: true,
 }));
 
-const PermissionTabs = ({ checkedKeys, setCheckedKeys, treeData }) => {
+const PermissionTabs = ({
+	checkedKeys,
+	setCheckedKeys,
+	treeData,
+	restrictions,
+	setRestrictions,
+	coins,
+}) => {
 	// const onCheck = (checkedKeys, { checkedNodes, halfCheckedKeys }, type) => {
 	//     const leafKeys = checkedNodes
 	//         .filter(node => node.isLeaf)
@@ -191,6 +201,44 @@ const PermissionTabs = ({ checkedKeys, setCheckedKeys, treeData }) => {
 		// Remove duplicates
 		setCheckedKeys(Array.from(new Set(newCheckedKeys)));
 	};
+
+	const addRestriction = (type) => {
+		setRestrictions((prev) => {
+			const safePrev = prev || {};
+			if (safePrev[type]) {
+				// Already exists, don't allow adding another
+				return safePrev;
+			}
+			return {
+				...safePrev,
+				[type]: { currencies: [], max_amount: null },
+			};
+		});
+	};
+
+	const updateRestriction = (type, field, value) => {
+		setRestrictions((prev) => {
+			const safePrev = prev || {};
+			if (!safePrev[type]) {
+				// If no restriction yet, initialize it
+				return {
+					...safePrev,
+					[type]: {
+						currencies: field === 'currencies' ? value : [],
+						max_amount: field === 'max_amount' ? value : null,
+					},
+				};
+			}
+			return {
+				...safePrev,
+				[type]: {
+					...safePrev[type],
+					[field]: value,
+				},
+			};
+		});
+	};
+	const currenciesList = Object.keys(coins);
 
 	return (
 		<Tabs defaultActiveKey="1">
@@ -257,6 +305,73 @@ const PermissionTabs = ({ checkedKeys, setCheckedKeys, treeData }) => {
 					/>
 				</div>
 			</TabPane>
+			<TabPane
+				tab={<span style={{ color: 'white' }}>Restricitons</span>}
+				key="4"
+			>
+				<div
+					style={{
+						maxHeight: '400px',
+						overflow: 'auto',
+						border: '1px solid #d9d9d9',
+						padding: '10px',
+					}}
+				>
+					<div style={{ color: 'white', marginBottom: '10px' }}>
+						<Button
+							onClick={() => addRestriction('mint')}
+							type="primary"
+							style={{ marginRight: '10px', marginBottom: 10 }}
+						>
+							Add Mint Restriction
+						</Button>
+						<Button onClick={() => addRestriction('burn')} type="primary">
+							Add Burn Restriction
+						</Button>
+					</div>
+
+					{['mint', 'burn']?.map(
+						(type) =>
+							restrictions?.[type] && (
+								<Card
+									key={type}
+									size="small"
+									title={`${
+										type.charAt(0).toUpperCase() + type.slice(1)
+									} Restriction`}
+									style={{ marginBottom: '10px' }}
+								>
+									<div style={{ marginBottom: '10px' }}>
+										<Select
+											mode="multiple"
+											placeholder="Select currencies"
+											style={{ width: '100%', color: 'black' }}
+											value={restrictions[type].currencies}
+											onChange={(value) =>
+												updateRestriction(type, 'currencies', value)
+											}
+										>
+											{currenciesList.map((currency) => (
+												<Option key={currency} value={currency}>
+													{currency}
+												</Option>
+											))}
+										</Select>
+									</div>
+									<InputNumber
+										className="admin-role-input-number"
+										placeholder="Max amount"
+										style={{ width: '100%', backgroundColor: '#27339D' }}
+										value={restrictions[type].max_amount}
+										onChange={(value) =>
+											updateRestriction(type, 'max_amount', value)
+										}
+									/>
+								</Card>
+							)
+					)}
+				</div>
+			</TabPane>
 		</Tabs>
 	);
 };
@@ -268,9 +383,11 @@ const RoleForm = ({
 	isEditing,
 	treeData,
 	setIsDisplayRoleBadges,
+	coins,
 }) => {
 	const [form] = Form.useForm();
 	const [checkedKeys, setCheckedKeys] = useState([]);
+	const [restrictions, setRestrictions] = useState([]);
 
 	function separateKeys(keys) {
 		const configAndSecretKeys = [];
@@ -293,10 +410,12 @@ const RoleForm = ({
 				role_name: initialValues.role_name,
 				description: initialValues.description,
 				color: initialValues.color || '#27339d',
+				restrictions: initialValues.restrictions,
 			});
 			setCheckedKeys(
 				[...initialValues.permissions, ...initialValues.configs] || []
 			);
+			setRestrictions(initialValues.restrictions);
 		} else {
 			form.setFieldsValue({
 				color: '#27339d',
@@ -315,6 +434,7 @@ const RoleForm = ({
 					color: values.color,
 					permissions: restKeys,
 					configs: configSecretKeys,
+					restrictions,
 				};
 				onSubmit(payload);
 			})
@@ -391,6 +511,9 @@ const RoleForm = ({
 						checkedKeys={checkedKeys}
 						setCheckedKeys={setCheckedKeys}
 						treeData={treeData}
+						restrictions={restrictions}
+						setRestrictions={setRestrictions}
+						coins={coins}
 					/>
 				</Panel>
 			</Collapse>
@@ -454,6 +577,7 @@ const RoleManagement = ({
 	isUpgrade,
 	isColorDark,
 	user,
+	coins,
 }) => {
 	const [roles, setRoles] = useState([]);
 	// eslint-disable-next-line
@@ -964,6 +1088,7 @@ const RoleManagement = ({
 						isEditing={!!currentRole}
 						treeData={treeData}
 						setIsDisplayRoleBadges={setIsDisplayRoleBadges}
+						coins={coins}
 					/>
 				) : (
 					<Warning2faPopup
