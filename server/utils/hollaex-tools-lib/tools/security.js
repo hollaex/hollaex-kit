@@ -1338,6 +1338,19 @@ const checkUserPermission = (user, requiredPermission) => {
 	if (!userRole) {
 		throw new Error('User role not found');
 	}
+
+	loggerAuth.verbose(
+		'helpers/auth/checkUserPermission ',
+		'requiredPermission',
+		requiredPermission,
+		'user permissions',
+		userRole.permissions,
+		'has permission',
+		userRole.permissions.includes(requiredPermission),
+	);
+
+
+
 	return userRole.permissions.includes(requiredPermission);
 }
 
