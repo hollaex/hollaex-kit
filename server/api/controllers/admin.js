@@ -985,7 +985,7 @@ const mintAsset = (req, res) => {
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
-				},
+				}
 			);
 		})
 		.then((data) => {
