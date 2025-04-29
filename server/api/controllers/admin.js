@@ -2,7 +2,7 @@
 
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
-const { cloneDeep, pick } = require('lodash');
+const { cloneDeep, pick, isNumber } = require('lodash');
 const { all } = require('bluebird');
 const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
@@ -958,6 +958,19 @@ const mintAsset = (req, res) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
+
+			const roles = toolsLib.getRoles();
+			const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+			const mintRestrictions = userRole?.restrictions?.mint;
+
+			if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
+				throw new Error('Your role does not allow this currency for mint');
+			}
+
+			if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
+				throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
+			}
+
 			return toolsLib.wallet.mintAssetByNetworkId(
 				user.network_id,
 				currency,
@@ -1105,6 +1118,18 @@ const burnAsset = (req, res) => {
 		'address',
 		address
 	);
+
+	const roles = toolsLib.getRoles();
+	const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+	const burnRestrictions = userRole?.restrictions?.burn;
+
+	if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
+		throw new Error('Your role does not allow this currency for burn');
+	}
+
+	if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
+		throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
+	}
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {

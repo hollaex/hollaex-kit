@@ -1334,10 +1334,11 @@ const checkPermission = (req, user) => {
 
 const checkUserPermission = (user, requiredPermission) => {
 	const roles = getRoles();
-	const userRole = roles.find(role => role.role_name ===  user?.role|| user?.sub?.role);
+	const userRole = roles.find(role => role.role_name === (user?.role || user?.sub?.role));
 	if (!userRole) {
 		throw new Error('User role not found');
 	}
+
 	return userRole.permissions.includes(requiredPermission);
 }
 
