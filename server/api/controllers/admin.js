@@ -400,7 +400,7 @@ const activateUser = (req, res) => {
 		.then((user) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
-				}`;
+			}`;
 			return res.json({ message });
 		})
 		.catch((err) => {
@@ -3308,7 +3308,7 @@ const getExchangeEndpoints = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
 	return res.json({
 		data: ROLE_PERMISSIONS
-	})
+	});
 };
 
 const getExchangeUserRoles = (req, res) => {
@@ -3354,10 +3354,11 @@ const createExchangeUserRole = (req, res) => {
 const updateExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
 
-	const { id, name, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole data', id, description, permissions, configs, otp_code, color, restrictions);
+
+	const { id, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
 
 	toolsLib.user.updateExchangeUserRole(id, {
-		name,
 		description,
 		rolePermissions: permissions,
 		configs,
