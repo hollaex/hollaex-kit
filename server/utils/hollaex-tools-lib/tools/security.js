@@ -1341,12 +1341,16 @@ const checkUserPermission = (user, requiredPermission) => {
 
 	loggerAuth.verbose(
 		'helpers/auth/checkUserPermission ',
+		'user',
+		user,
 		'requiredPermission',
 		requiredPermission,
 		'user permissions',
 		userRole.permissions,
 		'has permission',
 		userRole.permissions.includes(requiredPermission),
+		'roles',
+		roles
 	);
 
 
