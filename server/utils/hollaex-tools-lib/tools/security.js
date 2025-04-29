@@ -1334,26 +1334,10 @@ const checkPermission = (req, user) => {
 
 const checkUserPermission = (user, requiredPermission) => {
 	const roles = getRoles();
-	const userRole = roles.find(role => role.role_name ===  user?.role|| user?.sub?.role);
+	const userRole = roles.find(role => role.role_name === (user?.role || user?.sub?.role));
 	if (!userRole) {
 		throw new Error('User role not found');
 	}
-
-	loggerAuth.verbose(
-		'helpers/auth/checkUserPermission ',
-		'user',
-		user,
-		'requiredPermission',
-		requiredPermission,
-		'user permissions',
-		userRole.permissions,
-		'has permission',
-		userRole.permissions.includes(requiredPermission),
-		'roles',
-		roles
-	);
-
-
 
 	return userRole.permissions.includes(requiredPermission);
 }
