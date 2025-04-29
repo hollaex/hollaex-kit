@@ -387,7 +387,7 @@ const RoleForm = ({
 }) => {
 	const [form] = Form.useForm();
 	const [checkedKeys, setCheckedKeys] = useState([]);
-	const [restrictions, setRestrictions] = useState([]);
+	const [restrictions, setRestrictions] = useState({});
 
 	function separateKeys(keys) {
 		const configAndSecretKeys = [];
