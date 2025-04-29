@@ -3354,6 +3354,8 @@ const createExchangeUserRole = (req, res) => {
 const updateExchangeUserRole = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole/auth', req.auth.sub);
 
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole data', id, description, permissions, configs, otp_code, color, restrictions);
+
 	const { id, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
 
 	toolsLib.user.updateExchangeUserRole(id, {

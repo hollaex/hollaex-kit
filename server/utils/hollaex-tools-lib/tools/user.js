@@ -4276,7 +4276,7 @@ const updateExchangeUserRole = async (roleId, { description, rolePermissions, co
 			throw new Error('Permissions must be an array');
 		}
 		if (!isArray(configs)) {
-			throw new Error('Permissions must be an array');
+			throw new Error('Configs must be an array');
 		}
 
 		const validationGroups = {
