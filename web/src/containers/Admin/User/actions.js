@@ -139,9 +139,9 @@ export const requestUser = (values, kyc_name) => {
 };
 
 export const requestUsersDownload = (values) => {
-	let path = '/admin/users';
+	let path = '/admin/users/csv';
 	if (values) {
-		path = `/admin/users?${toQueryString(values)}`;
+		path = `/admin/users/csv?${toQueryString(values)}`;
 	}
 	return axios({
 		method: 'GET',
@@ -330,9 +330,9 @@ export const requestAddUser = (values) => {
 };
 
 export const requestUserBalancesDownload = (values) => {
-	let path = '/admin/balances';
+	let path = '/admin/balances/csv';
 	if (values) {
-		path = `/admin/balances?${toQueryString(values)}`;
+		path = `/admin/balances/csv?${toQueryString(values)}`;
 	}
 	return axios({
 		method: 'GET',

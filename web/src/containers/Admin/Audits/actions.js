@@ -15,13 +15,16 @@ export const requestUserAuditsDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({
 		method: 'GET',
-		url: `/admin/audits?${query}`,
+		url: `/admin/audits/csv?${query}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
 			link.href = url;
-			link.setAttribute('download', `operator_logs_${moment().format('YYYY-MM-DD')}.csv`);
+			link.setAttribute(
+				'download',
+				`operator_logs_${moment().format('YYYY-MM-DD')}.csv`
+			);
 			document.body.appendChild(link);
 			link.click();
 		})

@@ -11,11 +11,7 @@ const { errorMessageConverter } = require('../../utils/conversion');
 const getExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
-
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
@@ -33,18 +29,10 @@ const getExchangeStakes = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakes', err.message);
@@ -231,11 +219,8 @@ const deleteExchangeStakes = (req, res) => {
 const getExchangeStakersForAdmin = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
 
-	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
@@ -255,18 +240,10 @@ const getExchangeStakersForAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
@@ -426,6 +403,84 @@ const fetchStakeAnalytics = (req, res) => {
 		});
 }
 
+
+const downloadStakesCsv = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/stake/downloadStakesCsv/auth', req.auth);
+
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/stake/downloadStakesCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakePools({
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv'
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/downloadStakesCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const downloadStakersCsv = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/stake/downloadStakersCsv/auth', req.auth);
+
+	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/stake/downloadStakersCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakers({
+		user_id: user_id.value,
+		stake_id: stake_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv'
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/downloadStakersCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+
+
 module.exports = {
 	getExchangeStakes,
 	createExchangeStakes,
@@ -437,5 +492,7 @@ module.exports = {
 	deleteExchangeStaker,
 	unstakeEstimateSlash,
 	unstakeEstimateSlashAdmin,
-	fetchStakeAnalytics
+	fetchStakeAnalytics,
+	downloadStakesCsv,
+	downloadStakersCsv
 };
