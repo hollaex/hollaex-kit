@@ -19,7 +19,7 @@ export const requestUserLoginsDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({
 		method: 'GET',
-		url: `/admin/logins?${query}`,
+		url: `/admin/logins/csv?${query}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));

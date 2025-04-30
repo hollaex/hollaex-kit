@@ -400,12 +400,9 @@ const getAdminOrders = (req, res) => {
 		order,
 		start_date,
 		end_date,
-		format
 	} = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
+
 	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
@@ -422,7 +419,6 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -441,7 +437,6 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -496,6 +491,77 @@ const adminCancelOrder = (req, res) => {
 		});
 };
 
+const downloadOrdersCsv = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/downloadOrdersCsv/auth', req.auth);
+	const {
+		user_id,
+		symbol,
+		side,
+		status,
+		open,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+	} = req.swagger.params;
+
+	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+	let promiseQuery;
+
+	if (user_id.value) {
+		promiseQuery = toolsLib.order.getAllUserOrdersByKitId(
+			user_id.value,
+			symbol.value,
+			side.value,
+			status.value,
+			open.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value,
+			'csv',
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
+		);
+	} else {
+		promiseQuery = toolsLib.order.getAllExchangeOrders(
+			symbol.value,
+			side.value,
+			status.value,
+			open.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value,
+			'csv',
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
+		);
+	}
+
+	promiseQuery
+		.then((orders) => {
+			return res.json(orders);
+		})
+		.catch((err) => {
+			loggerOrders.debug(req.uuid, 'controllers/order/downloadOrdersCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 
 module.exports = {
 	createOrder,
@@ -509,5 +575,6 @@ module.exports = {
 	getQuickTrade,
 	dustBalance,
 	orderExecute,
-	dustEstimatePrice
+	dustEstimatePrice,
+	downloadOrdersCsv
 };
