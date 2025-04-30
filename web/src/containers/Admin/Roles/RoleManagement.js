@@ -410,7 +410,9 @@ const RoleForm = ({
 				role_name: initialValues.role_name,
 				description: initialValues.description,
 				color: initialValues.color || '#27339d',
-				restrictions: initialValues.restrictions,
+				restrictions: Array.isArray(initialValues.restrictions)
+					? {}
+					: initialValues.restrictions,
 			});
 			setCheckedKeys(
 				[...initialValues.permissions, ...initialValues.configs] || []
@@ -434,7 +436,7 @@ const RoleForm = ({
 					color: values.color,
 					permissions: restKeys,
 					configs: configSecretKeys,
-					restrictions,
+					restrictions: Array.isArray(restrictions) ? {} : restrictions,
 				};
 				onSubmit(payload);
 			})
