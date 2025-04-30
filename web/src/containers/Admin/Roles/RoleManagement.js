@@ -167,6 +167,69 @@ const kitSecretsPermissions = KIT_SECRETS_KEYS.map((key) => ({
 	isLeaf: true,
 }));
 
+const totalCharacters = (name) => {
+	let sum = 0;
+	if (!name) return sum;
+
+	for (let char of name.toLowerCase()) {
+		if (/[a-z]/.test(char)) {
+			sum += char.charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+		} else {
+			sum += char.charCodeAt(0);
+		}
+	}
+	return sum;
+};
+
+export const onHandleBadge = (role) => {
+	const roleCharacter = totalCharacters(role);
+	const badgeList = Object.keys(STATIC_ICONS.ADMIN_ROLE_IMAGES);
+	const modulo = roleCharacter % badgeList?.length;
+	const badge = badgeList[modulo];
+	return STATIC_ICONS.ADMIN_ROLE_IMAGES[`${badge}`];
+};
+
+export const roleStyles = {
+	admin: {
+		cardWrapper: 'operator-card-wrapper admin-operator-card-wrapper',
+		rolesImage: STATIC_ICONS.ADMIN_ROLE,
+	},
+	manager: {
+		cardWrapper: 'operator-card-wrapper manager-operator-card-wrapper',
+		rolesImage: STATIC_ICONS.MANAGER_ROLE,
+	},
+	supervisor: {
+		cardWrapper: 'supervisor-operator-card-wrapper operator-card-wrapper',
+		rolesImage: STATIC_ICONS.SUPERVISOR_ROLE,
+	},
+	kyc: {
+		cardWrapper: 'operator-card-wrapper kyc-operator-card-wrapper',
+		rolesImage: STATIC_ICONS.KYC_ROLE,
+	},
+	communicator: {
+		cardWrapper: 'communication-operator-card-wrapper operator-card-wrapper',
+		rolesImage: STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE,
+	},
+	support: {
+		cardWrapper: 'support-operator-card-wrapper operator-card-wrapper',
+		rolesImage: STATIC_ICONS.SUPPORT_ROLE,
+	},
+	auditor: {
+		cardWrapper: 'auditor-operator-card-wrapper operator-card-wrapper',
+		rolesImage: STATIC_ICONS.AUDITOR_ROLE,
+	},
+	announcer: {
+		cardWrapper: 'announcer-operator-card-wrapper operator-card-wrapper',
+		rolesImage: STATIC_ICONS.ANNOUNCER_ROLE,
+	},
+	'Customize a Role': {
+		cardWrapper: 'customize-role-operator-card-wrapper operator-card-wrapper',
+	},
+	default: {
+		cardWrapper: 'operator-card-wrapper',
+	},
+};
+
 const PermissionTabs = ({
 	checkedKeys,
 	setCheckedKeys,
@@ -340,6 +403,7 @@ const PermissionTabs = ({
 										type.charAt(0).toUpperCase() + type.slice(1)
 									} Restriction`}
 									style={{ marginBottom: '10px' }}
+									className="resctiction-details-card"
 								>
 									<div style={{ marginBottom: '10px' }}>
 										<Select
@@ -382,12 +446,12 @@ const RoleForm = ({
 	onCancel,
 	isEditing,
 	treeData,
-	setIsDisplayRoleBadges,
 	coins,
 }) => {
 	const [form] = Form.useForm();
 	const [checkedKeys, setCheckedKeys] = useState([]);
 	const [restrictions, setRestrictions] = useState({});
+	const [selectedBadge, setSelectedBadge] = useState('');
 
 	function separateKeys(keys) {
 		const configAndSecretKeys = [];
@@ -415,7 +479,7 @@ const RoleForm = ({
 			setCheckedKeys(
 				[...initialValues.permissions, ...initialValues.configs] || []
 			);
-			setRestrictions(initialValues.restrictions);
+			setRestrictions(initialValues.restrictions || {});
 		} else {
 			form.setFieldsValue({
 				color: '#27339d',
@@ -443,6 +507,30 @@ const RoleForm = ({
 			});
 	};
 
+	const onHandleBadge = () => {
+		const roleName = form.getFieldValue('role_name')?.toLowerCase();
+		const role = roleStyles[roleName];
+
+		if (role?.rolesImage) {
+			setSelectedBadge(role.rolesImage);
+		} else {
+			const roleCharacterCount = totalCharacters(roleName);
+			const badgeList = Object.keys(STATIC_ICONS.ADMIN_ROLE_IMAGES);
+			const badge = badgeList[roleCharacterCount % badgeList.length];
+			setSelectedBadge(STATIC_ICONS.ADMIN_ROLE_IMAGES[badge]);
+		}
+	};
+
+	useEffect(() => {
+		onHandleBadge();
+		//eslint-disable-next-line
+	}, []);
+
+	const onHandleChange = (e) => {
+		form.setFieldsValue({ role_name: e.target.value.toLowerCase() });
+		onHandleBadge();
+	};
+
 	return (
 		<Form form={form} layout="vertical" className="roles-detail-form-wrapper">
 			<Form.Item
@@ -454,10 +542,9 @@ const RoleForm = ({
 				]}
 			>
 				<Input
-					onChange={(e) => {
-						form.setFieldsValue({ role_name: e.target.value.toLowerCase() });
-					}}
+					onChange={(e) => onHandleChange(e)}
 					placeholder="Enter role name"
+					disabled={!!initialValues}
 				/>
 			</Form.Item>
 
@@ -489,16 +576,7 @@ const RoleForm = ({
 				label={<span className="font-weight-bold">Role Badge</span>}
 			>
 				<div className="role-badge-wrapper">
-					<ReactSVG
-						src={STATIC_ICONS.ADMIN_ROLE_IMAGES.TRAPIZE_IMAGE}
-						className="role-badge"
-					/>
-					<span
-						className="pointer text-decoration-underline"
-						onClick={() => setIsDisplayRoleBadges(true)}
-					>
-						Select Badge
-					</span>
+					<ReactSVG src={selectedBadge} className="role-badge" />
 				</div>
 			</Form.Item>
 			<Divider orientation="left">
@@ -557,7 +635,7 @@ const Warning2faPopup = ({ currentRole, setIsModalVisible }) => {
 			</span>
 			<div className="d-flex justify-content-center mt-3">
 				<Button
-					className="w-50 green-btn"
+					className="w-50 green-btn no-border"
 					type="primary"
 					onClick={() => setIsModalVisible(false)}
 				>
@@ -588,8 +666,6 @@ const RoleManagement = ({
 	const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 	const [selectedRole, setSelectedRole] = useState({});
 	const [isPermissionDisplay, setIsPermissionDisplay] = useState({});
-	const [isDisplayRoleBadges, setIsDisplayRoleBadges] = useState(false);
-	const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect(() => {
 		fetchEndpoints()
@@ -638,78 +714,83 @@ const RoleManagement = ({
 
 	const handleDelete = async () => {
 		const roleId = selectedRole?.id;
-		try {
-			setLoading(true);
-			setPayload({ action: 'delete', id: roleId });
-			await deleteRoles({ id: roleId, otp_code: '' });
+		// try {
+		setPayload({ action: 'delete', id: roleId });
+		// 	await deleteRoles({ id: roleId, otp_code: '' });
 
-			fetchRoles()
-				.then((response) => {
-					const transformedRoles = response.data.map((role) =>
-						transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
-					);
+		// 	fetchRoles()
+		// 		.then((response) => {
+		// 			const transformedRoles = response.data.map((role) =>
+		// 				transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
+		// 			);
 
-					setRoles(transformedRoles);
-				})
-				.catch((err) => {
-					message.error('Error fetching roles:', err);
-				});
-			message.success('Role deleted successfully');
-		} catch (err) {
-			const _error =
-				err.data && err.data.message ? err.data.message : err.message;
-			if (_error.toLowerCase().indexOf('otp') > -1) {
-				setOtpDialogIsOpen(true);
-			} else {
-				message.error(_error || 'Failed to delete role');
-			}
-		} finally {
-			setLoading(false);
-		}
+		// 			setRoles(transformedRoles);
+		// 		})
+		// 		.catch((err) => {
+		// 			message.error('Error fetching roles:', err);
+		// 		});
+		// 	message.success('Role deleted successfully');
+		// } catch (err) {
+		// 	const _error =
+		// 		err.data && err.data.message ? err.data.message : err.message;
+		// 	if (_error.toLowerCase().indexOf('otp') > -1) {
+		// 	} else {
+		// 		message.error(_error || 'Failed to delete role');
+		// 	}
+		// } finally {
+		// 	setLoading(false);
+		// }
+		setOtpDialogIsOpen(true);
 		setIsConfirmDelete(false);
-		setSelectedRole({});
+		// setSelectedRole({});
 	};
 
 	const handleSubmit = async (values) => {
 		try {
 			setLoading(true);
+			if (!values?.otp) {
+				setOtpDialogIsOpen(true);
+			}
 			if (currentRole) {
 				setPayload({
 					...values,
 					id: currentRole.id,
 					user_id: userId,
 				});
-				await updateRoles({
-					...values,
-					id: currentRole.id,
-					user_id: userId,
-					otp_code: '',
-				});
-				message.success('Role updated successfully');
+				if (values?.otp) {
+					await updateRoles({
+						...values,
+						id: currentRole.id,
+						user_id: userId,
+					});
+					message.success('Role updated successfully');
+				}
 			} else {
 				setPayload({
 					...values,
 					user_id: userId,
 				});
-				await createRoles({
-					...values,
-					user_id: userId,
-					otp_code: '',
-				});
-				message.success('Role created successfully');
+				if (values?.otp) {
+					await createRoles({
+						...values,
+						user_id: userId,
+					});
+					message.success('Role created successfully');
+				}
 			}
+			if (values?.otp) {
+				fetchRoles()
+					.then((response) => {
+						const transformedRoles = response.data.map((role) =>
+							transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
+						);
 
-			fetchRoles()
-				.then((response) => {
-					const transformedRoles = response.data.map((role) =>
-						transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
-					);
-
-					setRoles(transformedRoles);
-				})
-				.catch((err) => {
-					message.error('Error fetching roles:', err);
-				});
+						setRoles(transformedRoles);
+					})
+					.catch((err) => {
+						message.error('Error fetching roles:', err);
+					});
+			}
 			setIsModalVisible(false);
 		} catch (err) {
 			const _error =
@@ -776,41 +857,29 @@ const RoleManagement = ({
 		}
 	};
 
-	const roleStyles = {
-		admin: {
-			cardWrapper: 'operator-card-wrapper admin-operator-card-wrapper',
-			rolesImage: STATIC_ICONS.ADMIN_ROLE,
-		},
-		supervisor: {
-			cardWrapper: 'supervisor-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPERVISOR_ROLE,
-		},
-		kyc: {
-			cardWrapper: 'operator-card-wrapper kyc-operator-card-wrapper',
-			rolesImage: STATIC_ICONS.KYC_ROLE,
-		},
-		support: {
-			cardWrapper: 'support-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPPORT_ROLE,
-		},
-		communicator: {
-			cardWrapper: 'communication-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE,
-		},
-		'Customize a Role': {
-			cardWrapper: 'customize-role-operator-card-wrapper operator-card-wrapper',
-		},
-		default: {
-			cardWrapper: 'operator-card-wrapper',
-			rolesImage: STATIC_ICONS.OPERATOR_ROLES,
-		},
-	};
 	const customRole = {
 		role_name: 'Customize a Role',
 		description: 'New Team Role',
 	};
 
-	const customizedrole = [...roles, customRole];
+	const customizedrole = [
+		...roles.sort((a, b) => {
+			const roleOrder = Object.keys(roleStyles);
+			const indexA = roleOrder.indexOf(a.role_name);
+			const indexB = roleOrder.indexOf(b.role_name);
+
+			if (indexA === -1 && indexB === -1) {
+				return a.role_name.localeCompare(b.role_name);
+			} else if (indexA === -1) {
+				return 1;
+			} else if (indexB === -1) {
+				return -1;
+			} else {
+				return indexA - indexB;
+			}
+		}),
+		customRole,
+	];
 
 	const onHandleDisplayPermission = (role) => {
 		setIsPermissionDisplay((prev) => ({
@@ -818,10 +887,6 @@ const RoleManagement = ({
 			[role?.id]: !prev[role?.id],
 		}));
 	};
-
-	const filteredRolesBadge = Object.keys(
-		STATIC_ICONS.ADMIN_ROLE_IMAGES
-	).filter((key) => key.toLowerCase().includes(searchTerm));
 
 	return (
 		<div className="roles-management-wrapper w-100">
@@ -931,137 +996,134 @@ const RoleManagement = ({
 				</div>
 			)}
 			<div className="operator-cards-container">
-				{customizedrole
-					.sort((a, b) => a.id - b.id)
-					.map((role) => {
-						const cardWrapper =
-							roleStyles[role?.role_name]?.cardWrapper ||
-							roleStyles?.default?.cardWrapper;
-						const rolesImage =
-							roleStyles[role?.role_name]?.rolesImage ||
-							roleStyles?.default?.rolesImage;
-						return (
-							<Col key={role.id}>
-								<div
-									className={
-										isColorDark(role?.color)
-											? `${cardWrapper}`
-											: !rolesImage
-											? `${cardWrapper} justify-content-start`
-											: `${cardWrapper} operator-control-card-dark`
-									}
-									style={{ backgroundColor: role?.color && role?.color }}
-								>
-									<div className="card-content">
-										<div>
-											<p className="card-title">
-												{role?.role_name?.toUpperCase()}
-											</p>
-											<p className="card-description">{role?.description}</p>
-											{role?.role_name !== 'Customize a Role' && (
+				{customizedrole.map((role) => {
+					const cardWrapper =
+						roleStyles[role?.role_name]?.cardWrapper ||
+						roleStyles?.default?.cardWrapper;
+					const rolesImage = roleStyles[role?.role_name]?.rolesImage;
+					return (
+						<Col key={role?.id}>
+							<div
+								className={
+									!role?.color
+										? `${cardWrapper}`
+										: isColorDark(role?.color)
+										? `operator-control-card-light ${cardWrapper}`
+										: !rolesImage
+										? `operator-control-card-dark ${cardWrapper} justify-content-start`
+										: `operator-control-card-dark ${cardWrapper} `
+								}
+								style={{ backgroundColor: role?.color && role?.color }}
+							>
+								<div className="card-content">
+									<div className="card-content-description">
+										<p className="card-title">
+											{role?.role_name?.toUpperCase()}
+										</p>
+										<p
+											className={
+												isPermissionDisplay[role?.id]
+													? 'caps'
+													: 'card-description caps'
+											}
+										>
+											{role?.description}
+										</p>
+										{role?.role_name !== 'Customize a Role' &&
+											role?.permissions?.length > 0 &&
+											!isPermissionDisplay[role?.id] && (
 												<p
 													className="text-decoration-underline pointer permissions"
 													onClick={() => onHandleDisplayPermission(role)}
 												>
-													{role?.permissions?.length > 0 &&
-														(isPermissionDisplay[role?.id]
-															? 'Hide'
-															: 'Show More')}
+													VIEW MORE
 												</p>
 											)}
-										</div>
-										{rolesImage && role?.role_name !== 'Customize a Role' && (
-											<ReactSVG
-												src={rolesImage}
-												className="role-icon-wrapper"
-											/>
-										)}
 									</div>
-									{isPermissionDisplay[role?.id] && (
-										<div className="preview-permission-content">
-											<p className="font-weight-bold my-2">
-												PERMISSIONS PREVIEW
-											</p>
-											<ul>
-												{[
-													...(role?.permissions || []),
-													...(role?.configs || []),
-												]
-													.slice(0, 4)
-													.map((perm, i) => (
-														<li key={i}>
-															<strong>{formatPermissionType(perm)}:</strong>{' '}
-															{formatPermissionName(perm)}
-														</li>
-													))}
-												{(role?.permissions?.length || 0) +
-													(role?.configs?.length || 0) >
-													4 && (
-													<li
-														className="text-decoration-underline pointer"
-														onClick={() => {
-															handleEdit(role);
-															onHandleDisplayPermission(role);
-														}}
-													>
-														{`...view all ${
-															role?.permissions?.length +
-															(role?.configs?.length || 0) -
-															4
-														} permissions`}
-													</li>
-												)}
-											</ul>
-										</div>
+									{role?.role_name !== 'Customize a Role' && (
+										<ReactSVG
+											src={
+												rolesImage
+													? rolesImage
+													: onHandleBadge(role?.role_name?.toLowerCase())
+											}
+											className="role-icon-wrapper"
+										/>
 									)}
-									<div
-										className={
-											['admin', 'Customize a Role'].includes(role?.role_name)
-												? 'button-container justify-content-start'
-												: 'button-container'
-										}
-									>
-										{role?.role_name === 'Customize a Role' ? (
-											<span
-												className="permission-btn pointer"
-												onClick={handleCreate}
-											>
-												Create a Role
-											</span>
-										) : (
-											<span
-												className={`permission-btn pointer ${
-													['kyc', 'support'].includes(role?.role_name)
-														? 'highlight-btn'
-														: ''
-												}`}
-												onClick={() => handleEdit(role)}
-											>
-												Edit Permission (
-												{role?.permissions?.length +
-													(role?.configs?.length || 0)}
-												)
-											</span>
-										)}
-										{!['admin', 'Customize a Role'].includes(
-											role?.role_name
-										) && (
-											<span
-												className={`permission-btn delete-btn pointer ${
-													['kyc', 'support'].includes(role?.role_name)
-														? 'highlight-btn'
-														: ''
-												}`}
-												onClick={() => onHandleConfirmDelete(role)}
-											>
-												Delete
-											</span>
-										)}
-									</div>
 								</div>
-							</Col>
-						);
-					})}
+								{isPermissionDisplay[role?.id] && (
+									<div className="preview-permission-content">
+										<p className="font-weight-bold my-2">PERMISSIONS PREVIEW</p>
+										<ul className="permissions-list">
+											{[...(role?.permissions || []), ...(role?.configs || [])]
+												.slice(0, 4)
+												.map((perm, i) => (
+													<li key={i}>
+														<strong>{formatPermissionType(perm)}:</strong>{' '}
+														{formatPermissionName(perm)}
+													</li>
+												))}
+											{(role?.permissions?.length || 0) +
+												(role?.configs?.length || 0) >
+												4 && (
+												<li
+													className="text-decoration-underline pointer"
+													onClick={() => {
+														handleEdit(role);
+														onHandleDisplayPermission(role);
+													}}
+												>
+													{`...view all ${
+														role?.permissions?.length +
+														(role?.configs?.length || 0) -
+														4
+													} permissions`}
+												</li>
+											)}
+											{role?.role_name !== 'Customize a Role' &&
+												role?.permissions?.length > 0 &&
+												isPermissionDisplay[role?.id] && (
+													<p
+														className="text-decoration-underline pointer permissions mt-2"
+														onClick={() => onHandleDisplayPermission(role)}
+													>
+														HIDE
+													</p>
+												)}
+										</ul>
+									</div>
+								)}
+								<div className="button-container">
+									{role?.role_name === 'Customize a Role' ? (
+										<span
+											className="permission-btn pointer caps"
+											onClick={handleCreate}
+										>
+											Create a Role
+										</span>
+									) : (
+										<span
+											className="permission-btn pointer caps"
+											onClick={() => handleEdit(role)}
+										>
+											Edit Permission (
+											{role?.permissions?.length + (role?.configs?.length || 0)}
+											)
+										</span>
+									)}
+									{!['admin', 'Customize a Role'].includes(role?.role_name) && (
+										<span
+											className="permission-btn delete-btn pointer caps"
+											onClick={() => onHandleConfirmDelete(role)}
+										>
+											Delete
+										</span>
+									)}
+								</div>
+							</div>
+						</Col>
+					);
+				})}
 			</div>
 			<Modal
 				title={
@@ -1087,7 +1149,6 @@ const RoleManagement = ({
 						onCancel={() => setIsModalVisible(false)}
 						isEditing={!!currentRole}
 						treeData={treeData}
-						setIsDisplayRoleBadges={setIsDisplayRoleBadges}
 						coins={coins}
 					/>
 				) : (
@@ -1096,59 +1157,6 @@ const RoleManagement = ({
 						setIsModalVisible={setIsModalVisible}
 					/>
 				)}
-			</Modal>
-			<Modal
-				visible={isDisplayRoleBadges}
-				footer={null}
-				width={650}
-				wrapClassName="roles-images-popup-wrapper"
-				onCancel={() => setIsDisplayRoleBadges(false)}
-			>
-				<div className="roles-image-popup-details">
-					<div className="roles-image-title-wrapper">
-						<span className="role-title">Select Badge Graphics</span>
-						<div className="roles-image-description">
-							<span>
-								Assign a badge to give your role a simpler, symbolic identity
-							</span>
-							<Input
-								placeholder="Search badges..."
-								value={searchTerm}
-								onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-							/>
-						</div>
-					</div>
-					<div className="d-flex flex-wrap badge-lists">
-						{filteredRolesBadge?.length > 0 ? (
-							filteredRolesBadge.map((data) => {
-								return (
-									<ReactSVG
-										src={STATIC_ICONS.ADMIN_ROLE_IMAGES[data]}
-										className="px-2 py-2 roles-image pointer"
-									/>
-								);
-							})
-						) : (
-							<p>Image not found</p>
-						)}
-					</div>
-					<div className="button-container">
-						<Button
-							className="w-50 confirm-btn green-btn no-border"
-							type="primary"
-							onClick={() => setIsDisplayRoleBadges(false)}
-						>
-							Back
-						</Button>
-						<Button
-							className="w-50 confirm-btn green-btn no-border"
-							type="primary"
-							onClick={() => setIsDisplayRoleBadges(false)}
-						>
-							Confirm
-						</Button>
-					</div>
-				</div>
 			</Modal>
 		</div>
 	);

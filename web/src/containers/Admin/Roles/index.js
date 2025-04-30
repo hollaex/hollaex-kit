@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Select, Modal, message } from 'antd';
 import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
+import { Button, Table, Select, Modal, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { checkRole } from '../../../utils/token';
 import {
 	OperatorRole,
-	RoleAccess,
 	EditModal,
 	RevokeRole,
 	renderRoleImage,
@@ -22,10 +22,10 @@ import { Tabs } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
 import { OtpForm } from 'components';
-import { STATIC_ICONS } from 'config/icons';
+import { onHandleBadge, roleStyles } from './RoleManagement';
 const TabPane = Tabs.TabPane;
 
-const getColumns = (handleEdit = () => {}) => [
+const getColumns = (handleEdit = () => {}, isColorDark = () => {}) => [
 	{
 		title: 'Operator email',
 		dataIndex: 'email',
@@ -33,8 +33,21 @@ const getColumns = (handleEdit = () => {}) => [
 	{
 		title: 'Color & Symbol',
 		render: (data) => {
+			const roleStyle = roleStyles[data?.role?.toLowerCase()] || {};
+			const isDark = isColorDark(data?.color);
+			const roleClassWrapper = isDark
+				? `${roleStyle?.cardWrapper} operator-role-image operator-control-card-light`
+				: `${roleStyle?.cardWrapper} operator-role-image operator-control-card-dark`;
 			return (
-				<div className="operator-role-image">{renderRoleImage(data?.role)}</div>
+				<div
+					className={roleClassWrapper}
+					style={{ backgroundColor: data?.color }}
+				>
+					<ReactSVG
+						src={roleStyle?.rolesImage || onHandleBadge(data?.role)}
+						className="role-badge"
+					/>
+				</div>
 			);
 		},
 	},
@@ -63,61 +76,82 @@ const getColumns = (handleEdit = () => {}) => [
 	},
 ];
 
-const renderItems = () => {
-	switch (checkRole()) {
-		case 'supervisor':
-			return (
-				<div>
-					<div className="sub-title">Your current role:</div>
-					<div className="description">
-						<span className="sub-title">Supervisor</span> can access all
-						deposit, withdrawals and approval settings
-					</div>
-				</div>
-			);
-		case 'kyc':
-			return (
-				<div>
-					<div className="sub-title">Your current role:</div>
-					<div className="description">
-						<span className="sub-title">KYC</span> role can access some user
-						data to review KYC requirements
-					</div>
-				</div>
-			);
-		case 'tech':
-			return (
-				<div>
-					<div className="sub-title">Your current role:</div>
-					<div className="description">
-						<span className="sub-title">Communicator</span> can access to
-						website direct editing for content management and communications
-					</div>
-				</div>
-			);
-		case 'support':
-			return (
-				<div>
-					<div className="sub-title">Your current role:</div>
-					<div className="description">
-						<span className="sub-title">Support</span> can access some user
-						information for user verification
-					</div>
-				</div>
-			);
-		case 'admin':
-			return (
-				<div>
-					<div className="sub-title">Your current role:</div>
-					<div className="description">
-						<span className="sub-title">Administrator</span> can access all
-						controls on the operator control panel
-					</div>
-				</div>
-			);
-		default:
-			return <div></div>;
-	}
+const renderItems = (filteredRoles) => {
+	const currentRole =
+		filteredRoles?.find(
+			(data) => data?.label?.toLowerCase() === checkRole()?.toLowerCase()
+		) || {};
+
+	// switch (checkRole()) {
+	// 	case 'supervisor':
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title">Supervisor</span> can access all
+	// 					deposit, withdrawals and approval settings
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	case 'kyc':
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title">KYC</span> role can access some user
+	// 					data to review KYC requirements
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	case 'tech':
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title">Communicator</span> can access to
+	// 					website direct editing for content management and communications
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	case 'support':
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title">Support</span> can access some user
+	// 					information for user verification
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	case 'admin':
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title">Administrator</span> can access all
+	// 					controls on the operator control panel
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	default:
+	// 		return (
+	// 			<div>
+	// 				<div className="sub-title">Your current role:</div>
+	// 				<div className="description">
+	// 					<span className="sub-title text-capitalize">{checkRole()}</span>
+	// 				</div>
+	// 			</div>)
+	// }
+
+	return (
+		<div>
+			<div className="sub-title">Your current role:</div>
+			<div className="description">
+				<span className="sub-title text-capitalize">{currentRole?.label}</span>{' '}
+				{currentRole?.description}
+			</div>
+		</div>
+	);
 };
 
 const Roles = ({ constants, user, coins }) => {
@@ -140,50 +174,50 @@ const Roles = ({ constants, user, coins }) => {
 	const [activeTab, setActiveTab] = useState('0');
 
 	const isUpgrade = handleUpgrade(constants.info);
-	const requestInitRole = (pageNo = 1) => {
+	const requestInitRole = async (pageNo = 1) => {
 		setIsLoading(true);
-		requestRole({ pageNo, limit })
-			.then((res) => {
-				let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
-				setOperatorList(temp);
-				setPage(pageNo);
-				let currentPage = pageNo === 1 ? 1 : currentTablePage;
-				setCurrentTablePage(currentPage);
-				setIsRemaining(res.count > pageNo * limit);
-				setIsLoading(false);
-			})
-			.catch((err) => {
-				let error = err && err.data ? err.data.message : err.message;
-				message.error(error);
-				setIsLoading(false);
-			});
+		try {
+			const res = await requestRole({ pageNo, limit });
+			let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
+			setOperatorList(temp);
+			setPage(pageNo);
+			let currentPage = pageNo === 1 ? 1 : currentTablePage;
+			setCurrentTablePage(currentPage);
+			setIsRemaining(res.count > pageNo * limit);
+		} catch (err) {
+			let error = err && err.data ? err.data.message : err.message;
+			message.error(error);
+		}
+		setIsLoading(false);
 	};
 	useEffect(() => {
-		requestInitRole();
-		fetchRoles()
-			.then((response) => {
-				const roleNames = response.data.map((role) => ({
-					label: role.role_name,
-					value: role.role_name,
-					description: role?.description,
-					permission: [...role?.permissions, ...role?.configs],
-					color: role?.color,
-				}));
-				setRoles(roleNames);
-				setRolePayload({
-					role_id: roleNames[0]?.label,
-					description: roleNames[0]?.description,
-					permission: roleNames[0]?.permission,
-					color: roleNames[0]?.color,
+		if (activeTab === '0') {
+			handleSearch('');
+			requestInitRole();
+			fetchRoles()
+				.then((response) => {
+					const roleNames = response.data.map((role) => ({
+						label: role.role_name,
+						value: role.role_name,
+						description: role?.description,
+						permission: [...role?.permissions, ...role?.configs],
+						color: role?.color,
+					}));
+					setRoles(roleNames);
+					setRolePayload({
+						role_id: roleNames[0]?.label,
+						description: roleNames[0]?.description,
+						permission: roleNames[0]?.permission,
+						color: roleNames[0]?.color,
+					});
+				})
+				.catch((err) => {
+					message.error('Error fetching roles:', err);
 				});
-			})
-			.catch((err) => {
-				message.error('Error fetching roles:', err);
-			});
-
+		}
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [displayAssignRole]);
+	}, [activeTab]);
 
 	const handleInvite = (values) => {
 		setButtonSubmitting(true);
@@ -241,8 +275,6 @@ const Roles = ({ constants, user, coins }) => {
 						roles={roles}
 					/>
 				);
-			case 'role-access':
-				return <RoleAccess handleClose={handleClose} isUpgrade={isUpgrade} />;
 			case 'edit':
 				return (
 					<EditModal
@@ -250,6 +282,8 @@ const Roles = ({ constants, user, coins }) => {
 						onTypeChange={onTypeChange}
 						handleUpdateRole={handleUpdateRole}
 						roles={roles}
+						user={user}
+						handleClose={handleClose}
 					/>
 				);
 			case 'revoke-role':
@@ -269,11 +303,6 @@ const Roles = ({ constants, user, coins }) => {
 	const handleAdd = () => {
 		setOpen(true);
 		setType('operator-role');
-	};
-
-	const handleRoleAccess = () => {
-		setOpen(true);
-		setType('role-access');
 	};
 
 	const handleEdit = (data) => {
@@ -338,7 +367,7 @@ const Roles = ({ constants, user, coins }) => {
 		}
 	};
 
-	const searchUser = (searchText, type) => {
+	const searchUser = (searchText = '', type) => {
 		getAllUserData({ search: searchText }, type);
 	};
 
@@ -386,36 +415,6 @@ const Roles = ({ constants, user, coins }) => {
 		color: roleDetails[data?.role]?.color || '',
 	}));
 
-	const roleStyles = {
-		admin: {
-			cardWrapper: 'operator-card-wrapper admin-operator-card-wrapper',
-			rolesImage: STATIC_ICONS.ADMIN_ROLE,
-		},
-		supervisor: {
-			cardWrapper: 'supervisor-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPERVISOR_ROLE,
-		},
-		kyc: {
-			cardWrapper: 'operator-card-wrapper kyc-operator-card-wrapper',
-			rolesImage: STATIC_ICONS.KYC_ROLE,
-		},
-		support: {
-			cardWrapper: 'support-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPPORT_ROLE,
-		},
-		communicator: {
-			cardWrapper: 'communication-operator-card-wrapper operator-card-wrapper',
-			rolesImage: STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE,
-		},
-		'Customize a Role': {
-			cardWrapper: 'customize-role-operator-card-wrapper operator-card-wrapper',
-		},
-		default: {
-			cardWrapper: 'operator-card-wrapper',
-			rolesImage: STATIC_ICONS.OPERATOR_ROLES,
-		},
-	};
-
 	const onHandleRoleSelect = (selectedRolr) => {
 		const filteredRole = roles.find(
 			(role) => role?.value?.toLowerCase() === selectedRolr?.toLowerCase()
@@ -447,6 +446,30 @@ const Roles = ({ constants, user, coins }) => {
 		return true;
 	};
 
+	const filteredRoles = roles?.sort((a, b) => {
+		const roleOrder = Object.keys(roleStyles);
+		const indexA =
+			roleOrder?.indexOf(a?.label) !== -1
+				? roleOrder?.indexOf(a?.label)
+				: roleOrder?.length;
+		const indexB =
+			roleOrder?.indexOf(b?.label) !== -1
+				? roleOrder?.indexOf(b?.label)
+				: roleOrder?.length;
+
+		return indexA - indexB || a?.label?.localeCompare(b?.label);
+	});
+
+	const onHandleAddOperator = () => {
+		setDisplayAssignRole(true);
+		setRolePayload({
+			role_id: roles[0]?.label,
+			description: roles[0]?.description,
+			permission: roles[0]?.permission,
+			color: roles[0]?.color,
+		});
+	};
+
 	return (
 		<Tabs
 			defaultActiveKey="0"
@@ -471,9 +494,7 @@ const Roles = ({ constants, user, coins }) => {
 							<Button
 								type="primary"
 								className="green-btn no-border"
-								onClick={() => {
-									setDisplayAssignRole(true);
-								}}
+								onClick={() => onHandleAddOperator()}
 							>
 								Add operator
 							</Button>
@@ -482,10 +503,22 @@ const Roles = ({ constants, user, coins }) => {
 					<div className="d-flex my-4">
 						<div>{renderRoleImage()}</div>
 						<div className="ml-4">
-							<div>{renderItems()}</div>
+							<div>{renderItems(filteredRoles)}</div>
 							<div className="sub-title">Role types:</div>
 							<div className="mt-4">
-								<div className="description text-nowrap">
+								<ol className="role-lists">
+									{filteredRoles?.map((role) => {
+										return (
+											<li className="font-weight-bold">
+												<span className="text-capitalize">{role?.label}: </span>
+												<span className="font-weight-normal">
+													{role?.description}
+												</span>
+											</li>
+										);
+									})}
+								</ol>
+								{/* <div className="description text-nowrap">
 									<span className="sub-title">1. Administrator</span> can access
 									all areas. Coin creation, minting & burning, trading pair and
 									designate operator roles
@@ -506,11 +539,14 @@ const Roles = ({ constants, user, coins }) => {
 								<div className="description text-nowrap">
 									<span className="sub-title">5. Support</span> can access some
 									user information for user verification
-								</div>
+								</div> */}
 							</div>
 							<div className="description mt-4">
 								Learn more about{' '}
-								<span className="pointer admin-link" onClick={handleRoleAccess}>
+								<span
+									className="pointer admin-link"
+									onClick={() => setActiveTab('1')}
+								>
 									operator role access.
 								</span>
 							</div>
@@ -518,8 +554,8 @@ const Roles = ({ constants, user, coins }) => {
 					</div>
 					<div className="table-wrapper">
 						<Table
-							columns={getColumns(handleEdit)}
-							dataSource={filteredDetails}
+							columns={getColumns(handleEdit, isColorDark)}
+							dataSource={!isLoading && filteredDetails}
 							rowKey={(data) => {
 								return data.id;
 							}}
@@ -576,8 +612,8 @@ const Roles = ({ constants, user, coins }) => {
 											className="w-100"
 											dropdownClassName="select-roles-dropdown"
 										>
-											{roles.map((role) => (
-												<Select.Option value={role.value}>
+											{roles?.map((role, index) => (
+												<Select.Option value={role?.value} key={index}>
 													{role.label}
 												</Select.Option>
 											))}
@@ -587,30 +623,36 @@ const Roles = ({ constants, user, coins }) => {
 										{rolePayload && (
 											<div
 												className={
-													rolePayload?.color && isColorDark(rolePayload?.color)
-														? 'operator-role-card operator-control-card-light'
-														: roleStyles[rolePayload?.role_id]
-														? `operator-role-card ${
+													isColorDark(rolePayload?.color)
+														? `operator-role-card operator-control-card-light ${
 																roleStyles[rolePayload?.role_id]?.cardWrapper
 														  }`
-														: 'operator-role-card operator-control-card-dark'
+														: `operator-role-card operator-control-card-dark ${
+																roleStyles[rolePayload?.role_id]?.cardWrapper
+														  }`
 												}
 												style={{ backgroundColor: rolePayload?.color }}
 											>
 												<div className="operator-role-card-details">
-													<p className="font-weight-bold">
+													<p className="font-weight-bold role-name">
 														{rolePayload?.role_id?.toUpperCase()}
 													</p>
-													<p className="role-description">
+													<p className="role-description caps">
 														{rolePayload?.description}
 													</p>
 												</div>
-												{rolePayload?.role_id &&
-													renderRoleImage('', rolePayload?.role_id)}
+												<ReactSVG
+													src={
+														roleStyles[rolePayload?.role_id?.toLowerCase()]
+															?.rolesImage ||
+														onHandleBadge(rolePayload?.role_id)
+													}
+													className="role-badge"
+												/>
 											</div>
 										)}
 										<div>
-											<p>Permissions: {rolePayload?.permission?.length || 0}</p>
+											<p>PERMISSIONS: {rolePayload?.permission?.length || 0}</p>
 											<p
 												className="text-decoration-underline pointer"
 												onClick={() => {
@@ -736,8 +778,8 @@ const Roles = ({ constants, user, coins }) => {
 						footer={null}
 						onCancel={handleClose}
 						width={
-							modalType === 'role-access'
-								? 600
+							!user?.otp_enabled
+								? 400
 								: modalType === 'operator-role'
 								? 500
 								: 350
