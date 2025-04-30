@@ -64,6 +64,7 @@ import {
 } from '../AdminFinancials/action';
 import Timer from './Timer';
 import { getTabParams } from '../AdminFinancials/Assets';
+import { onHandleBadge } from '../Roles/RoleManagement';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -519,7 +520,7 @@ class AppWrapper extends React.Component {
 				return (
 					<div className="role-section">
 						<div>
-							<img
+							<ReactSVG
 								src={STATIC_ICONS.ADMIN_ROLE}
 								className="sider-icons"
 								alt="EyeIcon"
@@ -532,7 +533,21 @@ class AppWrapper extends React.Component {
 					</div>
 				);
 			default:
-				return <div></div>;
+				return (
+					<div className="role-section">
+						<div>
+							<ReactSVG
+								src={onHandleBadge(getRole()) || STATIC_ICONS.BLUE_ADMIN_KEY}
+								className="sider-icons slider-role-badge"
+								alt="EyeIcon"
+							/>
+						</div>
+						<div>
+							<div className="main-label">Role:</div>
+							<div className="sub-label text-capitalize">{getRole()}</div>
+						</div>
+					</div>
+				);
 		}
 	};
 

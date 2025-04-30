@@ -207,6 +207,9 @@ const icons = {
 	SUPPORT_COMMUNICATION_ROLE: '/assets/images/Communications.svg',
 	SUPPORT_ROLE: '/assets/images/Support.svg',
 	OPERATOR_ROLES: '/assets/images/Operator-roles.svg',
+	MANAGER_ROLE: '/assets/images/triangle-3d-front.svg',
+	AUDITOR_ROLE: '/assets/images/abstract-shape-02.svg',
+	ANNOUNCER_ROLE: '/assets/images/flower-atom.svg',
 
 	ADMIN_ROLE_IMAGES: {
 		INTERSECTING_CIRCLE: '/assets/images/3-intersecting-circles.svg',
@@ -214,7 +217,6 @@ const icons = {
 		STAR_3d: '/assets/images/3d-star.svg',
 		STAR_POINTED: '/assets/images/8-pointed-star.svg',
 		ABSTRACT_SHAPE: '/assets/images/abstract-shape.svg',
-		ABSTRACT_SHAPE_02: '/assets/images/abstract-shape-02.svg',
 		ABSTRACT_STAR_LAYERED: '/assets/images/abstract-star-layered.svg',
 		ATOM_IMAGE: '/assets/images/atom-01.svg',
 		CIRCLE_IMAGE: '/assets/images/circle.svg',
@@ -232,7 +234,6 @@ const icons = {
 		SIMPLE_FLAT_DIAMOND: '/assets/images/diamond-flat-simple.svg',
 		FLAT_DIAMOND: '/assets/images/flat-diamond.svg',
 		FLAT_GLOBE_IMAGE: '/assets/images/flat-globe.svg',
-		FLOWER_ATOM_IMAGE: '/assets/images/flower-atom.svg',
 		GLOBE_IMAGE: '/assets/images/globe-image.svg',
 		HALF_CIRCLE: '/assets/images/half-circle.svg',
 		HEXAGON_FLAT_IMAGE: '/assets/images/hexagon-flat.svg',
@@ -249,7 +250,6 @@ const icons = {
 		STAR_04_IMAGE: '/assets/images/star-04.svg',
 		TRAPIZE_IMAGE: '/assets/images/trapize.svg',
 		TRIANGLE_3D_CONE: '/assets/images/triangle-3d-cone.svg',
-		TRIANGLE_3D_FRONT_IMAGE: '/assets/images/triangle-3d-front.svg',
 		TRIANGLE_IMAGE: '/assets/images/triangle.svg',
 	},
 };

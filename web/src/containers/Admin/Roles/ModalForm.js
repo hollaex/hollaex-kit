@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { browserHistory } from 'react-router';
+import { ReactSVG } from 'react-svg';
 import { Button, Form, Select, Input } from 'antd';
-import classnames from 'classnames';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
 import { AdminHocForm } from '../../../components';
 import { checkRole } from '../../../utils/token';
+import { onHandleBadge } from './RoleManagement';
 
 // const OperatorRoleFrom = AdminHocForm('OperatorRoleFrom');
 const EditOperatorFrom = AdminHocForm('EditOperatorFrom');
@@ -22,7 +25,7 @@ export const renderRoleImage = (
 	switch (type) {
 		case 'supervisor':
 			return (
-				<img
+				<ReactSVG
 					src={STATIC_ICONS.SUPERVISOR_ROLE}
 					className={className}
 					alt="role-icon"
@@ -30,15 +33,15 @@ export const renderRoleImage = (
 			);
 		case 'kyc':
 			return (
-				<img
+				<ReactSVG
 					src={STATIC_ICONS.KYC_ROLE}
-					className={className}
+					className={`${className} admin-role-icon`}
 					alt="role-icon"
 				/>
 			);
 		case 'communicator':
 			return (
-				<img
+				<ReactSVG
 					src={STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE}
 					className={className}
 					alt="role-icon"
@@ -46,7 +49,7 @@ export const renderRoleImage = (
 			);
 		case 'support':
 			return (
-				<img
+				<ReactSVG
 					src={STATIC_ICONS.SUPPORT_ROLE}
 					className={className}
 					alt="role-icon"
@@ -54,16 +57,40 @@ export const renderRoleImage = (
 			);
 		case 'admin':
 			return (
-				<img
+				<ReactSVG
 					src={STATIC_ICONS.ADMIN_ROLE}
+					className={`${className} admin-role-icon`}
+					alt="role-icon"
+				/>
+			);
+		case 'auditor':
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.AUDITOR_ROLE}
+					className={className}
+					alt="role-icon"
+				/>
+			);
+		case 'announcer':
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.ANNOUNCER_ROLE}
+					className={className}
+					alt="role-icon"
+				/>
+			);
+		case 'manager':
+			return (
+				<ReactSVG
+					src={STATIC_ICONS.MANAGER_ROLE}
 					className={className}
 					alt="role-icon"
 				/>
 			);
 		default:
 			return (
-				<img
-					src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
+				<ReactSVG
+					src={onHandleBadge(type) || STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
 					className={className}
 					alt="role-icon"
 				/>
@@ -170,167 +197,87 @@ export const OperatorRole = ({
 	);
 };
 
-export const RoleAccess = ({ handleClose, isUpgrade }) => {
-	return (
-		<div className="admin-roles-wrapper">
-			<h3>Default Roles</h3>
-			<p>More Role Permission Info Here</p>
-			<div className="role-type-container">
-				<div className="d-flex role-description-box">
-					<div className="f-1 d-flex align-items-center pl-3">
-						{renderRoleImage('role-icon', 'admin')}
-						<span className="role-label">Administrator</span>
-					</div>
-					<div className="line-separator"></div>
-					<div className="f-1 p-3">
-						<div className="sub-title">Access Level 1</div>
-						<div className="description">
-							Administrator can access all areas. Coin creation, minting &
-							burning, trading pair and designate operator roles.
-						</div>
-					</div>
-				</div>
-				<div className="d-flex role-description-box">
-					<div className="f-1 d-flex align-items-center pl-3 role-supervisor">
-						{renderRoleImage('role-icon', 'supervisor')}
-						<span className="role-label ml-2">Supervisor</span>
-					</div>
-					<div className="line-separator"></div>
-					<div className="f-1 p-3">
-						<div className="sub-title">Access Level 2</div>
-						<div className="description">
-							Lead operator can access all areas but Coin creation, minting &
-							burning, trade.
-						</div>
-					</div>
-				</div>
-				<div className="d-flex role-description-box">
-					<div
-						className={classnames(
-							'f-1 d-flex align-items-center pl-3 role-kyc',
-							{ 'disable-area': isUpgrade }
-						)}
-					>
-						{renderRoleImage('role-icon', 'kyc')}
-						<span className="role-label ml-2">KYC</span>
-					</div>
-					{isUpgrade ? (
-						<div className="upgrade-text">Requires upgrade</div>
-					) : null}
-					<div className="line-separator"></div>
-					<div className="f-1 p-3">
-						<div className="sub-title">Access Level 3</div>
-						<div className="description">
-							Know your customer (KYC) role can access some user data to review
-							KYC requirements.
-						</div>
-					</div>
-				</div>
-				<div className="d-flex role-description-box">
-					<div
-						className={classnames(
-							'f-1 d-flex align-items-center pl-3 role-communication',
-							{ 'disable-area': isUpgrade }
-						)}
-					>
-						{renderRoleImage('role-icon', 'communicator')}
-						<span className="role-label ml-2">Support</span>
-					</div>
-					{isUpgrade ? (
-						<div className="upgrade-text">Requires upgrade</div>
-					) : null}
-					<div className="line-separator"></div>
-					<div className="f-1 p-3">
-						<div className="sub-title">Access Level 4</div>
-						<div className="description">
-							Communications can access to website direct editing such as
-							strings and icons for the purpose of content management and
-							communications.
-						</div>
-					</div>
-				</div>
-				<div className="d-flex role-description-box">
-					<div
-						className={classnames(
-							'f-1 d-flex align-items-center pl-3 role-support',
-							{ 'disable-area': isUpgrade }
-						)}
-					>
-						{renderRoleImage('role-icon', 'support')}
-						<span className="role-label ml-2">Support</span>
-					</div>
-					{isUpgrade ? (
-						<div className="upgrade-text">Requires upgrade</div>
-					) : null}
-					<div className="line-separator"></div>
-					<div className="f-1 p-3">
-						<div className="sub-title">Access Level 5</div>
-						<div className="description">
-							Support can access some user information for user verification.
-						</div>
-					</div>
-				</div>
-			</div>
-			{isUpgrade ? renderUpgrade() : null}
-			<div className="mt-4">
-				<Button
-					type="primary"
-					className="green-btn w-100 no-border"
-					onClick={handleClose}
-				>
-					Back
-				</Button>
-			</div>
-		</div>
-	);
-};
-
 export const EditModal = ({
 	onTypeChange,
 	handleUpdateRole,
 	editData,
 	roles,
+	user,
+	handleClose,
 }) => {
 	const handleSubmitEdit = (values) => {
 		handleUpdateRole(values, editData.id);
 	};
 
 	return (
-		<div className="admin-roles-wrapper">
-			<h3>Edit operator role</h3>
-			<div className="d-flex align-items-center my-3">
-				{renderRoleImage('edit-role-icon', getRoleType(editData))}
-				<div className="ml-3">{editData.email}</div>
-			</div>
-			<EditOperatorFrom
-				onSubmit={handleSubmitEdit}
-				initialValues={{
-					email: editData.email,
-					role: getRoleType(editData),
-				}}
-				buttonText={'Save'}
-				buttonClass="green-btn mini-btn mt-2 no-border"
-				fields={{
-					role: {
-						type: 'select',
-						label: 'Change roles',
-						options: roles,
-						value: getRoleType(editData),
-					},
-				}}
-			/>
-			<div className="divider"></div>
-			<div>Revoke role from operator</div>
-			<div className="mt-2">
-				<Button
-					type="primary"
-					className="revoke-btn no-border"
-					onClick={() => onTypeChange('revoke-role')}
-				>
-					Revoke role
-				</Button>
-			</div>
-		</div>
+		<>
+			{user?.otp_enabled ? (
+				<div className="admin-roles-wrapper">
+					<h3>Edit operator role</h3>
+					<div className="d-flex align-items-center my-3">
+						{renderRoleImage('edit-role-icon', getRoleType(editData))}
+						<div className="ml-3">{editData.email}</div>
+					</div>
+					<EditOperatorFrom
+						onSubmit={handleSubmitEdit}
+						initialValues={{
+							email: editData.email,
+							role: getRoleType(editData),
+						}}
+						buttonText={'Save'}
+						buttonClass="green-btn mini-btn mt-2 no-border"
+						fields={{
+							role: {
+								type: 'select',
+								label: 'Change roles',
+								options: roles,
+								value: getRoleType(editData),
+							},
+						}}
+					/>
+					<div className="divider"></div>
+					<div>Revoke role from operator</div>
+					<div className="mt-2">
+						<Button
+							type="primary"
+							className="revoke-btn no-border"
+							onClick={() => onTypeChange('revoke-role')}
+						>
+							Revoke role
+						</Button>
+					</div>
+				</div>
+			) : (
+				<div className="warning-verification-popup-details">
+					<span className="heading-text font-weight-bold">Enable 2FA</span>
+					<div className="warning-message-wrapper mt-3 mb-4">
+						<ExclamationCircleOutlined />
+						<span>
+							To edit a role, you need to enable 2FA (two-factor authentication)
+							first.
+						</span>
+					</div>
+					<span>
+						Click here to{' '}
+						<span
+							className="text-decoration-underline pointer"
+							onClick={() => browserHistory.push('/security')}
+						>
+							enable 2FA
+						</span>
+					</span>
+					<div className="d-flex justify-content-center mt-4">
+						<Button
+							className="w-50 green-btn no-border"
+							type="primary"
+							onClick={() => handleClose()}
+						>
+							Close
+						</Button>
+					</div>
+				</div>
+			)}
+		</>
 	);
 };
 
@@ -356,12 +303,16 @@ export const RevokeRole = ({
 				{`Are you sure you want to revoke this role from ${editData.email}?`}
 			</div>
 			<div className="d-flex mt-3">
-				<Button type="primary" className="green-btn" onClick={handleClose}>
+				<Button
+					type="primary"
+					className="green-btn w-50 no-border"
+					onClick={handleClose}
+				>
 					Exit
 				</Button>
 				<Button
 					type="primary"
-					className="revoke-btn ml-3"
+					className="revoke-btn ml-3 w-50 no-border"
 					onClick={handleRevoke}
 					disabled={buttonSubmitting}
 				>
