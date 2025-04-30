@@ -23,9 +23,9 @@ export const requestDepositsDownload = (query) => {
 	const queryValues = Object.keys(formProps).length
 		? querystring.stringify(formProps)
 		: '';
-	let path = `/admin/deposits?${queryValues}`;
+	let path = `/admin/deposits/csv?${queryValues}`;
 	if (type === 'withdrawal') {
-		path = `/admin/withdrawals?${queryValues}`;
+		path = `/admin/withdrawals/csv?${queryValues}`;
 	}
 	return axios({
 		method: 'GET',
@@ -36,8 +36,14 @@ export const requestDepositsDownload = (query) => {
 			const link = document.createElement('a');
 			link.href = url;
 			type === 'deposit'
-				? link.setAttribute('download', `deposit_${moment().format('YYYY-MM-DD')}.csv`)
-				: link.setAttribute('download', `withdrawal_${moment().format('YYYY-MM-DD')}.csv`);
+				? link.setAttribute(
+						'download',
+						`deposit_${moment().format('YYYY-MM-DD')}.csv`
+				  )
+				: link.setAttribute(
+						'download',
+						`withdrawal_${moment().format('YYYY-MM-DD')}.csv`
+				  );
 			document.body.appendChild(link);
 			link.click();
 		})
