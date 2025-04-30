@@ -244,6 +244,13 @@
 	top: 1rem;
 	left: 2rem;
 }
+.sider-icons svg {
+	width: 100%;
+	height: 100%;
+}
+.slider-role-badge path:first-child {
+	fill: #ffffff !important;
+}
 .bg-black {
 	background-color: #0f1114;
 }
