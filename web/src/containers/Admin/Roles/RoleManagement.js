@@ -617,14 +617,18 @@ const RoleForm = ({
 	);
 };
 
-const Warning2faPopup = ({ currentRole, setIsModalVisible }) => {
+const Warning2faPopup = ({
+	currentRole,
+	isDeleteWarning = false,
+	setIsModalVisible,
+}) => {
 	return (
 		<div className="warning-verification-popup-details">
 			<div className="warning-message-wrapper">
 				<ExclamationCircleOutlined />
 				<span>
-					To {currentRole ? 'update' : 'create'} a role, you need to enable 2FA
-					(two-factor authentication) first.
+					To {isDeleteWarning ? 'delete' : currentRole ? 'update' : 'create'} a
+					role, you need to enable 2FA (two-factor authentication) first.
 				</span>
 			</div>
 			<span
@@ -940,6 +944,7 @@ const RoleManagement = ({
 					<Warning2faPopup
 						currentRole={currentRole}
 						setIsModalVisible={setIsConfirmDelete}
+						isDeleteWarning={true}
 					/>
 				)}
 			</Modal>
