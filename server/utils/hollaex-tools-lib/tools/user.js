@@ -1027,9 +1027,7 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false, opt
 };
 
 const freezeUserById = (userId) => {
-	if (userId === 1) {
-		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
-	}
+
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
