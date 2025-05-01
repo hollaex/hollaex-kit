@@ -4216,7 +4216,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
+const updateExchangeUserRole = async (roleId, { description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
 	
 	const exchangeInfo = getKitConfig().info;
 
@@ -4228,7 +4228,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 
 	const role = await Role.findOne({
 		where: { id: roleId },
-		attributes: ['id', 'role_name', 'description', 'permissions', 'configs'],
+		attributes: ['id', 'description', 'permissions', 'configs'],
 	});
 
 	if (!role) {
@@ -4259,9 +4259,6 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
-		updates.role_name = name.toLowerCase();
-	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
 	}
@@ -4277,7 +4274,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 			throw new Error('Permissions must be an array');
 		}
 		if (!isArray(configs)) {
-			throw new Error('Permissions must be an array');
+			throw new Error('Configs must be an array');
 		}
 
 		const validationGroups = {

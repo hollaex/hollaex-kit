@@ -4503,13 +4503,11 @@ paths:
           schema:
             type: object
             required:
-              - name
               - otp_code
+              - id
             properties:
               id:
                 type: integer
-              name:
-                type: string
                 maxLength: 256
               description:
                 type: string
