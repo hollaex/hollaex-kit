@@ -62,8 +62,8 @@ export const isUser = () => {
 	return (
 		checkRole() === '' ||
 		checkRole() === 'user' ||
-		checkRole() == null ||
-		checkRole() == undefined
+		checkRole() === null ||
+		checkRole() === undefined
 	);
 };
 export const isKYC = () => {
