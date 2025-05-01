@@ -3388,9 +3388,6 @@ const downloadUsersCsv = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	toolsLib.user.getAllUsersAdmin({
 		id: id.value,
