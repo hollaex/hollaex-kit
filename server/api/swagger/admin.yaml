@@ -4473,7 +4473,7 @@ paths:
               configs:
                 type: array
               restrictions:
-                type: object
+                type: [object, "null"]
               otp_code:
                 type: string
                 maxLength: 6
@@ -4522,7 +4522,7 @@ paths:
               configs:
                 type: array
               restrictions:
-                type: object
+                type: [object, "null"]
               otp_code:
                 type: string
                 maxLength: 6
