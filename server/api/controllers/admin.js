@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick, isNumber } = require('lodash');
 const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
+const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS, ROLE_DESCRIPTIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -782,7 +782,7 @@ const getOperators = (req, res) => {
 		req.auth
 	);
 
-	const { limit, page, order_by, order } = req.swagger.params;
+	const { limit, page, order_by, order, email} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -797,7 +797,8 @@ const getOperators = (req, res) => {
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
-		order: order.value
+		order: order.value,
+		email: email.value
 	})
 		.then((operators) => {
 			return res.json(operators);
@@ -915,17 +916,17 @@ const mintAsset = (req, res) => {
 				throw new Error(USER_NOT_FOUND);
 			}
 
-			const roles = toolsLib.getRoles();
-			const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-			const mintRestrictions = userRole?.restrictions?.mint;
+			// const roles = toolsLib.getRoles();
+			// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+			// const mintRestrictions = userRole?.restrictions?.mint;
 
-			if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
-				throw new Error('Your role does not allow this currency for mint');
-			}
+			// if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
+			// 	throw new Error('Your role does not allow this currency for mint');
+			// }
 
-			if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
-				throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
-			}
+			// if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
+			// 	throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
+			// }
 
 			return toolsLib.wallet.mintAssetByNetworkId(
 				user.network_id,
@@ -1075,17 +1076,17 @@ const burnAsset = (req, res) => {
 		address
 	);
 
-	const roles = toolsLib.getRoles();
-	const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-	const burnRestrictions = userRole?.restrictions?.burn;
+	// const roles = toolsLib.getRoles();
+	// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+	// const burnRestrictions = userRole?.restrictions?.burn;
 
-	if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
-		throw new Error('Your role does not allow this currency for burn');
-	}
+	// if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
+	// 	throw new Error('Your role does not allow this currency for burn');
+	// }
 
-	if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
-		throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
-	}
+	// if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
+	// 	throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
+	// }
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
@@ -3226,7 +3227,8 @@ const deleteAnnouncement = (req, res) => {
 const getExchangeEndpoints = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
 	return res.json({
-		data: ROLE_PERMISSIONS
+		data: ROLE_PERMISSIONS,
+		descriptions: ROLE_DESCRIPTIONS
 	});
 };
 

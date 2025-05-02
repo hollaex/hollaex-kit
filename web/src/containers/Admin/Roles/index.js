@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 import { Button, Table, Select, Modal, message } from 'antd';
+import { Tabs, Input } from 'antd';
+import { WarningOutlined } from '@ant-design/icons';
 import { CloseOutlined } from '@ant-design/icons';
+import _debounce from 'lodash/debounce';
+
 import { checkRole } from '../../../utils/token';
 import {
 	OperatorRole,
@@ -12,17 +18,15 @@ import {
 } from './ModalForm';
 import { requestRole, inviteOperator, updateRole, fetchRoles } from './action';
 import { requestUsers } from '../Stakes/actions';
-import _debounce from 'lodash/debounce';
+import { handleUpgrade } from 'utils/utils';
+import { OtpForm } from 'components';
+import { onHandleBadge, roleStyles } from './RoleManagement';
+import { setRolesList } from 'actions/appActions';
+import { isColorDark } from './Utils';
 import './index.css';
 import '../Trades/index.css';
 import '../../Admin/General/index.css';
 import Role from './Roles';
-import { handleUpgrade } from 'utils/utils';
-import { Tabs } from 'antd';
-import { WarningOutlined } from '@ant-design/icons';
-import { Link } from 'react-router';
-import { OtpForm } from 'components';
-import { onHandleBadge, roleStyles } from './RoleManagement';
 const TabPane = Tabs.TabPane;
 
 const getColumns = (handleEdit = () => {}, isColorDark = () => {}) => [
@@ -36,8 +40,12 @@ const getColumns = (handleEdit = () => {}, isColorDark = () => {}) => [
 			const roleStyle = roleStyles[data?.role?.toLowerCase()] || {};
 			const isDark = isColorDark(data?.color);
 			const roleClassWrapper = isDark
-				? `${roleStyle?.cardWrapper} operator-role-image operator-control-card-light`
-				: `${roleStyle?.cardWrapper} operator-role-image operator-control-card-dark`;
+				? `${
+						roleStyle?.cardWrapper || ''
+				  } operator-role-image operator-control-card-light`
+				: `${
+						roleStyle?.cardWrapper || ''
+				  } operator-role-image operator-control-card-dark`;
 			return (
 				<div
 					className={roleClassWrapper}
@@ -154,7 +162,7 @@ const renderItems = (filteredRoles) => {
 	);
 };
 
-const Roles = ({ constants, user, coins }) => {
+const Roles = ({ constants, user, coins, setRolesList }) => {
 	const limit = 50;
 	const [operatorList, setOperatorList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -172,12 +180,13 @@ const Roles = ({ constants, user, coins }) => {
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
 	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
+	const [userEmail, setUserEmail] = useState();
 
 	const isUpgrade = handleUpgrade(constants.info);
-	const requestInitRole = async (pageNo = 1) => {
+	const requestInitRole = async (pageNo = 1, email = null) => {
 		setIsLoading(true);
 		try {
-			const res = await requestRole({ pageNo, limit });
+			const res = await requestRole({ page: pageNo, limit, email });
 			let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
 			setOperatorList(temp);
 			setPage(pageNo);
@@ -204,6 +213,7 @@ const Roles = ({ constants, user, coins }) => {
 						color: role?.color,
 					}));
 					setRoles(roleNames);
+					setRolesList(response?.data);
 					setRolePayload({
 						role_id: roleNames[0]?.label,
 						description: roleNames[0]?.description,
@@ -372,6 +382,8 @@ const Roles = ({ constants, user, coins }) => {
 	};
 
 	const onSubmitRoleOtp = async (values) => {
+		setSelectedEmailData({});
+		handleSearch('');
 		try {
 			await updateRole(
 				{
@@ -422,28 +434,13 @@ const Roles = ({ constants, user, coins }) => {
 		if (filteredRole) {
 			const { description = '', permission = '', color } = filteredRole;
 			setRolePayload({
+				...rolePayload,
 				role_id: selectedRolr,
 				description,
 				permission,
 				color,
 			});
 		}
-	};
-
-	const isColorDark = (hexColor) => {
-		if (hexColor) {
-			const hex = hexColor?.replace('#', '');
-
-			const r = parseInt(hex.substr(0, 2), 16);
-			const g = parseInt(hex.substr(2, 2), 16);
-			const b = parseInt(hex.substr(4, 2), 16);
-
-			const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-			// If luminance < 0.5, it's dark
-			return luminance < 0.5;
-		}
-		return true;
 	};
 
 	const filteredRoles = roles?.sort((a, b) => {
@@ -468,6 +465,13 @@ const Roles = ({ constants, user, coins }) => {
 			permission: roles[0]?.permission,
 			color: roles[0]?.color,
 		});
+	};
+
+	const onCloseAddOperator = () => {
+		setDisplayAssignRole(false);
+		setSelectedEmailData({});
+		handleSearch('');
+		setRolePayload({});
 	};
 
 	return (
@@ -500,12 +504,12 @@ const Roles = ({ constants, user, coins }) => {
 							</Button>
 						</div>
 					</div>
-					<div className="d-flex my-4">
+					<div className="d-flex align-items-start my-4">
 						<div>{renderRoleImage()}</div>
 						<div className="ml-4">
 							<div>{renderItems(filteredRoles)}</div>
 							<div className="sub-title">Role types:</div>
-							<div className="mt-4">
+							<div className="mt-2">
 								<ol className="role-lists">
 									{filteredRoles?.map((role) => {
 										return (
@@ -541,7 +545,7 @@ const Roles = ({ constants, user, coins }) => {
 									user information for user verification
 								</div> */}
 							</div>
-							<div className="description mt-4">
+							<div className="description mt-2">
 								Learn more about{' '}
 								<span
 									className="pointer admin-link"
@@ -550,6 +554,35 @@ const Roles = ({ constants, user, coins }) => {
 									operator role access.
 								</span>
 							</div>
+						</div>
+					</div>
+					<div style={{ width: 300 }}>
+						<div>Search user</div>
+						<div style={{ display: 'flex', gap: 10 }}>
+							<Input
+								style={{ width: 200 }}
+								placeholder="Search User Email"
+								onChange={(e) => {
+									setUserEmail(e.target.value);
+								}}
+								value={userEmail}
+							/>
+							<Button
+								onClick={() => {
+									requestInitRole(1, userEmail);
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+									marginRight: 5,
+									width: 100,
+								}}
+								type="default"
+							>
+								Apply
+							</Button>
 						</div>
 					</div>
 					<div className="table-wrapper">
@@ -577,9 +610,7 @@ const Roles = ({ constants, user, coins }) => {
 							}}
 							visible={displayAssignRole}
 							footer={null}
-							onCancel={() => {
-								setDisplayAssignRole(false);
-							}}
+							onCancel={() => onCloseAddOperator()}
 							wrapClassName="assign-role-popup-wrapper"
 						>
 							<h2 className="assign-role-title">Add Operator</h2>
@@ -699,10 +730,7 @@ const Roles = ({ constants, user, coins }) => {
 								}}
 							>
 								<Button
-									onClick={() => {
-										setRolePayload({});
-										setDisplayAssignRole(false);
-									}}
+									onClick={() => onCloseAddOperator()}
 									style={{
 										backgroundColor: '#288500',
 										color: 'white',
@@ -797,6 +825,7 @@ const Roles = ({ constants, user, coins }) => {
 					isColorDark={isColorDark}
 					user={user}
 					coins={coins}
+					setRolesList={setRolesList}
 				/>
 			</TabPane>
 		</Tabs>
@@ -809,4 +838,8 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 });
 
-export default connect(mapStateToProps)(Roles);
+const mapDispatchToProps = (dispatch) => ({
+	setRolesList: bindActionCreators(setRolesList, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Roles);

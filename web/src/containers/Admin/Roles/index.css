@@ -403,6 +403,13 @@
 .operator-roles-wrapper
 	.roles-management-wrapper
 	.operator-card-wrapper
+	.disabled-btn:hover {
+	cursor: not-allowed !important;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
 	.highlight-btn {
 	border: 1px solid #000000;
 }
@@ -703,4 +710,34 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	font-size: 1rem;
+}
+.permissions-tree {
+	.ant-tree-treenode {
+		padding: 4px 0;
+
+		&:hover {
+			.tree-node-label {
+				color: #1890ff;
+				font-weight: 500;
+			}
+		}
+	}
+
+	.ant-tree-node-content-wrapper {
+		&:hover {
+			background-color: #f0f7ff !important;
+		}
+	}
+
+	.permission-tooltip {
+		.ant-tooltip-inner {
+			background: #fff;
+			color: #333;
+			border: 1px solid #eee;
+			box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+			max-width: 300px;
+			font-size: 13px;
+		}
+	}
 }
