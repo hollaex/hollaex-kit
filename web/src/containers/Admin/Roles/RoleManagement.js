@@ -541,6 +541,11 @@ const RoleForm = ({
 				rules={[
 					{ required: true, message: 'Please input the role name!' },
 					{ max: 50, message: 'Role name cannot exceed 50 characters!' },
+					{
+						pattern: /^(?!\s)(\S)*$/,
+						message:
+							'Role name cannot start with a space or contain whitespace!',
+					},
 				]}
 			>
 				<Input
@@ -556,6 +561,7 @@ const RoleForm = ({
 				rules={[
 					{ required: true, message: 'Please input the role description!' },
 					{ max: 255, message: 'Description cannot exceed 255 characters!' },
+					{ whitespace: true, message: 'Please input the role name!' },
 				]}
 			>
 				<Input.TextArea rows={3} placeholder="Enter role description" />
@@ -610,6 +616,9 @@ const RoleForm = ({
 						onClick={handleSubmit}
 						style={{ marginRight: 8, backgroundColor: '#288501' }}
 						className="role-btn w-50"
+						disabled={
+							isEditing && ['admin']?.includes(initialValues?.role_name)
+						}
 					>
 						{isEditing ? 'Update Role' : 'Create Role'}
 					</Button>
@@ -662,6 +671,7 @@ const RoleManagement = ({
 	isColorDark,
 	user,
 	coins,
+	setRolesList,
 }) => {
 	const [roles, setRoles] = useState([]);
 	// eslint-disable-next-line
@@ -695,12 +705,13 @@ const RoleManagement = ({
 				const transformedRoles = response.data.map((role) =>
 					transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
 				);
-
+				setRolesList(response?.data);
 				setRoles(transformedRoles);
 			})
 			.catch((err) => {
 				message.error('Error fetching roles:', err);
 			});
+		// eslint-disable-next-line
 	}, []);
 
 	const handleCreate = () => {
@@ -790,7 +801,7 @@ const RoleManagement = ({
 						const transformedRoles = response.data.map((role) =>
 							transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
 						);
-
+						setRolesList(response?.data);
 						setRoles(transformedRoles);
 					})
 					.catch((err) => {
@@ -846,7 +857,7 @@ const RoleManagement = ({
 					const transformedRoles = response.data.map((role) =>
 						transformPermissions(role, KIT_CONFIG_KEYS, KIT_SECRETS_KEYS)
 					);
-
+					setRolesList(response?.data);
 					setRoles(transformedRoles);
 				})
 				.catch((err) => {
@@ -1012,13 +1023,13 @@ const RoleManagement = ({
 						<Col key={role?.id}>
 							<div
 								className={
-									!role?.color
-										? `${cardWrapper}`
-										: isColorDark(role?.color)
-										? `operator-control-card-light ${cardWrapper}`
+									isColorDark(role?.color)
+										? `operator-control-card-light ${cardWrapper || ''}`
 										: !rolesImage
-										? `operator-control-card-dark ${cardWrapper} justify-content-start`
-										: `operator-control-card-dark ${cardWrapper} `
+										? `operator-control-card-dark ${
+												cardWrapper || ''
+										  } justify-content-start`
+										: `operator-control-card-dark ${cardWrapper || ''} `
 								}
 								style={{ backgroundColor: role?.color && role?.color }}
 							>
@@ -1110,8 +1121,16 @@ const RoleManagement = ({
 										</span>
 									) : (
 										<span
-											className="permission-btn pointer caps"
-											onClick={() => handleEdit(role)}
+											className={
+												['admin']?.includes(role?.role_name)
+													? 'permission-btn disabled-btn caps'
+													: 'permission-btn pointer caps'
+											}
+											onClick={() => {
+												if (!['admin']?.includes(role?.role_name)) {
+													handleEdit(role);
+												}
+											}}
 										>
 											Edit Permission (
 											{role?.permissions?.length + (role?.configs?.length || 0)}

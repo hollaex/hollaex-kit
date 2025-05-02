@@ -97,6 +97,7 @@ import {
 	SET_SIGNUP_EMAIL,
 	SET_EMAIL_DETAIL,
 	SET_IS_ACTIVE_FAV_QUICK_TRADE,
+	SET_ROLES,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -247,6 +248,7 @@ const INITIAL_STATE = {
 	signupEmail: null,
 	emailDetail: null,
 	isActiveFavQuickTrade: true,
+	rolesList: [],
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -1013,6 +1015,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isActiveFavQuickTrade: payload.isActiveFavQuickTrade,
+			};
+		}
+		case SET_ROLES: {
+			return {
+				...state,
+				rolesList: payload.rolesList,
 			};
 		}
 		default:

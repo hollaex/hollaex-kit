@@ -403,6 +403,13 @@
 .operator-roles-wrapper
 	.roles-management-wrapper
 	.operator-card-wrapper
+	.disabled-btn:hover {
+	cursor: not-allowed !important;
+}
+
+.operator-roles-wrapper
+	.roles-management-wrapper
+	.operator-card-wrapper
 	.highlight-btn {
 	border: 1px solid #000000;
 }
@@ -703,4 +710,5 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	font-size: 1rem;
 }
