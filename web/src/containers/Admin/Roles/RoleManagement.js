@@ -307,19 +307,16 @@ const PermissionTabs = ({
 				.replace(/\./g, '/')
 				.replace(/\/(get|post|put|delete)$/, ':$1');
 
-			const description =
-				permissionDescriptions[`/admin${endpointKey}`] || node.title;
+			const description = permissionDescriptions[`/admin${endpointKey}`]
+				? ` (${permissionDescriptions[`/admin${endpointKey}`]})`
+				: '';
 
 			return {
 				...node,
 				title: (
-					<Tooltip
-						title={description}
-						placement="right"
-						overlayClassName="permission-tooltip"
-					>
-						<span className="tree-node-label">{node.title}</span>
-					</Tooltip>
+					<span className="tree-node-label">
+						{node.title} {description}
+					</span>
 				),
 				children: node.children ? renderTreeNodes(node.children) : null,
 			};
