@@ -1269,6 +1269,7 @@ class GeneralContent extends Component {
 										emailTypeData={emailTypeData}
 										constants={constants}
 										defaultEmailData={defaultEmailData}
+										handleTabChange={handleTabChange}
 									/>
 								</div>
 							</div>

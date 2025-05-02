@@ -129,7 +129,7 @@ export const getExchangeWalletCsv = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
-		url: `/admin/user/wallet?${queryValues}`,
+		url: `/admin/user/wallet/csv?${queryValues}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -150,7 +150,7 @@ export const getExchangeBalances = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
-		url: `/admin/balances?${queryValues}`,
+		url: `/admin/balances/csv?${queryValues}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));

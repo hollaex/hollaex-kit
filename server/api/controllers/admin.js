@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick, isNumber } = require('lodash');
 const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
+const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS, ROLE_DESCRIPTIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -143,7 +143,6 @@ const getUsersAdmin = (req, res) => {
 		order,
 		start_date,
 		end_date,
-		format,
 		email,
 		username,
 		full_name,
@@ -170,9 +169,6 @@ const getUsersAdmin = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	toolsLib.user.getAllUsersAdmin({
 		id: id.value,
@@ -186,7 +182,6 @@ const getUsersAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value,
 		type: type.value,
 		email: email.value,
 		username: username.value,
@@ -207,14 +202,7 @@ const getUsersAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUsers', err.message);
@@ -520,11 +508,8 @@ const getAdminUserLogins = (req, res) => {
 		'controllers/admin/getAdminUserLogins/auth',
 		req.auth
 	);
-	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -564,17 +549,9 @@ const getAdminUserLogins = (req, res) => {
 		order: order.value,
 		startDate: start_date.value,
 		endDate: end_date.value,
-		format: format.value
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -594,7 +571,7 @@ const getUserAudits = (req, res) => {
 		req.auth
 	);
 	const user_id = req.swagger.params.user_id.value;
-	const { limit, page, order_by, order, start_date, end_date, format, subject } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, subject } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -632,17 +609,9 @@ const getUserAudits = (req, res) => {
 		order: order.value,
 		startDate: start_date.value,
 		endDate: end_date.value,
-		format: format.value
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -813,7 +782,7 @@ const getOperators = (req, res) => {
 		req.auth
 	);
 
-	const { limit, page, order_by, order } = req.swagger.params;
+	const { limit, page, order_by, order, email} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -828,7 +797,8 @@ const getOperators = (req, res) => {
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
-		order: order.value
+		order: order.value,
+		email: email.value
 	})
 		.then((operators) => {
 			return res.json(operators);
@@ -852,7 +822,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		req.auth
 	);
 
-	const { start_date, end_date, format } = req.swagger.params;
+	const { start_date, end_date } = req.swagger.params;
 
 	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
 		additionalHeaders: {
@@ -860,20 +830,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				const parsedData = data && Object.values(data)[0];
-				if (!parsedData || parsedData?.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const csv = parse(parsedData, Object.keys(parsedData[0]));
-
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(csv);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -959,17 +916,17 @@ const mintAsset = (req, res) => {
 				throw new Error(USER_NOT_FOUND);
 			}
 
-			const roles = toolsLib.getRoles();
-			const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-			const mintRestrictions = userRole?.restrictions?.mint;
+			// const roles = toolsLib.getRoles();
+			// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+			// const mintRestrictions = userRole?.restrictions?.mint;
 
-			if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
-				throw new Error('Your role does not allow this currency for mint');
-			}
+			// if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
+			// 	throw new Error('Your role does not allow this currency for mint');
+			// }
 
-			if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
-				throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
-			}
+			// if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
+			// 	throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
+			// }
 
 			return toolsLib.wallet.mintAssetByNetworkId(
 				user.network_id,
@@ -1119,17 +1076,17 @@ const burnAsset = (req, res) => {
 		address
 	);
 
-	const roles = toolsLib.getRoles();
-	const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-	const burnRestrictions = userRole?.restrictions?.burn;
+	// const roles = toolsLib.getRoles();
+	// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+	// const burnRestrictions = userRole?.restrictions?.burn;
 
-	if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
-		throw new Error('Your role does not allow this currency for burn');
-	}
+	// if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
+	// 	throw new Error('Your role does not allow this currency for burn');
+	// }
 
-	if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
-		throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
-	}
+	// if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
+	// 	throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
+	// }
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
@@ -2441,7 +2398,7 @@ const createUserWalletByAdmin = (req, res) => {
 const getWalletsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
 
-	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2462,7 +2419,6 @@ const getWalletsByAdmin = (req, res) => {
 		page.value,
 		order_by.value,
 		order.value,
-		format.value,
 		start_date.value,
 		end_date.value,
 		{
@@ -2473,13 +2429,7 @@ const getWalletsByAdmin = (req, res) => {
 	)
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
@@ -2577,11 +2527,8 @@ const sendRawEmailByAdmin = (req, res) => {
 const getUserSessionsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
 
-	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2602,18 +2549,10 @@ const getUserSessionsByAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUserSessionsByAdmin', err.message);
@@ -2733,31 +2672,20 @@ const getBalancesAdmin = (req, res) => {
 	const {
 		user_id,
 		currency,
-		format
 	} = req.swagger.params;
 
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	toolsLib.user.getAllBalancesAdmin({
 		user_id: user_id.value,
 		currency: currency.value,
-		format: format.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
@@ -2834,7 +2762,7 @@ const getUserBalanceHistoryByAdmin = (req, res) => {
 		'controllers/admin/getUserBalanceHistoryByAdmin/auth',
 		req.auth
 	);
-	const { limit, page, order_by, order, start_date, end_date, format, user_id } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, user_id } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -2871,17 +2799,9 @@ const getUserBalanceHistoryByAdmin = (req, res) => {
 		order: order.value,
 		startDate: start_date.value,
 		endDate: end_date.value,
-		format: format.value
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-balance_history.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -3307,7 +3227,8 @@ const deleteAnnouncement = (req, res) => {
 const getExchangeEndpoints = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
 	return res.json({
-		data: ROLE_PERMISSIONS
+		data: ROLE_PERMISSIONS,
+		descriptions: ROLE_DESCRIPTIONS
 	});
 };
 
@@ -3356,6 +3277,8 @@ const updateExchangeUserRole = (req, res) => {
 
 	const { id, description, permissions, configs, otp_code, color, restrictions } = req.swagger.params.data.value;
 
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateExchangeUserRole data', id, description, permissions, configs, otp_code, color, restrictions);
+
 	toolsLib.user.updateExchangeUserRole(id, {
 		description,
 		rolePermissions: permissions,
@@ -3393,6 +3316,412 @@ const deleteExchangeUserRole = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
+
+const downloadFeesCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadFeesCsv/auth', req.auth.sub);
+	const { start_date, end_date } = req.swagger.params;
+
+	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			const parsedData = data && Object.values(data)[0];
+			if (!parsedData || parsedData?.length === 0) {
+				throw new Error(NO_DATA_FOR_CSV);
+			}
+			const csv = parse(parsedData, Object.keys(parsedData[0]));
+
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(csv);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchangeGeneratedFees catch',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadUsersCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUsersCsv/auth', req.auth.sub);
+	const {
+		id,
+		user_id,
+		search,
+		type,
+		pending,
+		pending_type,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		format,
+		email,
+		username,
+		full_name,
+		dob_start_date,
+		dob_end_date,
+		gender,
+		nationality,
+		verification_level,
+		email_verified,
+		otp_enabled,
+		phone_number,
+		kyc,
+		bank,
+		id_number
+
+	} = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUsersAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+
+	toolsLib.user.getAllUsersAdmin({
+		id: id.value,
+		user_id: user_id.value,
+		search: search.value,
+		pending: pending.value,
+		pending_type: pending_type.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value,
+		type: type.value,
+		email: email.value,
+		username: username.value,
+		full_name: full_name.value,
+		dob_start_date: dob_start_date.value,
+		dob_end_date: dob_end_date.value,
+		gender: gender.value,
+		nationality: nationality.value,
+		verification_level: verification_level.value,
+		email_verified: email_verified.value,
+		otp_enabled: otp_enabled.value,
+		phone_number: phone_number.value,
+		kyc: kyc.value,
+		bank: bank.value,
+		id_number: id_number.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUsers', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadLoginsCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadLoginsCsv/auth', req.auth.sub);
+	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getAdminUserLogins invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getUserLogins({
+		userId: user_id.value,
+		status: status.value,
+		country: country.value,
+		ip: ip.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getAdminUserLogins/catch',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadAuditsCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadAuditsCsv/auth', req.auth.sub);
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, order_by, order, start_date, end_date, format, subject } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserAudits invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getUserAudits({
+		user_id,
+		subject: subject.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: format.value
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getUserAudits',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadUserBalanceHistoryCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserBalanceHistoryCsv/auth', req.auth.sub);
+	const { limit, page, order_by, order, start_date, end_date, user_id } = req.swagger.params;
+
+	if (start_date.value && !isDate(start_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid start_date',
+			start_date.value
+		);
+		return res.status(400).json({ message: 'Invalid start date' });
+	}
+
+	if (end_date.value && !isDate(end_date.value)) {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid end_date',
+			end_date.value
+		);
+		return res.status(400).json({ message: 'Invalid end date' });
+	}
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserBalanceHistoryByAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getUserBalanceHistory({
+		user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		orderBy: order_by.value,
+		order: order.value,
+		startDate: start_date.value,
+		endDate: end_date.value,
+		format: 'csv'
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-balance_history.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getUserBalanceHistoryByAdmin',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+
+const downloadUserWalletCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserWalletCsv/auth', req.auth.sub);
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/downloadUserWalletCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.wallet.getWallets(
+		user_id.value,
+		currency.value,
+		network.value,
+		address.value,
+		is_valid.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		'csv',
+		start_date.value,
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/downloadUserWalletCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadUserSessionsCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserSessionsCsv/auth', req.auth.sub);
+	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/downloadUserSessionsCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		user_id: user_id.value,
+		last_seen: last_seen.value,
+		status: status.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv'
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/downloadUserSessionsCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+const downloadBalancesCsv = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadBalancesCsv/auth', req.auth.sub);
+	const {
+		user_id,
+		currency,
+	} = req.swagger.params;
+
+	toolsLib.user.getAllBalancesAdmin({
+		user_id: user_id.value,
+		currency: currency.value,
+		format: 'csv',
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/downloadBalancesCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
 
 module.exports = {
 	createInitialAdmin,
@@ -3481,5 +3810,13 @@ module.exports = {
 	createExchangeUserRole,
 	updateExchangeUserRole,
 	deleteExchangeUserRole,
-	getExchangeEndpoints
+	getExchangeEndpoints,
+	downloadFeesCsv,
+	downloadUsersCsv,
+	downloadLoginsCsv,
+	downloadAuditsCsv,
+	downloadUserBalanceHistoryCsv,
+	downloadUserWalletCsv,
+	downloadUserSessionsCsv,
+	downloadBalancesCsv,
 };

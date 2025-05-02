@@ -45,6 +45,7 @@ import {
 	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
+	setRolesList,
 } from 'actions/appActions';
 import { SESSION_TIME } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
@@ -64,6 +65,9 @@ import {
 } from '../AdminFinancials/action';
 import Timer from './Timer';
 import { getTabParams } from '../AdminFinancials/Assets';
+import { roleStyles } from '../Roles/RoleManagement';
+import { fetchRoles } from '../Roles/action';
+import { isColorDark } from '../Roles/Utils';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -116,8 +120,14 @@ class AppWrapper extends React.Component {
 		};
 	}
 
+	onHandleRoleDetails = async () => {
+		const roles = await fetchRoles();
+		this.props.setRolesList(roles?.data);
+	};
+
 	componentDidMount() {
 		this.getData();
+		this.onHandleRoleDetails();
 		// this.getAssets();
 
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
@@ -457,83 +467,38 @@ class AppWrapper extends React.Component {
 	};
 
 	renderItems = () => {
-		switch (getRole()) {
-			case 'supervisor':
-				return (
-					<div className="role-section bg-black">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.SUPERVISOR_ROLE}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Supervisor</div>
-						</div>
-					</div>
-				);
-			case 'kyc':
-				return (
-					<div className="role-section bg-grey">
-						<div>
-							<ReactSVG src={STATIC_ICONS.KYC_ROLE} className="sider-icons" />
-						</div>
-						<div>
-							<div className="main-label black">Role:</div>
-							<div className="sub-label black">KYC</div>
-						</div>
-					</div>
-				);
-			case 'communicator':
-				return (
-					<div className="role-section bg-orange">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.SUPPORT_COMMUNICATION_ROLE}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Communicator</div>
-						</div>
-					</div>
-				);
-			case 'support':
-				return (
-					<div className="role-section bg-yellow">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.SUPPORT_ROLE}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label black">Role:</div>
-							<div className="sub-label black">Support</div>
-						</div>
-					</div>
-				);
-			case 'admin':
-				return (
-					<div className="role-section">
-						<div>
-							<img
-								src={STATIC_ICONS.ADMIN_ROLE}
-								className="sider-icons"
-								alt="EyeIcon"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Administrator</div>
-						</div>
-					</div>
-				);
-			default:
-				return <div></div>;
-		}
+		const { rolesList } = this.props;
+		const selectedRole = rolesList?.find(
+			(role) => role?.role_name?.toLowerCase() === getRole()
+		);
+		const isRoleDark = isColorDark(selectedRole?.color)
+			? `${
+					roleStyles[getRole()]?.cardWrapper
+			  } role-section operator-control-card-light`
+			: `${
+					roleStyles[getRole()]?.cardWrapper
+			  } role-section operator-control-card-dark`;
+		return (
+			<div
+				className={isRoleDark}
+				style={{ backgroundColor: selectedRole?.color }}
+			>
+				<div>
+					<ReactSVG
+						src={
+							roleStyles[getRole()]?.rolesImage ||
+							STATIC_ICONS.BLUE_SCREEN_EYE_ICON
+						}
+						className="sider-icons slider-role-badge"
+						alt="EyeIcon"
+					/>
+				</div>
+				<div>
+					<div className="main-label">Role:</div>
+					<div className="sub-label text-capitalize">{getRole()}</div>
+				</div>
+			</div>
+		);
 	};
 
 	getMyPlugins = (params = {}) => {
@@ -584,6 +549,14 @@ class AppWrapper extends React.Component {
 				userPermissions.some((p) => p.startsWith(prefix))
 			);
 		});
+
+		if (checkRole() === 'admin') {
+			pathNames.push({
+				path: '/admin/billing',
+				label: 'Billing',
+				routeKey: 'billing',
+			});
+		}
 
 		// if (checkRole() === 'admin') {
 		// 	pathNames = ADMIN_PATHS;
@@ -755,6 +728,7 @@ const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	constants: state.app.constants,
 	user: state.user,
+	rolesList: state.app.rolesList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -772,6 +746,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setRolesList: bindActionCreators(setRolesList, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);
