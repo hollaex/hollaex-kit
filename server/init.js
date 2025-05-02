@@ -18,7 +18,8 @@ const {
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE,
-	setEndpoints
+	setEndpoints,
+	setPermissionDescription
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
 const yaml = require('js-yaml');
@@ -161,7 +162,9 @@ const checkStatus = () => {
 			const swaggerObj = yaml.load(swaggerYaml);
 
 			const endpoints = extractEndpoints(swaggerObj);
+			const endpointDescriptions = extractEndpointDescriptions(swaggerObj);
 			setEndpoints(endpoints);
+			setPermissionDescription(endpointDescriptions);
 
 			configuration.transaction_limits = transactionLimits;
 			configuration.roles = roles;
@@ -402,6 +405,26 @@ function extractEndpoints(swaggerObj) {
 
 	return result;
 }
+
+const extractEndpointDescriptions = (swaggerObj) => {
+	const descriptions = {};
+
+	if (!swaggerObj.paths) {
+		return descriptions;
+	}
+
+	for (const [path, methods] of Object.entries(swaggerObj.paths)) {
+		for (const [method, details] of Object.entries(methods)) {
+			if (!method.startsWith('x-') && details.description) {
+				const endpoint = `${path}:${method.toLowerCase()}`;
+				descriptions[endpoint] = details.description;
+			}
+		}
+	}
+
+	return descriptions;
+}
+
 
 module.exports = {
 	checkStatus,

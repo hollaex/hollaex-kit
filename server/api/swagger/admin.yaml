@@ -551,6 +551,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: email
+          description: Field to filter by email
+          required: false
+          type: string
+        - in: query
           name: order_by
           description: Field to order data
           required: false
@@ -4806,7 +4811,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadFeesCsv
-      description: download csv
+      description: download csv file of records
       parameters:
           - in: query
             name: start_date
@@ -4842,7 +4847,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadUsersCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - name: id
           in: query
@@ -4999,7 +5004,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadLoginsCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5086,7 +5091,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadAuditsCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5164,7 +5169,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadUserBalanceHistoryCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5236,7 +5241,7 @@ paths:
     x-swagger-router-controller: order
     get:
       operationId: downloadOrdersCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5331,7 +5336,7 @@ paths:
     x-swagger-router-controller: trade
     get:
       operationId: downloadTradesCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5409,7 +5414,7 @@ paths:
     x-swagger-router-controller: deposit
     get:
       operationId: downloadDepositsCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: currency
@@ -5531,7 +5536,7 @@ paths:
     x-swagger-router-controller: withdrawal
     get:
       operationId: downloadWithdrawalsCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: currency
@@ -5653,7 +5658,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadUserWalletCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5748,7 +5753,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadUserSessionsCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id
@@ -5830,7 +5835,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: downloadBalancesCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - name: user_id
           in: query
@@ -5868,7 +5873,7 @@ paths:
     x-swagger-router-controller: stake
     get:
       operationId: downloadStakesCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: limit
@@ -5933,7 +5938,7 @@ paths:
     x-swagger-router-controller: stake
     get:
       operationId: downloadStakersCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: id
@@ -6033,7 +6038,7 @@ paths:
     x-swagger-router-controller: p2p
     get:
       operationId: downloadP2pDisputeCsv
-      description: download csv
+      description: download csv file of records
       parameters:
         - in: query
           name: user_id

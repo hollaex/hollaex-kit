@@ -1171,15 +1171,16 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 	if (!admin.otp_enabled) { 
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(admin_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 
@@ -1796,7 +1797,8 @@ const getExchangeOperators = (opts = {
 	limit: null,
 	page: null,
 	orderBy: null,
-	order: null
+	order: null,
+	email: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
@@ -1806,7 +1808,9 @@ const getExchangeOperators = (opts = {
 		where: {
 			role: {
 				[Op.in]: operatorRoleNames
-			}
+			},
+			...(opts.email && { email: { [Op.iLike]: `%${opts.email}%` } })
+			
 		},
 		attributes: ['id', 'email', 'role'], 
 		order: [ordering],
@@ -4109,15 +4113,16 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 	
@@ -4208,7 +4213,7 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 
 
 	return Role.create({
-		role_name: name.toLowerCase(),
+		role_name: name.toLowerCase().replace(/\s+/g, ''),
 		description,
 		permissions: permissionsToStore,
 		configs: configsToStore,
@@ -4246,15 +4251,16 @@ const updateExchangeUserRole = async (roleId, { description, rolePermissions, co
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
 				throw new Error(INVALID_OTP_CODE);
-			}
 		}
 	}
 
@@ -4415,15 +4421,16 @@ const deleteExchangeUserRole = async (id, user_id, otp_code) => {
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 
