@@ -4,7 +4,7 @@ import { ReactSVG } from 'react-svg';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Button, Table, Select, Modal, message } from 'antd';
-import { Tabs } from 'antd';
+import { Tabs, Input } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import { CloseOutlined } from '@ant-design/icons';
 import _debounce from 'lodash/debounce';
@@ -180,12 +180,13 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	const [displayAssignRole, setDisplayAssignRole] = useState(false);
 	const [otpDialogIsOpen, setOtpDialogIsOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
+	const [userEmail, setUserEmail] = useState();
 
 	const isUpgrade = handleUpgrade(constants.info);
-	const requestInitRole = async (pageNo = 1) => {
+	const requestInitRole = async (pageNo = 1, email = null) => {
 		setIsLoading(true);
 		try {
-			const res = await requestRole({ pageNo, limit });
+			const res = await requestRole({ page: pageNo, limit, email });
 			let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
 			setOperatorList(temp);
 			setPage(pageNo);
@@ -553,6 +554,35 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 									operator role access.
 								</span>
 							</div>
+						</div>
+					</div>
+					<div style={{ width: 300 }}>
+						<div>Search user</div>
+						<div style={{ display: 'flex', gap: 10 }}>
+							<Input
+								style={{ width: 200 }}
+								placeholder="Search User Email"
+								onChange={(e) => {
+									setUserEmail(e.target.value);
+								}}
+								value={userEmail}
+							/>
+							<Button
+								onClick={() => {
+									requestInitRole(1, userEmail);
+								}}
+								style={{
+									backgroundColor: '#288500',
+									color: 'white',
+									flex: 1,
+									height: 35,
+									marginRight: 5,
+									width: 100,
+								}}
+								type="default"
+							>
+								Apply
+							</Button>
 						</div>
 					</div>
 					<div className="table-wrapper">

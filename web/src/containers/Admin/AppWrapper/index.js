@@ -550,6 +550,14 @@ class AppWrapper extends React.Component {
 			);
 		});
 
+		if (checkRole() === 'admin') {
+			pathNames.push({
+				path: '/admin/billing',
+				label: 'Billing',
+				routeKey: 'billing',
+			});
+		}
+
 		// if (checkRole() === 'admin') {
 		// 	pathNames = ADMIN_PATHS;
 		// } else if (checkRole() === 'supervisor') {

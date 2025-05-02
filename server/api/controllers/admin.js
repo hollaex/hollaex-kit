@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick, isNumber } = require('lodash');
 const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS } = require('../../constants');
+const { INIT_CHANNEL, ROLES, ROLE_PERMISSIONS, ROLE_DESCRIPTIONS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV, INVALID_VERIFICATION_CODE, INVALID_OTP_CODE, REFERRAL_HISTORY_NOT_ACTIVE } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
@@ -782,7 +782,7 @@ const getOperators = (req, res) => {
 		req.auth
 	);
 
-	const { limit, page, order_by, order } = req.swagger.params;
+	const { limit, page, order_by, order, email} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -797,7 +797,8 @@ const getOperators = (req, res) => {
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
-		order: order.value
+		order: order.value,
+		email: email.value
 	})
 		.then((operators) => {
 			return res.json(operators);
@@ -3226,7 +3227,8 @@ const deleteAnnouncement = (req, res) => {
 const getExchangeEndpoints = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getExchangeEndpoints/auth', req.auth.sub);
 	return res.json({
-		data: ROLE_PERMISSIONS
+		data: ROLE_PERMISSIONS,
+		descriptions: ROLE_DESCRIPTIONS
 	});
 };
 

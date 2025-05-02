@@ -16,6 +16,7 @@ import {
 	Select,
 	Card,
 	InputNumber,
+	Tooltip,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -236,6 +237,7 @@ const PermissionTabs = ({
 	treeData,
 	restrictions,
 	setRestrictions,
+	permissionDescriptions,
 	coins,
 }) => {
 	// const onCheck = (checkedKeys, { checkedNodes, halfCheckedKeys }, type) => {
@@ -301,6 +303,33 @@ const PermissionTabs = ({
 			};
 		});
 	};
+	console.log(permissionDescriptions);
+	const renderTreeNodes = (nodes) => {
+		return nodes.map((node) => {
+			const endpointKey = node.key
+				.replace('route:', '/')
+				.replace(/\./g, '/')
+				.replace(/\/(get|post|put|delete)$/, ':$1');
+
+			const description =
+				permissionDescriptions[`/admin${endpointKey}`] || node.title;
+
+			return {
+				...node,
+				title: (
+					<Tooltip
+						title={description}
+						placement="right"
+						overlayClassName="permission-tooltip"
+					>
+						<span className="tree-node-label">{node.title}</span>
+					</Tooltip>
+				),
+				children: node.children ? renderTreeNodes(node.children) : null,
+			};
+		});
+	};
+
 	const currenciesList = Object.keys(coins);
 
 	return (
@@ -319,7 +348,7 @@ const PermissionTabs = ({
 						checkable
 						onCheck={(keys, info) => onCheck(keys, info, 'route')}
 						checkedKeys={checkedKeys.filter((key) => key.startsWith('route:'))}
-						treeData={treeData}
+						treeData={renderTreeNodes(treeData)}
 						height={400}
 					/>
 				</div>
@@ -368,7 +397,7 @@ const PermissionTabs = ({
 					/>
 				</div>
 			</TabPane>
-			<TabPane
+			{/* <TabPane
 				tab={<span style={{ color: 'white' }}>Restricitons</span>}
 				key="4"
 			>
@@ -435,7 +464,7 @@ const PermissionTabs = ({
 							)
 					)}
 				</div>
-			</TabPane>
+			</TabPane> */}
 		</Tabs>
 	);
 };
@@ -446,6 +475,7 @@ const RoleForm = ({
 	onCancel,
 	isEditing,
 	treeData,
+	permissionDescriptions,
 	coins,
 }) => {
 	const [form] = Form.useForm();
@@ -529,7 +559,9 @@ const RoleForm = ({
 	}, []);
 
 	const onHandleChange = (e) => {
-		form.setFieldsValue({ role_name: e.target.value.toLowerCase() });
+		form.setFieldsValue({
+			role_name: e.target.value.toLowerCase().replace(/\s+/g, ''),
+		});
 		onHandleBadge();
 	};
 
@@ -597,6 +629,7 @@ const RoleForm = ({
 						checkedKeys={checkedKeys}
 						setCheckedKeys={setCheckedKeys}
 						treeData={treeData}
+						permissionDescriptions={permissionDescriptions}
 						restrictions={restrictions}
 						setRestrictions={setRestrictions}
 						coins={coins}
@@ -682,6 +715,7 @@ const RoleManagement = ({
 	const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 	const [selectedRole, setSelectedRole] = useState({});
 	const [isPermissionDisplay, setIsPermissionDisplay] = useState({});
+	const [permissionDescriptions, setPermissionDescriptions] = useState({});
 
 	useEffect(() => {
 		fetchEndpoints()
@@ -696,6 +730,7 @@ const RoleManagement = ({
 					}, {});
 
 				setTreeData(convertRoutesToTree(sortedObj));
+				setPermissionDescriptions(response?.descriptions);
 			})
 			.catch((err) => {
 				message.error('Error fetching roles:', err);
@@ -1175,6 +1210,7 @@ const RoleManagement = ({
 						onCancel={() => setIsModalVisible(false)}
 						isEditing={!!currentRole}
 						treeData={treeData}
+						permissionDescriptions={permissionDescriptions}
 						coins={coins}
 					/>
 				) : (

@@ -727,9 +727,14 @@ exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise', 'fiat'];
 
 // ROLES START
 let role_permissions = {};
+let role_descriptions = {};
 exports.ROLE_PERMISSIONS = role_permissions;
+exports.ROLE_DESCRIPTIONS = role_descriptions;
 exports.setEndpoints = (permissions) => {
 	Object.assign(role_permissions, permissions);
+};
+exports.setPermissionDescription = (descriptions) => {
+	Object.assign(role_descriptions, descriptions);
 };
 
 // ROLES END
