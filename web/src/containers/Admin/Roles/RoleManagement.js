@@ -13,9 +13,6 @@ import {
 	Typography,
 	Tabs,
 	Collapse,
-	Select,
-	Card,
-	InputNumber,
 	Tooltip,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -34,7 +31,6 @@ import { STATIC_ICONS } from 'config/icons';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
-const { Option } = Select;
 const KIT_CONFIG_KEYS = [
 	'captcha',
 	'api_name',
@@ -267,43 +263,43 @@ const PermissionTabs = ({
 		setCheckedKeys(Array.from(new Set(newCheckedKeys)));
 	};
 
-	const addRestriction = (type) => {
-		setRestrictions((prev) => {
-			const safePrev = prev || {};
-			if (safePrev[type]) {
-				// Already exists, don't allow adding another
-				return safePrev;
-			}
-			return {
-				...safePrev,
-				[type]: { currencies: [], max_amount: null },
-			};
-		});
-	};
+	// const addRestriction = (type) => {
+	// 	setRestrictions((prev) => {
+	// 		const safePrev = prev || {};
+	// 		if (safePrev[type]) {
+	// 			// Already exists, don't allow adding another
+	// 			return safePrev;
+	// 		}
+	// 		return {
+	// 			...safePrev,
+	// 			[type]: { currencies: [], max_amount: null },
+	// 		};
+	// 	});
+	// };
 
-	const updateRestriction = (type, field, value) => {
-		setRestrictions((prev) => {
-			const safePrev = prev || {};
-			if (!safePrev[type]) {
-				// If no restriction yet, initialize it
-				return {
-					...safePrev,
-					[type]: {
-						currencies: field === 'currencies' ? value : [],
-						max_amount: field === 'max_amount' ? value : null,
-					},
-				};
-			}
-			return {
-				...safePrev,
-				[type]: {
-					...safePrev[type],
-					[field]: value,
-				},
-			};
-		});
-	};
-	console.log(permissionDescriptions);
+	// const updateRestriction = (type, field, value) => {
+	// 	setRestrictions((prev) => {
+	// 		const safePrev = prev || {};
+	// 		if (!safePrev[type]) {
+	// 			// If no restriction yet, initialize it
+	// 			return {
+	// 				...safePrev,
+	// 				[type]: {
+	// 					currencies: field === 'currencies' ? value : [],
+	// 					max_amount: field === 'max_amount' ? value : null,
+	// 				},
+	// 			};
+	// 		}
+	// 		return {
+	// 			...safePrev,
+	// 			[type]: {
+	// 				...safePrev[type],
+	// 				[field]: value,
+	// 			},
+	// 		};
+	// 	});
+	// };
+
 	const renderTreeNodes = (nodes) => {
 		return nodes.map((node) => {
 			const endpointKey = node.key
@@ -330,7 +326,7 @@ const PermissionTabs = ({
 		});
 	};
 
-	const currenciesList = Object.keys(coins);
+	// const currenciesList = Object.keys(coins);
 
 	return (
 		<Tabs defaultActiveKey="1">

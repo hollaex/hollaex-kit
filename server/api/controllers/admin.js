@@ -916,17 +916,17 @@ const mintAsset = (req, res) => {
 				throw new Error(USER_NOT_FOUND);
 			}
 
-			const roles = toolsLib.getRoles();
-			const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-			const mintRestrictions = userRole?.restrictions?.mint;
+			// const roles = toolsLib.getRoles();
+			// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+			// const mintRestrictions = userRole?.restrictions?.mint;
 
-			if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
-				throw new Error('Your role does not allow this currency for mint');
-			}
+			// if (mintRestrictions?.currencies?.length > 0 && mintRestrictions.currencies.includes(currency)) {
+			// 	throw new Error('Your role does not allow this currency for mint');
+			// }
 
-			if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
-				throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
-			}
+			// if (mintRestrictions?.max_amount && isNumber(mintRestrictions.max_amount) && amount > mintRestrictions?.max_amount) {
+			// 	throw new Error(`Max amount for your role is ${mintRestrictions.max_amount}`);
+			// }
 
 			return toolsLib.wallet.mintAssetByNetworkId(
 				user.network_id,
@@ -1076,17 +1076,17 @@ const burnAsset = (req, res) => {
 		address
 	);
 
-	const roles = toolsLib.getRoles();
-	const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
-	const burnRestrictions = userRole?.restrictions?.burn;
+	// const roles = toolsLib.getRoles();
+	// const userRole = roles.find(role => role.role_name === req?.auth?.sub?.role);
+	// const burnRestrictions = userRole?.restrictions?.burn;
 
-	if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
-		throw new Error('Your role does not allow this currency for burn');
-	}
+	// if (burnRestrictions?.currencies?.length > 0 && burnRestrictions.currencies.includes(currency)) {
+	// 	throw new Error('Your role does not allow this currency for burn');
+	// }
 
-	if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
-		throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
-	}
+	// if (burnRestrictions?.max_amount && isNumber(burnRestrictions.max_amount) && amount > burnRestrictions?.max_amount) {
+	// 	throw new Error(`Max amount for your role is ${burnRestrictions.max_amount}`);
+	// }
 
 	toolsLib.user.getUserByKitId(user_id)
 		.then((user) => {
