@@ -1086,7 +1086,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if (role !== ROLES.USER && !user.is_admin) {
+	if (role !== ROLES.USER && user.role !== 'admin') {
 		throw new Error(NOT_AUTHORIZED);
 	}
 	if (role !== ROLES.USER && role !== ROLES.ADMIN) {
@@ -1300,7 +1300,7 @@ const checkPermission = (req, user) => {
 
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
-	};
+	}
 
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
@@ -1321,16 +1321,16 @@ const checkPermission = (req, user) => {
 	const requiredPermission = currentLevel?.[method];
 
 	if (!requiredPermission) {
-		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`)
+		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`);
 	}
 
 	// Check if user has permission
 	const userHasPermission = checkUserPermission(user, requiredPermission);
 
 	if (!userHasPermission) {
-		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`)
+		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`);
 	}
-}
+};
 
 const checkUserPermission = (user, requiredPermission) => {
 	const roles = getRoles();
@@ -1340,7 +1340,7 @@ const checkUserPermission = (user, requiredPermission) => {
 	}
 
 	return userRole.permissions.includes(requiredPermission);
-}
+};
 
 module.exports = {
 	checkCaptcha,
