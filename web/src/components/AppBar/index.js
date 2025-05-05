@@ -417,7 +417,8 @@ class AppBar extends Component {
 		return (
 			<Dialog
 				isOpen={
-					this.state.isPopupAnnouncement && constants?.features?.announcement
+					!!this.state.isPopupAnnouncement &&
+					!!constants?.features?.announcement
 				}
 				onCloseDialog={() => onHandleClose()}
 				shouldCloseOnOverlayClick={false}

@@ -11,6 +11,22 @@ class ColorPicker extends Component {
 	};
 
 	componentDidMount() {
+		this.initializePickr();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.value !== this.props.value) {
+			this.setState({ background: this.props.value || '#22194D' }, () => {
+				this.pickr.setColor(this.state.background);
+				this.pickr.options.default = this.state.background;
+			});
+		}
+	}
+
+	initializePickr = () => {
+		if (this.pickr) {
+			this.pickr.destroy();
+		}
 		this.pickr = Pickr.create({
 			el: '.color-picker',
 			theme: 'nano', // or 'monolith', or 'nano'
@@ -43,7 +59,7 @@ class ColorPicker extends Component {
 			},
 		});
 		this.pickr.on('save', this.handleChangeComplete);
-	}
+	};
 
 	handleClick = () => {
 		const isOpen = !this.state.isOpen;

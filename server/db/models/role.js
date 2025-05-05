@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
+        color: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        restrictions: {
+            type: DataTypes.JSONB,
+            allowNull: true,
+        },
         permissions: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false,

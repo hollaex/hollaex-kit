@@ -12,7 +12,8 @@ export const updateRole = (values, params) => {
 	);
 };
 
-export const requestRole = () => requestAuthenticated('/admin/operators');
+export const requestRole = (values) =>
+	requestAuthenticated(`/admin/operators?${querystring.stringify(values)}`);
 
 export const inviteOperator = (values) =>
 	requestAuthenticated(

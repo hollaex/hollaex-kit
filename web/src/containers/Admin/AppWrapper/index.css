@@ -227,7 +227,6 @@
 	border-bottom: 1px solid #f0f0f0;
 }
 .main-label {
-	color: #ffffff;
 	margin: 0rem 9rem;
 	font-size: 18px;
 	font-weight: bold;
@@ -243,6 +242,10 @@
 	position: absolute;
 	top: 1rem;
 	left: 2rem;
+}
+.sider-icons svg {
+	width: 100%;
+	height: 100%;
 }
 .bg-black {
 	background-color: #0f1114;
@@ -269,4 +272,27 @@
 }
 .admin-top-bar .time-wrapper {
 	cursor: pointer;
+}
+
+.operator-control-card-light svg path:first-child,
+.kyc-operator-card-wrapper.operator-control-card-light svg path:nth-child(2) {
+	fill: #ffffff;
+}
+
+.operator-control-card-dark svg path:first-child,
+.admin-operator-card-wrapper.operator-control-card-dark svg path:nth-child(2),
+.kyc-operator-card-wrapper.operator-control-card-dark svg path:nth-child(2),
+.supervisor-operator-card-wrapper.operator-control-card-dark svg path {
+	fill: #000000 !important;
+}
+
+.admin-operator-card-wrapper path:first-child,
+.kyc-operator-card-wrapper path:first-child,
+.admin-operator-card-wrapper.operator-control-card-dark path:first-child,
+.kyc-operator-card-wrapper.operator-control-card-dark path:first-child {
+	fill: none !important;
+}
+
+.operator-control-card-dark {
+	color: #000000 !important;
 }

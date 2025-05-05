@@ -46,7 +46,7 @@ import PublishSection from './PublishSection';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
-import { getConfigs, isLoggedIn } from 'utils/token';
+import { isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { minimalTimezoneSet } from '../Settings/Utils';
 const { Option } = Select;
@@ -916,7 +916,8 @@ class GeneralContent extends Component {
 		return (
 			<div>
 				<div className="general-wrapper">
-					{getConfigs().includes('api_name') && activeTab === 'branding' ? (
+					{this.props.user?.configs?.includes('api_name') &&
+					activeTab === 'branding' ? (
 						<div>
 							<div className="sub-title">Exchange Name</div>
 							<NameForm
@@ -930,7 +931,8 @@ class GeneralContent extends Component {
 							<div className="divider"></div>
 						</div>
 					) : null}
-					{getConfigs().includes('defaults') && activeTab === 'localization' ? (
+					{this.props.user?.configs?.includes('defaults') &&
+					activeTab === 'localization' ? (
 						<div>
 							<div>
 								<div className="sub-title">Country</div>
@@ -945,7 +947,7 @@ class GeneralContent extends Component {
 							</div>
 							<div className="divider"></div>
 
-							{getConfigs().includes('timezone') && (
+							{this.props.user?.configs?.includes('timezone') && (
 								<>
 									<div>
 										<div className="sub-title">Timezone</div>
@@ -976,7 +978,7 @@ class GeneralContent extends Component {
 							)}
 							<div className="divider"></div>
 
-							{getConfigs().includes('valid_languages') && (
+							{this.props.user?.configs?.includes('valid_languages') && (
 								<div>
 									<div className="sub-title">Language</div>
 									<div className="description">
@@ -1010,7 +1012,7 @@ class GeneralContent extends Component {
 								</div>
 							)}
 							<div className="divider" />
-							{getConfigs().includes('strings') && (
+							{this.props.user?.configs?.includes('strings') && (
 								<div>
 									<div className="sub-title">Theme</div>
 									<div className="description">
@@ -1044,7 +1046,9 @@ class GeneralContent extends Component {
 								</div>
 							)}
 							<div className="divider"></div>
-							{getConfigs().includes('selectable_native_currencies') && (
+							{this.props.user?.configs?.includes(
+								'selectable_native_currencies'
+							) && (
 								<div className="mb-5">
 									<div className="sub-title">Native currency</div>
 									<div className="description">
@@ -1066,7 +1070,9 @@ class GeneralContent extends Component {
 								</div>
 							)}
 							<div className="divider"></div>
-							{getConfigs().includes('selectable_native_currencies') && (
+							{this.props.user?.configs?.includes(
+								'selectable_native_currencies'
+							) && (
 								<div className="mb-5">
 									<div className="sub-title">
 										Other currency display options
@@ -1142,7 +1148,8 @@ class GeneralContent extends Component {
 							)}
 						</div>
 					) : null}
-					{getConfigs().includes('defaults') && activeTab === 'branding' ? (
+					{this.props.user?.configs?.includes('defaults') &&
+					activeTab === 'branding' ? (
 						<div>
 							{publishJSON.map((item, key) => {
 								return (
@@ -1179,7 +1186,7 @@ class GeneralContent extends Component {
 							</div>
 						</div>
 					) : null}
-					{getConfigs().includes('new_user_is_activated') &&
+					{this.props.user?.configs?.includes('new_user_is_activated') &&
 					activeTab === 'onboarding' ? (
 						<div>
 							<h2>Onboarding</h2>
@@ -1247,7 +1254,8 @@ class GeneralContent extends Component {
 							/>
 						</div>
 					) : null}
-					{getConfigs().includes('emails') && activeTab === 'email' ? (
+					{this.props.user?.configs?.includes('emails') &&
+					activeTab === 'email' ? (
 						<div>
 							<div className="form-wrapper">
 								<div className="disable-button">
@@ -1261,13 +1269,15 @@ class GeneralContent extends Component {
 										emailTypeData={emailTypeData}
 										constants={constants}
 										defaultEmailData={defaultEmailData}
+										handleTabChange={handleTabChange}
 									/>
 								</div>
 							</div>
 						</div>
 					) : null}
 				</div>
-				{getConfigs().includes('description') && activeTab === 'footer' ? (
+				{this.props.user?.configs?.includes('description') &&
+				activeTab === 'footer' ? (
 					<div>
 						<div className="general-wrapper">
 							<Description
@@ -1303,7 +1313,8 @@ class GeneralContent extends Component {
 						<div className="mb-5"></div>
 					</div>
 				) : null}
-				{getConfigs().includes('links') && activeTab === 'help_info' ? (
+				{this.props.user?.configs?.includes('links') &&
+				activeTab === 'help_info' ? (
 					<div className="general-wrapper">
 						<h3>Help pop up</h3>
 						<p>
@@ -1343,7 +1354,7 @@ class GeneralContent extends Component {
 						/>
 					</div>
 				) : null}
-				{getConfigs().includes('apps') && activeTab === 'apps' ? (
+				{this.props.user?.configs?.includes('apps') && activeTab === 'apps' ? (
 					<div className="general-wrapper">
 						<h3>Mobile Application Configurations</h3>
 						<p>
@@ -1457,7 +1468,8 @@ class GeneralContent extends Component {
 						</div>
 					</div>
 				) : null}
-				{getConfigs().includes('features') && activeTab === 'features' ? (
+				{this.props.user?.configs?.includes('features') &&
+				activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
 						constants={constants}
@@ -1470,7 +1482,8 @@ class GeneralContent extends Component {
 						enabledPlugins={enabledPlugins}
 					/>
 				) : null}
-				{getConfigs().includes('security') && activeTab === 'security' ? (
+				{this.props.user?.configs?.includes('security') &&
+				activeTab === 'security' ? (
 					<div>
 						<div className="general-wrapper">
 							<div className="sub-title">Geofencing</div>

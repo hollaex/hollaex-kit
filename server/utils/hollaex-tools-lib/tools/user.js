@@ -476,8 +476,11 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 		where: {
 			user_id: user.id,
 			status: false,
-			// device,
-			country
+			device,
+			country,
+			created_at: {
+				[Op.gte]: moment().subtract(5, 'minutes').toDate()
+			}
 		}
 	});
 
@@ -1024,9 +1027,7 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false, opt
 };
 
 const freezeUserById = (userId) => {
-	if (userId === 1) {
-		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
-	}
+
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
@@ -1160,21 +1161,26 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 	const Role = getModel('role');
 	const User = getModel('user');
 
+	if (role_name === 'admin') {
+		throw new Error('Cannot assign admin role');
+	}
+
 	const admin = await User.findOne({ where: { id: admin_id } });
 	if (!admin) throw new Error('User not found');
 
 	if (!admin.otp_enabled) { 
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(admin_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 
@@ -1791,7 +1797,8 @@ const getExchangeOperators = (opts = {
 	limit: null,
 	page: null,
 	orderBy: null,
-	order: null
+	order: null,
+	email: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
@@ -1801,7 +1808,9 @@ const getExchangeOperators = (opts = {
 		where: {
 			role: {
 				[Op.in]: operatorRoleNames
-			}
+			},
+			...(opts.email && { email: { [Op.iLike]: `%${opts.email}%` } })
+			
 		},
 		attributes: ['id', 'email', 'role'], 
 		order: [ordering],
@@ -4085,7 +4094,7 @@ const validateSecretPermissions = (secretPermissions) => {
 		}
 	});
 };
-const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code }) => {
+const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
 
 	const exchangeInfo = getKitConfig().info;
 
@@ -4104,15 +4113,16 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 	
@@ -4203,14 +4213,15 @@ const createExchangeUserRole = async ({ name, description, rolePermissions, conf
 
 
 	return Role.create({
-		role_name: name.toLowerCase(),
+		role_name: name.toLowerCase().replace(/\s+/g, ''),
 		description,
 		permissions: permissionsToStore,
 		configs: configsToStore,
+		color, restrictions
 	});
 };
 
-const updateExchangeUserRole = async (roleId, { name, description, rolePermissions, configs, user_id, otp_code }) => {
+const updateExchangeUserRole = async (roleId, { description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
 	
 	const exchangeInfo = getKitConfig().info;
 
@@ -4222,37 +4233,46 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 
 	const role = await Role.findOne({
 		where: { id: roleId },
-		attributes: ['id', 'role_name', 'description', 'permissions', 'configs'],
+		attributes: ['id', 'description', 'permissions', 'configs'],
 	});
 
 	if (!role) {
 		throw new Error('Role not found');
 	}
 
+	if (role.role_name === 'admin') {
+		throw new Error('Admin role cannot be updated');
+	}
+
+	
 	const admin = await User.findOne({ where: { id: user_id } });
 	if (!admin) throw new Error('User not found');
 
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
 				throw new Error(INVALID_OTP_CODE);
-			}
 		}
 	}
 
 	const updates = {};
-	if (name !== undefined && name !== role.role_name && role.role_name !== 'admin') {
-		updates.role_name = name.toLowerCase();
-	}
 	if (description !== undefined && description !== role.description) {
 		updates.description = description;
+	}
+	if (color !== undefined && color !== role.color) {
+		updates.color = color;
+	}
+	if (restrictions !== undefined && restrictions !== role.restrictions) {
+		updates.restrictions = restrictions;
 	}
 
 	if (rolePermissions !== undefined) {
@@ -4260,7 +4280,7 @@ const updateExchangeUserRole = async (roleId, { name, description, rolePermissio
 			throw new Error('Permissions must be an array');
 		}
 		if (!isArray(configs)) {
-			throw new Error('Permissions must be an array');
+			throw new Error('Configs must be an array');
 		}
 
 		const validationGroups = {
@@ -4401,15 +4421,16 @@ const deleteExchangeUserRole = async (id, user_id, otp_code) => {
 	if (!admin.otp_enabled) {
 		throw new Error('OTP is not enabled');
 	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
 		try {
 			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-			if (!otp_code) {
-				throw new Error(INVALID_OTP_CODE);
-			}
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 

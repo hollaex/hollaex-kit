@@ -24,6 +24,10 @@ module.exports = {
 					allowNull: false,
 					unique: true
 				},
+				color: {
+					type: Sequelize.STRING,
+					allowNull: true
+				},
 				permissions: {
 					type: Sequelize.ARRAY(Sequelize.STRING),
 					allowNull: false,
@@ -33,6 +37,10 @@ module.exports = {
 					type: Sequelize.ARRAY(Sequelize.STRING),
 					allowNull: false,
 					defaultValue: []
+				},
+				restrictions: {
+					type: Sequelize.JSONB,
+					allowNull: true
 				},
 				created_at: {
 					allowNull: false,
