@@ -885,7 +885,7 @@ const getAllUsersAdmin = (opts = {
 	}
 
 	if (opts.format) {
-		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta', 'role'];
 		return dbQuery.fetchAllRecords('user', query)
 			.then(async ({ count, data }) => {
 				if (opts.id || opts.search) {
@@ -4260,7 +4260,7 @@ const updateExchangeUserRole = async (roleId, { description, rolePermissions, co
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-				throw new Error(INVALID_OTP_CODE);
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 
