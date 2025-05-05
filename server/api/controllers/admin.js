@@ -3356,7 +3356,7 @@ const downloadFeesCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadUsersCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUsersCsv/auth', req.auth.sub);
 	const {
@@ -3443,7 +3443,7 @@ const downloadUsersCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadLoginsCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadLoginsCsv/auth', req.auth.sub);
 	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
@@ -3504,7 +3504,7 @@ const downloadLoginsCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadAuditsCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadAuditsCsv/auth', req.auth.sub);
 	const user_id = req.swagger.params.user_id.value;
@@ -3563,7 +3563,7 @@ const downloadAuditsCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadUserBalanceHistoryCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserBalanceHistoryCsv/auth', req.auth.sub);
 	const { limit, page, order_by, order, start_date, end_date, user_id } = req.swagger.params;
@@ -3620,7 +3620,7 @@ const downloadUserBalanceHistoryCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 
 const downloadUserWalletCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserWalletCsv/auth', req.auth.sub);
@@ -3665,7 +3665,7 @@ const downloadUserWalletCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadUserSessionsCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadUserSessionsCsv/auth', req.auth.sub);
 	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
@@ -3703,7 +3703,7 @@ const downloadUserSessionsCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 const downloadBalancesCsv = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/downloadBalancesCsv/auth', req.auth.sub);
 	const {
@@ -3730,7 +3730,7 @@ const downloadBalancesCsv = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
-}
+};
 
 module.exports = {
 	createInitialAdmin,

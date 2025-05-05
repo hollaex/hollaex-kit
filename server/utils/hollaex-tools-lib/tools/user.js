@@ -285,7 +285,8 @@ const createUser = (
 					password,
 					settings: INITIAL_SETTINGS(),
 					email_verified: opts.email_verified,
-					role
+					role,
+					is_admin: role === 'admin' ? true : false
 				};
 
 				if (isNumber(opts.id)) {
@@ -1132,28 +1133,6 @@ const unfreezeUserByEmail = (email) => {
 				user.settings
 			);
 			return user;
-		});
-};
-
-const getUserRole = (opts = {}) => {
-	return getUser(opts, true)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			if (user.is_admin) {
-				return 'admin';
-			} else if (user.is_supervisor) {
-				return 'supervisor';
-			} else if (user.is_support) {
-				return 'support';
-			} else if (user.is_kyc) {
-				return 'kyc';
-			} else if (user.is_communicator) {
-				return 'communicator';
-			} else {
-				return 'user';
-			}
 		});
 };
 
@@ -4456,7 +4435,6 @@ module.exports = {
 	unfreezeUserById,
 	unfreezeUserByEmail,
 	getAllUsers,
-	getUserRole,
 	updateUserSettings,
 	omitUserFields,
 	registerUserLogin,

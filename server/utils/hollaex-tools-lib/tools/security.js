@@ -68,6 +68,7 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
+const { user } = require('.');
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -847,10 +848,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 
 const createSession = async (token, loginId, userId) => {
 
-	const { getUserRole } = require('./user');
-
-	const userRole = await getUserRole({ kit_id: userId });
-
+	const user = await dbQuery.findOne('user', { where: { id: userId } });
+	const userRole = user.role || 'user';
 	const base64Payload = token.split('.')[1];
 	const payloadBuffer = Buffer.from(base64Payload, 'base64');
 	const decoded = JSON.parse(payloadBuffer.toString());
