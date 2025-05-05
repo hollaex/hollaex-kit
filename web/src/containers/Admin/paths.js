@@ -311,14 +311,9 @@ export const pathToPermissionMap = {
 		'/admin/stake/analytics:',
 	],
 	'/admin/sessions': ['/admin/logins:', '/admin/user/sessions:'],
-	'/admin/plugins': ['/admin/kit:', '/admin/kit/user-meta:', '/admin/plugins:'],
+	'/admin/plugins': ['/admin/kit:', '/admin/plugins:'],
 	'/admin/tiers': ['/admin/tier:'],
 	'/admin/audits': ['/admin/audits:'],
 	'/admin/roles': ['/admin/role:', '/admin/role/assign:'],
-	'/admin/chat': [
-		'/admin/send-email:',
-		'/admin/send-email/raw:',
-		'/admin/announcements:',
-	],
-	'/admin/billing': ['/admin/fees:', '/admin/fees/settle:'],
+	'/admin/chat': ['/admin/send-email:', '/admin/send-email/raw:'],
 };

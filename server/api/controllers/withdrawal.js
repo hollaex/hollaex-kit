@@ -307,15 +307,12 @@ const getAdminWithdrawals = (req, res) => {
 		rejected,
 		processing,
 		waiting,
-		format,
 		transaction_id,
 		address,
 		description
 	} = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
+
 
 	toolsLib.wallet.getUserWithdrawalsByKitId(
 		user_id.value,
@@ -334,7 +331,6 @@ const getAdminWithdrawals = (req, res) => {
 		transaction_id.value,
 		address.value,
 		description.value,
-		format.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
@@ -343,13 +339,7 @@ const getAdminWithdrawals = (req, res) => {
 	)
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerWithdrawals.error(
@@ -455,6 +445,73 @@ const cancelWithdrawal = (req, res) => {
 		});
 };
 
+const downloadWithdrawalsCsv = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/downloadWithdrawalsCsv/auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		transaction_id,
+		address,
+		description
+	} = req.swagger.params;
+
+	toolsLib.wallet.getUserWithdrawalsByKitId(
+		user_id.value,
+		currency.value,
+		status.value,
+		dismissed.value,
+		rejected.value,
+		processing.value,
+		waiting.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		start_date.value,
+		end_date.value,
+		transaction_id.value,
+		address.value,
+		description.value,
+		'csv',
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/downloadWithdrawalsCsv',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 module.exports = {
 	requestWithdrawal,
 	getWithdrawalFee,
@@ -463,5 +520,6 @@ module.exports = {
 	getUserWithdrawals,
 	cancelWithdrawal,
 	performDirectWithdrawal,
-	getWithdrawalMax
+	getWithdrawalMax,
+	downloadWithdrawalsCsv
 };

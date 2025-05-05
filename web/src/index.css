@@ -14733,6 +14733,26 @@ table th {
 .custom-email-wrapper .ant-select-selector {
   color: rgba(0, 0, 0, 0.85); }
 
+.customize-email-popup-wrapper .confirm_modal_wrapper .preview-email-title {
+  font-size: 20px; }
+
+.customize-email-popup-wrapper .confirm_modal_wrapper .email-preview-content {
+  width: 100%; }
+
+.customize-email-popup-wrapper .confirm_modal_wrapper .note-text {
+  margin: 2% 0;
+  display: flex;
+  gap: 1%;
+  align-items: center; }
+
+.customize-email-popup-wrapper .ant-modal-close-x .anticon-close {
+  color: #ffffff; }
+
+.customize-email-popup-wrapper .ant-modal-close:focus,
+.customize-email-popup-wrapper .ant-modal-close-x:focus-visible {
+  border: none !important;
+  outline: none !important; }
+
 .auto-trader-container {
   margin: 3% auto;
   width: 80%; }

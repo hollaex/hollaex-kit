@@ -3,3 +3,34 @@
 		color: rgba(0, 0, 0, 0.85);
 	}
 }
+
+.customize-email-popup-wrapper {
+	.confirm_modal_wrapper {
+		.preview-email-title {
+			font-size: 20px;
+		}
+
+		.email-preview-content {
+			width: 100%;
+		}
+
+		.note-text {
+			margin: 2% 0;
+			display: flex;
+			gap: 1%;
+			align-items: center;
+		}
+	}
+
+	.ant-modal-close-x {
+		.anticon-close {
+			color: #ffffff;
+		}
+	}
+
+	.ant-modal-close:focus,
+	.ant-modal-close-x:focus-visible {
+		border: none !important;
+		outline: none !important;
+	}
+}

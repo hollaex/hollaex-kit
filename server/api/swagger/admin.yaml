@@ -551,6 +551,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: email
+          description: Field to filter by email
+          required: false
+          type: string
+        - in: query
           name: order_by
           description: Field to order data
           required: false
@@ -4473,7 +4478,7 @@ paths:
               configs:
                 type: array
               restrictions:
-                type: object
+                type: [object, "null"]
               otp_code:
                 type: string
                 maxLength: 6
@@ -4520,7 +4525,7 @@ paths:
               configs:
                 type: array
               restrictions:
-                type: array
+                type: [object, "null"]
               otp_code:
                 type: string
                 maxLength: 6
@@ -4802,4 +4807,1301 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-  
+  /admin/fees/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadFeesCsv
+      description: download csv file of records
+      parameters:
+          - in: query
+            name: start_date
+            description: Starting date of queried data
+            required: false
+            type: string
+            format: date-time
+          - in: query
+            name: end_date
+            description: Ending date of queried data
+            required: false
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/users/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUsersCsv
+      description: download csv file of records
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: number
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: search
+          in: query
+          required: false
+          type: string
+          maxLength: 256
+        - name: type
+          in: query
+          required: false
+          type: string
+          maxLength: 256
+        - name: pending
+          in: query
+          required: false
+          type: boolean
+        - name: pending_type
+          in: query
+          required: false
+          type: string
+          enum: ['id', 'bank']
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: email
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: username
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: full_name
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: dob_start_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: dob_end_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
+        - in: query
+          name: gender
+          required: false
+          type: boolean
+        - in: query
+          name: nationality
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: phone_number
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: verification_level
+          required: false
+          type: number
+        - in: query
+          name: email_verified
+          required: false
+          type: boolean
+        - in: query
+          name: otp_enabled
+          required: false
+          type: boolean
+        - in: query
+          name: kyc
+          required: false
+          type: integer
+        - in: query
+          name: bank
+          required: false
+          type: integer
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/logins/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadLoginsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
+          name: country
+          description: country of the login
+          required: false
+          type: string
+        - in: query
+          name: ip
+          description: ip of the login
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/audits/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadAuditsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: subject
+          description: Action Owner
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/balance-history/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserBalanceHistoryCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          enum: ['id', 'user_id', 'total']
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/orders/csv:
+    x-swagger-router-controller: order
+    get:
+      operationId: downloadOrdersCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: side
+          description: buy or sell
+          required: false
+          enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: status
+          description: Order status e.g. pfilled, filled
+          required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
+          type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/trades/csv:
+    x-swagger-router-controller: trade
+    get:
+      operationId: downloadTradesCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/deposits/csv:
+    x-swagger-router-controller: deposit
+    get:
+      operationId: downloadDepositsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: address
+          description: Address of the deposit
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the deposit. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the deposit.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the deposit.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/withdrawals/csv:
+    x-swagger-router-controller: withdrawal
+    get:
+      operationId: downloadWithdrawalsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/wallet/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserWalletCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: address
+          description: crypto address of the wallet
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: is_valid
+          description: specify whether or not wallet is wallet
+          required: false
+          type: boolean
+        - in: query
+          name: network
+          description: Blockchain network of wallet
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/sessions/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserSessionsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: last_seen
+          description: last seen
+          required: false
+          type: string
+          enum: ['1h', '24h']
+        - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/balances/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadBalancesCsv
+      description: download csv file of records
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: currency
+          in: query
+          required: false
+          type: string
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/stakes/csv:
+    x-swagger-router-controller: stake
+    get:
+      operationId: downloadStakesCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/stakers/csv:
+    x-swagger-router-controller: stake
+    get:
+      operationId: downloadStakersCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the staker entry.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: user_id
+          description: The ID of the user who has locked funds and staked.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: stake_id
+          description: The ID of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: The currency in which the user staked.
+          required: false
+          type: string
+        - in: query
+          name: reward
+          description: The amount the user has received as rewards.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: slashed
+          description: The amount slashed.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/p2p/dispute/csv:
+    x-swagger-router-controller: p2p
+    get:
+      operationId: downloadP2pDisputeCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: "user_id"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
