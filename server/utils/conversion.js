@@ -13,7 +13,12 @@ const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;
 };
 
-const errorMessageConverter = (error, lang = 'en') => {
+const errorMessageConverter = (error, lang) => {
+	// For backward compatibility
+	if (lang === null) {
+		return error.message;
+	}
+
 	let message = error.message;
 
 	if (error.name === 'SequelizeValidationError') {
