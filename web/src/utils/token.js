@@ -30,8 +30,9 @@ export const decodeToken = (token) => jwtDecode(token);
 export const checkRole = () => {
 	const token = getToken();
 	if (!token || token === undefined) return '';
-	const roles = jwtDecode(token).scopes;
-	let role = '';
+	const tokenRole = jwtDecode(token)?.sub?.role?.toLowerCase();
+	const roles = [tokenRole];
+	let role = tokenRole;
 	if (roles.includes('admin')) {
 		role = 'admin';
 	} else if (roles.includes('supervisor')) {
@@ -46,8 +47,24 @@ export const checkRole = () => {
 	return role;
 };
 
+export const getPermissions = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.permissions;
+};
+export const getConfigs = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.configs;
+};
+
 export const isUser = () => {
-	return checkRole() === '';
+	return (
+		checkRole() === '' ||
+		checkRole() === 'user' ||
+		checkRole() === null ||
+		checkRole() === undefined
+	);
 };
 export const isKYC = () => {
 	return checkRole() === 'kyc';
@@ -63,13 +80,17 @@ export const isTech = () => {
 };
 export const isAdmin = () => {
 	const role = checkRole();
-	return (
-		role === 'admin' ||
-		role === 'kyc' ||
-		role === 'support' ||
-		role === 'supervisor' ||
-		role === 'communicator'
-	);
+	return role?.length > 0 && role !== 'user';
+};
+
+export const hasPermissions = () => {
+	return getPermissions()?.length > 0;
+};
+
+export const getRole = () => {
+	const token = getToken();
+	if (!token || token === undefined) return '';
+	return jwtDecode(token)?.sub?.role?.toLowerCase();
 };
 
 export const getDashToken = () => {

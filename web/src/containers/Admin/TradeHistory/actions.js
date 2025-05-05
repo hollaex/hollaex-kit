@@ -24,7 +24,7 @@ export const requestTradesDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({
 		method: 'GET',
-		url: `/admin/trades?${query}`,
+		url: `/admin/trades/csv?${query}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));

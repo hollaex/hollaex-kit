@@ -122,6 +122,7 @@ const NotificationsList = ({
 					<span
 						onClick={() => onHandleNavigate(announcement)}
 						className="pointer"
+						key={index}
 					>
 						<NotificationItem
 							key={announcement?.id}

@@ -15,10 +15,12 @@ import Wallet from './Wallet';
 import Balances from './Balances';
 import CoinConfiguration from './CoinConfiguration';
 import TransactionLimits from './TransactionLimits';
+//import { getPermissions } from 'utils/token';
+import { connect } from 'react-redux';
 
 const TabPane = Tabs.TabPane;
 
-const AdminFinancials = ({ router, location, user }) => {
+const AdminFinancials = ({ router, location, user, authUser }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [hideTabs, setHideTabs] = useState(false);
 
@@ -51,56 +53,86 @@ const AdminFinancials = ({ router, location, user }) => {
 				onChange={handleTabChange}
 				renderTabBar={renderTabBar}
 			>
-				<TabPane tab="Assets" key="0">
-					<Assets location={location} handleHide={handleHide} />
-				</TabPane>
-				<TabPane tab="Summary" key="3">
-					<Wallets router={router} />
-				</TabPane>
-				<TabPane tab="Wallet" key="4">
-					<Wallet />
-				</TabPane>
-				<TabPane tab="Balances" key="5">
-					<Balances />
-				</TabPane>
-				<TabPane tab="Orders" key="6">
-					<ExchangeOrdersContainer
-						type="orders"
-						user={user}
-						showFilters={true}
-					/>
-				</TabPane>
-				<TabPane tab="Trades" key="7">
-					<ExchangeTradesContainer
-						type="trades"
-						user={user}
-						showFilters={true}
-					/>
-				</TabPane>
-				<TabPane tab="Deposits" key="8">
-					<DepositPage type="deposit" showFilters={true} />
-				</TabPane>
-				<TabPane tab="Withdrawals" key="9">
-					<DepositPage type="withdrawal" showFilters={true} />
-				</TabPane>
-				<TabPane tab="Earnings" key="10">
-					<Earnings />
-				</TabPane>
-				<TabPane tab="Transfers" key="11">
-					<Transfer />
-				</TabPane>
-				<TabPane tab="Duster" key="12">
-					<Duster />
-				</TabPane>
-				<TabPane tab="Limits" key="2">
-					<TransactionLimits location={location} />
-				</TabPane>
-				<TabPane tab="Fee Markups" key="1">
-					<CoinConfiguration location={location} />
-				</TabPane>
+				{authUser?.permissions?.includes('/admin/balance:get') && (
+					<TabPane tab="Assets" key="0">
+						<Assets location={location} handleHide={handleHide} />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/balance:get') && (
+					<TabPane tab="Summary" key="3">
+						<Wallets router={router} />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/user/wallet:get') && (
+					<TabPane tab="Wallet" key="4">
+						<Wallet />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/balances:get') && (
+					<TabPane tab="Balances" key="5">
+						<Balances />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/orders:get') && (
+					<TabPane tab="Orders" key="6">
+						<ExchangeOrdersContainer
+							type="orders"
+							user={user}
+							showFilters={true}
+						/>
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/trades:get') && (
+					<TabPane tab="Trades" key="7">
+						<ExchangeTradesContainer
+							type="trades"
+							user={user}
+							showFilters={true}
+						/>
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/deposits:get') && (
+					<TabPane tab="Deposits" key="8">
+						<DepositPage type="deposit" showFilters={true} />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/withdrawals:get') && (
+					<TabPane tab="Withdrawals" key="9">
+						<DepositPage type="withdrawal" showFilters={true} />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/fees:get') && (
+					<TabPane tab="Earnings" key="10">
+						<Earnings />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/transfer:post') && (
+					<TabPane tab="Transfers" key="11">
+						<Transfer />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/transfer:post') && (
+					<TabPane tab="Duster" key="12">
+						<Duster />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/transaction/limit:get') && (
+					<TabPane tab="Limits" key="2">
+						<TransactionLimits location={location} />
+					</TabPane>
+				)}
+				{authUser?.permissions?.includes('/admin/kit:get') && (
+					<TabPane tab="Fee Markups" key="1">
+						<CoinConfiguration location={location} />
+					</TabPane>
+				)}
 			</Tabs>
 		</div>
 	);
 };
 
-export default AdminFinancials;
+const mapStateToProps = (state) => ({
+	authUser: state.user,
+});
+
+export default connect(mapStateToProps)(AdminFinancials);

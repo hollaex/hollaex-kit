@@ -330,11 +330,7 @@ const AssetsRow = ({
 						/>
 					) : (
 						<ActionNotification
-							stringId={STRINGS.formatString(
-								STRINGS['MARKETS_TABLE.BUY'],
-								<span>/</span>,
-								<span>{STRINGS['SIDES.SELL']}</span>
-							)}
+							stringId="MARKETS_TABLE.BUY"
 							text={STRINGS.formatString(
 								STRINGS['MARKETS_TABLE.BUY'],
 								<span>/</span>,

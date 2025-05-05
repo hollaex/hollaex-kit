@@ -139,7 +139,7 @@ const AssetsList = ({
 					<thead>
 						<tr className="table-bottom-border">
 							<th className="sticky-col">
-								<div className={isMobile && 'ml-2'}>
+								<div className={isMobile ? 'ml-2' : ''}>
 									<EditWrapper stringId="MARKETS_TABLE.ASSET">
 										{STRINGS['MARKETS_TABLE.ASSET']}
 									</EditWrapper>
@@ -160,7 +160,7 @@ const AssetsList = ({
 										onClick={handleOneDaySort}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper stringId={STRINGS['MARKETS_TABLE.24H']}>
+										<EditWrapper stringId="MARKETS_TABLE.24H">
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['MARKETS_TABLE.24H']
@@ -176,7 +176,7 @@ const AssetsList = ({
 										onClick={handleClickChange}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper stringId={STRINGS['QUICK_TRADE_COMPONENT.7D']}>
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.7D">
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['QUICK_TRADE_COMPONENT.7D']

@@ -80,6 +80,7 @@ export const ConfirmAutoTrade = ({
 			}}
 			className="auto-trader-popup-wrapper auto-trader-confirm-popup-wrapper"
 			shouldCloseOnOverlayClick={false}
+			label="confirm-auto-trade-popup"
 		>
 			<div className="auto-trader-popup-container auto-trader-confirm-popup-container">
 				<EditWrapper stringId="AUTO_TRADER.REVIEW_AND_CONFIRM">

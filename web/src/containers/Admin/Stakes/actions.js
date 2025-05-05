@@ -18,7 +18,7 @@ export const getExchangeSessionsCsv = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
-		url: `/admin/user/sessions?${queryValues}`,
+		url: `/admin/user/sessions/csv?${queryValues}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -55,7 +55,7 @@ export const getExchangeLoginsCsv = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
-		url: `/admin/user/sessions?${queryValues}`,
+		url: `/admin/user/sessions/csv?${queryValues}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -99,7 +99,7 @@ export const requestStakePoolsDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({
 		method: 'GET',
-		url: `/admin/stakes?${query}`,
+		url: `/admin/stakes/csv?${query}`,
 	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));

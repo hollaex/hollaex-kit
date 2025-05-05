@@ -20,12 +20,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
-        - communicator
     put:
       description: Update exchange configuration
       operationId: updateExchange
@@ -79,8 +73,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/tier:
     x-swagger-router-controller: tier
     post:
@@ -108,8 +100,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       description: Update tier
       operationId: putTier
@@ -135,8 +125,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/check-transaction:
     x-swagger-router-controller: admin
     get:
@@ -189,8 +177,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/send-email-test:
@@ -244,9 +230,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - tech
   /admin/fees:
     x-swagger-router-controller: admin
     get:
@@ -290,8 +273,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/fees/settle:
     x-swagger-router-controller: admin
     get:
@@ -319,8 +300,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/signup:
@@ -376,8 +355,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/network-credentials:
     x-swagger-router-controller: admin
     put:
@@ -415,8 +392,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/kit:
     x-swagger-router-controller: admin
     get:
@@ -437,12 +412,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
-        - communicator
     put:
       operationId: putAdminKit
       description: Update exchange constants and secrets
@@ -467,9 +436,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - communicator
   /admin/email:
     x-swagger-router-controller: admin
     get:
@@ -503,8 +469,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       operationId: putEmail
       description: Update email for admin
@@ -546,8 +510,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/email/types:
     x-swagger-router-controller: admin
     get:
@@ -568,8 +530,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/operators:
     x-swagger-router-controller: admin
     get:
@@ -591,6 +551,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: email
+          description: Field to filter by email
+          required: false
+          type: string
+        - in: query
           name: order_by
           description: Field to order data
           required: false
@@ -606,7 +571,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/OperatorsResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -615,8 +580,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/kit/user-meta:
     x-swagger-router-controller: admin
     post:
@@ -660,8 +623,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       operationId: putKitUserMeta
       description: Update key in kit user_meta object
@@ -700,9 +661,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
     delete:
       operationId: deleteKitUserMeta
       description: Delete key in kit user_meta object
@@ -728,43 +686,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-  /admin/operator/invite:
-    x-swagger-router-controller: admin
-    get:
-      operationId: inviteNewOperator
-      description: Invite a new operator
-      tags:
-        - Admin
-      parameters:
-        - name: email
-          in: query
-          required: true
-          type: string
-          maxLength: 256
-          description: Email of user to invite
-        - name: role
-          in: query
-          required: true
-          type: string
-          maxLength: 256
-          description: Role of user
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-      x-security-scopes:
-        - admin
   /admin/upload:
     x-swagger-router-controller: admin
     post:
@@ -802,9 +723,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - communicator
   /admin/pair:
     x-swagger-router-controller: admin
     post:
@@ -831,8 +749,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       description: Update pair on network
       operationId: updatePair
@@ -857,8 +773,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
@@ -885,8 +799,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/pairs/network:
     x-swagger-router-controller: admin
     get:
@@ -913,8 +825,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/pair/fees:
     x-swagger-router-controller: tier
     put:
@@ -941,8 +851,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/coin:
     x-swagger-router-controller: admin
     post:
@@ -969,8 +877,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
     put:
       description: Update coin on network
       operationId: updateCoin
@@ -995,8 +901,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/coins:
     x-swagger-router-controller: admin
     get:
@@ -1024,8 +928,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/coins/network:
     x-swagger-router-controller: admin
     get:
@@ -1052,8 +954,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/users:
     x-swagger-router-controller: admin
     get:
@@ -1213,11 +1113,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
       x-token-permissions:
         - can_read
   /admin/user:
@@ -1261,8 +1156,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
     put:
@@ -1329,10 +1222,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
       x-token-permissions:
         - can_withdraw
     delete:
@@ -1367,8 +1256,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/user/role:
@@ -1392,7 +1279,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/UserRolePutResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -1401,8 +1288,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/user/meta:
@@ -1436,9 +1321,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
       x-token-permissions:
         - can_withdraw
   /admin/user/discount:
@@ -1486,9 +1368,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
       x-token-permissions:
         - can_withdraw
   /admin/user/note:
@@ -1522,11 +1401,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_withdraw
   /admin/user/balance:
@@ -1556,9 +1430,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
       x-token-permissions:
         - can_read
   /admin/user/bank:
@@ -1600,10 +1471,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
       x-token-permissions:
         - can_withdraw
   /admin/user/restore:
@@ -1638,8 +1505,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/user/email:
     x-swagger-router-controller: admin
     put:
@@ -1684,8 +1549,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -1722,10 +1585,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
   /admin/bank/revoke:
     x-swagger-router-controller: admin
     post:
@@ -1765,10 +1624,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
   /admin/logins:
     x-swagger-router-controller: admin
     get:
@@ -1858,11 +1713,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
       x-token-permissions:
         - can_read
   /admin/audits:
@@ -1944,8 +1794,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/user/balance-history:
     x-swagger-router-controller: admin
     get:
@@ -2020,8 +1868,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/orders:
@@ -2117,11 +1963,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
       x-token-permissions:
         - can_read
   /admin/order:
@@ -2152,8 +1993,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_trade
     delete:
@@ -2186,9 +2025,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
       x-token-permissions:
         - can_trade
   /admin/trades:
@@ -2271,11 +2107,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_read
   /admin/user/activate:
@@ -2314,11 +2145,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
       x-token-permissions:
         - can_withdraw
   /admin/balance:
@@ -2342,8 +2168,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/upgrade-user:
@@ -2373,10 +2197,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
       x-token-permissions:
         - can_withdraw
   /admin/verify-email:
@@ -2408,10 +2228,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
   /admin/deactivate-otp:
     x-swagger-router-controller: otp
     post:
@@ -2443,9 +2259,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
       x-token-permissions:
         - can_withdraw
   /admin/flag-user:
@@ -2478,11 +2291,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
-        - supervisor
-        - support
-        - kyc
   /admin/deposits:
     x-swagger-router-controller: deposit
     get:
@@ -2505,6 +2313,12 @@ paths:
         - in: query
           name: transaction_id
           description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
           required: false
           type: string
           maxLength: 256
@@ -2602,11 +2416,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_read
   /admin/withdrawals:
@@ -2631,6 +2440,12 @@ paths:
         - in: query
           name: transaction_id
           description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
           required: false
           type: string
           maxLength: 256
@@ -2728,11 +2543,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_read
   /admin/transfer:
@@ -2763,8 +2573,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/mint:
@@ -2794,8 +2602,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
     put:
@@ -2823,8 +2629,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/burn:
@@ -2854,8 +2658,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
     put:
@@ -2883,8 +2685,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/dash-token:
@@ -2907,8 +2707,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/user/affiliation:
     x-swagger-router-controller: admin
     get:
@@ -2971,11 +2769,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_read
   /admin/user/referer:
@@ -3004,11 +2797,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_read
   /admin/user/wallet:
@@ -3108,8 +2896,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
     post:
@@ -3151,11 +2937,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
-        - kyc
-        - support
       x-token-permissions:
         - can_withdraw
   /admin/send-email:
@@ -3221,8 +3002,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/send-email/raw:
@@ -3269,8 +3048,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/user/disable-withdrawal:
@@ -3313,8 +3090,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/user/sessions:
     x-swagger-router-controller: admin
     get:
@@ -3399,9 +3174,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
   /admin/user/revoke-session:
     x-swagger-router-controller: admin
     post:
@@ -3435,9 +3207,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
-        - supervisor
   /admin/user/trading-volume:
     x-swagger-router-controller: admin
     get:
@@ -3481,8 +3250,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/user/referral/code:
@@ -3549,8 +3316,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
     post:
@@ -3592,8 +3357,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-      x-security-scopes:
-        - admin
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:
@@ -3631,8 +3394,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/transaction/limit:
     x-swagger-router-controller: admin
     put:
@@ -3660,8 +3421,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     get:
       description: get transaction limits for admin
       operationId: getTransactionLimits
@@ -3681,8 +3440,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     delete:
       description: delete transaction limits for admin
       operationId: deleteTransactionLimit
@@ -3708,8 +3465,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/balances:
     x-swagger-router-controller: admin
     get:
@@ -3750,8 +3505,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/stakes:
@@ -3821,8 +3574,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/stake:
@@ -3852,8 +3603,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     put:
       description: Update exchange stakes for admin
       operationId: updateExchangeStakes
@@ -3879,8 +3628,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     delete:
       description: delete exchange stakes for admin
       operationId: deleteExchangeStakes
@@ -3906,8 +3653,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/stake/slash-estimate:
     x-swagger-router-controller: stake
     get:
@@ -3936,8 +3681,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/stakers:
@@ -4042,8 +3785,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/stake/analytics:
@@ -4067,8 +3808,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
   /admin/p2p/dispute:
@@ -4144,8 +3883,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_read
     put:
@@ -4181,8 +3918,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/trade:
     x-swagger-router-controller: admin
     post:
@@ -4242,8 +3977,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_trade
   /admin/withdrawal:
@@ -4299,8 +4032,6 @@ paths:
         - Token: []
       x-security-types:
         - hmac
-      x-security-scopes:
-        - admin
       x-token-permissions:
         - can_withdraw
   /admin/user/payment-details:
@@ -4387,8 +4118,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     post:
       description: Create a new payment detail by admin
       operationId: createPaymentDetailByAdmin
@@ -4431,8 +4160,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     put:
       description: Update a payment detail by admin
       operationId: updatePaymentDetailByAdmin
@@ -4478,8 +4205,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     delete:
       description: Delete a payment detail
       operationId: deletePaymentDetailByAdmin
@@ -4512,8 +4237,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
   /admin/announcements:
     x-swagger-router-controller: admin
     get:
@@ -4586,8 +4309,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     post:
       description: Create announcement by admin
       operationId: createAnnouncement
@@ -4632,8 +4353,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     put:
       description: Update announcement by admin
       operationId: updateAnnouncement
@@ -4680,8 +4399,6 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
     delete:
       description: Delete announcement
       operationId: deleteAnnouncement
@@ -4711,5 +4428,1680 @@ paths:
       x-security-types:
         - bearer
         - hmac
-      x-security-scopes:
-        - admin
+  /admin/role:
+    x-swagger-router-controller: admin
+    get:
+      description: Get roles by admin
+      operationId: getExchangeUserRoles
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+    post:
+      description: Create role by admin
+      operationId: createExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - otp_code
+            properties:
+              name:
+                type: string
+                maxLength: 256
+              description:
+                type: string
+                maxLength: 256
+              color:
+                type: string
+                maxLength: 256
+              permissions:
+                type: array
+              configs:
+                type: array
+              restrictions:
+                type: [object, "null"]
+              otp_code:
+                type: string
+                maxLength: 6
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+    put:
+      description: Update role by admin
+      operationId: updateExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - otp_code
+              - id
+            properties:
+              id:
+                type: integer
+                maxLength: 256
+              description:
+                type: string
+                maxLength: 256
+              color:
+                type: string
+                maxLength: 256
+              permissions:
+                type: array
+              configs:
+                type: array
+              restrictions:
+                type: [object, "null"]
+              otp_code:
+                type: string
+                maxLength: 6
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+    delete:
+      description: Delete role
+      operationId: deleteExchangeUserRole
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - id
+              - otp_code
+            properties:
+              id:
+                type: integer
+                format: int32
+              otp_code:
+                type: string
+                maxLength: 6
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/endpoints:
+    x-swagger-router-controller: admin
+    get:
+      description: Get endpoints by admin
+      operationId: getExchangeEndpoints
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/broker:
+    x-swagger-router-controller: broker
+    post:
+      operationId: createBrokerPair
+      description: Create a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPair"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    put:
+      operationId: updateBrokerPair
+      description: Edit a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    get:
+      operationId: getBrokerPairs
+      description: Get all broker deals
+      tags:
+        - Broker
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/BrokerPair"
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+    delete:
+      operationId: deleteBrokerPair
+      description: Delete a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/markets:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getTrackedExchangeMarkets
+      description: Get tracked exchange markets
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_name
+          description: exchange name
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBroker
+      description: test broker
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spread:
+                type: number
+              increment_size:
+                type: number
+                format: double
+              formula:
+                type: string
+                maxLength: 1024
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/broker/connect:
+    x-swagger-router-controller: broker
+    get:
+      operationId: testRebalance
+      description: test connecting rebalance exchange
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_id
+          description: exchange to connect to
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: api_key
+          description: exchang api key
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: api_secret
+          description: exchang api scret
+          required: true
+          type: string
+          maxLength: 256
+        - in: query
+          name: password
+          description: exchange password
+          required: false
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/fees/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadFeesCsv
+      description: download csv file of records
+      parameters:
+          - in: query
+            name: start_date
+            description: Starting date of queried data
+            required: false
+            type: string
+            format: date-time
+          - in: query
+            name: end_date
+            description: Ending date of queried data
+            required: false
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/users/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUsersCsv
+      description: download csv file of records
+      parameters:
+        - name: id
+          in: query
+          required: false
+          type: number
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: search
+          in: query
+          required: false
+          type: string
+          maxLength: 256
+        - name: type
+          in: query
+          required: false
+          type: string
+          maxLength: 256
+        - name: pending
+          in: query
+          required: false
+          type: boolean
+        - name: pending_type
+          in: query
+          required: false
+          type: string
+          enum: ['id', 'bank']
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: email
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: username
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: full_name
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: dob_start_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: dob_end_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
+        - in: query
+          name: gender
+          required: false
+          type: boolean
+        - in: query
+          name: nationality
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: phone_number
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: verification_level
+          required: false
+          type: number
+        - in: query
+          name: email_verified
+          required: false
+          type: boolean
+        - in: query
+          name: otp_enabled
+          required: false
+          type: boolean
+        - in: query
+          name: kyc
+          required: false
+          type: integer
+        - in: query
+          name: bank
+          required: false
+          type: integer
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/logins/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadLoginsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
+          name: country
+          description: country of the login
+          required: false
+          type: string
+        - in: query
+          name: ip
+          description: ip of the login
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/audits/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadAuditsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: subject
+          description: Action Owner
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/balance-history/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserBalanceHistoryCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          enum: ['id', 'user_id', 'total']
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/orders/csv:
+    x-swagger-router-controller: order
+    get:
+      operationId: downloadOrdersCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: side
+          description: buy or sell
+          required: false
+          enum: ['buy', 'sell']
+          type: string
+        - in: query
+          name: status
+          description: Order status e.g. pfilled, filled
+          required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
+          type: string
+        - in: query
+          name: open
+          description: Open status of order
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/trades/csv:
+    x-swagger-router-controller: trade
+    get:
+      operationId: downloadTradesCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/deposits/csv:
+    x-swagger-router-controller: deposit
+    get:
+      operationId: downloadDepositsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: address
+          description: Address of the deposit
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the deposit. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the deposit.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the deposit.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/withdrawals/csv:
+    x-swagger-router-controller: withdrawal
+    get:
+      operationId: downloadWithdrawalsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: currency
+          description: Currency type
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: user_id
+          description: Id of the user
+          required: false
+          type: number
+        - in: query
+          name: transaction_id
+          description: unique transaction id
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: description
+          description: description of the transaction
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: address
+          description: Address of the withdrawal
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+          default: 50
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+          default: 1
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: status
+          required: false
+          type: boolean
+          description: Status of the withdrawals. False = "Pending"; True = "Completed"
+        - in: query
+          name: dismissed
+          required: false
+          type: boolean
+          description: Cancel status of the withdrawals.
+        - in: query
+          name: rejected
+          required: false
+          type: boolean
+          description: Rejected status of the withdrawals.
+        - in: query
+          name: processing
+          required: false
+          type: boolean
+          description: Processing status of the deposit.
+        - in: query
+          name: waiting
+          required: false
+          type: boolean
+          description: Waiting status of the deposit.
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/wallet/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserWalletCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: Currency symbol
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: address
+          description: crypto address of the wallet
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: is_valid
+          description: specify whether or not wallet is wallet
+          required: false
+          type: boolean
+        - in: query
+          name: network
+          description: Blockchain network of wallet
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/user/sessions/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadUserSessionsCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: last_seen
+          description: last seen
+          required: false
+          type: string
+          enum: ['1h', '24h']
+        - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/balances/csv:
+    x-swagger-router-controller: admin
+    get:
+      operationId: downloadBalancesCsv
+      description: download csv file of records
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: currency
+          in: query
+          required: false
+          type: string
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/stakes/csv:
+    x-swagger-router-controller: stake
+    get:
+      operationId: downloadStakesCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/stakers/csv:
+    x-swagger-router-controller: stake
+    get:
+      operationId: downloadStakersCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the staker entry.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: user_id
+          description: The ID of the user who has locked funds and staked.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: stake_id
+          description: The ID of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: The currency in which the user staked.
+          required: false
+          type: string
+        - in: query
+          name: reward
+          description: The amount the user has received as rewards.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: slashed
+          description: The amount slashed.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+  /admin/p2p/dispute/csv:
+    x-swagger-router-controller: p2p
+    get:
+      operationId: downloadP2pDisputeCsv
+      description: download csv file of records
+      parameters:
+        - in: query
+          name: user_id
+          description: "user_id"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac

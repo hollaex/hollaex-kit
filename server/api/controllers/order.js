@@ -52,7 +52,8 @@ const createOrder = (req, res) => {
 				'controllers/order/createOrder error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -91,7 +92,8 @@ const createOrderByAdmin = (req, res) => {
 				'controllers/order/createOrderByAdmin error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -128,7 +130,8 @@ const getQuickTrade = (req, res) => {
 				'controllers/order/createQuickTrade error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -171,7 +174,8 @@ const orderExecute = (req, res) => {
 				'controllers/order/orderExecute error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -210,7 +214,8 @@ const dustBalance = (req, res) => {
 				'controllers/order/dustBalance error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -248,7 +253,8 @@ const dustEstimatePrice = (req, res) => {
 				'controllers/order/dustEstimatePrice error',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -281,7 +287,8 @@ const getUserOrder = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getUserOrder error', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -314,7 +321,8 @@ const cancelUserOrder = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/cancelUserOrder error', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -353,7 +361,8 @@ const getAllUserOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getAllUserOrders error', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -372,7 +381,8 @@ const cancelAllUserOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/cancelAllUserOrders error', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -390,12 +400,9 @@ const getAdminOrders = (req, res) => {
 		order,
 		start_date,
 		end_date,
-		format
 	} = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
+
 	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
 
@@ -412,7 +419,6 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -431,7 +437,6 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -446,7 +451,8 @@ const getAdminOrders = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOrders.debug(req.uuid, 'controllers/order/getAdminOrders', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -480,7 +486,79 @@ const adminCancelOrder = (req, res) => {
 				'controllers/order/adminCancelOrder',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const downloadOrdersCsv = (req, res) => {
+	loggerOrders.verbose(req.uuid, 'controllers/order/downloadOrdersCsv/auth', req.auth);
+	const {
+		user_id,
+		symbol,
+		side,
+		status,
+		open,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+	} = req.swagger.params;
+
+	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+	let promiseQuery;
+
+	if (user_id.value) {
+		promiseQuery = toolsLib.order.getAllUserOrdersByKitId(
+			user_id.value,
+			symbol.value,
+			side.value,
+			status.value,
+			open.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value,
+			'csv',
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
+		);
+	} else {
+		promiseQuery = toolsLib.order.getAllExchangeOrders(
+			symbol.value,
+			side.value,
+			status.value,
+			open.value,
+			limit.value,
+			page.value,
+			order_by.value,
+			order.value,
+			start_date.value,
+			end_date.value,
+			'csv',
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
+		);
+	}
+
+	promiseQuery
+		.then((orders) => {
+			return res.json(orders);
+		})
+		.catch((err) => {
+			loggerOrders.debug(req.uuid, 'controllers/order/downloadOrdersCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -497,5 +575,6 @@ module.exports = {
 	getQuickTrade,
 	dustBalance,
 	orderExecute,
-	dustEstimatePrice
+	dustEstimatePrice,
+	downloadOrdersCsv
 };
