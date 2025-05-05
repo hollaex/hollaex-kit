@@ -1445,7 +1445,8 @@ const getUnrealizedUserReferral = (req, res) => {
 				'controllers/user/getUnrealizedUserReferral err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1486,7 +1487,8 @@ const getRealizedUserReferral = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getRealizedUserReferral', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1514,7 +1516,8 @@ const getUserReferralCodes = (req, res) => {
 				'controllers/user/getUserReferralCodes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1548,7 +1551,8 @@ const createUserReferralCode = (req, res) => {
 				'controllers/user/createUserReferralCode err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1576,7 +1580,8 @@ const settleUserFees = (req, res) => {
 				'controllers/user/settleUserFees err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1624,7 +1629,8 @@ const fetchUserReferrals = (req, res) => {
 				'controllers/user/referrals err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1654,7 +1660,8 @@ const fetchUserTradingVolume = (req, res) => {
 				'controllers/user/fetchUserTradingVolume err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1667,7 +1674,8 @@ const fetchUserAddressBook = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/fetchUserAddressBook', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1684,7 +1692,8 @@ const updateUserAddresses = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateUserAddresses err', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1712,7 +1721,8 @@ const getPaymentDetails = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getPaymentDetails', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1736,7 +1746,8 @@ const createPaymentDetail = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/createPaymentDetail', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1759,7 +1770,8 @@ const updatePaymentDetail = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updatePaymentDetail', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1777,7 +1789,8 @@ const deletePaymentDetail = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/deletePaymentDetail', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1808,7 +1821,8 @@ const fetchUserAutoTrades = (req, res) => {
 		.then((data) => res.json(data))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/fetchUserAutoTrades', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1837,7 +1851,8 @@ const createUserAutoTrade = (req, res) => {
 		.then((data) => res.json(data))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/createUserAutoTrade', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1867,7 +1882,8 @@ const updateUserAutoTrade = (req, res) => {
 		.then((data) => res.json(data))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/updateUserAutoTrade', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -1885,7 +1901,8 @@ const deleteUserAutoTrade = (req, res) => {
 		.then(() => res.json({ message: 'Success' }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/deleteUserAutoTrade', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
