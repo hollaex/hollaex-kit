@@ -616,19 +616,7 @@ const AboutData = ({
 	};
 
 	const renderRole = () => {
-		if (userData.is_admin) {
-			return 'admin';
-		} else if (userData.is_communicator) {
-			return 'communicator';
-		} else if (userData.is_kyc) {
-			return 'kyc';
-		} else if (userData.is_supervisor) {
-			return 'supervisor';
-		} else if (userData.is_support) {
-			return 'support';
-		} else {
-			return 'user';
-		}
+		return userData.role || 'user';
 	};
 
 	return (

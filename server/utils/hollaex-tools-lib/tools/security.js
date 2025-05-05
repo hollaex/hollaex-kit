@@ -68,6 +68,7 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
+const { user } = require('.');
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -847,10 +848,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 
 const createSession = async (token, loginId, userId) => {
 
-	const { getUserRole } = require('./user');
-
-	const userRole = await getUserRole({ kit_id: userId });
-
+	const user = await dbQuery.findOne('user', { where: { id: userId } });
+	const userRole = user.role || 'user';
 	const base64Payload = token.split('.')[1];
 	const payloadBuffer = Buffer.from(base64Payload, 'base64');
 	const decoded = JSON.parse(payloadBuffer.toString());
@@ -1086,7 +1085,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if (role !== ROLES.USER && !user.is_admin) {
+	if (role !== ROLES.USER && user.role !== 'admin') {
 		throw new Error(NOT_AUTHORIZED);
 	}
 	if (role !== ROLES.USER && role !== ROLES.ADMIN) {
@@ -1300,7 +1299,7 @@ const checkPermission = (req, user) => {
 
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
-	};
+	}
 
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
@@ -1321,16 +1320,16 @@ const checkPermission = (req, user) => {
 	const requiredPermission = currentLevel?.[method];
 
 	if (!requiredPermission) {
-		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`)
+		throw new Error(`No permission configured for ${apiPath} ${method.toUpperCase()}`);
 	}
 
 	// Check if user has permission
 	const userHasPermission = checkUserPermission(user, requiredPermission);
 
 	if (!userHasPermission) {
-		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`)
+		throw new Error(`${NOT_AUTHORIZED} Required permission: ${requiredPermission}`);
 	}
-}
+};
 
 const checkUserPermission = (user, requiredPermission) => {
 	const roles = getRoles();
@@ -1340,7 +1339,7 @@ const checkUserPermission = (user, requiredPermission) => {
 	}
 
 	return userRole.permissions.includes(requiredPermission);
-}
+};
 
 module.exports = {
 	checkCaptcha,

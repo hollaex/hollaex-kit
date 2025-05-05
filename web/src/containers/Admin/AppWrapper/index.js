@@ -566,7 +566,7 @@ class AppWrapper extends React.Component {
 		// 	pathNames = PATHS;
 		// }
 
-		if (features.apps) {
+		if (features.apps && checkRole() === 'admin') {
 			pathNames = [
 				...pathNames,
 				{
