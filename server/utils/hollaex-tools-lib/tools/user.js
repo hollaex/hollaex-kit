@@ -3839,6 +3839,7 @@ const updateUserAutoTrade = async (user_id, {
 		day_of_month,
 		trade_hour,
 		active,
+		last_execution_date: active === false ? null : trade.last_execution_date,
 		description
 	});
 };
