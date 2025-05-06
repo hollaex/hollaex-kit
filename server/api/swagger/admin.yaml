@@ -3213,7 +3213,7 @@ paths:
       description:  Get user trading volume of last 30 days by admin
       operationId: fetchUserTradingVolumeByAdmin
       tags:
-        - User
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -3889,7 +3889,7 @@ paths:
       description: Update dispute for p2p
       operationId: updateP2PDispute
       tags:
-        - P2P
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4040,7 +4040,7 @@ paths:
       description: Get payment details by admin
       operationId: getPaymentDetailsByAdmin
       tags:
-        - PaymentDetails
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -4122,7 +4122,7 @@ paths:
       description: Create a new payment detail by admin
       operationId: createPaymentDetailByAdmin
       tags:
-        - PaymentDetails
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4164,7 +4164,7 @@ paths:
       description: Update a payment detail by admin
       operationId: updatePaymentDetailByAdmin
       tags:
-        - PaymentDetails
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4209,7 +4209,7 @@ paths:
       description: Delete a payment detail
       operationId: deletePaymentDetailByAdmin
       tags:
-        - PaymentDetails
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4653,7 +4653,7 @@ paths:
       operationId: getBrokerPairs
       description: Get all broker deals
       tags:
-        - Broker
+        - Admin
       responses:
         200:
           description: Success
@@ -4704,7 +4704,7 @@ paths:
       operationId: getTrackedExchangeMarkets
       description: Get tracked exchange markets
       tags:
-        - Broker
+        - Admin
       parameters:
         - in: query
           name: exchange_name
@@ -4733,7 +4733,7 @@ paths:
       operationId: testBroker
       description: test broker
       tags:
-        - Broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4768,7 +4768,7 @@ paths:
       operationId: testRebalance
       description: test connecting rebalance exchange
       tags:
-        - Broker
+        - Admin
       parameters:
         - in: query
           name: exchange_id
@@ -4812,6 +4812,8 @@ paths:
     get:
       operationId: downloadFeesCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
           - in: query
             name: start_date
@@ -4848,6 +4850,8 @@ paths:
     get:
       operationId: downloadUsersCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - name: id
           in: query
@@ -5005,6 +5009,8 @@ paths:
     get:
       operationId: downloadLoginsCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5092,6 +5098,8 @@ paths:
     get:
       operationId: downloadAuditsCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5170,6 +5178,8 @@ paths:
     get:
       operationId: downloadUserBalanceHistoryCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5242,6 +5252,8 @@ paths:
     get:
       operationId: downloadOrdersCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5337,6 +5349,8 @@ paths:
     get:
       operationId: downloadTradesCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5415,6 +5429,8 @@ paths:
     get:
       operationId: downloadDepositsCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: currency
@@ -5537,6 +5553,8 @@ paths:
     get:
       operationId: downloadWithdrawalsCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: currency
@@ -5659,6 +5677,8 @@ paths:
     get:
       operationId: downloadUserWalletCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5754,6 +5774,8 @@ paths:
     get:
       operationId: downloadUserSessionsCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
@@ -5836,6 +5858,8 @@ paths:
     get:
       operationId: downloadBalancesCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - name: user_id
           in: query
@@ -5874,6 +5898,8 @@ paths:
     get:
       operationId: downloadStakesCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: limit
@@ -5939,6 +5965,8 @@ paths:
     get:
       operationId: downloadStakersCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: id
@@ -6039,6 +6067,8 @@ paths:
     get:
       operationId: downloadP2pDisputeCsv
       description: download csv file of records
+      tags:
+        - Admin
       parameters:
         - in: query
           name: user_id
