@@ -208,32 +208,38 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const userAgent = req.headers['user-agent'];
-	const result = detector.detect(userAgent);
+	let device;
 
-	const truncate = (str, maxLen = 100) => {
-		if (!str || typeof str !== 'string') return '';
-		return str.substring(0, maxLen);
-	};
+	if (req.headers['custom-device']) {
+		device = req.headers['user-agent'];
+	} else {
+		const userAgent = req.headers['user-agent'];
+		const result = detector.detect(userAgent);
 
-	let deviceParts = [
-		truncate(result.device.brand, 100),
-		truncate(result.device.model, 100),
-		truncate(result.device.type, 100),
-		truncate(result.client.name, 100),
-		truncate(result.client.type, 100),
-		truncate(result.os.name, 100)
-	].filter(Boolean);
+		const truncate = (str, maxLen = 100) => {
+			if (!str || typeof str !== 'string') return '';
+			return str.substring(0, maxLen);
+		};
 
-	let device = deviceParts.join(' ').trim();
+		let deviceParts = [
+			truncate(result.device.brand, 100),
+			truncate(result.device.model, 100),
+			truncate(result.device.type, 100),
+			truncate(result.client.name, 100),
+			truncate(result.client.type, 100),
+			truncate(result.os.name, 100)
+		].filter(Boolean);
 
-	const encoder = new TextEncoder();
-	while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
-		deviceParts.pop();
 		device = deviceParts.join(' ').trim();
+
+		const encoder = new TextEncoder();
+		while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
+			deviceParts.pop();
+			device = deviceParts.join(' ').trim();
+		}
+
+
 	}
-
-
 
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;

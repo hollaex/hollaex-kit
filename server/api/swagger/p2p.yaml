@@ -5,7 +5,7 @@ paths:
       description: Get p2p deals
       operationId: fetchP2PDeals
       tags:
-        - User
+        - P2P
       parameters:
         - in: query
           name: user_id
@@ -249,7 +249,7 @@ paths:
       description: Get p2p transactions
       operationId: fetchP2PTransactions
       tags:
-        - User
+        - P2P
       parameters:
         - in: query
           name: user_id
@@ -446,7 +446,7 @@ paths:
       description: Get p2p feedback
       operationId: fetchP2PFeedbacks
       tags:
-        - User
+        - P2P
       parameters:
         - in: query
           name: transaction_id
@@ -575,7 +575,7 @@ paths:
       description: Get p2p feedback
       operationId: fetchP2PProfile
       tags:
-        - User
+        - P2P
       parameters:
         - in: query
           name: user_id
