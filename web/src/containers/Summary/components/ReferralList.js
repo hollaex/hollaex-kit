@@ -618,6 +618,7 @@ const ReferralList = ({
 					className="referral_table_theme create_referral_wrapper"
 					isOpen={displayCreateLink}
 					onCloseDialog={() => onHandleClose()}
+					label="create-referral-popup"
 				>
 					{linkStep === 0 && (
 						<>
@@ -1140,6 +1141,7 @@ const ReferralList = ({
 				isOpen={displaySettle}
 				width={'480'}
 				onCloseDialog={() => setDisplaySettle(false)}
+				label="settle-referral-popup"
 			>
 				<div className="settle">
 					<div className="settle-popup-wrapper fs-13">
@@ -1193,6 +1195,7 @@ const ReferralList = ({
 				className="referral_table_theme"
 				isOpen={displaySettle}
 				onCloseDialog={() => setDisplaySettle(false)}
+				label="settle-referral-popup"
 			>
 				<div>
 					<div className="settle-popup-wrapper fs-13">
@@ -1258,6 +1261,7 @@ const ReferralList = ({
 				isOpen={isSuccessfullySettled}
 				width={'480'}
 				onCloseDialog={() => onHandleCloseSuccessfulPopup()}
+				label="settle-referral-popup"
 			>
 				<div className="settle">
 					<div className="settle-popup-wrapper fs-13">

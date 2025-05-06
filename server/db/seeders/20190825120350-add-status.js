@@ -74,37 +74,38 @@ module.exports = {
 						false,
 						false,
 						{
-							id: 1
+							id: 1,
+							role: 'admin'
 						}
 					);
 
 					await queryInterface.bulkInsert('Users', [user], {},
 						{
-						id: { type: new Sequelize.INTEGER() },
-						email: { type: new Sequelize.STRING() },
-						password: { type: new Sequelize.STRING() },
-						network_id: { type: new Sequelize.INTEGER() },
-						full_name: { type: new Sequelize.STRING() },
-						gender: { type: new Sequelize.BOOLEAN() },
-						email_verified: { type: new Sequelize.BOOLEAN() },
-						verification_level: { type: new Sequelize.INTEGER() },
-						nationality: { type: new Sequelize.STRING() },
-						phone_number: { type: new Sequelize.STRING() },
-						activated: { type: new Sequelize.BOOLEAN() },
-						is_admin: { type: new Sequelize.BOOLEAN() },
-						is_supervisor: { type: new Sequelize.BOOLEAN() },
-						is_support: { type: new Sequelize.BOOLEAN() },
-						is_kyc: { type: new Sequelize.BOOLEAN() },
-						is_communicator: { type: new Sequelize.BOOLEAN() },
-						username: { type: new Sequelize.STRING() },
-						affiliation_code: { type: new Sequelize.STRING() },
-						created_at: { type: new Sequelize.DATE() },
-						updated_at: { type: new Sequelize.DATE() },
-						settings: { type: new Sequelize.JSON() },
-						bank_account: { type: new Sequelize.JSON() },
-						id_data: { type: new Sequelize.JSON() },
-						address: { type: new Sequelize.JSON() },
-					});
+							id: { type: new Sequelize.INTEGER() },
+							email: { type: new Sequelize.STRING() },
+							password: { type: new Sequelize.STRING() },
+							network_id: { type: new Sequelize.INTEGER() },
+							full_name: { type: new Sequelize.STRING() },
+							gender: { type: new Sequelize.BOOLEAN() },
+							email_verified: { type: new Sequelize.BOOLEAN() },
+							verification_level: { type: new Sequelize.INTEGER() },
+							nationality: { type: new Sequelize.STRING() },
+							phone_number: { type: new Sequelize.STRING() },
+							activated: { type: new Sequelize.BOOLEAN() },
+							is_admin: { type: new Sequelize.BOOLEAN() },
+							is_supervisor: { type: new Sequelize.BOOLEAN() },
+							is_support: { type: new Sequelize.BOOLEAN() },
+							is_kyc: { type: new Sequelize.BOOLEAN() },
+							is_communicator: { type: new Sequelize.BOOLEAN() },
+							username: { type: new Sequelize.STRING() },
+							affiliation_code: { type: new Sequelize.STRING() },
+							created_at: { type: new Sequelize.DATE() },
+							updated_at: { type: new Sequelize.DATE() },
+							settings: { type: new Sequelize.JSON() },
+							bank_account: { type: new Sequelize.JSON() },
+							id_data: { type: new Sequelize.JSON() },
+							address: { type: new Sequelize.JSON() },
+						});
 				}
 
 				const status = {

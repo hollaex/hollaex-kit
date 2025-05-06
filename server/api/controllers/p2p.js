@@ -70,7 +70,8 @@ const createP2PDeal = (req, res) => {
 				'controllers/p2p/createP2PDeal err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -146,7 +147,8 @@ const updateP2PDeal = (req, res) => {
 				'controllers/p2p/updateP2PDeal err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 const deleteP2PDeal = (req, res) => {
@@ -172,19 +174,17 @@ const deleteP2PDeal = (req, res) => {
 				'controllers/p2p/deleteP2PDeal err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
 const fetchP2PDeals = (req, res) => {
 	loggerP2P.verbose(req.uuid, 'controllers/p2p/fetchP2PDeals/auth', req.auth);
 
-	const { user_id, limit, page, order_by, order, start_date, end_date, format, status } = req.swagger.params;
+	const { user_id, limit, page, order_by, order, start_date, end_date, status } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerP2P.error(
 			req.uuid,
@@ -202,23 +202,16 @@ const fetchP2PDeals = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value,
         status: status.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PDeals', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -263,7 +256,8 @@ const fetchP2PDisputes = (req, res) => {
 		})
 		.catch((err) => {
 			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PDisputes', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -309,7 +303,8 @@ const fetchP2PTransactions = (req, res) => {
 		})
 		.catch((err) => {
 			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PTransactions', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -350,7 +345,8 @@ const createP2PTransaction = (req, res) => {
 				'controllers/p2p/createP2PTransaction err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -392,7 +388,8 @@ const updateP2PTransaction = (req, res) => {
 				'controllers/p2p/updateP2PTransaction err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 const updateP2PDispute = (req, res) => {
@@ -427,7 +424,8 @@ const updateP2PDispute = (req, res) => {
 				'controllers/p2p/updateP2PDispute err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -465,7 +463,8 @@ const createP2pChatMessage = (req, res) => {
 				'controllers/p2p/createP2pChatMessage err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -502,7 +501,8 @@ const createP2PFeedback = (req, res) => {
 				'controllers/p2p/createP2PFeedback err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -549,7 +549,8 @@ const fetchP2PFeedbacks = (req, res) => {
 		})
 		.catch((err) => {
 			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PFeedbacks', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -565,9 +566,50 @@ const fetchP2PProfile = (req, res) => {
 		})
 		.catch((err) => {
 			loggerP2P.error(req.uuid, 'controllers/p2p/fetchP2PProfile', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
+
+
+const downloadP2pDisputeCsv = (req, res) => {
+	loggerP2P.verbose(req.uuid, 'controllers/p2p/downloadP2pDisputeCsv/auth', req.auth);
+
+	const { user_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerP2P.error(
+			req.uuid,
+			'controllers/p2p/downloadP2pDisputeCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.p2p.fetchP2PDisputes({
+		user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv',
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerP2P.error(req.uuid, 'controllers/p2p/downloadP2pDisputeCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 
 module.exports = {
 	createP2PDeal,
@@ -582,5 +624,6 @@ module.exports = {
     updateP2PDispute,
 	createP2PFeedback,
 	fetchP2PFeedbacks,
-	fetchP2PProfile
+	fetchP2PProfile,
+	downloadP2pDisputeCsv
 };

@@ -167,6 +167,7 @@ exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
 exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_TRANSACTION_LIMITS = () => cloneDeep(configuration.transaction_limits);
+exports.GET_ROLES = () => cloneDeep(configuration.roles);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
@@ -353,7 +354,8 @@ exports.OMITTED_USER_FIELDS = [
 	'is_supervisor',
 	'is_kyc',
 	'is_communicator',
-	'flagged'
+	'flagged',
+	'role'
 ];
 
 const ROLES = {
@@ -690,7 +692,7 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
 	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap']
+	ALL: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap']
 };
 
 
@@ -723,6 +725,19 @@ exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise', 'fiat'];
 //AUTO_TRADE CONSTANTS END
 
 
+// ROLES START
+let role_permissions = {};
+let role_descriptions = {};
+exports.ROLE_PERMISSIONS = role_permissions;
+exports.ROLE_DESCRIPTIONS = role_descriptions;
+exports.setEndpoints = (permissions) => {
+	Object.assign(role_permissions, permissions);
+};
+exports.setPermissionDescription = (descriptions) => {
+	Object.assign(role_descriptions, descriptions);
+};
+
+// ROLES END
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');

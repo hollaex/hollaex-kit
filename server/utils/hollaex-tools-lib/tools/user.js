@@ -87,11 +87,14 @@ const {
 	TOKEN_TIME_NORMAL,
 	VERIFY_STATUS,
 	EVENTS_CHANNEL,
-	BALANCE_HISTORY_SUPPORTED_PLANS
+	BALANCE_HISTORY_SUPPORTED_PLANS,
+	ROLE_PERMISSIONS,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS,
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -264,28 +267,17 @@ const createUser = (
 		return dbQuery.findOne('user', {
 			where: { email }
 		})
-			.then((user) => {
+			.then(async (user) => {
 				if (user) {
 					throw new Error(USER_EXISTS);
 				}
-				const roles = {
-					is_admin: false,
-					is_supervisor: false,
-					is_support: false,
-					is_kyc: false,
-					is_communicator: false
-				};
 
-				if (opts.role !== 'user') {
-					const userRole = 'is_' + opts.role.toLowerCase();
-					if (roles[userRole] === undefined) {
-						throw new Error('Role does not exist');
-					}
-					each(roles, (value, key) => {
-						if (key === userRole) {
-							roles[key] = true;
-						}
-					});
+				let role = null;
+				if (opts.role === 'admin') {
+					const Role = getModel('role');
+					const adminRole = await Role.findOne({ where: { role_name: 'admin' } });
+					if (!adminRole) throw new Error('Role not found');
+					role = adminRole.role_name;
 				}
 
 				const options = {
@@ -293,7 +285,8 @@ const createUser = (
 					password,
 					settings: INITIAL_SETTINGS(),
 					email_verified: opts.email_verified,
-					...roles
+					role,
+					is_admin: role === 'admin' ? true : false
 				};
 
 				if (isNumber(opts.id)) {
@@ -485,11 +478,24 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			user_id: user.id,
 			status: false,
 			device,
-			country
+			country,
+			created_at: {
+				[Op.gte]: moment().subtract(5, 'minutes').toDate()
+			}
 		}
 	});
 
 	if (!loginData) {
+		loggerUser.verbose(
+			'tools/user/loginPost creating suspicious login record',
+			'user id',
+			user.id,
+			'country',
+			country,
+			'device',
+			device,
+
+		);
 		return registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -501,7 +507,16 @@ const createSuspiciousLogin = async (user, ip, device, country, domain, origin, 
 			country
 		});
 	}
+	loggerUser.verbose(
+		'tools/user/loginPost existing suspicious login record found, updating attempt counter',
+		'user id',
+		user.id,
+		'country',
+		country,
+		'device',
+		device,
 
+	);
 	await updateLoginAttempt(loginData.id);
 	return loginData;
 };
@@ -595,7 +610,7 @@ const checkAffiliation = (affiliationCode, user_id) => {
 					earning_rate: referrer.earning_rate,
 					code: affiliationCode,
 				}),
-					referrer,
+				referrer,
 				getModel('referralCode').increment('referral_count', { by: 1, where: { id: referrer.id } })
 				]);
 			} else {
@@ -871,7 +886,7 @@ const getAllUsersAdmin = (opts = {
 	}
 
 	if (opts.format) {
-		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta', 'role'];
 		return dbQuery.fetchAllRecords('user', query)
 			.then(async ({ count, data }) => {
 				if (opts.id || opts.search) {
@@ -1013,9 +1028,7 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false, opt
 };
 
 const freezeUserById = (userId) => {
-	if (userId === 1) {
-		return reject(new Error(CANNOT_DEACTIVATE_ADMIN));
-	}
+
 	return getUserByKitId(userId, false)
 		.then((user) => {
 			if (!user) {
@@ -1024,7 +1037,7 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
@@ -1051,7 +1064,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.is_admin) {
+			if (user.is_admin || user.role === 'admin') {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -1123,94 +1136,55 @@ const unfreezeUserByEmail = (email) => {
 		});
 };
 
-const getUserRole = (opts = {}) => {
-	return getUser(opts, true)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			if (user.is_admin) {
-				return 'admin';
-			} else if (user.is_supervisor) {
-				return 'supervisor';
-			} else if (user.is_support) {
-				return 'support';
-			} else if (user.is_kyc) {
-				return 'kyc';
-			} else if (user.is_communicator) {
-				return 'communicator';
-			} else {
-				return 'user';
-			}
-		});
-};
+const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
+	const Role = getModel('role');
+	const User = getModel('user');
 
-const updateUserRole = (user_id, role) => {
-	if (user_id === 1) {
-		return reject(new Error(CANNOT_CHANGE_ADMIN_ROLE));
+	if (role_name === 'admin') {
+		throw new Error('Cannot assign admin role');
 	}
-	return dbQuery.findOne('user', {
-		where: {
-			id: user_id
-		},
-		attributes: [
-			'id',
-			'email',
-			'is_admin',
-			'is_support',
-			'is_supervisor',
-			'is_kyc',
-			'is_communicator'
-		]
-	})
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
+
+	const admin = await User.findOne({ where: { id: admin_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) { 
+		throw new Error('OTP is not enabled');
+	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+		try {
+			const validOtp = await verifyOtpBeforeAction(admin_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
 			}
-			const roles = pick(
-				user.dataValues,
-				'is_admin',
-				'is_supervisor',
-				'is_support',
-				'is_kyc',
-				'is_communicator'
-			);
+		} catch (error) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+	}
 
-			const roleChange = 'is_' + role.toLowerCase();
+	const user = await User.findOne({ where: { id: user_id } });
+	if (!user) throw new Error('User not found');
 
-			if (roles[roleChange]) {
-				throw new Error(`User already has role ${role}`);
-			}
+	if (user.role == 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_ROLE);
+	}
 
-			each(roles, (value, key) => {
-				if (key === roleChange) {
-					roles[key] = true;
-				} else {
-					roles[key] = false;
-				}
-			});
+	if(role_name === 'user') {
+		user.role = null;
+		await user.save();
+		await revokeAllUserSessions(user_id);
+		return user;
+	} else {
+		const role = await Role.findOne({ where: { role_name } });
+		if (!role) throw new Error('Role not found');
 
-			return all([user, roles]);
-		})
-		.then(([user, roles]) => {
-			return user.update(
-				roles,
-				{ fields: ['is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator'], returning: true }
-			);
-		})
-		.then((user) => {
-			const result = pick(
-				user,
-				'id',
-				'email',
-				'is_admin',
-				'is_support',
-				'is_supervisor',
-				'is_kyc',
-				'is_communicator'
-			);
-			return result;
-		});
+		user.role = role.role_name;
+		await user.save();
+		await revokeAllUserSessions(user_id);
+		return { message: 'Success' };
+	}
+
 };
 
 const DEFAULT_SETTINGS = {
@@ -1802,106 +1776,27 @@ const getExchangeOperators = (opts = {
 	limit: null,
 	page: null,
 	orderBy: null,
-	order: null
+	order: null,
+	email: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 
+	const operatorRoleNames = getRoles().map(role => role.role_name);
 	const options = {
 		where: {
-			[Op.or]: [
-				{ is_admin: true },
-				{ is_supervisor: true },
-				{ is_support: true },
-				{ is_kyc: true },
-				{ is_communicator: true }
-			]
+			role: {
+				[Op.in]: operatorRoleNames
+			},
+			...(opts.email && { email: { [Op.iLike]: `%${opts.email}%` } })
+			
 		},
-		attributes: ['id', 'email', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator'],
+		attributes: ['id', 'email', 'role'], 
 		order: [ordering],
 		...pagination
 	};
 
 	return dbQuery.findAndCountAllWithRows('user', options);
-};
-
-const inviteExchangeOperator = (invitingEmail, email, role, opts = {
-	additionalHeaders: null
-}) => {
-	const roles = {
-		is_admin: false,
-		is_supervisor: false,
-		is_support: false,
-		is_kyc: false,
-		is_communicator: false
-	};
-
-	if (!email || !isEmail(email)) {
-		return reject(new Error(PROVIDE_VALID_EMAIL));
-	}
-
-	role = role.toLowerCase();
-	const roleToUpdate = `is_${role}`;
-
-	if (role === 'user') {
-		return reject(new Error('Must invite user as an operator role'));
-	} else {
-		if (roles[roleToUpdate] === undefined) {
-			return reject(new Error('Invalid role'));
-		} else {
-			roles[roleToUpdate] = true;
-		}
-	}
-
-	const tempPassword = uuid();
-
-	return getModel('sequelize').transaction((transaction) => {
-		return getModel('user').findOrCreate({
-			defaults: {
-				email,
-				email_verified: true,
-				password: tempPassword,
-				...roles,
-				settings: INITIAL_SETTINGS()
-			},
-			where: { email },
-			transaction
-		})
-			.then(async ([user, created]) => {
-				if (created) {
-					const networkUser = await getNodeLib().createUser(email, opts);
-					return all([
-						user.update(
-							{ network_id: networkUser.id },
-							{ returning: true, fields: ['network_id'], transaction }
-						),
-						created
-					]);
-				} else {
-					if (user.is_admin || user.is_supervisor || user.is_support || user.is_kyc || user.is_communicator) {
-						throw new Error('User is already an operator');
-					}
-					return all([
-						user.update({ ...roles }, { returning: true, fields: Object.keys(roles), transaction }),
-						created
-					]);
-				}
-			});
-	})
-		.then(async ([user, created]) => {
-			sendEmail(
-				MAILTYPE.INVITED_OPERATOR,
-				user.email,
-				{
-					invitingEmail,
-					created,
-					password: created ? tempPassword : undefined,
-					role
-				},
-				user.settings
-			);
-			return;
-		});
 };
 
 const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }, auditInfo) => {
@@ -2369,12 +2264,16 @@ const deleteKitUser = async (userId, sendEmail = true) => {
 		attributes: [
 			'id',
 			'email',
-			'activated'
+			'activated',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.role === 'admin') {
+		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 	await revokeAllUserSessions(userId);
 	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
@@ -2433,13 +2332,14 @@ const changeKitUserEmail = async (userId, newEmail, auditInfo) => {
 			'id',
 			'email',
 			'is_admin',
+			'role'
 		]
 	});
 
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
 	}
-	if (user.is_admin) {
+	if (user.is_admin || user.role === 'admin') {
 		throw new Error(CANNOT_CHANGE_ADMIN_EMAIL);
 	}
 
@@ -3939,6 +3839,7 @@ const updateUserAutoTrade = async (user_id, {
 		day_of_month,
 		trade_hour,
 		active,
+		last_execution_date: active === false ? null : trade.last_execution_date,
 		description
 	});
 };
@@ -4060,6 +3961,469 @@ const deleteAnnouncement = async (id) => {
 	return { message: 'Success' };
 };
 
+const validateRoutePermissions = (inputPermissions) => {
+	if (!isArray(inputPermissions)) {
+		throw new Error('Permissions must be an array');
+	}
+
+	// Check for duplicates in input
+	const uniquePermissions = [...new Set(inputPermissions)];
+	if (uniquePermissions.length !== inputPermissions.length) {
+		const duplicates = findDuplicates(inputPermissions);
+		throw new Error(
+			`Duplicate permissions found: ${duplicates.join(', ')}\n` +
+			`Unique permissions would be: ${uniquePermissions.join(', ')}`
+		);
+	}
+
+	// Flatten all valid permissions from our structure
+	const allValidPermissions = flattenPermissionStructure(ROLE_PERMISSIONS);
+
+	//Check for invalid permissions
+	const invalidPerms = inputPermissions.filter(
+		perm => !allValidPermissions.includes(perm)
+	);
+
+	if (invalidPerms.length > 0) {
+		throw new Error(
+			'Invalid permissions detected:\n' +
+			`- Invalid: ${invalidPerms.join(', ')}\n` +
+			`- Valid options: ${allValidPermissions.slice(0, 5).join(', ')}...` +
+			`(showing 5 of ${allValidPermissions.length})`
+		);
+	}
+
+
+	return true;
+};
+
+const findDuplicates = (arr) => {
+	return arr.filter((item, index) => arr.indexOf(item) !== index);
+};
+
+const flattenPermissionStructure = (permStructure) => {
+	let results = [];
+
+	const traverse = (obj) => {
+		for (const [key, value] of Object.entries(obj)) {
+			if (typeof value === 'object') {
+				// If it has HTTP methods, add them to results
+				if ('get' in value || 'post' in value || 'put' in value || 'delete' in value) {
+					if (value.get) results.push(value.get);
+					if (value.post) results.push(value.post);
+					if (value.put) results.push(value.put);
+					if (value.delete) results.push(value.delete);
+				}
+				// Always keep traversing nested objects
+				traverse(value);
+			}
+		}
+	};
+
+	traverse(permStructure);
+	return results;
+};
+const getExchangeUserRoles = async (opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	search: null,
+	start_date: null,
+	end_date: null,
+}) => {
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	const queryOptions = {
+		where: {
+			...(opts.search && {
+				[Op.or]: [
+					{ name: { [Op.iLike]: `%${opts.search}%` } },
+					{ description: { [Op.iLike]: `%${opts.search}%` } }
+				]
+			})
+		},
+		order: [ordering],
+		...pagination
+	};
+
+	if (timeframe) queryOptions.where.created_at = timeframe;
+	// queryOptions.include = [{
+	// 	model: getModel('user'),
+	// 	as: 'users',
+	// 	attributes: ['id', 'email']
+	// }];
+
+	return dbQuery.findAndCountAllWithRows('Role', {});
+};
+const validateConfigPermissions = (configPermissions) => {
+
+	configPermissions.forEach(permission => {
+		if (!KIT_CONFIG_KEYS.includes(permission)) {
+			throw new Error(`Invalid config permission: ${permission}`);
+		}
+	});
+};
+
+const validateSecretPermissions = (secretPermissions) => {
+	secretPermissions.forEach(permission => {
+		if (!KIT_SECRETS_KEYS.includes(permission)) {
+			throw new Error(`Invalid secret permission: ${permission}`);
+		}
+	});
+};
+const createExchangeUserRole = async ({ name, description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'fiat')
+		throw new Error('Exchange plan does not support this feature');
+
+	const Role = getModel('role');
+	const User = getModel('user');
+	if (!name) throw new Error('Role name is required');
+	if (!isArray(rolePermissions)) throw new Error('Permissions must be an array');
+	if (!isArray(configs)) throw new Error('Configs must be an array');
+
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+	}
+	
+	const validationGroups = {
+		route: [],
+		config: [],
+		secret: []
+	};
+
+	const permissionsToStore = [];
+	const configsToStore = [];
+
+	// Categorize and validate permissions
+	rolePermissions.forEach(permission => {
+		if (typeof permission !== 'string') {
+			throw new Error(`Invalid permission type: ${permission}`);
+		}
+
+		// Extract the base permission without prefix
+		let basePermission, permissionType;
+
+		if (permission.startsWith('route:')) {
+			const withoutPrefix = permission.replace('route:', '');
+			const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+			if (lastDotIndex === -1) {
+				throw new Error(`Invalid route permission format: ${permission}`);
+			}
+
+			const path = withoutPrefix.substring(0, lastDotIndex);
+			const method = withoutPrefix.substring(lastDotIndex + 1);
+
+			basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+			permissionType = 'route';
+		}
+		else {
+			throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+		}
+
+		// Add to validation group
+		validationGroups[permissionType].push(basePermission);
+		// Add to storage array (without prefix)
+		permissionsToStore.push(basePermission);
+	});
+
+	configs.forEach(permission => {
+		if (typeof permission !== 'string') {
+			throw new Error(`Invalid permission type: ${permission}`);
+		}
+
+		// Extract the base permission without prefix
+		let basePermission, permissionType;
+
+		if (permission.startsWith('config:')) {
+			basePermission = permission.replace('config:', '');
+			permissionType = 'config';
+		}
+		else if (permission.startsWith('secret:')) {
+			basePermission = permission.replace('secret:', '');
+			permissionType = 'secret';
+		}
+		else {
+			throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+		}
+
+		// Add to validation group
+		validationGroups[permissionType].push(basePermission);
+		// Add to storage array (without prefix)
+		configsToStore.push(basePermission);
+	});
+
+	// Validate each permission type
+	try {
+		if (validationGroups.route.length > 0) {
+			validateRoutePermissions(validationGroups.route);
+		}
+
+		if (validationGroups.config.length > 0) {
+			validateConfigPermissions(validationGroups.config);
+		}
+
+		if (validationGroups.secret.length > 0) {
+			validateSecretPermissions(validationGroups.secret);
+		}
+	} catch (error) {
+		throw new Error(`Permission validation failed: ${error.message}`);
+	}
+
+
+	return Role.create({
+		role_name: name.toLowerCase().replace(/\s+/g, ''),
+		description,
+		permissions: permissionsToStore,
+		configs: configsToStore,
+		color, restrictions
+	});
+};
+
+const updateExchangeUserRole = async (roleId, { description, rolePermissions, configs, user_id, otp_code, color, restrictions }) => {
+	
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'fiat')
+		throw new Error('Exchange plan does not support this feature');
+
+	const Role = getModel('role');
+	const User = getModel('user');
+
+	const role = await Role.findOne({
+		where: { id: roleId },
+		attributes: ['id', 'description', 'permissions', 'configs'],
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	if (role.role_name === 'admin') {
+		throw new Error('Admin role cannot be updated');
+	}
+
+	
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+	}
+
+	const updates = {};
+	if (description !== undefined && description !== role.description) {
+		updates.description = description;
+	}
+	if (color !== undefined && color !== role.color) {
+		updates.color = color;
+	}
+	if (restrictions !== undefined && restrictions !== role.restrictions) {
+		updates.restrictions = restrictions;
+	}
+
+	if (rolePermissions !== undefined) {
+		if (!isArray(rolePermissions)) {
+			throw new Error('Permissions must be an array');
+		}
+		if (!isArray(configs)) {
+			throw new Error('Configs must be an array');
+		}
+
+		const validationGroups = {
+			route: [],
+			config: [],
+			secret: []
+		};
+
+		const permissionsToStore = [];
+		const configsToStore = [];
+
+		rolePermissions.forEach(permission => {
+			if (typeof permission !== 'string') {
+				throw new Error(`Invalid permission type: ${permission}`);
+			}
+
+			let basePermission, permissionType;
+
+			if (permission.startsWith('route:')) {
+				const withoutPrefix = permission.replace('route:', '');
+				const lastDotIndex = withoutPrefix.lastIndexOf('.');
+
+				if (lastDotIndex === -1) {
+					throw new Error(`Invalid route permission format: ${permission}`);
+				}
+
+				const path = withoutPrefix.substring(0, lastDotIndex);
+				const method = withoutPrefix.substring(lastDotIndex + 1);
+
+				basePermission = `/admin/${path.replace(/\./g, '/')}:${method}`;
+				permissionType = 'route';
+			}
+			else {
+				throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+			}
+
+			validationGroups[permissionType].push(basePermission);
+			permissionsToStore.push(basePermission);
+		});
+
+		configs.forEach(permission => {
+			if (typeof permission !== 'string') {
+				throw new Error(`Invalid permission type: ${permission}`);
+			}
+
+			let basePermission, permissionType;
+
+			if (permission.startsWith('config:')) {
+				basePermission = permission.replace('config:', '');
+				permissionType = 'config';
+			}
+			else if (permission.startsWith('secret:')) {
+				basePermission = permission.replace('secret:', '');
+				permissionType = 'secret';
+			}
+			else {
+				throw new Error(`Invalid permission prefix: ${permission}. Must start with route:, config:, or secret:`);
+			}
+
+			validationGroups[permissionType].push(basePermission);
+			configsToStore.push(basePermission);
+		});
+
+		try {
+			if (validationGroups.route.length > 0) {
+				validateRoutePermissions(validationGroups.route);
+			}
+			if (validationGroups.config.length > 0) {
+				validateConfigPermissions(validationGroups.config);
+			}
+			if (validationGroups.secret.length > 0) {
+				validateSecretPermissions(validationGroups.secret);
+			}
+		} catch (error) {
+			throw new Error(`Permission validation failed: ${error.message}`);
+		}
+
+		const currentPermissions = role.permissions || [];
+		const permissionsChanged = (
+			currentPermissions.length !== permissionsToStore.length ||
+			!currentPermissions.every(p => permissionsToStore.includes(p))
+		);
+
+		if (permissionsChanged) {
+			updates.permissions = permissionsToStore;
+		}
+
+		const currentConfigs = role.configs || [];
+		const configsChanged = (
+			currentConfigs.length !== configsToStore.length ||
+			!currentConfigs.every(p => configsToStore.includes(p))
+		);
+
+		if (configsChanged) {
+			updates.configs = configsToStore;
+		}
+	}
+
+	if (Object.keys(updates).length > 0) {
+		const [affectedRows] = await Role.update(updates, {
+			where: { id: roleId }
+		});
+
+		if (affectedRows === 0) {
+			throw new Error('Update failed - no rows affected');
+		}
+	}
+
+	const updatedRole = await Role.findByPk(roleId);
+	return updatedRole;
+};
+
+const deleteExchangeUserRole = async (id, user_id, otp_code) => {
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (exchangeInfo.plan !== 'fiat')
+		throw new Error('Exchange plan does not support this feature');
+	
+	const Role = getModel('role');
+	const User = getModel('user');
+
+	const role = await Role.findOne({
+		where: { id },
+	});
+
+	if (!role) {
+		throw new Error('Role not found');
+	}
+
+	if (role.role_name === 'admin') {
+		throw new Error('Cannot delete admin role');
+	}
+
+	const admin = await User.findOne({ where: { id: user_id } });
+	if (!admin) throw new Error('User not found');
+
+	if (!admin.otp_enabled) {
+		throw new Error('OTP is not enabled');
+	} else {
+		if (!otp_code) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+		try {
+			const validOtp = await verifyOtpBeforeAction(user_id, otp_code);
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
+		} catch (error) {
+			throw new Error(INVALID_OTP_CODE);
+		}
+	}
+
+	const usersWithRole = await User.count({ where: { role: role.role_name } });
+	if (usersWithRole > 0) {
+		throw new Error('Cannot delete role: it is assigned to one or more users');
+	}
+
+	await role.destroy();
+	return { message: 'Role deleted successfully' };
+};
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -4072,7 +4436,6 @@ module.exports = {
 	unfreezeUserById,
 	unfreezeUserByEmail,
 	getAllUsers,
-	getUserRole,
 	updateUserSettings,
 	omitUserFields,
 	registerUserLogin,
@@ -4095,7 +4458,6 @@ module.exports = {
 	getUserStatsByKitId,
 	disableUserWithdrawal,
 	getExchangeOperators,
-	inviteExchangeOperator,
 	createUserOnNetwork,
 	getUserNetwork,
 	getUsersNetwork,
@@ -4152,5 +4514,9 @@ module.exports = {
 	confirmUserLogin,
 	findUserLastLogins,
 	freezeUserByCode,
-	createSuspiciousLogin
+	createSuspiciousLogin,
+	getExchangeUserRoles,
+	createExchangeUserRole,
+	updateExchangeUserRole,
+	deleteExchangeUserRole
 };

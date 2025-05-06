@@ -858,11 +858,13 @@ export const generateWithdrawalsHeaders = (
 				return !data.category ? (
 					<td key={index}>{'-'}</td>
 				) : (
-					<EditWrapper>
-						<td className="category-label" key={index}>
+					<td className="category-label" key={index}>
+						<EditWrapper
+							stringId={`TRANSACTION_HISTORY.${data.category.toUpperCase()}`}
+						>
 							{STRINGS[`TRANSACTION_HISTORY.${data.category.toUpperCase()}`]}
-						</td>
-					</EditWrapper>
+						</EditWrapper>
+					</td>
 				);
 			},
 		},

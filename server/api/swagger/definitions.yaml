@@ -644,16 +644,13 @@ definitions:
     type: object
     required:
       - role
+      - otp_code
     properties:
       role:
         type: string
-        enum:
-          - admin
-          - supervisor
-          - support
-          - kyc
-          - communicator
-          - user
+      otp_code:
+        type: string
+        maxLength: 6
   UserMetaPut:
     type: object
     required:

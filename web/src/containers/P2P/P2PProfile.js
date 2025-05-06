@@ -293,7 +293,7 @@ const P2PProfile = ({
 												(x) => x?.details?.system_name === method?.system_name
 											);
 											return (
-												<div className="payment-fields" key={index}>
+												<div className="payment-fields" key={`method-${index}`}>
 													<div
 														className="whiteTextP2P field pay-field"
 														onClick={() => {
@@ -422,7 +422,7 @@ const P2PProfile = ({
 								>
 									{myDeals.map((deal, index) => {
 										return (
-											<tr className="table-row" key={index}>
+											<tr className="table-row" key={`deal-${index}`}>
 												{isLoading ? (
 													<Loading index={index} />
 												) : (
@@ -469,11 +469,12 @@ const P2PProfile = ({
 				)}
 				<Dialog
 					className="add-payment-method-detail-popup"
-					isOpen={addMethodDetails}
+					isOpen={!!addMethodDetails}
 					footer={null}
 					onCloseDialog={() => {
 						setAddMethodDetails(false);
 					}}
+					label="add-payment-method-detail-popup"
 				>
 					<div className="whiteTextP2P add-payment-title">
 						<EditWrapper stringId="P2P.ADD_PAYMENT_METHOD_DETAILS">
@@ -488,7 +489,7 @@ const P2PProfile = ({
 						return (
 							<div
 								className="whiteTextP2P selected-payment-method-field-wrapper"
-								key={index}
+								key={`selected-field-${index}`}
 							>
 								<div className="payment-method-title">{x?.name}:</div>
 								<Input
@@ -580,12 +581,13 @@ const P2PProfile = ({
 				{displayNewPayment && (
 					<Dialog
 						className="p2p-new-payment-pop-up"
-						isOpen={displayNewPayment}
+						isOpen={!!displayNewPayment}
 						onCloseDialog={() => {
 							setDisplayNewPayment(false);
 						}}
 						shouldCloseOnOverlayClick={true}
 						showCloseText={true}
+						label="p2p-new-payment-pop-up"
 					>
 						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.CREATE_NEW_PAYMENT_METHODS">
@@ -643,9 +645,9 @@ const P2PProfile = ({
 									);
 								}}
 							>
-								{p2p_config?.bank_payment_methods.map((method) => {
+								{p2p_config?.bank_payment_methods.map((method, index) => {
 									return (
-										<Select.Option value={method.system_name}>
+										<Select.Option value={method.system_name} key={index}>
 											{method.system_name}
 										</Select.Option>
 									);
@@ -657,7 +659,7 @@ const P2PProfile = ({
 							return (
 								<div
 									className="new-payment-details-input-wrapper mb-3"
-									key={index}
+									key={`custom-field-${index}`}
 								>
 									<div className="font-weight-bold fs-16">
 										{STRINGS['P2P.FIELD']}
@@ -804,10 +806,11 @@ const P2PProfile = ({
 				{paymentFieldAdd && (
 					<Dialog
 						className="additional-payment-detail-popup"
-						isOpen={paymentFieldAdd}
+						isOpen={!!paymentFieldAdd}
 						onCloseDialog={() => {
 							setPaymentFieldAdd(false);
 						}}
+						label="additional-payment-detail-popup"
 					>
 						<h1 className="new-payment-method-title">
 							<EditWrapper stringId="P2P.ADDITIONAL_PAYMENT_DETAILS">
@@ -870,12 +873,13 @@ const P2PProfile = ({
 				{displayConfirmation && (
 					<Dialog
 						className="p2p-new-payment-pop-up confirm-delete-popup-wrapper"
-						isOpen={displayConfirmation}
+						isOpen={!!displayConfirmation}
 						onCloseDialog={() => {
 							setDisplayConfirmation(false);
 						}}
 						shouldCloseOnOverlayClick={true}
 						showCloseText={true}
+						label="p2p-new-payment-pop-up"
 					>
 						<div className="confirm-delete-popup-container">
 							<div className="confirm-popup-delete-title">

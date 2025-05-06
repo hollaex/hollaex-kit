@@ -5,7 +5,7 @@ paths:
       operationId: getUserOrder
       description: Get order of authenticated user
       tags:
-        - User
+        - Order
       parameters:
         - name: order_id
           in: query
@@ -35,7 +35,7 @@ paths:
       operationId: cancelUserOrder
       description: Cancel order of authenticated user
       tags:
-        - User
+        - Order
       parameters:
         - name: order_id
           in: query
@@ -64,7 +64,6 @@ paths:
       description: Create a new order
       operationId: createOrder
       tags:
-        - User
         - Order
       parameters:
         - in: body
@@ -97,7 +96,7 @@ paths:
       operationId: dustBalance
       description: dust
       tags:
-        - User
+        - Order
       parameters:
         - name: data
           in: body
@@ -135,7 +134,7 @@ paths:
       operationId: dustEstimatePrice
       description: dust
       tags:
-        - User
+        - Order
       parameters:
         - name: data
           in: body
@@ -212,7 +211,7 @@ paths:
       operationId: orderExecute
       description: execute order
       tags:
-        - User
+        - Order
       parameters:
         - name: data
           in: body
@@ -247,7 +246,7 @@ paths:
       operationId: getAllUserOrders
       description: List orders of authenticated user
       tags:
-        - User
+        - Order
       parameters:
         - name: symbol
           in: query
@@ -342,7 +341,7 @@ paths:
       operationId: cancelAllUserOrders
       description: Cancel all orders of authenticated user
       tags:
-        - User
+        - Order
       parameters:
         - name: symbol
           in: query

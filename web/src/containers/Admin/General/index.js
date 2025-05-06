@@ -59,7 +59,10 @@ const General = ({
 					<GeneralContent activeTab={'onboarding'} />
 				</TabPane>
 				<TabPane tab="Email" key="5">
-					<GeneralContent activeTab={'email'} />
+					<GeneralContent
+						activeTab={'email'}
+						handleTabChange={handleTabChange}
+					/>
 				</TabPane>
 				<TabPane tab="Localization" key="6">
 					<GeneralContent activeTab={'localization'} />

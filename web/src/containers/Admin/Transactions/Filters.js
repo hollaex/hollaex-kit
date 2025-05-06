@@ -91,6 +91,13 @@ export const Filters = ({
 						// description="Wallet address"
 						className={'adjacent-fields pl-2'}
 					/>
+					<FilterInput
+						onChange={onChange('description')}
+						label={'Description'}
+						defaultValue={params.description}
+						className={'adjacent-fields pl-2'}
+						placeholder="Description"
+					/>
 				</div>
 				<div className="filters-wrapper-buttons pl-2">
 					<Button
