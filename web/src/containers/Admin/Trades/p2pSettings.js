@@ -222,9 +222,22 @@ const P2PSettings = ({
 		<div className="admin-earnings-container w-100">
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
-					Below is the status of the P2P system on your platform and the
-					settings. Select what assets, KYC requirements and more are allowed on
-					your platform.
+					<div>
+						Below is the status of the P2P system on your platform and the
+						settings. Select what assets, KYC requirements and more are allowed
+						on your platform.
+					</div>
+					<span>
+						<a
+							className="underline-text pointer"
+							href="https://docs.hollaex.com/how-tos/p2p"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Learn more
+						</a>{' '}
+						about peer-to-peer trading.
+					</span>
 				</div>
 				<div>
 					<Button
@@ -508,7 +521,7 @@ const P2PSettings = ({
 															iconId={coins[coin?.symbol].icon_id}
 														></Coin>
 													</span>
-													<span>
+													<span className="asset-name">
 														{coin.fullname}({coin?.symbol?.toUpperCase()})
 													</span>
 												</Checkbox>

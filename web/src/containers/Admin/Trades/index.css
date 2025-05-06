@@ -803,6 +803,10 @@
 	cursor: text;
 }
 
+.p2p-admin-select-asset .ant-select-item-option-content .asset-name {
+	color: #000000;
+}
+
 .p2p-admin-confirm-warning-popup-wrapper .ant-modal-body,
 .otc-broker-popup-wrapper .ant-modal-body {
 	background-color: #27339d;

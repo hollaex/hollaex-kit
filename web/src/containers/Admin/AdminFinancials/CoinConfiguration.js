@@ -167,9 +167,10 @@ const CoinConfiguration = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Add a markup fee on withdrawals for each coin listed on your exchange.
-				This additional fee is charged on top of the standard withdrawal fees
-				and can serve as an extra revenue stream for your exchange operations.
+				Add a markup fee on blockchain asset withdrawals for each coin listed on
+				your exchange. This additional fee is charged on top of the standard
+				withdrawal fees and can serve as an extra revenue stream for your
+				exchange operations.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>

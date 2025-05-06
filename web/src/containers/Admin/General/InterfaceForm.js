@@ -457,6 +457,17 @@ const InterfaceForm = ({
 					</h2>
 
 					<div className="mb-4">
+						<span>Allow users to swap any asset for another. </span>
+						<span>
+							<Link
+								className="underline-text pointer"
+								href="https://docs.hollaex.com/how-tos/smart-chain-trading"
+								target="_blank"
+							>
+								Learn more
+							</Link>{' '}
+							about Chain Trading.
+						</span>
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Currency
 							<div style={{ fontSize: 13 }}>

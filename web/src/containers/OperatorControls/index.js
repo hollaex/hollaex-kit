@@ -121,6 +121,17 @@ class OperatorControls extends Component {
 		};
 	}
 
+	handleKeyDown = (event) => {
+		const { isInjectMode, isEditMode } = this.props;
+		if (event.key === 'Escape') {
+			if (isInjectMode) {
+				this.toggleInjectMode();
+			} else if (isEditMode) {
+				this.toggleEditMode();
+			}
+		}
+	};
+
 	componentDidMount() {
 		const {
 			initialData: {
@@ -143,9 +154,11 @@ class OperatorControls extends Component {
 				this.getDashToken();
 			}
 		}
+		document.addEventListener('keydown', this.handleKeyDown);
 	}
 
 	componentWillUnmount() {
+		document.removeEventListener('keydown', this.handleKeyDown);
 		this.removeAdminListeners();
 	}
 
@@ -1071,7 +1084,9 @@ class OperatorControls extends Component {
 						onClick={this.toggleInjectMode}
 					>
 						<span>{`</>`}</span>
-						<span className="pl-1">Console</span>
+						<span className="pl-1">
+							{!isInjectMode ? 'Console' : 'Exit Console'}
+						</span>
 					</div>
 				</div>
 				<div
