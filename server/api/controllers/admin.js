@@ -116,7 +116,11 @@ const putAdminKit = (req, res) => {
 	}
 
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, req.auth?.sub?.configs, req.auth.sub.id)
+	
+	const roles = toolsLib.getRoles();
+	const userRole = roles.find(role => role.role_name === req.auth?.sub?.role);
+	const userConfigs = userRole?.configs || [];
+	toolsLib.updateKitConfigSecrets(data, req.auth.scopes, auditInfo, userConfigs, req.auth.sub.id)
 		.then((result) => {
 			return res.json(result);
 		})
