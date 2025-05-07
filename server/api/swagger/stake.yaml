@@ -5,7 +5,7 @@ paths:
       description: Get exchange stakers of users for admin
       operationId: getExchangeStakersForUser
       tags:
-        - User
+        - Stake
       parameters:
         - in: query
           name: id
@@ -109,7 +109,7 @@ paths:
       description: Create staker for user
       operationId: createStaker
       tags:
-        - User
+        - Stake
       parameters:
         - name: data
           in: body
@@ -143,7 +143,7 @@ paths:
          description: delete staker for user
          operationId: deleteExchangeStaker
          tags:
-           - User
+           - Stake
          parameters:
            - name: data
              in: body
@@ -172,7 +172,7 @@ paths:
       description: Get exchange stakes
       operationId: getExchangeStakes
       tags:
-        - User
+        - Stake
       parameters:
         - in: query
           name: limit
@@ -243,7 +243,7 @@ paths:
       description: Get slash amount for unstaking admin
       operationId: unstakeEstimateSlash
       tags:
-        - User
+        - Stake
       parameters:
         - in: query
           name: id
