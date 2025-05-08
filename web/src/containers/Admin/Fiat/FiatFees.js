@@ -6,6 +6,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
 import { updateConstants } from '../General/action';
 import { requestAdminData } from 'actions/appActions';
+import { Coin } from 'components';
+import { renderAsset } from '../Deposits/utils';
 
 const FiatFees = ({ coins }) => {
 	const [coinData, setCoinData] = useState([]);
@@ -34,7 +36,7 @@ const FiatFees = ({ coins }) => {
 			dataIndex: 'symbol',
 			key: 'symbol',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.symbol}</div>;
+				return renderAsset(data?.symbol);
 			},
 		},
 		{
@@ -143,6 +145,7 @@ const FiatFees = ({ coins }) => {
 							max: data?.[coin.symbol]?.max || coin.max,
 							increment_unit:
 								data?.[coin.symbol]?.increment_unit || coin.increment_unit,
+							icon_id: coin.icon_id,
 						};
 					}
 				}
@@ -172,7 +175,7 @@ const FiatFees = ({ coins }) => {
 	};
 
 	return (
-		<div>
+		<div className="fiat-fees-wrapper">
 			<div style={{ color: '#ccc' }}>
 				Below, You can add/edit fees and other attributes for fiats available in
 				your exchange, this will override the default fees set to fiats by
@@ -247,6 +250,7 @@ const FiatFees = ({ coins }) => {
 						onCancel={() => {
 							handleCostumizationModal();
 						}}
+						wrapClassName="edit-fiat-fees-popup-wrapper"
 					>
 						<div
 							style={{
@@ -255,8 +259,19 @@ const FiatFees = ({ coins }) => {
 								fontSize: 18,
 								marginBottom: 10,
 							}}
+							className="edit-fiat-fees-title d-flex align-items-center"
 						>
-							Edit Fiat Fees
+							<span>Edit Fiat Fees </span>
+							<div className="edit-fees-asset-symbol d-flex align-items-center">
+								(
+								{selectedCoin?.icon_id && (
+									<Coin type="CS6" iconId={selectedCoin?.icon_id} />
+								)}
+								<span className="text-capitalise">
+									{selectedCoin?.fullname}
+								</span>
+								)
+							</div>
 						</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
@@ -271,6 +286,7 @@ const FiatFees = ({ coins }) => {
 											withdrawal_fee: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 
@@ -286,6 +302,7 @@ const FiatFees = ({ coins }) => {
 											deposit_fee: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 							<div style={{ marginBottom: 10 }}>
@@ -300,6 +317,7 @@ const FiatFees = ({ coins }) => {
 											min: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 							<div style={{ marginBottom: 10 }}>
@@ -314,6 +332,7 @@ const FiatFees = ({ coins }) => {
 											max: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 							<div style={{ marginBottom: 10 }}>
@@ -328,6 +347,7 @@ const FiatFees = ({ coins }) => {
 											increment_unit: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 						</div>

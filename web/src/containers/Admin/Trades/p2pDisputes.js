@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ClockCircleOutlined, CloseOutlined } from '@ant-design/icons';
-import { Table, Button, Spin, Input, Modal, message } from 'antd';
+import { Table, Button, Spin, Input, Modal, message, Select } from 'antd';
 import { requestDisputes, editDispute } from './actions';
 import moment from 'moment';
 // import BigNumber from 'bignumber.js';
@@ -30,6 +30,7 @@ const P2PDisputes = ({ coins }) => {
 		unstaking: 1,
 		closed: 3,
 	};
+	const [selectOption, setSelectOption] = useState('all');
 
 	const columns = [
 		{
@@ -59,6 +60,20 @@ const P2PDisputes = ({ coins }) => {
 							<Link to={`/admin/user?id=${data?.defendant_id}`}>
 								{data?.defendant_id}
 							</Link>
+						</Button>
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Transaction Id',
+			dataIndex: 'transaction_id',
+			key: 'transaction_id',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+							{data?.transaction_id}
 						</Button>
 					</div>
 				);
@@ -182,9 +197,16 @@ const P2PDisputes = ({ coins }) => {
 		}
 		setQueryFilters({ ...queryFilters, currentTablePage: count });
 	};
+	const filteredUserData = userData.filter((data) =>
+		selectOption === 'resolved'
+			? data?.resolution
+			: selectOption === 'unresolved'
+			? !data?.resolution
+			: true
+	);
 
 	return (
-		<div>
+		<div className="p2p-dispute-details-wrapper">
 			<Modal
 				maskClosable={false}
 				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
@@ -290,10 +312,14 @@ const P2PDisputes = ({ coins }) => {
 						<span style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
 							<div>
 								<div>Search user</div>
-								<div style={{ display: 'flex', gap: 10 }}>
+								<div
+									style={{ display: 'flex', gap: 10 }}
+									className="align-items-center"
+								>
 									<Input
 										style={{}}
 										placeholder="Search User ID"
+										className="resolution-filter-select"
 										onChange={(e) => {
 											setUserQuery({
 												...(userQuery?.status && { status: userQuery.status }),
@@ -302,6 +328,18 @@ const P2PDisputes = ({ coins }) => {
 										}}
 										value={userQuery.user_id}
 									/>
+									<Select
+										dropdownClassName="blue-admin-select-dropdown"
+										getPopupContainer={(trigger) => trigger.parentNode}
+										placeholder="Resolution"
+										className="resolution-filter-select"
+										value={selectOption}
+										onChange={(e) => setSelectOption(e)}
+									>
+										<Select.Option value="all">All</Select.Option>
+										<Select.Option value="resolved">Resolved</Select.Option>
+										<Select.Option value="unresolved">Unresolved</Select.Option>
+									</Select>
 									<Button
 										onClick={() => {
 											setQueryValues(userQuery);
@@ -384,7 +422,7 @@ const P2PDisputes = ({ coins }) => {
 							<Table
 								className="blue-admin-table"
 								columns={columns}
-								dataSource={userData
+								dataSource={filteredUserData
 									.sort((a, b) => {
 										return statuses[a.status] - statuses[b.status];
 									})

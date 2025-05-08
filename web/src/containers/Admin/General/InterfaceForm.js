@@ -459,14 +459,14 @@ const InterfaceForm = ({
 					<div className="mb-4">
 						<span>Allow users to swap any asset for another. </span>
 						<span>
+							Learn more about{' '}
 							<Link
 								className="underline-text pointer"
 								href="https://docs.hollaex.com/how-tos/smart-chain-trading"
 								target="_blank"
 							>
-								Learn more
-							</Link>{' '}
-							about Chain Trading.
+								Chain Trading.
+							</Link>
 						</span>
 						<div style={{ fontSize: 16 }} className="mb-2">
 							Currency
@@ -983,7 +983,7 @@ const InterfaceForm = ({
 											/>
 										</div>
 										<div className="ml-2 checkbox-txt">
-											Homepage
+											Home Landing page
 											<div className="d-flex justify-content-between">
 												<div className="small-text">
 													(This will be the first page seen on your domain)
@@ -1071,12 +1071,13 @@ const InterfaceForm = ({
 						)}
 					</div>
 				</div>
-				<div>
+				<div className="confirm-button-wrapper">
 					<FormButton
 						type="primary"
 						htmlType="submit"
 						disabled={isSubmit}
-						buttonText="save"
+						buttonText="Save"
+						className="confirm button"
 					/>
 				</div>
 			</Form>

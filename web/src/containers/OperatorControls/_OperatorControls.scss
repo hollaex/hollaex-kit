@@ -398,6 +398,17 @@ $operator-controls__panel-border-color: #a7a7a7;
 	&table {
 		border-collapse: collapse !important;
 	}
+	.language-detail {
+		display: flex;
+		gap: 5px;
+		justify-content: flex-start;
+		text-wrap: nowrap;
+		.language-icon {
+			width: 1.8rem;
+			height: 1.8rem;
+			object-fit: contain;
+		}
+	}
 
 	& thead > tr > th,
 	& tbody > tr > td {

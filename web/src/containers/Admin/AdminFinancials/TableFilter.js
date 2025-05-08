@@ -81,6 +81,7 @@ const FieldComponent = ({
 						placeholder={'Currency'}
 						{...object}
 						onChange={onHandleSelect}
+						showSearch
 					/>
 				);
 			case 'number':

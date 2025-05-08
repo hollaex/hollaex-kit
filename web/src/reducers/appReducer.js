@@ -98,6 +98,7 @@ import {
 	SET_EMAIL_DETAIL,
 	SET_IS_ACTIVE_FAV_QUICK_TRADE,
 	SET_ROLES,
+	SET_EDIT_MODE,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -249,6 +250,7 @@ const INITIAL_STATE = {
 	emailDetail: null,
 	isActiveFavQuickTrade: true,
 	rolesList: [],
+	isOperatorEdit: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -1023,6 +1025,13 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				rolesList: payload.rolesList,
 			};
 		}
+		case SET_EDIT_MODE: {
+			return {
+				...state,
+				isOperatorEdit: payload.isOperatorEdit,
+			};
+		}
+
 		default:
 			return state;
 	}
