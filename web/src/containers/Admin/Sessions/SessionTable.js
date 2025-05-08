@@ -161,13 +161,18 @@ const SessionTable = () => {
 	};
 
 	const renderRowContent = ({ login }) => {
+		const filteredCountry = COUNTRIES_OPTIONS.find(
+			(country) =>
+				country?.value?.toLowerCase() === login?.country?.toLowerCase()
+		);
 		return (
 			<div>
-				<div>
+				<div className="d-flex">
 					<span style={{ fontWeight: 'bold' }}>Country:</span>{' '}
-					{COUNTRIES_OPTIONS.find(
-						(country) => country?.value === login?.country
-					)?.label || '-'}
+					<span className="d-flex align-items-center ml-1">
+						{filteredCountry && filteredCountry?.icon}
+						<span className="ml-1">{filteredCountry?.label || '-'}</span>
+					</span>
 				</div>
 				<div>
 					<span style={{ fontWeight: 'bold' }}>IP Address:</span> {login?.ip}

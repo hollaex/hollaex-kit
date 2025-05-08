@@ -24,7 +24,7 @@
 	border-color: #288500;
 	width: 145px;
 }
-.fields-container .ant-input {
+.fields-container .ant-input-affix-wrapper {
 	border-radius: 0px;
 	border-width: 2px 2px 2px 0px;
 	border-color: #288500;

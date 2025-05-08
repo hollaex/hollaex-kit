@@ -859,3 +859,16 @@
 	position: relative;
 	top: 3px;
 }
+
+.p2p-admin-settings-details-wrapper .p2p-settings-title {
+	font-size: 20px;
+}
+
+.p2p-admin-settings-details-wrapper .p2p-description {
+	color: #ccc;
+	font-size: 1.1rem;
+}
+
+.p2p-dispute-details-wrapper .resolution-filter-select {
+	width: 15rem;
+}

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import {
 	Tabs,
@@ -13,16 +14,18 @@ import {
 	Switch,
 	Radio,
 	Space,
+	Tooltip,
 } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import _debounce from 'lodash/debounce';
+import _toLower from 'lodash/toLower';
+
 import { setExchange } from 'actions/assetActions';
 import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
 import { requestAdminData, setConfig } from 'actions/appActions';
 import { Coin } from 'components';
-import _debounce from 'lodash/debounce';
 import Coins from '../Coins';
-import _toLower from 'lodash/toLower';
 import DEFAULT_PAYMENT_METHODS from 'utils/defaultPaymentMethods';
 import './index.css';
 
@@ -196,6 +199,44 @@ const P2PSettings = ({
 	};
 
 	const isUpgrade = handleUpgrade(constants.info);
+
+	const userMinimumTier = tiers?.[p2pConfig?.starting_user_tier]?.name || '';
+
+	const vendorMinimumTier =
+		tiers?.[p2pConfig?.starting_merchant_tier]?.name || '';
+
+	const renderCoin = (text) => {
+		const currencyType =
+			text === 'crypto' || text === 'digital currency'
+				? 'digital_currencies'
+				: 'fiat_currencies';
+
+		const currencies = p2pConfig?.[currencyType] ?? [];
+		const filteredCurrencies =
+			text === 'crypto' ? currencies?.filter((x) => x === 'usdt') : currencies;
+
+		if (filteredCurrencies?.length === 0) return null;
+
+		return (
+			<div className="d-flex align-items-center">
+				{filteredCurrencies?.map((data, index) => (
+					<span
+						key={`${data}-${index}`}
+						className="d-flex align-items-center ml-1"
+					>
+						{coins[data]?.icon_id && (
+							<Coin type="CS4" iconId={coins[data]?.icon_id} />
+						)}
+						<span className={coins[data]?.icon_id ? 'ml-1 caps' : 'caps'}>
+							{data}
+							{index < filteredCurrencies?.length - 1 && ', '}
+						</span>
+					</span>
+				))}
+			</div>
+		);
+	};
+
 	return isUpgrade ? (
 		<div className="d-flex">
 			<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
@@ -219,7 +260,7 @@ const P2PSettings = ({
 			</div>
 		</div>
 	) : (
-		<div className="admin-earnings-container w-100">
+		<div className="admin-earnings-container p2p-admin-settings-details-wrapper w-100">
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<div>
 					<div>
@@ -345,11 +386,12 @@ const P2PSettings = ({
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Crypto:
 					</div>
-					<div style={{ marginBottom: 10 }}>
-						Cryptocurrencies allowed for trading:{' '}
-						{p2pConfig?.digital_currencies
-							?.filter((x) => x === 'usdt')
-							?.join(', ')}
+					<div style={{ marginBottom: 10 }}></div>
+					<div
+						style={{ marginBottom: 10 }}
+						className="d-flex align-items-center"
+					>
+						Cryptocurrencies allowed for trading: {renderCoin('crypto')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -358,9 +400,12 @@ const P2PSettings = ({
 					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
 						Fiat:
 					</div>
-					<div style={{ marginBottom: 10 }}>
+					<div
+						style={{ marginBottom: 10 }}
+						className="d-flex align-items-center"
+					>
 						Fiat currencies allowed for trading:{' '}
-						{p2pConfig?.fiat_currencies?.join(', ')}
+						<span className="ml-1">{renderCoin('fiat currency')}</span>
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -390,12 +435,24 @@ const P2PSettings = ({
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
+				<div className="my-3">
+					<div className="my-3 p2p-settings-title">Minimum tier:</div>
+					<div className="mb-3">
+						User Account minimun tier: {userMinimumTier}
+					</div>
+					<div className="mb-3">
+						Vendor Account minimun tier: {vendorMinimumTier}
+					</div>
+					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
+				</div>
 
 				<div style={{ marginBottom: 10, marginTop: 10 }}>
-					<div style={{ fontSize: 20, marginBottom: 10, marginTop: 10 }}>
-						Fee Source Account:
-					</div>
-					<div style={{ marginBottom: 10 }}>
+					<div style={{ fontSize: 20, marginTop: 10 }}>Fee Source Account:</div>
+					<span className="p2p-description">
+						(this is the account to collect profits from fees generated from P2P
+						transactions)
+					</span>
+					<div className="mt-3" style={{ marginBottom: 10 }}>
 						{selectedEmailData?.label || '-'}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
@@ -850,7 +907,17 @@ const P2PSettings = ({
 							</div>
 
 							<div className="mb-5">
-								<div className="mb-2">Account to send the fees to</div>
+								<div className="mb-2">
+									Account to send the fees to{' '}
+									<Tooltip
+										title={
+											'this is the account to collect profits from fees generated from P2P transactions'
+										}
+										placement="topLeft"
+									>
+										<ExclamationCircleOutlined />
+									</Tooltip>
+								</div>
 								<div className="d-flex align-items-center">
 									<Select
 										ref={(inp) => {
@@ -890,7 +957,13 @@ const P2PSettings = ({
 								The minimum fee allowed to apply is dependent on exchange
 								system's plan:
 							</div>
-							<div>https://www.hollaex.com/pricing</div>
+							<Link
+								href="https://www.hollaex.com/pricing"
+								target="_blank"
+								className="underline-text pointer"
+							>
+								Min Fee settings
+							</Link>
 						</div>
 					)}
 
@@ -946,7 +1019,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Cryptocurrencies allowed for trading: </div>
-										<div>{digitalCurrencies.join(', ')}</div>
+										<div>{renderCoin('digital currency')}</div>
 									</div>
 									<div
 										onClick={() => {
@@ -998,7 +1071,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Fiat currencies allowed for trading: </div>
-										<div>{fiatCurrencies.join(', ')}</div>
+										<div>{renderCoin('fiat currency')}</div>
 									</div>
 									<div
 										onClick={() => {
@@ -1105,7 +1178,17 @@ const P2PSettings = ({
 									style={{ display: 'flex', justifyContent: 'space-between' }}
 								>
 									<div>
-										<div>Fee Source Account: </div>
+										<div>
+											Fee Source Account{' '}
+											<Tooltip
+												title={
+													'this is the account to collect profits from fees generated from P2P transactions'
+												}
+												placement="topLeft"
+											>
+												<ExclamationCircleOutlined />
+											</Tooltip>
+										</div>
 										<div>{selectedEmailData.label}</div>
 									</div>
 									<div

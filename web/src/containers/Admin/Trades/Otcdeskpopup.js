@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router';
 import {
 	Switch,
 	Input,
@@ -18,6 +19,7 @@ import {
 	CloseOutlined,
 	LoadingOutlined,
 } from '@ant-design/icons';
+import _toLower from 'lodash/toLower';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
@@ -29,8 +31,7 @@ import {
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
-import _toLower from 'lodash/toLower';
-import { Link } from 'react-router';
+import { renderAsset } from '../Deposits/utils';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { TextArea } = Input;
@@ -670,8 +671,9 @@ const Otcdeskpopup = ({
 							<div className="description">
 								<div>Minimum - amount that can be traded for this market.</div>
 							</div>
-							<div className="full-width">
-								{previewData && previewData.min_size}
+							<div className="full-width d-flex align-items-center justify-content-between">
+								<span>{previewData && previewData.min_size}</span>
+								{renderAsset(previewData?.pair_base)}
 							</div>
 						</div>
 						<div className="field-wrap">
@@ -679,8 +681,9 @@ const Otcdeskpopup = ({
 							<div className="description">
 								<div>Maximum - amount that can be traded for this market.</div>
 							</div>
-							<div className="full-width">
-								{previewData && previewData.max_size}
+							<div className="full-width d-flex align-items-center justify-content-between">
+								<span>{previewData && previewData.max_size}</span>
+								{renderAsset(previewData?.pair_base)}
 							</div>
 						</div>
 						{/* <div className="edit-wrapper">
@@ -1225,8 +1228,11 @@ const Otcdeskpopup = ({
 												value={previewData && previewData.quote_expiry_time}
 											/>
 
-											<div className="mt-5">
-												Result (price displayed to user)
+											<div className="mt-5 d-flex align-items-center">
+												<span className="mr-1">
+													Result (price displayed to user)
+												</span>
+												{renderAsset(previewData?.pair_2)}
 											</div>
 											<div
 												onClick={() => {
@@ -1920,7 +1926,13 @@ const Otcdeskpopup = ({
 												Visit your account page to generate your API key.
 												Requires permissions for ordering to be open. Learn more
 												about
-												<span className="ml-1 anchor">hedging here.</span>
+												<Link
+													className="ml-1 anchor"
+													href="https://docs.hollaex.com/"
+													target="_blank"
+												>
+													hedging here.
+												</Link>
 											</div>
 										</>
 									)}

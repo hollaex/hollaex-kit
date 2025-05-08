@@ -1,12 +1,17 @@
 .general-wrapper {
 	color: #ffffff;
 	margin-top: 2rem;
+	margin-bottom: 5rem;
 }
 
 .general-wrapper .ant-input,
 .general-wrapper .ant-select {
 	width: 300px;
 	margin: 1rem 0rem;
+}
+
+.general-wrapper .input_field .ant-select-selector {
+	color: #000000 !important;
 }
 
 .minimal-btn {
@@ -26,10 +31,6 @@
 	border-top: 1px solid #c4c4c4;
 	margin: 2rem 0;
 	width: 500px;
-}
-
-.wizard-container .description {
-	/* width: 550px; */
 }
 
 /* .ant-modal-body .description, */
@@ -176,6 +177,17 @@
 	color: #ffffff;
 }
 
+.interface-box {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 5%;
+}
+
+.interface-box .ant-form-item {
+	min-width: 35rem;
+}
 .interface-box .feature-icon {
 	width: 74px;
 	stroke: #808080;
@@ -1150,6 +1162,36 @@ h3,
 	color: #ffffff;
 	top: 22% !important;
 	margin-top: 0px;
+}
+
+.language-lists {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2%;
+	font-size: 14px;
+	color: #000000;
+}
+
+.language-lists .language-icon {
+	width: 2rem;
+	height: 2rem;
+	object-fit: contain;
+}
+
+.general-wrapper .disable-feature {
+	opacity: 0.5;
+}
+
+.general-wrapper .confirm-button-wrapper {
+	position: fixed;
+	bottom: 0;
+	background-color: var(--admin_panel_content_background);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 75%;
+	padding: 0.5% 0 1% 0;
 }
 
 @media screen and (min-width: 2560px) {

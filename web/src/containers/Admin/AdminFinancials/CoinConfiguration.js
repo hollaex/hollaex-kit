@@ -6,6 +6,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
 import { updateConstants } from '../General/action';
 import { requestAdminData } from 'actions/appActions';
+import { renderAsset } from '../Deposits/utils';
 
 const CoinConfiguration = ({ coins }) => {
 	const [coinData, setCoinData] = useState([]);
@@ -269,6 +270,7 @@ const CoinConfiguration = ({ coins }) => {
 											fee_markup: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 						</div>

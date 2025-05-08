@@ -386,46 +386,51 @@ const Onramp = ({
 											</Button>
 										</div>
 										{isPaymentForm ? (
-											<RampPaymentAccounts
-												formType={formType}
-												isDisplayFormData={true}
-												onramp={onramp[item?.symbol]}
-												currentActiveTab={activeTab}
-												coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
-												onRampCoins={!isPaymentForm ? Object.keys(onramp) : []}
-												customName={customName}
-												user_payments={user_payments}
-												isUpgrade={isUpgrade}
-												originalonramp={onramp}
-												pluginName={pluginName}
-												currentsymbol={item?.symbol}
-												isPaymentForm={formType === 'plugin' && customName}
-												setCoindata={setCoindata}
-												selectedPaymentType={selectedPayType?.[item?.symbol]}
-												selectedPayType={selectedPayType}
-												getUpdatedKitData={getUpdatedKitData}
-												setSelectedPayType={setSelectedPayType}
-												paymentIndex={
-													selectedPayType && selectedPayType[item?.symbol]
-														? onramp &&
-														  onramp[item?.symbol] &&
-														  onramp[item?.symbol].indexOf(
-																selectedPayType && selectedPayType[item?.symbol]
-														  ) + 1
-														: 1
-												}
-												currentOnrampType={currentType}
-												OnsetCurrentType={setCurrentType}
-												isProceed={isProceed}
-												setIsProceed={setIsProceed}
-												isModalVisible={isVisible}
-												isLoading={isLoading}
-												setIsLoading={setIsLoading}
-												setIsDisable={setIsDisable}
-												isDisable={isDisable}
-												onrampIndex={onrampIndex}
-												setOnrampIndex={setOnrampIndex}
-											/>
+											<div className="onramp-payment-acc-wrapper">
+												<RampPaymentAccounts
+													formType={formType}
+													isDisplayFormData={true}
+													onramp={onramp[item?.symbol]}
+													currentActiveTab={activeTab}
+													coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
+													onRampCoins={
+														!isPaymentForm ? Object.keys(onramp) : []
+													}
+													customName={customName}
+													user_payments={user_payments}
+													isUpgrade={isUpgrade}
+													originalonramp={onramp}
+													pluginName={pluginName}
+													currentsymbol={item?.symbol}
+													isPaymentForm={formType === 'plugin' && customName}
+													setCoindata={setCoindata}
+													selectedPaymentType={selectedPayType?.[item?.symbol]}
+													selectedPayType={selectedPayType}
+													getUpdatedKitData={getUpdatedKitData}
+													setSelectedPayType={setSelectedPayType}
+													paymentIndex={
+														selectedPayType && selectedPayType[item?.symbol]
+															? onramp &&
+															  onramp[item?.symbol] &&
+															  onramp[item?.symbol].indexOf(
+																	selectedPayType &&
+																		selectedPayType[item?.symbol]
+															  ) + 1
+															: 1
+													}
+													currentOnrampType={currentType}
+													OnsetCurrentType={setCurrentType}
+													isProceed={isProceed}
+													setIsProceed={setIsProceed}
+													isModalVisible={isVisible}
+													isLoading={isLoading}
+													setIsLoading={setIsLoading}
+													setIsDisable={setIsDisable}
+													isDisable={isDisable}
+													onrampIndex={onrampIndex}
+													setOnrampIndex={setOnrampIndex}
+												/>
+											</div>
 										) : null}
 										<div className="border-divider"></div>
 									</div>

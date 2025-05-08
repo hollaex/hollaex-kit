@@ -39,6 +39,7 @@ import {
 	setAdminSortData,
 	setAdminWalletSortData,
 	setAdminDigitalAssetsSortData,
+	setEditMode,
 } from 'actions/appActions';
 import {
 	pushTempContent,
@@ -137,7 +138,12 @@ class OperatorControls extends Component {
 			initialData: {
 				query: { stringSettings = false, themeSettings = false } = {},
 			} = {},
+			isOperatorEdit,
 		} = this.props;
+		if (isOperatorEdit) {
+			this.toggleEditMode();
+		}
+
 		this.setupAdminListeners();
 
 		if (stringSettings) {
@@ -496,9 +502,10 @@ class OperatorControls extends Component {
 
 	exitEditMode = () => {
 		const { isPublishEnabled } = this.state;
-		const { handleEditMode } = this.props;
+		const { handleEditMode, setEditMode = () => {} } = this.props;
 		handleEditMode();
 		this.closeExitConfirmationModal();
+		setEditMode(false);
 
 		if (isPublishEnabled) {
 			this.reload();
@@ -1462,6 +1469,7 @@ const mapStateToProps = (state) => ({
 	pinned_assets: state.app.pinned_assets,
 	default_wallet_sort: state.app.default_wallet_sort,
 	default_digital_assets_sort: state.app.default_digital_assets_sort,
+	isOperatorEdit: state.app.isOperatorEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1473,6 +1481,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
+	setEditMode: bindActionCreators(setEditMode, dispatch),
 });
 
 export default connect(
