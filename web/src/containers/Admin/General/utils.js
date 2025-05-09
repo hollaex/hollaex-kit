@@ -22,6 +22,28 @@ const renderCoinOptions = (coins = {}) =>
 		);
 	});
 
+const renderCountries = () => {
+	return COUNTRIES_OPTIONS?.map(({ value, label, icon }) => (
+		<Select.Option key={value} value={value}>
+			<span className="language-lists">
+				{icon}
+				<span className="selected-language">{label}</span>
+			</span>
+		</Select.Option>
+	));
+};
+
+const renderFlag = () => {
+	return LANGUAGES?.map(({ value, label, icon }) => (
+		<Select.Option key={value} value={value}>
+			<span className="language-lists">
+				<img src={icon} alt={`${label}-icon`} className="language-icon" />
+				<span className="selected-language">{label}</span>
+			</span>
+		</Select.Option>
+	));
+};
+
 export const getGeneralFields = (coins) => ({
 	section_1: {
 		api_name: {
@@ -36,6 +58,7 @@ export const getGeneralFields = (coins) => ({
 			// mode: 'multiple',
 			options: LANGUAGES,
 			disabled: true,
+			renderOptions: () => renderFlag(),
 			validate: [validateRequired],
 		},
 	},
@@ -124,6 +147,7 @@ export const getGeneralFields = (coins) => ({
 		country: {
 			type: 'select',
 			options: COUNTRIES_OPTIONS,
+			renderOptions: () => renderCountries(),
 			validate: [validateRequired],
 		},
 	},
@@ -147,12 +171,6 @@ export const publishJSON = [
 		currentkey: 'EXCHANGE_FAV_ICON',
 		themeKey: 'dark',
 		indexKey: 'EXCHANGE_1',
-	},
-	{
-		title: 'Landing page background',
-		description:
-			'Landing home page for your exchange. This is the page your users will likely see first.',
-		currentkey: 'EXCHANGE_LANDING_PAGE',
 	},
 ];
 

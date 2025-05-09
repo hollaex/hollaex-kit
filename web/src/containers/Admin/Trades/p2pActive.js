@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { Table, Button, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -16,13 +17,25 @@ const dataSource = (setIsConfirmWarning, setUserData, setIsOrderDetails) => {
 		{ title: 'Order Id', dataIndex: 'id', key: 'id' },
 		{
 			title: 'Buyer Name',
-			render: (data) =>
-				data?.buyer?.full_name ? data?.buyer?.full_name : 'Anonymous',
+			render: (data) => {
+				return (
+					<Link className="pointer" to={`/admin/user?id=${data?.buyer?.id}`}>
+						{data?.buyer?.full_name ? data?.buyer?.full_name : 'Anonymous'}
+					</Link>
+				);
+			},
 		},
 		{
 			title: 'Seller Name',
-			render: (data) =>
-				data?.merchant?.full_name ? data?.merchant?.full_name : 'Anonymous',
+			render: (data) => {
+				return (
+					<Link className="pointer" to={`/admin/user?id=${data?.merchant?.id}`}>
+						{data?.merchant?.full_name
+							? data?.merchant?.full_name
+							: 'Anonymous'}
+					</Link>
+				);
+			},
 		},
 		{
 			title: 'Payment Method',
