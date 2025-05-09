@@ -872,3 +872,22 @@
 .p2p-dispute-details-wrapper .resolution-filter-select {
 	width: 15rem;
 }
+
+.p2p-setup-popup-wrapper .p2p-settings-multiple-select .ant-select-selector {
+	display: flex;
+	align-items: center;
+	gap: 1.5%;
+}
+
+.p2p-feedbacks-wrapper .p2p-feedback-title-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.p2p-feedbacks-wrapper .p2p-feedback-title-wrapper .p2p-feedback-description {
+	color: #b6b6b6;
+}
+
+.p2p-feedbacks-wrapper .blue-admin-table .comments-title {
+	width: 20rem;
+}

@@ -25,6 +25,7 @@ import { requestTiers } from '../Tiers/action';
 import { updateConstants, requestUsers } from './actions';
 import { requestAdminData, setConfig } from 'actions/appActions';
 import { Coin } from 'components';
+import { renderAsset } from '../Deposits/utils';
 import Coins from '../Coins';
 import DEFAULT_PAYMENT_METHODS from 'utils/defaultPaymentMethods';
 import './index.css';
@@ -207,18 +208,20 @@ const P2PSettings = ({
 
 	const renderCoin = (text) => {
 		const currencyType =
-			text === 'crypto' || text === 'digital currency'
-				? 'digital_currencies'
-				: 'fiat_currencies';
+			text === 'digital currency' ? 'digital_currencies' : 'fiat_currencies';
 
 		const currencies = p2pConfig?.[currencyType] ?? [];
 		const filteredCurrencies =
-			text === 'crypto' ? currencies?.filter((x) => x === 'usdt') : currencies;
+			text === 'digital asset'
+				? digitalCurrencies
+				: text === 'fiat asset'
+				? fiatCurrencies
+				: currencies;
 
 		if (filteredCurrencies?.length === 0) return null;
 
 		return (
-			<div className="d-flex align-items-center">
+			<div className="d-flex align-items-center flex-wrap">
 				{filteredCurrencies?.map((data, index) => (
 					<span
 						key={`${data}-${index}`}
@@ -391,7 +394,8 @@ const P2PSettings = ({
 						style={{ marginBottom: 10 }}
 						className="d-flex align-items-center"
 					>
-						Cryptocurrencies allowed for trading: {renderCoin('crypto')}
+						Cryptocurrencies allowed for trading:{' '}
+						{renderCoin('digital currency')}
 					</div>
 					<div style={{ borderBottom: '1px solid grey', width: 600 }}></div>
 				</div>
@@ -484,6 +488,7 @@ const P2PSettings = ({
 						setEditMode(false);
 						setDisplayP2pModel(false);
 					}}
+					wrapClassName="p2p-setup-popup-wrapper"
 				>
 					<h1 style={{ fontWeight: '600', color: 'white' }}>P2P setup</h1>
 
@@ -528,11 +533,13 @@ const P2PSettings = ({
 							</div>
 							<Select
 								showSearch={true}
-								className="w-100 select-box mt-3"
+								className="w-100 select-box mt-3 p2p-settings-multiple-select"
 								dropdownClassName="p2p-admin-select-asset"
 								placeholder="Select the assets"
 								mode="multiple"
-								tagRender={() => null}
+								value={digitalCurrencies}
+								tagRender={(data) => renderAsset(data?.label)}
+								getPopupContainer={(triggerNode) => triggerNode.parentNode}
 							>
 								{Object.values(coins || {}).map((coin) => {
 									return (
@@ -1019,7 +1026,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Cryptocurrencies allowed for trading: </div>
-										<div>{renderCoin('digital currency')}</div>
+										<div>{renderCoin('digital asset')}</div>
 									</div>
 									<div
 										onClick={() => {
@@ -1071,7 +1078,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Fiat currencies allowed for trading: </div>
-										<div>{renderCoin('fiat currency')}</div>
+										<div>{renderCoin('fiat asset')}</div>
 									</div>
 									<div
 										onClick={() => {
