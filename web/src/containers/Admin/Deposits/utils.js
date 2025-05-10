@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {
 	CloseSquareOutlined,
@@ -7,9 +8,10 @@ import {
 	BankOutlined,
 } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
-import { Link } from 'react-router';
+import store from 'store';
 import { isSupport } from 'utils/token';
 import { formatDate } from 'utils';
+import { Coin } from 'components';
 
 /*export const renderBoolean = (value) => (
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
@@ -85,6 +87,20 @@ export const renderUser = (id) => (
 		</Button>
 	</Tooltip>
 );
+
+export const renderAsset = (asset) => {
+	const coins = store.getState().app.coins;
+	return (
+		<div className="d-flex align-items-center">
+			{coins[asset]?.icon_id && (
+				<Coin type="CS4" iconId={coins[asset]?.icon_id} />
+			)}
+			<span className={coins[asset]?.icon_id ? 'ml-1 caps' : 'caps'}>
+				{asset}
+			</span>
+		</div>
+	);
+};
 
 export const renderResendContent = (renderData, onOpenModal) => {
 	if (
@@ -183,7 +199,12 @@ export const COLUMNS = (currency, onOpenModal) => {
 			key: 'transaction_id',
 		},
 		// { title: 'Address', dataIndex: 'address', key: 'address' },
-		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
+		{
+			title: 'Currency',
+			dataIndex: 'currency',
+			key: 'currency',
+			render: (asset) => renderAsset(asset),
+		},
 		{
 			title: 'Status',
 			key: 'status',

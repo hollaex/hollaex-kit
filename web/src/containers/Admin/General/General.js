@@ -15,7 +15,11 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData, setConfig } from '../../../actions/appActions';
+import {
+	requestAdminData,
+	setConfig,
+	setHomePageSetting,
+} from '../../../actions/appActions';
 import {
 	tokenGenerated,
 	requestTokens,
@@ -370,6 +374,7 @@ class GeneralContent extends Component {
 			.then((res) => {
 				this.setState({ constants: res });
 				this.props.setConfig(res.kit);
+				this.props.setHomePageSetting(res.kit.features.home_page);
 				message.success('Updated successfully');
 				this.setState({ buttonSubmitting: false });
 				this.handleDisable(true);
@@ -869,6 +874,11 @@ class GeneralContent extends Component {
 		}
 	};
 
+	onHandleNavigate = () => {
+		const { features, handleTabChange } = this.props;
+		features?.home_page ? browserHistory.push('/') : handleTabChange('3');
+	};
+
 	render() {
 		const {
 			initialEmailValues,
@@ -899,6 +909,7 @@ class GeneralContent extends Component {
 			activeTab,
 			handleTabChange,
 			enabledPlugins,
+			features,
 		} = this.props;
 		const generalFields = getGeneralFields(coins);
 
@@ -1172,6 +1183,25 @@ class GeneralContent extends Component {
 									</div>
 								);
 							})}
+							<div
+								className={features.home_page ? 'mb-5' : 'mb-5 disable-feature'}
+							>
+								<div className="sub-title">Landing page</div>
+								<div className="description">
+									<span>
+										This is typically the first page your users will see. You
+										can activate the{' '}
+										<span
+											className="underline-text pointer"
+											onClick={() => this.onHandleNavigate()}
+										>
+											home page
+										</span>{' '}
+										here.
+									</span>
+								</div>
+							</div>
+							<div className="divider"></div>
 							<div className="mb-5">
 								<div className="sub-title">Onboarding background image</div>
 								<div className="description">
@@ -1357,11 +1387,24 @@ class GeneralContent extends Component {
 				{this.props.user?.configs?.includes('apps') && activeTab === 'apps' ? (
 					<div className="general-wrapper">
 						<h3>Mobile Application Configurations</h3>
-						<p>
-							You can configure below fields for you mobile application. Those
-							are publicly available for the users.
-						</p>
-
+						<div className="d-flex flex-column mb-3">
+							<span>
+								You can configure below fields for you mobile application. Those
+								are publicly available for the users.
+							</span>
+							<span>
+								Learn more about the{' '}
+								<Link
+									className="underline-text pointer"
+									href="https://docsend.com/view/32twj3pvkip355ef"
+									target="_blank"
+								>
+									{' '}
+									white-label crypto app
+								</Link>{' '}
+								here.
+							</span>
+						</div>
 						<div style={{}}>
 							<div style={{ marginBottom: 16 }}>
 								<label
@@ -1591,6 +1634,7 @@ const mapStateToProps = (state) => ({
 	selectable_native_currencies:
 		state.app.constants.selectable_native_currencies,
 	balance: state.user.balance,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1599,6 +1643,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setHomePageSetting: bindActionCreators(setHomePageSetting, dispatch),
 });
 
 export default connect(

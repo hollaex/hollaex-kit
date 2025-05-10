@@ -74,20 +74,25 @@ const P2PDeals = ({ coins, coinSymbols }) => {
 			dataIndex: 'price',
 			key: 'price',
 			render: (user_id, data) => {
-				const incrementUnit =
-					coinSymbols?.[data.spending_asset]?.increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit).dp();
-				const sourceAmount = new BigNumber(
-					data.exchange_rate * (1 + Number(data.spread || 0))
-				)
-					.decimalPlaces(decimalPoint)
-					.toNumber();
-
-				return (
-					<div className="d-flex">
-						{sourceAmount} {data.spending_asset.toUpperCase()}
-					</div>
-				);
+				if (coinSymbols?.[data.spending_asset]) {
+					const incrementUnit =
+						coinSymbols?.[data.spending_asset]?.increment_unit;
+					const decimalPoint = new BigNumber(incrementUnit).dp();
+					const sourceAmount = new BigNumber(
+						data.exchange_rate * (1 + Number(data.spread || 0))
+					)
+						.decimalPlaces(decimalPoint)
+						.toNumber();
+					return (
+						<div className="d-flex">
+							{sourceAmount} {data.spending_asset.toUpperCase()}
+						</div>
+					);
+				} else {
+					return (
+						<div className="d-flex">{data.spending_asset.toUpperCase()}</div>
+					);
+				}
 			},
 		},
 		{
