@@ -747,7 +747,7 @@ const Otcdeskpopup = ({
 									value={previewData && previewData.min_size}
 									suffix={
 										previewData &&
-										previewData?.symbol.split('-')[0]?.toUpperCase()
+										previewData?.symbol?.split('-')[0]?.toUpperCase()
 									}
 									type="number"
 								/>
@@ -768,7 +768,7 @@ const Otcdeskpopup = ({
 									value={previewData && previewData.max_size}
 									suffix={
 										previewData &&
-										previewData?.symbol.split('-')[0]?.toUpperCase()
+										previewData?.symbol?.split('-')[0]?.toUpperCase()
 									}
 									type="number"
 								/>
