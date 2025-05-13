@@ -252,6 +252,10 @@ const icons = {
 		TRIANGLE_3D_CONE: '/assets/images/triangle-3d-cone.svg',
 		TRIANGLE_IMAGE: '/assets/images/triangle.svg',
 	},
+	MARKET_ICON: '/assets/images/markets.svg',
+	DIGITAL_ASSETS_ICON: '/assets/images/digitial-asset.svg',
+	FIAT_CONTROLS_ICON: '/assets/images/fiat-controls.svg',
+	STAKING_ICON: '/assets/images/staking.svg',
 };
 
 export default icons;

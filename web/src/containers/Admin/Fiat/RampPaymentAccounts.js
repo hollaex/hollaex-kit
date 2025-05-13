@@ -623,8 +623,11 @@ const RampPaymentAccounts = ({
 		setIsDisplayDetails(false);
 		setIsCurrentFormOpen(false);
 	};
-	const handleOpenPayment = () => {
-		setIsOpen(!isOpen);
+	const handleOpenPayment = (paymentSelect) => {
+		setIsOpen((prevState) => ({
+			...prevState,
+			[paymentSelect]: !prevState[paymentSelect],
+		}));
 	};
 
 	const handleBack = () => {
@@ -642,12 +645,11 @@ const RampPaymentAccounts = ({
 		}
 	};
 
-	const handleOpen = (text) => {
-		if (text === 'open') {
-			setIsOpen(true);
-		} else {
-			setIsOpen(false);
-		}
+	const handleOpen = (paymentSelect, isOpen) => {
+		setIsOpen((prevState) => ({
+			...prevState,
+			[paymentSelect]: isOpen,
+		}));
 	};
 
 	return (
@@ -660,24 +662,26 @@ const RampPaymentAccounts = ({
 							<div className="mb-3">
 								<Select
 									className="paymentSelect"
+									dropdownClassName="blue-admin-select-dropdown"
 									defaultValue={paymentMethods[0]}
 									value={paymentSelect}
 									suffixIcon={
-										isOpen ? (
+										isOpen[paymentSelect] ? (
 											<CaretDownOutlined
 												className="downarrow"
-												onClick={() => handleOpen('close')}
+												onClick={() => handleOpen(paymentSelect, false)}
 											/>
 										) : (
 											<CaretUpOutlined
 												className="downarrow"
-												onClick={() => handleOpen('open')}
+												onClick={() => handleOpen(paymentSelect, true)}
 											/>
 										)
 									}
-									open={isOpen}
-									onClick={handleOpenPayment}
+									open={isOpen[paymentSelect]}
+									onClick={() => handleOpenPayment(paymentSelect)}
 									onChange={setPaymentMethod}
+									getPopupContainer={(triggerNode) => triggerNode.parentNode}
 								>
 									{Object.keys(formValues).map((item, index) => {
 										const value =
