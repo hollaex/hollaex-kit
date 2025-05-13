@@ -1304,6 +1304,7 @@ const checkPermission = (req, user) => {
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;
+	if (apiPath.includes('plugins')) return;
 
 	// Convert path to permission key
 	// ["admin", "user", "role"]
