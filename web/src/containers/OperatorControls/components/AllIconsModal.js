@@ -15,7 +15,13 @@ class AllIconsModal extends Component {
 	};
 
 	getColumns = () => {
-		const { themeOptions, selectedThemes, onSelect } = this.props;
+		const {
+			themeOptions,
+			selectedThemes,
+			onSelect,
+			onReset = () => {},
+			removedKeys,
+		} = this.props;
 		return selectedThemes.map((theme, index) => ({
 			title: () => (
 				<Select
@@ -36,6 +42,10 @@ class AllIconsModal extends Component {
 			key: theme,
 			ellipsis: true,
 			render: (iconPath, { key }) => {
+				let icon_path = iconPath;
+				if (removedKeys?.some((iconObj) => iconObj === `${key}__${theme}`)) {
+					icon_path = '';
+				}
 				return (
 					<Fragment>
 						<span className="operator-controls__string-key">
@@ -44,12 +54,13 @@ class AllIconsModal extends Component {
 						<ImageUpload
 							iconKey={key}
 							themeKey={theme}
-							iconPath={iconPath}
+							iconPath={icon_path}
 							onFileChange={this.onFileChange}
 							beforeInjection={(svg) => {
 								svg.setAttribute('width', '80px');
 								svg.setAttribute('height', '76px');
 							}}
+							onReset={onReset}
 						/>
 					</Fragment>
 				);
@@ -147,6 +158,14 @@ class AllIconsModal extends Component {
 		});
 	};
 
+	onHandleConfirm = () => {
+		const { onCloseDialog, removedKeys, onSave } = this.props;
+		const icons = {};
+		localStorage.setItem('removedBackgroundItems', JSON.stringify(removedKeys));
+		onSave(icons, true);
+		onCloseDialog();
+	};
+
 	render() {
 		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
 
@@ -204,7 +223,7 @@ class AllIconsModal extends Component {
 						<div className="d-flex justify-content-end pt-4 mt-4">
 							<Button
 								type="primary"
-								onClick={onCloseDialog}
+								onClick={this.onHandleConfirm}
 								className="operator-controls__save-button confirm"
 							>
 								Confirm
