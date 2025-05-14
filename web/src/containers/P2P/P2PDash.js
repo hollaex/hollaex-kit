@@ -78,10 +78,10 @@ const P2PDash = ({
 	// const inputRef = useRef(null);
 	const [isBuySelected, setIsBuySelected] = useState(isBuySell);
 	const [buyValue, setBuyValue] = useState([]);
-	const [selectedCoin, setSelectedCoin] = useState('USDT');
+	const [selectedCoin, setSelectedCoin] = useState(
+		p2p_config?.digital_currencies[0]?.toUpperCase()
+	);
 	const [isFilter, setIsFilter] = useState(false);
-
-	const displayAssets = ['USDT', 'XHT', 'BTC', 'ETH'];
 
 	useEffect(() => {
 		fetchDeals({ status: true })
@@ -552,16 +552,18 @@ const P2PDash = ({
 						{STRINGS['P2P.CRYPTO']}
 					</EditWrapper>
 				</div>
-				{displayAssets?.map((asset) => {
+				{p2p_config?.digital_currencies?.map((asset) => {
 					return (
 						<div
 							className={
-								selectedCoin === asset ? 'selected-asset asset' : 'asset'
+								selectedCoin === asset?.toUpperCase()
+									? 'selected-asset asset'
+									: 'asset'
 							}
 							key={asset}
-							onClick={() => handleCryptoAsset(asset)}
+							onClick={() => handleCryptoAsset(asset?.toUpperCase())}
 						>
-							{asset}
+							{asset?.toUpperCase()}
 						</div>
 					);
 				})}

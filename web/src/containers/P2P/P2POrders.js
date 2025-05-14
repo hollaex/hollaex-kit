@@ -52,8 +52,7 @@ const P2POrders = ({
 	const [isFilter, setIsFilter] = useState(false);
 
 	const orderStatus = ['P2P.PROCESSING', 'P2P.ALL_ORDERS'];
-	const digitalCurrencies = localStorage?.getItem('digitalCurrencies');
-	const selectedCurrencies = JSON.parse(digitalCurrencies);
+	const selectedCurrencies = constants?.p2p_config?.digital_currencies;
 
 	useEffect(() => {
 		fetchTransactions()

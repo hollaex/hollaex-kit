@@ -456,88 +456,92 @@ const PaymentAccounts = ({
 					</div>
 				) : null}
 
-				<div className={!isUpgrade ? 'disableall' : ''}>
-					{payOption && formValues.length && formValues.length > 1 ? (
-						<div className="mt-4">
-							<div>Payment accounts ({formValues.length} method saved)</div>
-							<div className="mb-3">
-								<Select
-									className="paymentSelect"
-									defaultValue={formValues[0]}
-									value={paymentSelect}
-									suffixIcon={
-										isOpen ? (
-											<CaretDownOutlined className="downarrow" />
-										) : (
-											<CaretUpOutlined className="downarrow" />
-										)
-									}
-									onClick={handleOpenPayment}
-									onChange={setPaymentMethod}
-								>
-									{formValues.map((item, index) => {
-										return (
-											<Option value={item.name} key={index}>
-												User payment account {item.orderBy}: {item.name}
-											</Option>
-										);
-									})}
-								</Select>
+				<div className="onramp-payment-acc-wrapper">
+					<div className={!isUpgrade ? 'disableall ' : ''}>
+						{payOption && formValues.length && formValues.length > 1 ? (
+							<div className="mt-4">
+								<div>Payment accounts ({formValues.length} method saved)</div>
+								<div className="mb-3">
+									<Select
+										className="paymentSelect"
+										dropdownClassName="blue-admin-select-dropdown"
+										defaultValue={formValues[0]}
+										value={paymentSelect}
+										suffixIcon={
+											isOpen ? (
+												<CaretDownOutlined className="downarrow" />
+											) : (
+												<CaretUpOutlined className="downarrow" />
+											)
+										}
+										onClick={handleOpenPayment}
+										onChange={setPaymentMethod}
+										getPopupContainer={(triggerNode) => triggerNode.parentNode}
+									>
+										{formValues.map((item, index) => {
+											return (
+												<Option value={item.name} key={index}>
+													User payment account {item.orderBy}: {item.name}
+												</Option>
+											);
+										})}
+									</Select>
+								</div>
 							</div>
+						) : null}
+					</div>
+					{isLoading ? (
+						<div className="d-flex justify-content-center align-items-center">
+							<Spin size="large" />
 						</div>
-					) : null}
+					) : (
+						<div className={!isUpgrade ? 'disableall' : ''}>
+							{isDisplayForm ? (
+								<PaymentWay
+									paymenttype={paymenttype}
+									handleClosePlugin={handleClosePlugin}
+									handleSave={handleSave}
+									handleDel={handleDel}
+									isUpgrade={isUpgrade}
+									handleDelBank={handleDelBank}
+									paymentSelect={paymentSelect}
+									handleClose={handleClose}
+									saveType={saveType}
+									formData={formData}
+									router={router}
+									formUpdate={formUpdate}
+									currentActiveTab={'paymentAccounts'}
+									bankInitialValues={bankInitialValues}
+									paypalInitialValues={paypalInitialValues}
+									customInitialValues={customInitialValues}
+									currentPaymentType={currentPaymentType}
+									isCustomPay={isCustomPay}
+									currentIndex={paymentOrderBy}
+									handleBack={handleBack}
+									currentType={currentType}
+									defaultBankInitialValues={defaultBankInitialValues}
+									defaultPaypalInitialValues={defaultPaypalInitialValues}
+									defaultCustomInitialValues={defaultCustomInitialValues}
+									user_payments={user_payments}
+								/>
+							) : null}
+							{payOption && !isDisplayDetails ? (
+								<PaymentDetails
+									type={paymentSelect}
+									formUpdate={formUpdate}
+									saveType={saveType}
+									handleClose={handleClose}
+									formData={formData}
+									router={router}
+									user_payments={user_payments}
+									activeTab={'paymentAccounts'}
+									paymentIndex={paymentOrderBy}
+								/>
+							) : null}
+						</div>
+					)}
 				</div>
 			</div>
-			{isLoading ? (
-				<div className="d-flex justify-content-center align-items-center">
-					<Spin size="large" />
-				</div>
-			) : (
-				<div className={!isUpgrade ? 'disableall' : ''}>
-					{isDisplayForm ? (
-						<PaymentWay
-							paymenttype={paymenttype}
-							handleClosePlugin={handleClosePlugin}
-							handleSave={handleSave}
-							handleDel={handleDel}
-							isUpgrade={isUpgrade}
-							handleDelBank={handleDelBank}
-							paymentSelect={paymentSelect}
-							handleClose={handleClose}
-							saveType={saveType}
-							formData={formData}
-							router={router}
-							formUpdate={formUpdate}
-							currentActiveTab={'paymentAccounts'}
-							bankInitialValues={bankInitialValues}
-							paypalInitialValues={paypalInitialValues}
-							customInitialValues={customInitialValues}
-							currentPaymentType={currentPaymentType}
-							isCustomPay={isCustomPay}
-							currentIndex={paymentOrderBy}
-							handleBack={handleBack}
-							currentType={currentType}
-							defaultBankInitialValues={defaultBankInitialValues}
-							defaultPaypalInitialValues={defaultPaypalInitialValues}
-							defaultCustomInitialValues={defaultCustomInitialValues}
-							user_payments={user_payments}
-						/>
-					) : null}
-					{payOption && !isDisplayDetails ? (
-						<PaymentDetails
-							type={paymentSelect}
-							formUpdate={formUpdate}
-							saveType={saveType}
-							handleClose={handleClose}
-							formData={formData}
-							router={router}
-							user_payments={user_payments}
-							activeTab={'paymentAccounts'}
-							paymentIndex={paymentOrderBy}
-						/>
-					) : null}
-				</div>
-			)}
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
 					handleClosePlugin={handleClosePlugin}

@@ -163,7 +163,7 @@ const Duster = ({
 					</div>
 
 					<div className="w-50 my-3">
-						<div className="sub-title">Maker Id</div>
+						<div className="sub-title">Maker User Id</div>
 						<InputNumber
 							name="maker"
 							min={0}

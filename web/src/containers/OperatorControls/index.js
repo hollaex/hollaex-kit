@@ -39,6 +39,7 @@ import {
 	setAdminSortData,
 	setAdminWalletSortData,
 	setAdminDigitalAssetsSortData,
+	setEditMode,
 } from 'actions/appActions';
 import {
 	pushTempContent,
@@ -121,12 +122,28 @@ class OperatorControls extends Component {
 		};
 	}
 
+	handleKeyDown = (event) => {
+		const { isInjectMode, isEditMode } = this.props;
+		if (event.key === 'Escape') {
+			if (isInjectMode) {
+				this.toggleInjectMode();
+			} else if (isEditMode) {
+				this.toggleEditMode();
+			}
+		}
+	};
+
 	componentDidMount() {
 		const {
 			initialData: {
 				query: { stringSettings = false, themeSettings = false } = {},
 			} = {},
+			isOperatorEdit,
 		} = this.props;
+		if (isOperatorEdit) {
+			this.toggleEditMode();
+		}
+
 		this.setupAdminListeners();
 
 		if (stringSettings) {
@@ -143,9 +160,11 @@ class OperatorControls extends Component {
 				this.getDashToken();
 			}
 		}
+		document.addEventListener('keydown', this.handleKeyDown);
 	}
 
 	componentWillUnmount() {
+		document.removeEventListener('keydown', this.handleKeyDown);
 		this.removeAdminListeners();
 	}
 
@@ -483,9 +502,10 @@ class OperatorControls extends Component {
 
 	exitEditMode = () => {
 		const { isPublishEnabled } = this.state;
-		const { handleEditMode } = this.props;
+		const { handleEditMode, setEditMode = () => {} } = this.props;
 		handleEditMode();
 		this.closeExitConfirmationModal();
+		setEditMode(false);
 
 		if (isPublishEnabled) {
 			this.reload();
@@ -982,6 +1002,33 @@ class OperatorControls extends Component {
 		this.enablePublish();
 	};
 
+	onReset = (themeKey, iconKey) => {
+		const { allIconsArray, removedKeys: currentRemovedKeys } = this.state;
+		const currentTheme = themeKey === 'white' ? 'white' : 'dark';
+		const removedKey = `${iconKey}__${currentTheme}`;
+
+		const updatedIcons = allIconsArray.map((iconObject = {}) => {
+			if (iconObject?.key === iconKey) {
+				return { ...iconObject, [themeKey]: '' };
+			}
+			return { ...iconObject };
+		});
+
+		const storedRemovedKeys =
+			JSON.parse(localStorage.getItem('removedBackgroundItems')) || [];
+		const updatedRemovedKeys = [
+			...new Set([...currentRemovedKeys, ...storedRemovedKeys, removedKey]),
+		];
+
+		this.setState({
+			iconSearchResults: updatedIcons,
+			preview: { [themeKey]: { [iconKey]: undefined } },
+		});
+
+		this.handleRemoveOrUpload('removedKeys', updatedRemovedKeys);
+		this.handleRemoveOrUpload('remove', true);
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -1071,7 +1118,9 @@ class OperatorControls extends Component {
 						onClick={this.toggleInjectMode}
 					>
 						<span>{`</>`}</span>
-						<span className="pl-1">Console</span>
+						<span className="pl-1">
+							{!isInjectMode ? 'Console' : 'Exit Console'}
+						</span>
 					</div>
 				</div>
 				<div
@@ -1223,6 +1272,8 @@ class OperatorControls extends Component {
 						onRowClick={this.handleEditButton}
 						// onSettingsClick={this.openStringSettingsModal}
 						onSave={this.addIcons}
+						onReset={this.onReset}
+						removedKeys={removedKeys}
 					/>
 				)}
 				{isAllStringsModalOpen && (
@@ -1447,6 +1498,7 @@ const mapStateToProps = (state) => ({
 	pinned_assets: state.app.pinned_assets,
 	default_wallet_sort: state.app.default_wallet_sort,
 	default_digital_assets_sort: state.app.default_digital_assets_sort,
+	isOperatorEdit: state.app.isOperatorEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1458,6 +1510,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
+	setEditMode: bindActionCreators(setEditMode, dispatch),
 });
 
 export default connect(

@@ -7626,6 +7626,16 @@ table th {
 .operator-controls__tabletable {
   border-collapse: collapse !important; }
 
+.operator-controls__table .language-detail {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  text-wrap: nowrap; }
+  .operator-controls__table .language-detail .language-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: contain; }
+
 .operator-controls__table thead > tr > th,
 .operator-controls__table tbody > tr > td {
   background-color: #0000ff !important;

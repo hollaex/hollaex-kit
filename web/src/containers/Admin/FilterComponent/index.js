@@ -32,6 +32,9 @@ class Filter extends Component {
 
 	onChangeInputValues = (e) => {
 		const value = e.target.value;
+		if (e.target.value === '') {
+			this.props.onClickFilter(false);
+		}
 		this.props.onChange(
 			value,
 			this.state.selectedValue,
@@ -96,6 +99,7 @@ class Filter extends Component {
 				size="small"
 				placeholder={this.state.placeholder}
 				onChange={this.onChangeInputValues}
+				allowClear={true}
 			/>
 		);
 	};

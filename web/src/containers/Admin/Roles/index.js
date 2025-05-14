@@ -200,6 +200,7 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 		setIsLoading(false);
 	};
 	useEffect(() => {
+		setUserEmail(null);
 		if (activeTab === '0') {
 			handleSearch('');
 			requestInitRole();
@@ -475,54 +476,62 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	};
 
 	return (
-		<Tabs
-			defaultActiveKey="0"
-			style={{ width: '100%' }}
-			activeKey={activeTab}
-			onChange={onHandleTabChange}
-		>
-			<TabPane tab="Operator" key="0">
-				<div
-					style={{ maxHeight: '70vh', overflowY: 'auto' }}
-					className="admin-roles-wrapper w-100 my-4"
-				>
-					<div className="d-flex justify-content-between">
-						<div>
-							<h3>Designate operator roles</h3>
-							<div className="description">
-								Invite other exchange operators and specify their roles to help
-								manage exchange.
+		<div className="w-100">
+			<Tabs
+				defaultActiveKey="0"
+				activeKey={activeTab}
+				onChange={onHandleTabChange}
+				// className='w-100'
+			>
+				<TabPane tab="Operator" key="0">
+					<div className="admin-roles-wrapper admin-roles-wrapper-container w-100 my-4">
+						<div className="d-flex justify-content-between">
+							<div>
+								<h3>Designate operator roles</h3>
+								<div className="description">
+									Invite other exchange operators and specify their roles to
+									help manage exchange.
+								</div>
+							</div>
+							<div>
+								<Button
+									type="primary"
+									className="green-btn no-border"
+									onClick={() => onHandleAddOperator()}
+								>
+									Add operator
+								</Button>
 							</div>
 						</div>
-						<div>
-							<Button
-								type="primary"
-								className="green-btn no-border"
-								onClick={() => onHandleAddOperator()}
-							>
-								Add operator
-							</Button>
-						</div>
-					</div>
-					<div className="d-flex align-items-start my-4">
-						<div>{renderRoleImage()}</div>
-						<div className="ml-4">
-							<div>{renderItems(filteredRoles)}</div>
-							<div className="sub-title">Role types:</div>
-							<div className="mt-2">
-								<ol className="role-lists">
-									{filteredRoles?.map((role) => {
-										return (
-											<li className="font-weight-bold">
-												<span className="text-capitalize">{role?.label}: </span>
-												<span className="font-weight-normal">
-													{role?.description}
-												</span>
-											</li>
-										);
-									})}
-								</ol>
-								{/* <div className="description text-nowrap">
+						<div className="d-flex align-items-start my-4">
+							<div>{renderRoleImage()}</div>
+							<div className="ml-4">
+								<div>{renderItems(filteredRoles)}</div>
+								<div className="sub-title">Role types:</div>
+								<div className="mt-2">
+									<ol className="role-lists">
+										{filteredRoles?.map((role, index) => {
+											const description = role?.description?.replace(
+												/(<([^>]+)>)/gi,
+												' '
+											);
+											const roleDescription =
+												description?.length > 60
+													? description?.substring(0, 60)?.trim() + '...'
+													: description;
+											return (
+												<li className="font-weight-bold" key={index}>
+													<span className="text-capitalize">
+														{role?.label}:{' '}
+													</span>
+													<span className="font-weight-normal">
+														{roleDescription}
+													</span>
+												</li>
+											);
+										})}
+									</ol>
+									{/* <div className="description text-nowrap">
 									<span className="sub-title">1. Administrator</span> can access
 									all areas. Coin creation, minting & burning, trading pair and
 									designate operator roles
@@ -544,291 +553,259 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 									<span className="sub-title">5. Support</span> can access some
 									user information for user verification
 								</div> */}
-							</div>
-							<div className="description mt-2">
-								Learn more about{' '}
-								<span
-									className="pointer admin-link"
-									onClick={() => setActiveTab('1')}
-								>
-									operator role access.
-								</span>
-							</div>
-						</div>
-					</div>
-					<div style={{ width: 300 }}>
-						<div>Search user</div>
-						<div style={{ display: 'flex', gap: 10 }}>
-							<Input
-								style={{ width: 200 }}
-								placeholder="Search User Email"
-								onChange={(e) => {
-									setUserEmail(e.target.value);
-								}}
-								value={userEmail}
-							/>
-							<Button
-								onClick={() => {
-									requestInitRole(1, userEmail);
-								}}
-								style={{
-									backgroundColor: '#288500',
-									color: 'white',
-									flex: 1,
-									height: 35,
-									marginRight: 5,
-									width: 100,
-								}}
-								type="default"
-							>
-								Apply
-							</Button>
-						</div>
-					</div>
-					<div className="table-wrapper">
-						<Table
-							columns={getColumns(handleEdit, isColorDark)}
-							dataSource={!isLoading && filteredDetails}
-							rowKey={(data) => {
-								return data.id;
-							}}
-							pagination={{
-								current: currentTablePage,
-								onChange: pageChange,
-							}}
-							loading={isLoading}
-							className="exchange-operator-role-details"
-						/>
-					</div>
-					{displayAssignRole && (
-						<Modal
-							maskClosable={false}
-							closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-							bodyStyle={{
-								backgroundColor: '#27339D',
-								marginTop: 60,
-							}}
-							visible={displayAssignRole}
-							footer={null}
-							onCancel={() => onCloseAddOperator()}
-							wrapClassName="assign-role-popup-wrapper"
-						>
-							<h2 className="assign-role-title">Add Operator</h2>
-							<div className="assign-role-title">
-								Select the role you’d like to assign and enter the new team
-								member's email address.
-							</div>
-							{!user.otp_enabled && (
-								<div className="authentication-wrapper mb-3">
-									<div>
-										<p>
-											<WarningOutlined />
-										</p>
-										<p>
-											To assign roles, you need to enable the 2-factor
-											authentication.
-										</p>
-									</div>
-									<Link to="/security">Enable 2FA</Link>
 								</div>
-							)}
-							{user.otp_enabled && (
-								<div className="mt-1 mb-3">
-									<div className="mb-1">
-										<div className="mb-1">Role</div>
-										<Select
-											onChange={(value) => onHandleRoleSelect(value)}
-											value={rolePayload?.role_id}
-											placeholder="Select Role Type"
-											className="w-100"
-											dropdownClassName="select-roles-dropdown"
-										>
-											{roles?.map((role, index) => (
-												<Select.Option value={role?.value} key={index}>
-													{role.label}
-												</Select.Option>
-											))}
-										</Select>
-									</div>
-									<div className="operator-card-wrapper">
-										{rolePayload && (
-											<div
-												className={
-													isColorDark(rolePayload?.color)
-														? `operator-role-card operator-control-card-light ${
-																roleStyles[rolePayload?.role_id]?.cardWrapper
-														  }`
-														: `operator-role-card operator-control-card-dark ${
-																roleStyles[rolePayload?.role_id]?.cardWrapper
-														  }`
-												}
-												style={{ backgroundColor: rolePayload?.color }}
-											>
-												<div className="operator-role-card-details">
-													<p className="font-weight-bold role-name">
-														{rolePayload?.role_id?.toUpperCase()}
-													</p>
-													<p className="role-description caps">
-														{rolePayload?.description}
-													</p>
-												</div>
-												<ReactSVG
-													src={
-														roleStyles[rolePayload?.role_id?.toLowerCase()]
-															?.rolesImage ||
-														onHandleBadge(rolePayload?.role_id)
-													}
-													className="role-badge"
-												/>
-											</div>
-										)}
+								<div className="description mt-2">
+									Learn more about{' '}
+									<span
+										className="pointer admin-link"
+										onClick={() => setActiveTab('1')}
+									>
+										operator role access.
+									</span>
+								</div>
+							</div>
+						</div>
+						<div className="search-field-wrapper">
+							<div>Search user</div>
+							<div className="operator-search-field">
+								<Input
+									placeholder="Search User Email"
+									onChange={(e) => {
+										setUserEmail(e.target.value);
+									}}
+									value={userEmail}
+								/>
+								<Button
+									onClick={() => {
+										requestInitRole(1, userEmail);
+									}}
+									type="default"
+									className="green-btn no-border"
+								>
+									Apply
+								</Button>
+							</div>
+						</div>
+						<div className="table-wrapper">
+							<Table
+								columns={getColumns(handleEdit, isColorDark)}
+								dataSource={!isLoading && filteredDetails}
+								rowKey={(data) => {
+									return data.id;
+								}}
+								pagination={{
+									current: currentTablePage,
+									onChange: pageChange,
+								}}
+								loading={isLoading}
+								className="exchange-operator-role-details"
+							/>
+						</div>
+						{displayAssignRole && (
+							<Modal
+								maskClosable={false}
+								closeIcon={<CloseOutlined />}
+								visible={displayAssignRole}
+								footer={null}
+								onCancel={() => onCloseAddOperator()}
+								wrapClassName="assign-role-popup-wrapper"
+							>
+								<h2 className="assign-role-title">Add Operator</h2>
+								<div className="assign-role-title">
+									Select the role you’d like to assign and enter the new team
+									member's email address.
+								</div>
+								{!user.otp_enabled && (
+									<div className="authentication-wrapper mb-3">
 										<div>
-											<p>PERMISSIONS: {rolePayload?.permission?.length || 0}</p>
-											<p
-												className="text-decoration-underline pointer"
-												onClick={() => {
-													onHandleTabChange('1');
-													setDisplayAssignRole(false);
-												}}
-											>
-												OPEN THE ROLES PAGE
+											<p>
+												<WarningOutlined />
+											</p>
+											<p>
+												To assign roles, you need to enable the 2-factor
+												authentication.
 											</p>
 										</div>
+										<Link to="/security">Enable 2FA</Link>
 									</div>
-									<div className="mb-1">
-										<div className="mb-2">Email</div>
-										<div className="d-flex align-items-center">
+								)}
+								{user.otp_enabled && (
+									<div className="mt-1 mb-3">
+										<div className="mb-1">
+											<div className="mb-1">Role</div>
 											<Select
-												showSearch
-												placeholder="user@exchange.com"
-												className="user-search-field w-100"
-												onSearch={(text) => handleSearch(text)}
-												filterOption={() => true}
-												value={selectedEmailData && selectedEmailData.label}
-												onChange={(text) => handleEmailChange(text)}
-												showAction={['focus', 'click']}
+												onChange={(value) => onHandleRoleSelect(value)}
+												value={rolePayload?.role_id}
+												placeholder="Select Role Type"
+												className="w-100"
 												dropdownClassName="select-roles-dropdown"
 											>
-												{emailOptions &&
-													emailOptions.map((email) => (
-														<Select.Option key={email.value}>
-															{email.label}
-														</Select.Option>
-													))}
+												{roles?.map((role, index) => (
+													<Select.Option value={role?.value} key={index}>
+														{role.label}
+													</Select.Option>
+												))}
 											</Select>
 										</div>
+										<div className="operator-card-wrapper">
+											{rolePayload && (
+												<div
+													className={
+														isColorDark(rolePayload?.color)
+															? `operator-role-card operator-control-card-light ${
+																	roleStyles[rolePayload?.role_id]?.cardWrapper
+															  }`
+															: `operator-role-card operator-control-card-dark ${
+																	roleStyles[rolePayload?.role_id]?.cardWrapper
+															  }`
+													}
+													style={{ backgroundColor: rolePayload?.color }}
+												>
+													<div className="operator-role-card-details">
+														<p className="font-weight-bold role-name">
+															{rolePayload?.role_id?.toUpperCase()}
+														</p>
+														<p className="role-description caps">
+															{rolePayload?.description}
+														</p>
+													</div>
+													<ReactSVG
+														src={
+															roleStyles[rolePayload?.role_id?.toLowerCase()]
+																?.rolesImage ||
+															onHandleBadge(rolePayload?.role_id)
+														}
+														className="role-badge"
+													/>
+												</div>
+											)}
+											<div>
+												<p>
+													PERMISSIONS: {rolePayload?.permission?.length || 0}
+												</p>
+												<p
+													className="text-decoration-underline pointer"
+													onClick={() => {
+														onHandleTabChange('1');
+														onCloseAddOperator();
+													}}
+												>
+													OPEN THE ROLES PAGE
+												</p>
+											</div>
+										</div>
+										<div className="mb-1">
+											<div className="mb-2">Email</div>
+											<div className="d-flex align-items-center">
+												<Select
+													showSearch
+													placeholder="user@exchange.com"
+													className="user-search-field w-100"
+													onSearch={(text) => handleSearch(text)}
+													filterOption={() => true}
+													value={selectedEmailData && selectedEmailData.label}
+													onChange={(text) => handleEmailChange(text)}
+													showAction={['focus', 'click']}
+													dropdownClassName="select-roles-dropdown"
+												>
+													{emailOptions &&
+														emailOptions.map((email) => (
+															<Select.Option key={email.value}>
+																{email.label}
+															</Select.Option>
+														))}
+												</Select>
+											</div>
+										</div>
 									</div>
-								</div>
-							)}
+								)}
 
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									gap: 15,
-									justifyContent: 'space-between',
+								<div className="button-container">
+									<Button
+										onClick={() => onCloseAddOperator()}
+										type="default"
+										className="green-btn no-border w-50"
+									>
+										Back
+									</Button>
+									<Button
+										onClick={async () => {
+											try {
+												if (!rolePayload.user_id || !rolePayload.role_id) {
+													message.error('Please select all the inputs');
+													return;
+												}
+												await updateRole(
+													{ role: rolePayload.role_id, otp_code: '' },
+													{ user_id: rolePayload.user_id }
+												);
+												setRolePayload({});
+												setDisplayAssignRole(false);
+												requestInitRole();
+												message.success('Role Assigned');
+											} catch (err) {
+												const _error =
+													err.data && err.data.message
+														? err.data.message
+														: err.message;
+												if (_error.toLowerCase().indexOf('otp') > -1) {
+													setOtpDialogIsOpen(true);
+												} else {
+													message.error(_error);
+												}
+											}
+										}}
+										type="default"
+										disabled={!user.otp_enabled}
+										className="green-btn no-border w-50"
+									>
+										Proceed
+									</Button>
+								</div>
+							</Modal>
+						)}
+						{otpDialogIsOpen && (
+							<Modal
+								maskClosable={false}
+								closeIcon={<CloseOutlined />}
+								visible={otpDialogIsOpen}
+								footer={null}
+								onCancel={() => {
+									setOtpDialogIsOpen(false);
 								}}
 							>
-								<Button
-									onClick={() => onCloseAddOperator()}
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
-									type="default"
-									className="no-border"
-								>
-									Back
-								</Button>
-								<Button
-									onClick={async () => {
-										try {
-											if (!rolePayload.user_id || !rolePayload.role_id) {
-												message.error('Please select all the inputs');
-												return;
-											}
-											await updateRole(
-												{ role: rolePayload.role_id, otp_code: '' },
-												{ user_id: rolePayload.user_id }
-											);
-											setRolePayload({});
-											setDisplayAssignRole(false);
-											requestInitRole();
-											message.success('Role Assigned');
-										} catch (err) {
-											const _error =
-												err.data && err.data.message
-													? err.data.message
-													: err.message;
-											if (_error.toLowerCase().indexOf('otp') > -1) {
-												setOtpDialogIsOpen(true);
-											} else {
-												message.error(_error);
-											}
-										}
-									}}
-									style={{
-										backgroundColor: '#288500',
-										color: 'white',
-										flex: 1,
-										height: 35,
-									}}
-									type="default"
-									disabled={!user.otp_enabled}
-									className="no-border"
-								>
-									Proceed
-								</Button>
-							</div>
-						</Modal>
-					)}
-					{otpDialogIsOpen && (
+								<OtpForm onSubmit={onSubmitRoleOtp} />
+							</Modal>
+						)}
 						<Modal
-							maskClosable={false}
-							closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-							bodyStyle={{
-								backgroundColor: '#27339D',
-								marginTop: 60,
-							}}
-							visible={otpDialogIsOpen}
+							visible={isOpen}
 							footer={null}
-							onCancel={() => {
-								setOtpDialogIsOpen(false);
-							}}
+							onCancel={handleClose}
+							width={
+								!user?.otp_enabled
+									? 400
+									: modalType === 'operator-role'
+									? 500
+									: 350
+							}
 						>
-							<OtpForm onSubmit={onSubmitRoleOtp} />
+							{renderContent(modalType, onTypeChange, isUpgrade)}
 						</Modal>
-					)}
-					<Modal
-						visible={isOpen}
-						footer={null}
-						onCancel={handleClose}
-						width={
-							!user?.otp_enabled
-								? 400
-								: modalType === 'operator-role'
-								? 500
-								: 350
-						}
-					>
-						{renderContent(modalType, onTypeChange, isUpgrade)}
-					</Modal>
-				</div>
-			</TabPane>
+					</div>
+				</TabPane>
 
-			<TabPane tab="Roles" key="1">
-				<Role
-					constants={constants}
-					onHandleTabChange={onHandleTabChange}
-					isColorDark={isColorDark}
-					user={user}
-					coins={coins}
-					setRolesList={setRolesList}
-				/>
-			</TabPane>
-		</Tabs>
+				<TabPane tab="Roles" key="1">
+					<Role
+						constants={constants}
+						onHandleTabChange={onHandleTabChange}
+						isColorDark={isColorDark}
+						user={user}
+						coins={coins}
+						setRolesList={setRolesList}
+					/>
+				</TabPane>
+			</Tabs>
+		</div>
 	);
 };
 

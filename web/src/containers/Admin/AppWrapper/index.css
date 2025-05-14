@@ -158,6 +158,10 @@
 	height: auto !important;
 	padding: 0px !important;
 }
+
+.custom-side-menu .resource-text {
+	font-size: 14px;
+}
 .sidebar-exchange-menu .exchange-title {
 	font-size: 16px;
 }

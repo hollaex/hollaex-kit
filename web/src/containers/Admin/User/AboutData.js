@@ -1138,10 +1138,16 @@ const AboutData = ({
 									}}
 									value={null}
 								>
-									None{' '}
-									<Link to="/admin/financials?tab=2">
-										(it follows the users tier withdrawal limit)
-									</Link>
+									<span>
+										None (it follows the users{' '}
+										<Link
+											to="/admin/financials?tab=2"
+											className="underline-text"
+										>
+											tier withdrawal limit
+										</Link>
+										)
+									</span>
 								</Radio>
 								<Radio
 									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}
