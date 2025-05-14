@@ -1002,6 +1002,33 @@ class OperatorControls extends Component {
 		this.enablePublish();
 	};
 
+	onReset = (themeKey, iconKey) => {
+		const { allIconsArray, removedKeys: currentRemovedKeys } = this.state;
+		const currentTheme = themeKey === 'white' ? 'white' : 'dark';
+		const removedKey = `${iconKey}__${currentTheme}`;
+
+		const updatedIcons = allIconsArray.map((iconObject = {}) => {
+			if (iconObject?.key === iconKey) {
+				return { ...iconObject, [themeKey]: '' };
+			}
+			return { ...iconObject };
+		});
+
+		const storedRemovedKeys =
+			JSON.parse(localStorage.getItem('removedBackgroundItems')) || [];
+		const updatedRemovedKeys = [
+			...new Set([...currentRemovedKeys, ...storedRemovedKeys, removedKey]),
+		];
+
+		this.setState({
+			iconSearchResults: updatedIcons,
+			preview: { [themeKey]: { [iconKey]: undefined } },
+		});
+
+		this.handleRemoveOrUpload('removedKeys', updatedRemovedKeys);
+		this.handleRemoveOrUpload('remove', true);
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -1245,6 +1272,8 @@ class OperatorControls extends Component {
 						onRowClick={this.handleEditButton}
 						// onSettingsClick={this.openStringSettingsModal}
 						onSave={this.addIcons}
+						onReset={this.onReset}
+						removedKeys={removedKeys}
 					/>
 				)}
 				{isAllStringsModalOpen && (
