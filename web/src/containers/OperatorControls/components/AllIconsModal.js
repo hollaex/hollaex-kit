@@ -98,6 +98,7 @@ class AllIconsModal extends Component {
 			onOk: this.handleSave,
 			onCancel: () => this.setState({ selectedFiles: {} }),
 			zIndex: 10003,
+			className: 'confirmation-icon-popup',
 		});
 	};
 
@@ -160,14 +161,27 @@ class AllIconsModal extends Component {
 
 	onHandleConfirm = () => {
 		const { onCloseDialog, removedKeys, onSave } = this.props;
+		const getIcons = JSON.parse(localStorage.getItem('icons')) || {};
 		const icons = {};
-		localStorage.setItem('removedBackgroundItems', JSON.stringify(removedKeys));
-		onSave(icons, true);
+		if (!this.state?.error) {
+			removedKeys &&
+				(removedKeys || []).forEach((key) => {
+					const [iconKey = '', theme = ''] = key?.split('__');
+					if (getIcons[theme] && getIcons[theme][iconKey]) {
+						localStorage.setItem(
+							'removedBackgroundItems',
+							JSON.stringify(removedKeys)
+						);
+						onSave(icons);
+					}
+				});
+		}
 		onCloseDialog();
 	};
 
 	render() {
 		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
+		const { error } = this.state;
 
 		const modalContent = document.getElementById('all-icons-content');
 		const modalContentHeight = modalContent ? modalContent.clientHeight : 0;
@@ -220,7 +234,18 @@ class AllIconsModal extends Component {
 							scroll={{ y: tableContentHeight }}
 							style={{ width: '820px' }}
 						/>
-						<div className="d-flex justify-content-end pt-4 mt-4">
+						<div
+							className={
+								error
+									? 'd-flex flex-column align-items-end'
+									: 'pt-4 d-flex flex-column align-items-end'
+							}
+						>
+							{error && (
+								<span className="operator-control-error-text font-weight-bold mb-2">
+									{error}
+								</span>
+							)}
 							<Button
 								type="primary"
 								onClick={this.onHandleConfirm}

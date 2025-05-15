@@ -53,7 +53,7 @@ const VerificationHome = ({
 					text={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 					textType="title"
 					iconPath={ICONS['TAB_VERIFY']}
-					iconId={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+					iconId="TAB_VERIFY"
 				/>
 			)}
 			{!isMobile && <HeaderSection openContactForm={openContactForm} />}
