@@ -3,6 +3,13 @@ import { STATIC_ICONS } from 'config/icons';
 export const HelpList = {
 	data: [
 		{
+			title: 'Docs & Resources',
+			subtitle: '',
+			description: '',
+			link: 'https://docs.hollaex.com/',
+			img: STATIC_ICONS.RESOURCE_OTHER_RESOURCES,
+		},
+		{
 			title: 'Plugins',
 			subtitle: 'Exchange plugin',
 			description: 'Access a load of plugins for smooth exchange operations',
@@ -32,13 +39,6 @@ export const HelpList = {
 				'Official HollaEx Exchange is the home the HollaEx Token and a live example of the HollaEx Kit in action',
 			link: 'https://pro.hollaex.com/trade/xht-usdt',
 			img: STATIC_ICONS.RESOURCE_PRO_EXCHANGE,
-		},
-		{
-			title: 'Other Useful Resources',
-			subtitle: '',
-			description: '',
-			link: 'https://docs.hollaex.com/',
-			img: STATIC_ICONS.RESOURCE_OTHER_RESOURCES,
 		},
 		{
 			title: 'Status',

@@ -285,7 +285,8 @@ const createUser = (
 					password,
 					settings: INITIAL_SETTINGS(),
 					email_verified: opts.email_verified,
-					role
+					role,
+					is_admin: role === 'admin' ? true : false
 				};
 
 				if (isNumber(opts.id)) {
@@ -885,7 +886,7 @@ const getAllUsersAdmin = (opts = {
 	}
 
 	if (opts.format) {
-		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta', 'role'];
 		return dbQuery.fetchAllRecords('user', query)
 			.then(async ({ count, data }) => {
 				if (opts.id || opts.search) {
@@ -1132,28 +1133,6 @@ const unfreezeUserByEmail = (email) => {
 				user.settings
 			);
 			return user;
-		});
-};
-
-const getUserRole = (opts = {}) => {
-	return getUser(opts, true)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			if (user.is_admin) {
-				return 'admin';
-			} else if (user.is_supervisor) {
-				return 'supervisor';
-			} else if (user.is_support) {
-				return 'support';
-			} else if (user.is_kyc) {
-				return 'kyc';
-			} else if (user.is_communicator) {
-				return 'communicator';
-			} else {
-				return 'user';
-			}
 		});
 };
 
@@ -3860,6 +3839,7 @@ const updateUserAutoTrade = async (user_id, {
 		day_of_month,
 		trade_hour,
 		active,
+		last_execution_date: active === false ? null : trade.last_execution_date,
 		description
 	});
 };
@@ -4260,7 +4240,7 @@ const updateExchangeUserRole = async (roleId, { description, rolePermissions, co
 				throw new Error(INVALID_OTP_CODE);
 			}
 		} catch (error) {
-				throw new Error(INVALID_OTP_CODE);
+			throw new Error(INVALID_OTP_CODE);
 		}
 	}
 
@@ -4456,7 +4436,6 @@ module.exports = {
 	unfreezeUserById,
 	unfreezeUserByEmail,
 	getAllUsers,
-	getUserRole,
 	updateUserSettings,
 	omitUserFields,
 	registerUserLogin,

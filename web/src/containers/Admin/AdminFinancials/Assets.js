@@ -6,6 +6,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { bindActionCreators } from 'redux';
 // import { requestExchange } from './action';
 import _get from 'lodash/get';
+import debounce from 'lodash.debounce';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
@@ -308,6 +309,10 @@ class Assets extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.debounceLoading.cancel();
+	}
+
 	updateCurrentScreen = (screen) => {
 		this.setState({
 			currentScreen: screen,
@@ -382,12 +387,12 @@ class Assets extends Component {
 				(await res.data) &&
 				res.data.data &&
 				res.data.data.map((item) => {
-				return {
-					key: item.fullname,
-					value: item.symbol,
-					...item,
-				};
-			});
+					return {
+						key: item.fullname,
+						value: item.symbol,
+						...item,
+					};
+				});
 
 			return this.props.setCoins(coins);
 		} catch (error) {
@@ -587,14 +592,21 @@ class Assets extends Component {
 		this.setState({ filterValues });
 	};
 
-	onClickFilter = () => {
+	handledebounceLoading = () => {
+		this.setState({ isLoading: false });
+	};
+
+	debounceLoading = debounce(this.handledebounceLoading, 500);
+
+	onClickFilter = (isClearField = true) => {
 		const { filterValues } = this.state;
 		const { allCoins, exchange } = this.props;
+		this.setState({ isLoading: true });
 		const coinData = allCoins.filter((val) =>
 			exchange.coins.includes(val.symbol)
 		);
 		const lowercasedValue = filterValues.toLowerCase();
-		if (lowercasedValue) {
+		if (lowercasedValue && isClearField) {
 			let result = coinData.filter((list) => {
 				return (
 					list.symbol.toLowerCase().includes(lowercasedValue) ||
@@ -605,6 +617,7 @@ class Assets extends Component {
 		} else {
 			this.setState({ coins: coinData });
 		}
+		this.debounceLoading();
 	};
 
 	handleEditData = (data) => {
@@ -684,8 +697,9 @@ class Assets extends Component {
 		} = this.state;
 
 		const { owner_id, created_by, verified, type } = selectedAsset;
-		const showMintAndBurnButtons = verified && (owner_id === user_id || type === 'fiat');
-		const showConfigureButton = created_by === user_id || owner_id === user_id ;
+		const showMintAndBurnButtons =
+			verified && (owner_id === user_id || type === 'fiat');
+		const showConfigureButton = created_by === user_id || owner_id === user_id;
 
 		if (isConfigure) {
 			return (
@@ -739,13 +753,13 @@ class Assets extends Component {
 					<div>
 						<div className="d-flex">
 							{showConfigureButton && (
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={this.handleConfigure}
-							>
-								Configure
-							</Button>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={this.handleConfigure}
+								>
+									Configure
+								</Button>
 							)}
 							<div className="separator" />
 							{showMintAndBurnButtons && (
@@ -897,6 +911,7 @@ class Assets extends Component {
 			isPresetConfirm,
 			exchangeBalance,
 			exchange,
+			isLoading,
 		} = this.state;
 		const { allCoins, constants } = this.props;
 		return (
@@ -931,7 +946,7 @@ class Assets extends Component {
 								)}
 								rowKey={(data, index) => index}
 								dataSource={coins}
-								loading={!coins.length}
+								loading={isLoading}
 								pagination={false}
 							/>
 						</div>

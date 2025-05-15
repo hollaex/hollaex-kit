@@ -3,7 +3,7 @@
 	color: #ffffff;
 	margin: 2rem 0rem;
 	padding: 1.5rem;
-	width: 75%;
+	width: 60rem;
 }
 .admin-dash-card .card-description {
 	font-size: 13px;
@@ -14,6 +14,12 @@
 }
 .admin-dash-card .card-title {
 	font-size: 16px;
+	font-weight: 600;
+}
+.admin-dash-card-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3%;
 }
 .card-link {
 	margin-top: 0.5rem;

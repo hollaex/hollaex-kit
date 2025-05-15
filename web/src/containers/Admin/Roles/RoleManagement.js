@@ -13,7 +13,6 @@ import {
 	Typography,
 	Tabs,
 	Collapse,
-	Tooltip,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -327,15 +326,11 @@ const PermissionTabs = ({
 
 	return (
 		<Tabs defaultActiveKey="1">
-			<TabPane tab={<span style={{ color: 'white' }}>API Routes</span>} key="1">
-				<div
-					style={{
-						maxHeight: '400px',
-						overflow: 'auto',
-						border: '1px solid #d9d9d9',
-						padding: '10px',
-					}}
-				>
+			<TabPane
+				tab={<span className="permission-tab-header">API Routes</span>}
+				key="1"
+			>
+				<div className="permission-tab-content">
 					<Tree
 						className="custom-tree"
 						checkable
@@ -347,17 +342,10 @@ const PermissionTabs = ({
 				</div>
 			</TabPane>
 			<TabPane
-				tab={<span style={{ color: 'white' }}>Kit Configuration</span>}
+				tab={<span className="permission-tab-header">Kit Configuration</span>}
 				key="2"
 			>
-				<div
-					style={{
-						maxHeight: '400px',
-						overflow: 'auto',
-						border: '1px solid #d9d9d9',
-						padding: '10px',
-					}}
-				>
+				<div className="permission-tab-content">
 					<Tree
 						className="custom-tree"
 						checkable
@@ -369,17 +357,10 @@ const PermissionTabs = ({
 				</div>
 			</TabPane>
 			<TabPane
-				tab={<span style={{ color: 'white' }}>Kit Secrets</span>}
+				tab={<span className="permission-tab-header">Kit Secrets</span>}
 				key="3"
 			>
-				<div
-					style={{
-						maxHeight: '400px',
-						overflow: 'auto',
-						border: '1px solid #d9d9d9',
-						padding: '10px',
-					}}
-				>
+				<div className="permission-tab-content">
 					<Tree
 						checkable
 						className="custom-tree"
@@ -640,8 +621,7 @@ const RoleForm = ({
 					<Button
 						type="primary"
 						onClick={handleSubmit}
-						style={{ marginRight: 8, backgroundColor: '#288501' }}
-						className="role-btn w-50"
+						className="role-btn w-50 green-btn"
 						disabled={
 							isEditing && ['admin']?.includes(initialValues?.role_name)
 						}
@@ -937,21 +917,15 @@ const RoleManagement = ({
 		<div className="roles-management-wrapper w-100">
 			<Modal
 				visible={isConfirmDelete}
-				bodyStyle={{
-					backgroundColor: '#27339D',
-					marginTop: otpDialogIsOpen ? 60 : 'unset',
-				}}
 				title={
-					!user.otp_enabled && (
-						<span style={{ color: 'white', fontSize: '20px' }}>Enable 2FA</span>
-					)
+					!user.otp_enabled && <span className="popup-title">Enable 2FA</span>
 				}
 				onCancel={() => setIsConfirmDelete(false)}
 				footer={null}
 				width={450}
 				maskClosable={false}
 				centered={true}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+				closeIcon={<CloseOutlined />}
 				className="confirm-roles-delete-popup"
 				wrapClassName="operator-roles-detail-popup"
 			>
@@ -992,11 +966,7 @@ const RoleManagement = ({
 			{otpDialogIsOpen && (
 				<Modal
 					maskClosable={false}
-					closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-					bodyStyle={{
-						backgroundColor: '#27339D',
-						marginTop: 60,
-					}}
+					closeIcon={<CloseOutlined />}
 					visible={otpDialogIsOpen}
 					footer={null}
 					onCancel={() => {
@@ -1042,13 +1012,13 @@ const RoleManagement = ({
 				</div>
 			)}
 			<div className="operator-cards-container">
-				{customizedrole.map((role) => {
+				{customizedrole.map((role, index) => {
 					const cardWrapper =
 						roleStyles[role?.role_name]?.cardWrapper ||
 						roleStyles?.default?.cardWrapper;
 					const rolesImage = roleStyles[role?.role_name]?.rolesImage;
 					return (
-						<Col key={role?.id}>
+						<Col key={index}>
 							<div
 								className={
 									isColorDark(role?.color)
@@ -1181,7 +1151,7 @@ const RoleManagement = ({
 			</div>
 			<Modal
 				title={
-					<span style={{ color: 'white', fontSize: '20px' }}>
+					<span className="popup-title">
 						{user.otp_enabled
 							? currentRole
 								? 'Edit Role'
@@ -1194,7 +1164,7 @@ const RoleManagement = ({
 				footer={null}
 				width={user.otp_enabled ? 550 : 400}
 				destroyOnClose
-				className="operator-roles-detail-popup"
+				wrapClassName="operator-roles-detail-popup"
 			>
 				{user.otp_enabled ? (
 					<RoleForm

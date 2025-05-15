@@ -15,7 +15,13 @@ class AllIconsModal extends Component {
 	};
 
 	getColumns = () => {
-		const { themeOptions, selectedThemes, onSelect } = this.props;
+		const {
+			themeOptions,
+			selectedThemes,
+			onSelect,
+			onReset = () => {},
+			removedKeys,
+		} = this.props;
 		return selectedThemes.map((theme, index) => ({
 			title: () => (
 				<Select
@@ -36,6 +42,10 @@ class AllIconsModal extends Component {
 			key: theme,
 			ellipsis: true,
 			render: (iconPath, { key }) => {
+				let icon_path = iconPath;
+				if (removedKeys?.some((iconObj) => iconObj === `${key}__${theme}`)) {
+					icon_path = '';
+				}
 				return (
 					<Fragment>
 						<span className="operator-controls__string-key">
@@ -44,12 +54,13 @@ class AllIconsModal extends Component {
 						<ImageUpload
 							iconKey={key}
 							themeKey={theme}
-							iconPath={iconPath}
+							iconPath={icon_path}
 							onFileChange={this.onFileChange}
 							beforeInjection={(svg) => {
 								svg.setAttribute('width', '80px');
 								svg.setAttribute('height', '76px');
 							}}
+							onReset={onReset}
 						/>
 					</Fragment>
 				);
@@ -87,6 +98,7 @@ class AllIconsModal extends Component {
 			onOk: this.handleSave,
 			onCancel: () => this.setState({ selectedFiles: {} }),
 			zIndex: 10003,
+			className: 'confirmation-icon-popup',
 		});
 	};
 
@@ -147,8 +159,29 @@ class AllIconsModal extends Component {
 		});
 	};
 
+	onHandleConfirm = () => {
+		const { onCloseDialog, removedKeys, onSave } = this.props;
+		const getIcons = JSON.parse(localStorage.getItem('icons')) || {};
+		const icons = {};
+		if (!this.state?.error) {
+			removedKeys &&
+				(removedKeys || []).forEach((key) => {
+					const [iconKey = '', theme = ''] = key?.split('__');
+					if (getIcons[theme] && getIcons[theme][iconKey]) {
+						localStorage.setItem(
+							'removedBackgroundItems',
+							JSON.stringify(removedKeys)
+						);
+						onSave(icons);
+					}
+				});
+		}
+		onCloseDialog();
+	};
+
 	render() {
 		const { isOpen, icons, onCloseDialog, searchValue, onSearch } = this.props;
+		const { error } = this.state;
 
 		const modalContent = document.getElementById('all-icons-content');
 		const modalContentHeight = modalContent ? modalContent.clientHeight : 0;
@@ -201,10 +234,21 @@ class AllIconsModal extends Component {
 							scroll={{ y: tableContentHeight }}
 							style={{ width: '820px' }}
 						/>
-						<div className="d-flex justify-content-end pt-4 mt-4">
+						<div
+							className={
+								error
+									? 'd-flex flex-column align-items-end'
+									: 'pt-4 d-flex flex-column align-items-end'
+							}
+						>
+							{error && (
+								<span className="operator-control-error-text font-weight-bold mb-2">
+									{error}
+								</span>
+							)}
 							<Button
 								type="primary"
-								onClick={onCloseDialog}
+								onClick={this.onHandleConfirm}
 								className="operator-controls__save-button confirm"
 							>
 								Confirm

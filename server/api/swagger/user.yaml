@@ -2172,7 +2172,7 @@ paths:
       operationId: createUserAutoTrade
       description: Create auto trade
       tags:
-        - user
+        - User
       parameters:
         - name: data
           in: body

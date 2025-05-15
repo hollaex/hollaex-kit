@@ -20,6 +20,7 @@ import { Image } from 'components';
 import Coins from '../Coins';
 import { requestDeposits, requestBurn, requestMint } from '../Deposits/actions';
 import {
+	renderAsset,
 	renderContent,
 	renderRowContent,
 	renderStatus,
@@ -275,6 +276,8 @@ const Summarycontent = ({
 					type === 'deposit' ? selectedDepositAsset : selectedWithdrawalAsset
 				}
 				className="ml-3 mb-2"
+				dropdownClassName="blue-admin-select-dropdown"
+				getPopupContainer={(triggerNode) => triggerNode.parentNode}
 			>
 				{fiatCoins.map((option, index) => (
 					<Select.Option value={option.symbol} key={index}>
@@ -304,7 +307,12 @@ const Summarycontent = ({
 			dataIndex: 'transaction_id',
 			key: 'transaction_id',
 		},
-		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
+		{
+			title: 'Currency',
+			dataIndex: 'currency',
+			key: 'currency',
+			render: (currency) => renderAsset(currency, coins),
+		},
 		{
 			title: 'Status',
 			key: 'status',

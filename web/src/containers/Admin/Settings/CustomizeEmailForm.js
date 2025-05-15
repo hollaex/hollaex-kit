@@ -85,12 +85,12 @@ const CustomizeEmailForm = ({
 		constructedData();
 	}, [constructedData]);
 
-	const handleConfirmOpen = (type) => {
-		setModalVisible(!isModalVisible);
+	const handleConfirmOpen = useCallback((type) => {
+		setModalVisible((prev) => !prev);
 		if (type) {
 			setModalType(type);
 		}
-	};
+	}, []);
 
 	const handleSubmit = (formProps) => {
 		handleConfirmOpen('save');
@@ -147,11 +147,16 @@ const CustomizeEmailForm = ({
 		setIsDisable(false);
 		handleConfirmOpen();
 	};
-
-	const onHandleNavigate = () => {
+	const onHandleNavigate = useCallback(() => {
 		handleTabChange('0');
 		handleConfirmOpen();
-	};
+		const adminContentWrapper = document.querySelector(
+			'.admin-content-wrapper'
+		);
+		if (adminContentWrapper) {
+			adminContentWrapper.scrollTo(0, 0);
+		}
+	}, [handleTabChange, handleConfirmOpen]);
 
 	const handleConfirmation = (formProps) => {
 		const { language, mailType, format, title } = formProps;
@@ -212,7 +217,7 @@ const CustomizeEmailForm = ({
 					</div>
 					<iframe
 						title={'test'}
-						srcDoc={defaultEmailData?.html}
+						srcDoc={emailInfo?.html}
 						height={500}
 						className="email-preview-content mt-3"
 					/>
@@ -291,6 +296,17 @@ const CustomizeEmailForm = ({
 	useEffect(() => {
 		setButtonSubmitting(true);
 	}, []);
+
+	const onHandleChange = (e) => {
+		const updatedHtml = e.target?.value;
+		setFormData((prev) => ({
+			...prev,
+			format: updatedHtml,
+		}));
+		if (emailInfo) {
+			emailInfo.html = updatedHtml;
+		}
+	};
 
 	return (
 		<div className="custom-email-wrapper">
@@ -384,7 +400,12 @@ const CustomizeEmailForm = ({
 				<div className="sub-title">HTML content</div>
 				<div className="text-area">
 					<Form.Item name="format">
-						<TextArea placeholder="format" rows={20} disabled={!isDisable} />
+						<TextArea
+							placeholder="format"
+							rows={20}
+							disabled={!isDisable}
+							onChange={(e) => onHandleChange(e)}
+						/>
 					</Form.Item>
 				</div>
 				<div

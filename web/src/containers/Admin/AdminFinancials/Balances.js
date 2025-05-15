@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MultiFilter from './TableFilter';
 import { getExchangeBalances } from './action';
+import { requestUsers } from '../Stakes/actions';
 
 // const columns = [
 // 	{
@@ -65,6 +66,13 @@ const filterFields = [
 		type: 'select',
 		name: 'currency',
 	},
+	{
+		label: 'Email',
+		value: '',
+		placeholder: 'Email',
+		type: 'text',
+		name: 'email',
+	},
 ];
 
 const filterOptions = [
@@ -78,6 +86,11 @@ const filterOptions = [
 		value: 'currency',
 		name: 'currency',
 	},
+	{
+		label: 'Email',
+		value: 'email',
+		name: 'email',
+	},
 ];
 
 const Balances = () => {
@@ -88,8 +101,26 @@ const Balances = () => {
 	// 	getBalances();
 	// }, []);
 
+	const getAllUserData = async (params = {}) => {
+		const currency = params?.currency && params?.currency;
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					user_id: user.id,
+					currency: currency,
+				}));
+				getExchangeBalances({ ...userData[0], format: 'csv' });
+			}
+		} catch (error) {
+			console.error('error', error);
+		}
+	};
+
 	const requestDownload = (fieldValues = {}) => {
-		return getExchangeBalances({ ...fieldValues, format: 'csv' });
+		fieldValues?.email
+			? getAllUserData(fieldValues)
+			: getExchangeBalances({ ...fieldValues, format: 'csv' });
 	};
 
 	return (
