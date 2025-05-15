@@ -7588,6 +7588,9 @@ table th {
   margin-left: 0.4rem;
   font-size: 1rem; }
 
+.operator-controls__modal .operator-control-error-text {
+  color: #ff0000; }
+
 .operator-controls__modal-open #root {
   filter: none !important;
   background-color: transparent !important; }
@@ -7663,6 +7666,9 @@ table th {
 .operator-console .ant-input {
   color: #ffffff !important;
   background-color: #0000ff !important; }
+
+.confirmation-icon-popup .ant-modal-body {
+  background-color: #0000ff; }
 
 .init-container {
   flex: 1;
