@@ -742,7 +742,7 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(e.target.value, 'min_size')
+										handlePreviewChange(Number(e.target.value), 'min_size')
 									}
 									value={previewData && previewData.min_size}
 									suffix={
@@ -763,7 +763,7 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(e.target.value, 'max_size')
+										handlePreviewChange(Number(e.target.value), 'max_size')
 									}
 									value={previewData && previewData.max_size}
 									suffix={
