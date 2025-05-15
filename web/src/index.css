@@ -5949,7 +5949,7 @@ table th {
   .summary-container .trade-account-link {
     color: var(--specials_buttons-links-and-highlights);
     font-weight: bold; }
-  .summary-container .deposit-icon svg {
+  .summary-container .deposit-icon svg, .summary-container .deposit-icon img {
     width: 1rem; }
   .summary-container .summary-section_1 .assets-wrapper .rounded-loading {
     width: 80px;
