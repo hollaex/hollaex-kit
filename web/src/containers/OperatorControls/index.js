@@ -796,7 +796,12 @@ class OperatorControls extends Component {
 
 	removeIcon = (themeKey, iconKey) => {
 		const icons = this.state.iconsOverwrites;
-		const selectedTheme = themeKey && icons?.[themeKey];
+		let selectedTheme = themeKey && icons?.[themeKey];
+
+		if (!selectedTheme) {
+			selectedTheme = {};
+		}
+
 		let data = {};
 		Object.keys(selectedTheme).forEach((item) => {
 			if (item !== iconKey) {
@@ -1003,11 +1008,11 @@ class OperatorControls extends Component {
 	};
 
 	onReset = (themeKey, iconKey) => {
-		const { allIconsArray, removedKeys: currentRemovedKeys } = this.state;
+		const { iconSearchResults, removedKeys: currentRemovedKeys } = this.state;
 		const currentTheme = themeKey === 'white' ? 'white' : 'dark';
 		const removedKey = `${iconKey}__${currentTheme}`;
 
-		const updatedIcons = allIconsArray.map((iconObject = {}) => {
+		const updatedIcons = iconSearchResults?.map((iconObject = {}) => {
 			if (iconObject?.key === iconKey) {
 				return { ...iconObject, [themeKey]: '' };
 			}
@@ -1027,6 +1032,7 @@ class OperatorControls extends Component {
 
 		this.handleRemoveOrUpload('removedKeys', updatedRemovedKeys);
 		this.handleRemoveOrUpload('remove', true);
+		this.removeIcon(themeKey, iconKey);
 	};
 
 	render() {

@@ -345,6 +345,9 @@ $operator-controls__panel-border-color: #a7a7a7;
 		margin-left: 0.4rem;
 		font-size: 1rem;
 	}
+	.operator-control-error-text {
+		color: #ff0000;
+	}
 }
 
 .operator-controls__modal-open #root {
@@ -448,5 +451,11 @@ $operator-controls__panel-border-color: #a7a7a7;
 	.ant-input {
 		color: $operator-controls__panel-text-color !important;
 		background-color: $operator-controls__panel-main-color !important;
+	}
+}
+
+.confirmation-icon-popup {
+	.ant-modal-body {
+		background-color: $operator-controls__panel-main-color;
 	}
 }
