@@ -1537,7 +1537,7 @@ const P2PDash = ({
 					/>
 				)
 			) : (
-				<NoDealsData />
+				<NoDealsData icons={ICONS} />
 			)}
 		</div>
 	);
