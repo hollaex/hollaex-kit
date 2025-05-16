@@ -246,6 +246,7 @@ const DustSection = ({
 								text={STRINGS['DUST.SECTION.TITLE']}
 								textType="title bold"
 								iconPath={ICONS['DUST_TITLE']}
+								iconId="DUST_TITLE"
 							/>
 							<div className="py-4">
 								<div>

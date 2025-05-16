@@ -740,7 +740,7 @@ class TransactionsHistory extends Component {
 					<IconTitle
 						stringId="TRANSACTION_HISTORY.TITLE"
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
-						iconId="TRANSACTION_HISTORY"
+						iconId="TAB_HISTORY"
 						iconPath={ICONS['TAB_HISTORY']}
 						textType="title"
 					/>
