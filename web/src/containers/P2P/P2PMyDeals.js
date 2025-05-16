@@ -353,7 +353,7 @@ const P2PMyDeals = ({
 						</tbody>
 					</table>
 				) : (
-					<NoDealsData trade="deals" />
+					<NoDealsData trade="deals" icons={ICONS} />
 				)}
 			</div>
 		</div>

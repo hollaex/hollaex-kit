@@ -122,6 +122,7 @@ const TradingFees = ({
 										textType="title bold text-align-left"
 										iconPath={ICONS['FEES_AND_LIMITS_TRADING_FEES']}
 										className="fees-limits-title"
+										iconId="FEES_AND_LIMITS_TRADING_FEES"
 									/>
 									<div className="py-4">
 										<div>

@@ -555,7 +555,7 @@ const P2POrders = ({
 						</div>
 					)
 				) : (
-					<NoDealsData />
+					<NoDealsData icons={ICONS} />
 				)}
 			</div>
 		</div>

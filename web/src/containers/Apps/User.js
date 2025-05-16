@@ -85,6 +85,7 @@ const User = ({
 						text={STRINGS['USER_APPS.MY_APPS.TITLE']}
 						textType="title"
 						iconPath={ICONS['APPS_USER']}
+						iconId="APPS_USER"
 					/>
 					<EditWrapper
 						stringId="USER_APPS.MY_APPS.SUBTITLE"

@@ -1384,6 +1384,9 @@ $app-menu-width: calc(100vw - 40rem);
 			display: flex;
 			gap: 15px;
 			align-items: center;
+			img {
+				width: 1.8rem;
+			}
 			.option-details {
 				font-size: 12px;
 				display: flex;

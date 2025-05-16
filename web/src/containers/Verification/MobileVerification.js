@@ -237,6 +237,7 @@ class MobileVerification extends Component {
 					text={STRINGS['USER_VERIFICATION.PHONE_VERIFICATION']}
 					textType="title"
 					iconPath={ICONS['VERIFICATION_PHONE_NEW']}
+					iconId="VERIFICATION_PHONE_NEW"
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<div className="verification-form-panel mt-3 mb-5">

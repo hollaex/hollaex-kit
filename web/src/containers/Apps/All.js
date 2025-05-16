@@ -133,6 +133,7 @@ const All = ({
 						text={STRINGS['USER_APPS.ALL_APPS.TITLE']}
 						textType="title"
 						iconPath={ICONS['APPS_ALL']}
+						iconId="APPS_ALL"
 					/>
 					<EditWrapper
 						stringId="USER_APPS.ALL_APPS.SUBTITLE"

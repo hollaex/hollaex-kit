@@ -108,6 +108,7 @@ const Form = ({
 				text={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
 				textType="title"
 				iconPath={ICONS['SETTING_AUDIO_ICON']}
+				iconId="SETTING_AUDIO_ICON"
 			/>
 			<div className="pr-4">
 				{renderFields(formFields, callback)}

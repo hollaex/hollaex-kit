@@ -37,7 +37,7 @@ const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
 					text={STRINGS['ACCOUNTS.TAB_APPS']}
 					textType="title"
 					iconPath={ICONS['TAB_SETTING']}
-					iconId={STRINGS['ACCOUNTS.TAB_APPS']}
+					iconId="TAB_SETTING"
 				/>
 			)}
 

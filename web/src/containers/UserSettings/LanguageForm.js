@@ -52,6 +52,7 @@ class Form extends Component {
 						text={STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
 						textType="title"
 						iconPath={ICONS['SETTING_LANGUAGE_ICON']}
+						iconId="SETTING_LANGUAGE_ICON"
 					/>
 					<div className="pr-4">
 						{renderFields(formFields)}

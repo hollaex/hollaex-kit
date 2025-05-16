@@ -83,12 +83,27 @@ export const generateAllIcons = (
 	themeKeys.forEach((theme) => {
 		const themeSpecificIconsObject = icons[theme] || {};
 		const themeSpecificRCIcons = RCIcons[theme] || {};
-		allIcons[theme] = merge(
+		const mergedIcons = merge(
 			{},
 			defaultIconsObject,
 			themeSpecificRCIcons,
 			themeSpecificIconsObject
 		);
+
+		if (theme !== defaultIconsKey && defaultIconsObject) {
+			Object.entries(defaultIconsObject).forEach(([key, value]) => {
+				if (
+					!value.includes('assets') &&
+					!themeSpecificIconsObject?.hasOwnProperty(key) &&
+					defaultIcons[defaultIconsKey] &&
+					defaultIcons[defaultIconsKey][key]
+				) {
+					mergedIcons[key] = defaultIcons[defaultIconsKey][key];
+				}
+			});
+		}
+
+		allIcons[theme] = mergedIcons;
 
 		// default coin icon set for coins without icon
 		const defaultCoinIcon = allIcons[theme]['DEFAULT_ICON'];

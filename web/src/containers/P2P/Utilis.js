@@ -1,19 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Rate } from 'antd';
 
-import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
-import { IconTitle } from 'hollaex-web-lib';
-import { Dialog, EditWrapper } from 'components';
+import { Dialog, EditWrapper, IconTitle } from 'components';
 
-const NoDealsData = ({ trade }) => {
+const NoDealsData = ({ trade, icons }) => {
 	return (
 		<div className="no-deals-data">
 			<IconTitle
 				stringId="ACCOUNTS.P2P"
 				textType="title"
 				iconPath={icons['TAB_P2P']}
-				iconId={STRINGS['ACCOUNTS.P2P']}
+				iconId="TAB_P2P"
 			/>
 			<span className="important-text">
 				{trade === 'deals' ? (
