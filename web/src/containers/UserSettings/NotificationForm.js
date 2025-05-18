@@ -63,6 +63,7 @@ const Form = ({
 				text={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
 				textType="title"
 				iconPath={ICONS['SETTING_NOTIFICATION_ICON']}
+				iconId="SETTING_NOTIFICATION_ICON"
 			/>
 			<div className="pr-3">
 				{renderFields(formFields)}
