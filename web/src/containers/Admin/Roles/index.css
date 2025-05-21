@@ -399,6 +399,10 @@
 .operator-roles-wrapper
 	.roles-management-wrapper
 	.operator-card-wrapper
+	.disabled-btn:hover,
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.button-container
 	.disabled-btn:hover {
 	cursor: not-allowed !important;
 }

@@ -13,6 +13,7 @@ import {
 	Typography,
 	Tabs,
 	Collapse,
+	Tooltip,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -618,16 +619,28 @@ const RoleForm = ({
 					<Button onClick={onCancel} className="cancel-btn role-btn w-50">
 						Cancel
 					</Button>
-					<Button
-						type="primary"
-						onClick={handleSubmit}
-						className="role-btn w-50 green-btn"
-						disabled={
-							isEditing && ['admin']?.includes(initialValues?.role_name)
-						}
-					>
-						{isEditing ? 'Update Role' : 'Create Role'}
-					</Button>
+					{isEditing && ['admin']?.includes(initialValues?.role_name) ? (
+						<Tooltip
+							title={
+								<span>
+									The permissions of the original admin can't be edited.{' '}
+								</span>
+							}
+							placement="topLeft"
+							className="role-btn w-50 green-btn disabled-btn d-flex align-items-center justify-content-center"
+							getPopupContainer={(triggerNode) => triggerNode.parentNode}
+						>
+							Update Role
+						</Tooltip>
+					) : (
+						<Button
+							type="primary"
+							onClick={handleSubmit}
+							className="role-btn w-50 green-btn"
+						>
+							{isEditing ? 'Update Role' : 'Create Role'}
+						</Button>
+					)}
 				</div>
 			</Form.Item>
 		</Form>
@@ -1117,17 +1130,28 @@ const RoleManagement = ({
 										>
 											Create a Role
 										</span>
+									) : role?.role_name === 'admin' ? (
+										<Tooltip
+											title={
+												<span>
+													The permissions of the original admin can't be edited.{' '}
+												</span>
+											}
+											placement="topLeft"
+											className="permission-btn disabled-btn caps"
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
+										>
+											Edit Permission (
+											{role?.permissions?.length + (role?.configs?.length || 0)}
+											)
+										</Tooltip>
 									) : (
 										<span
-											className={
-												['admin']?.includes(role?.role_name)
-													? 'permission-btn disabled-btn caps'
-													: 'permission-btn pointer caps'
-											}
+											className="permission-btn pointer caps"
 											onClick={() => {
-												if (!['admin']?.includes(role?.role_name)) {
-													handleEdit(role);
-												}
+												handleEdit(role);
 											}}
 										>
 											Edit Permission (
