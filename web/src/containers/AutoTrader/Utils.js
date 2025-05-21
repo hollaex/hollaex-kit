@@ -1,15 +1,15 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
-import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
 import { Button, Coin, Dialog, EditWrapper, Image } from 'components';
 
-export const AutoTraderEmptydata = ({ setIsRenderPopup }) => {
+export const AutoTraderEmptydata = ({ setIsRenderPopup, icons }) => {
 	return (
 		<div className="auto-trader-empty-table d-flex flex-column">
 			<Image
 				icon={icons['AUTO_TRADER_ICON']}
+				iconId="AUTO_TRADER_ICON"
 				wrapperClassName="auto-trader-icon"
 			/>
 			<span>

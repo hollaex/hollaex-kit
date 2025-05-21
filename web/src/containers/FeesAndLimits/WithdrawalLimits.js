@@ -91,6 +91,7 @@ const WithdrawalLimits = ({
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
+									iconId="FEES_AND_LIMITS_WITHDRAWAL_LIMITS"
 								/>
 								<div className="d-flex justify-content-between independent-limit-description">
 									<div className="py-4">
@@ -142,6 +143,7 @@ const WithdrawalLimits = ({
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
+									iconId="FEES_AND_LIMITS_WITHDRAWAL_LIMITS"
 								/>
 								<div className={isMobile ? 'py-4 px-3' : 'py-4'}>
 									<div>
