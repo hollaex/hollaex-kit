@@ -480,6 +480,9 @@ const Otcdeskpopup = ({
 				<Option value="bybit">Bybit</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="bitmart">Bitmart</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="gateio">Gate.io</Option>
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
