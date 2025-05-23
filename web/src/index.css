@@ -14851,6 +14851,8 @@ table th {
           font-size: 13px; }
           .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
             fill: var(--labels_important-active-labels-text-graphics); }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .inactive-pause-icon {
+          opacity: 0.5; }
       .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
         gap: 3%;
         flex-direction: column; }
@@ -19660,6 +19662,14 @@ table th {
   font-size: 1.5rem !important;
   text-transform: capitalize;
   padding-top: 0.25rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-text {
+  font-size: 1.5rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-svg {
+  width: 4rem !important; }
+  .fees_limits .market-trading-fees-title .icon_title-svg svg {
+    width: 2.5rem !important; }
 
 .fees_limits .fees-and-limit-title {
   font-size: 22px; }

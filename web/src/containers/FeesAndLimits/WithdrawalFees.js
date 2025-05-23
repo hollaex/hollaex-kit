@@ -21,6 +21,7 @@ const WithdrawalFees = ({
 	setSearch,
 	coin_customizations,
 	fiat_fees,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -133,6 +134,7 @@ const WithdrawalFees = ({
 								search={search}
 								coin_customizations={coin_customizations}
 								fiat_fees={fiat_fees}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>
