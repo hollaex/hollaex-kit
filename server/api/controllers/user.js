@@ -31,7 +31,7 @@ const {
 	OTP_CODE_NOT_FOUND,
 	INVALID_CAPTCHA
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
 const { each, isInteger, isArray } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -40,6 +40,7 @@ const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 const geoip = require('geoip-lite');
+const SMTP_SERVER = () => GET_KIT_SECRETS()?.smtp?.server;
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -347,7 +348,7 @@ const loginPost = (req, res) => {
 				suspiciousLogin = true;
 			}
 
-			if (suspiciousLogin) {
+			if (suspiciousLogin && SMTP_SERVER()?.length > 0) {
 				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
 
 				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term);
