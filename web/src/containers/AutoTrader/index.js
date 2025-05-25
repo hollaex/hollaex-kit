@@ -222,7 +222,7 @@ const autoTraderData = (
 							</div>
 						) : (
 							<div className="active-link">
-								<PauseCircleFilled className="active-play-icon" />
+								<PauseCircleFilled className="active-play-icon inactive-pause-icon" />
 								<EditWrapper>
 									<span>{STRINGS['AUTO_TRADER.PAUSED_TEXT']}</span>
 								</EditWrapper>

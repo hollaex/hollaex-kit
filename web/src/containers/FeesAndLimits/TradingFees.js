@@ -24,6 +24,7 @@ const TradingFees = ({
 	setSearch,
 	user,
 	quicktradePairs,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -120,9 +121,9 @@ const TradingFees = ({
 											STRINGS['FEES_AND_LIMITS.TABS.TRADING_FEES.TABLE.TITLE']
 										}
 										textType="title bold text-align-left"
-										iconPath={ICONS['FEES_AND_LIMITS_TRADING_FEES']}
-										className="fees-limits-title"
-										iconId="FEES_AND_LIMITS_TRADING_FEES"
+										iconPath={ICONS['FEES_OPTION_ICON']}
+										className="fees-limits-title market-trading-fees-title"
+										iconId="FEES_OPTION_ICON"
 									/>
 									<div className="py-4">
 										<div>
@@ -159,6 +160,7 @@ const TradingFees = ({
 								tiers={config_level}
 								search={search}
 								quicktradePairs={quicktradePairs}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>
