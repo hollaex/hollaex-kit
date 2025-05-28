@@ -537,6 +537,7 @@ const QuickTrade = ({
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
 		setSwap(false);
 		setIsSourceSelected(false);
+		resetForm();
 	};
 
 	const onRequoteClick = () => {
