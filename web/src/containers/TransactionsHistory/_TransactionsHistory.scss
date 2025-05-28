@@ -214,6 +214,13 @@
 		left: 0;
 	}
 	.transactions-history-table {
+		.sub-tr {
+			opacity: 0.6;
+
+			.view-market-link:hover {
+				opacity: 0.6;
+			}
+		}
 		.table_body-wrapper {
 			.expandable-container {
 				.custom-row-line {

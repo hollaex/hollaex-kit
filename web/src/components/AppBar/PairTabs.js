@@ -24,6 +24,7 @@ import {
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
 	setMarketRefresh,
+	setTransactionPair,
 } from 'actions/appActions';
 import icons from 'config/icons/dark';
 import { Loading } from 'containers/DigitalAssets/components/utils';
@@ -91,12 +92,19 @@ class PairTabs extends Component {
 	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair, isQuickTrade) => {
-		const { router, pairs, setIsActiveFavQuickTrade, changePair } = this.props;
+		const {
+			router,
+			pairs,
+			setIsActiveFavQuickTrade,
+			setTransactionPair,
+			changePair,
+		} = this.props;
 		const activePair =
 			Object.keys(pairs).find(
 				(data) => data === pair || data === flipPair(pair)
 			) || null;
 		if (pair) {
+			setTransactionPair(null);
 			if (isQuickTrade) {
 				setIsActiveFavQuickTrade(true);
 				changePair(pair);
@@ -402,6 +410,7 @@ const mapDispatchToProps = (dispatch) => ({
 		setIsActiveFavQuickTrade,
 		dispatch
 	),
+	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
 });
 
 export default connect(
