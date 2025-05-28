@@ -331,6 +331,7 @@ const getAdminWithdrawals = (req, res) => {
 		transaction_id.value,
 		address.value,
 		description.value,
+		null,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
