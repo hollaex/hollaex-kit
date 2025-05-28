@@ -2423,6 +2423,7 @@ const getWalletsByAdmin = (req, res) => {
 		page.value,
 		order_by.value,
 		order.value,
+		null,
 		start_date.value,
 		end_date.value,
 		{

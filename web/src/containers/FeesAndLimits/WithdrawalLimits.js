@@ -20,6 +20,7 @@ const WithdrawalLimits = ({
 	icons: ICONS,
 	search,
 	setSearch,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -163,6 +164,7 @@ const WithdrawalLimits = ({
 									tiers={config_level}
 									transaction_limits={transaction_limits}
 									type={'default'}
+									scrollToTop={scrollToTop}
 								/>
 							</div>
 						</div>

@@ -14851,6 +14851,8 @@ table th {
           font-size: 13px; }
           .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
             fill: var(--labels_important-active-labels-text-graphics); }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .inactive-pause-icon {
+          opacity: 0.5; }
       .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
         gap: 3%;
         flex-direction: column; }
@@ -15606,6 +15608,218 @@ table th {
 @media (min-width: 1820px) {
   .announcement-wrapper .blue-admin-table .message-content-wrapper {
     width: 45rem; } }
+
+.transfer-details-wrapper .transfer-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2%; }
+  .transfer-details-wrapper .transfer-title-wrapper .transfer-title {
+    font-size: 24px;
+    font-weight: 600; }
+  .transfer-details-wrapper .transfer-title-wrapper .description {
+    color: #ccc; }
+
+.transfer-details-wrapper .transfer-form-wrapper {
+  width: 45rem;
+  padding-top: 1%;
+  padding-left: 3%; }
+  .transfer-details-wrapper .transfer-form-wrapper .method-select-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1% auto 5% auto;
+    width: 100%; }
+    .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method {
+      padding: 1% 2%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      opacity: 0.6;
+      border-collapse: collapse;
+      gap: 5px;
+      min-height: 3rem; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method .transfer-icon svg {
+        width: 2rem;
+        height: 2rem;
+        position: relative;
+        top: 2px; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method .user-icon svg {
+        width: 1.5rem; }
+    .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method-active {
+      opacity: 1;
+      border: 1px solid #ffffff;
+      font-weight: 600; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method-active .transfer-icon svg path {
+        fill: #ffffff !important; }
+  .transfer-details-wrapper .transfer-form-wrapper .transfer-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 5%;
+    border-left: 1px solid #b0b0b0;
+    padding: 2% 5%; }
+  .transfer-details-wrapper .transfer-form-wrapper .error-wrapper {
+    display: flex;
+    gap: 1%;
+    color: var(--specials_notifications-alerts-warnings);
+    font-size: 1rem;
+    padding: 0 5%; }
+    .transfer-details-wrapper .transfer-form-wrapper .error-wrapper .anticon-exclamation-circle {
+      position: relative;
+      top: 3px; }
+
+.transfer-details-wrapper .blue-admin-select-dropdown,
+.transfer-details-wrapper .input-amount-wrapper,
+.transfer-details-wrapper .input-description-wrapper {
+  width: 100%;
+  min-width: 38rem; }
+
+.transfer-details-wrapper .input-amount-wrapper {
+  background-color: #FFFFFF;
+  color: #000000;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; }
+  .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child {
+    width: 100%; }
+    .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child .ant-input-number,
+    .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child .ant-input-number :focus {
+      border: none;
+      box-shadow: none; }
+  .transfer-details-wrapper .input-amount-wrapper .ant-space-item:last-child {
+    margin-right: 3%; }
+
+.transfer-details-wrapper .transfer-form-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%; }
+  .transfer-details-wrapper .transfer-form-details .form-field {
+    width: 100%; }
+    .transfer-details-wrapper .transfer-form-details .form-field .anticon-arrow-down {
+      width: 15%;
+      position: relative;
+      left: 2%; }
+    .transfer-details-wrapper .transfer-form-details .form-field .currency-select-field .ant-select-selector .edit-wrapper__container {
+      position: relative;
+      bottom: 3px; }
+  .transfer-details-wrapper .transfer-form-details .green-btn {
+    width: 100%; }
+
+.transfer-details-wrapper .description-secondary-text {
+  font-size: 1rem;
+  color: #FFFFFF;
+  opacity: 0.8; }
+
+.transfer-details-wrapper .button-container {
+  padding: 2% 5%;
+  margin-top: 5%; }
+
+.confirm-transfer-details .confirm-transfer-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 5%; }
+
+.confirm-transfer-details .arrow-field {
+  margin-left: 6%;
+  gap: 3%;
+  min-height: 5rem; }
+  .confirm-transfer-details .arrow-field .arrow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .confirm-transfer-details .arrow-field .arrow-container .down-arrow svg {
+      width: 3.5rem;
+      height: 4rem; }
+  .confirm-transfer-details .arrow-field .decriptions {
+    font-size: 1rem;
+    gap: 5px;
+    padding: 3% 0; }
+
+.confirm-transfer-details .confirm-sender-transfer-details {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1% 4%; }
+  .confirm-transfer-details .confirm-sender-transfer-details .asset-field {
+    gap: 1.5%; }
+  .confirm-transfer-details .confirm-sender-transfer-details .sender-title {
+    position: relative;
+    bottom: 1.5rem;
+    padding: 1%;
+    background-color: var(--admin_panel_modal_background);
+    font-size: 1rem;
+    font-weight: bold; }
+  .confirm-transfer-details .confirm-sender-transfer-details .sender-transfer-details {
+    display: flex;
+    flex-direction: column; }
+    .confirm-transfer-details .confirm-sender-transfer-details .sender-transfer-details .transfer-amount {
+      font-size: 26px;
+      gap: 1%;
+      color: #FFEE00; }
+
+.confirm-transfer-details .confirm-transfer-button-container {
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2%; }
+  .confirm-transfer-details .confirm-transfer-button-container .back-btn {
+    width: 70%; }
+  .confirm-transfer-details .confirm-transfer-button-container .confirm-btn {
+    width: 30%; }
+
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(1),
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(3) {
+  fill: #ffffff; }
+
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(2) {
+  fill: transparent; }
+
+.transfer-completed-container .repeat-transfer-select-wrapper .repeat-transfer-option {
+  color: #ffffff;
+  opacity: 0.6; }
+
+.transfer-completed-container .repeat-transfer-select-wrapper .repeat-transfer-option-active {
+  color: #ffffff;
+  opacity: 1; }
+
+.transfer-completed-container .next-btn-container {
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .transfer-completed-container .next-btn-container .next-btn {
+    width: 100%; }
+
+.confirm-transfer_modal .description-secondary-text {
+  font-size: 1rem;
+  color: #FFFFFF;
+  opacity: 0.8; }
+
+.confirm-transfer_modal .ant-modal-close-x {
+  color: #ffffff;
+  opacity: 1; }
+
+.confirm-transfer_modal .ant-modal-content .ant-modal-body {
+  padding: 8% !important; }
+
+.confirm-transfer_modal .ReactModal__Content {
+  width: 40rem; }
+
+.check-confirm-transfer_modal {
+  width: 50rem !important; }
+
+@media screen and (min-width: 1920px) {
+  .transfer-details-wrapper .blue-admin-select-dropdown,
+  .transfer-details-wrapper .input-amount-wrapper,
+  .transfer-details-wrapper .input-description-wrapper {
+    min-width: 37rem; }
+  .button-container .green-btn {
+    min-width: 37rem; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -19448,6 +19662,14 @@ table th {
   font-size: 1.5rem !important;
   text-transform: capitalize;
   padding-top: 0.25rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-text {
+  font-size: 1.5rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-svg {
+  width: 4rem !important; }
+  .fees_limits .market-trading-fees-title .icon_title-svg svg {
+    width: 2.5rem !important; }
 
 .fees_limits .fees-and-limit-title {
   font-size: 22px; }
