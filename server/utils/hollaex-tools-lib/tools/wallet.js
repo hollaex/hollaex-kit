@@ -188,6 +188,7 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 				user.settings,
 				domain
 			);
+			data.token = token;
 			return data;
 		});
 };
