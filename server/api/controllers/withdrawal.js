@@ -3,10 +3,11 @@
 const { loggerWithdrawals } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
-const { ROLES } = require('../../constants');
+const { ROLES, GET_KIT_SECRETS } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isEmail } = require('validator');
+const SMTP_SERVER = () => GET_KIT_SECRETS()?.smtp?.server;
 
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;
@@ -70,8 +71,13 @@ const requestWithdrawal = (req, res) => {
 		ip,
 		domain
 	})
-		.then(() => {
-			return res.json({ message: 'Success' });
+		.then((data) => {
+			if (SMTP_SERVER()?.length > 0)
+				return res.json({ message: 'Success' });
+			else {
+				req.swagger.params.data.value.token = data.token;
+				return performWithdrawal(req, res);
+			}
 		})
 		.catch((err) => {
 			loggerWithdrawals.error(
