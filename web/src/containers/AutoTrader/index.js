@@ -1656,6 +1656,7 @@ const Autotrader = ({
 						}}
 						data={tradeDetails}
 						count={tradeDetails?.length}
+						isAutoTrader={true}
 						pageSize={10}
 						noData={
 							<AutoTraderEmptydata

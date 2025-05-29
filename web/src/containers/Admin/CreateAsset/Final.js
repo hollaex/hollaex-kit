@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 import { getTabParams } from '../AdminFinancials/Assets';
 import RemoveConfirmation from '../Confirmation';
 
-const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
+// const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
 
 const Final = ({
 	isPreview = false,
@@ -39,7 +39,7 @@ const Final = ({
 	if (
 		(exchange &&
 			exchange.plan === 'basic' &&
-			!basicCoins.includes(coinFormData.symbol)) ||
+			coinFormData.type !== 'blockchain') ||
 		(exchange &&
 			exchange.plan === 'crypto' &&
 			coinFormData.type !== 'blockchain')
