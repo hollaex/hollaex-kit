@@ -51,6 +51,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 import { Image } from 'hollaex-web-lib';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
+import { setTransactionPair } from 'actions/appActions';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 const transactionTabs = ['trades', 'orders', 'deposits', 'withdrawals'];
@@ -248,6 +249,20 @@ class TransactionsHistory extends Component {
 		);
 	};
 
+	onHandleNavigate = (assetDetail, type) => {
+		const { router, setTransactionPair } = this.props;
+		if (assetDetail && assetDetail?.quick) {
+			setTransactionPair(assetDetail?.symbol);
+		}
+		const path =
+			type === 'trade'
+				? assetDetail?.quick
+					? `/quick-trade/${assetDetail?.symbol}`
+					: `/trade/${assetDetail?.symbol}`
+				: `/trade/${assetDetail?.symbol}`;
+		router.push(path);
+	};
+
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
@@ -311,12 +326,12 @@ class TransactionsHistory extends Component {
 		return {
 			expandedRowRender: (obj) => {
 				return (
-					<div
-						className={`expandable-container flex-row ${
-							isMobile ? 'text-center' : ''
-						}`}
-					>
-						<div>
+					<div>
+						<div
+							className={`expandable-container flex-row ${
+								isMobile ? 'text-center' : ''
+							}`}
+						>
 							<EditWrapper
 								stringId="TRANSACTION_HISTORY.ORDERID"
 								render={(string) => <p className="font-bold">{string}:</p>}
@@ -325,6 +340,14 @@ class TransactionsHistory extends Component {
 							</EditWrapper>
 							<p>{obj.order_id ? obj.order_id : STRINGS['NA']}</p>
 						</div>
+						<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+							<span
+								className="pointer underline-text view-market-link"
+								onClick={() => this.onHandleNavigate(obj, 'trade')}
+							>
+								{STRINGS['HOLLAEX_TOKEN.VIEW']} {'>'}
+							</span>
+						</EditWrapper>
 					</div>
 				);
 			},
@@ -366,6 +389,16 @@ class TransactionsHistory extends Component {
 								{STRINGS['TRANSACTION_HISTORY.TIME_OF_LAST_TRADE']}
 							</EditWrapper>
 							<p>{getFormatTimestamp(obj.updated_at)}</p>
+						</div>
+						<div>
+							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+								<span
+									className="pointer underline-text view-market-link"
+									onClick={() => this.onHandleNavigate(obj, 'order')}
+								>
+									{STRINGS['HOLLAEX_TOKEN.VIEW']} {'>'}
+								</span>
+							</EditWrapper>
 						</div>
 					</div>
 				);
@@ -899,6 +932,7 @@ const mapDispatchToProps = (dispatch) => ({
 	downloadUserOrders: (params) =>
 		dispatch(downloadUserTrades('orders', params)),
 	activeTabFromWallet: bindActionCreators(activeTabFromWallet, dispatch),
+	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
 });
 
 export default connect(

@@ -31,7 +31,20 @@ class Table extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (
+		if (this.props.isAutoTrader) {
+			if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
+				if (nextProps.data.length !== this.props.data.length) {
+					this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
+				} else {
+					this.goToPage(
+						this.state.page,
+						nextProps.data,
+						nextProps.headers,
+						nextProps.count
+					);
+				}
+			}
+		} else if (
 			nextProps.title === this.props.title &&
 			nextProps.data.length !== this.props.data.length
 		) {
