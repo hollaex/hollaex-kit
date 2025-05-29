@@ -25,6 +25,7 @@ const TradingFees = ({
 	user,
 	quicktradePairs,
 	scrollToTop,
+	constants,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -96,14 +97,16 @@ const TradingFees = ({
 											{STRINGS['FEE_REDUCTION']}: {user.discount}%
 										</div>
 									</div>
-									<div
-										className="blue-link pointer text-uppercase mt-2"
-										onClick={() => browserHistory.push('/referral')}
-									>
-										<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
-											{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
-										</EditWrapper>
-									</div>
+									{constants?.features?.referral_history_config && (
+										<div
+											className="blue-link pointer text-uppercase mt-2"
+											onClick={() => browserHistory.push('/referral')}
+										>
+											<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
+												{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
+											</EditWrapper>
+										</div>
+									)}
 								</>
 							)}
 						</div>
@@ -202,6 +205,7 @@ const mapStateToProps = (state) => {
 			label: name,
 		})),
 		user: state.user || {},
+		constants: state.app.constants,
 	};
 };
 
