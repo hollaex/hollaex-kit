@@ -217,6 +217,13 @@ const AppMenuBarItem = ({
 		setIsToolsVisible(false);
 	};
 
+	const tabOptions = getTabOptions();
+	const hasDisplayableOption = tabOptions?.some((option) => option?.isDisplay);
+
+	if (!hasDisplayableOption) {
+		return null;
+	}
+
 	return (
 		<Tooltip
 			visible={isToolTipVisible}
@@ -245,18 +252,20 @@ const AppMenuBarItem = ({
 			>
 				<div className="app-menu-bar-content-item d-flex text_overflow align-items-center">
 					<EditWrapper stringId={stringId}>
-						{STRINGS[stringId] === 'Others' && getRemoteRoutes?.length > 0 ? (
+						{STRINGS[stringId] === STRINGS['DESKTOP_NAVIGATION.OTHERS'] &&
+						getRemoteRoutes?.length > 0 ? (
 							<span>{STRINGS[stringId]}</span>
-						) : STRINGS[stringId] !== 'Others' ? (
+						) : STRINGS[stringId] !== STRINGS['DESKTOP_NAVIGATION.OTHERS'] ? (
 							<span>{STRINGS[stringId]}</span>
 						) : null}
 					</EditWrapper>
-					{STRINGS[stringId] === 'Others' && getRemoteRoutes?.length > 0 ? (
+					{STRINGS[stringId] === STRINGS['DESKTOP_NAVIGATION.OTHERS'] &&
+					getRemoteRoutes?.length > 0 ? (
 						<span className="ml-1 app-bar-dropdown-icon">
 							{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 						</span>
 					) : (
-						STRINGS[stringId] !== 'Others' && (
+						STRINGS[stringId] !== STRINGS['DESKTOP_NAVIGATION.OTHERS'] && (
 							<span className="ml-1 app-bar-dropdown-icon">
 								{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 							</span>

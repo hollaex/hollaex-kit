@@ -20,6 +20,7 @@ const WithdrawalLimits = ({
 	icons: ICONS,
 	search,
 	setSearch,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -91,6 +92,7 @@ const WithdrawalLimits = ({
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
+									iconId="FEES_AND_LIMITS_WITHDRAWAL_LIMITS"
 								/>
 								<div className="d-flex justify-content-between independent-limit-description">
 									<div className="py-4">
@@ -142,6 +144,7 @@ const WithdrawalLimits = ({
 									textType="title bold text-align-left"
 									iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 									className="fees-limits-title"
+									iconId="FEES_AND_LIMITS_WITHDRAWAL_LIMITS"
 								/>
 								<div className={isMobile ? 'py-4 px-3' : 'py-4'}>
 									<div>
@@ -161,6 +164,7 @@ const WithdrawalLimits = ({
 									tiers={config_level}
 									transaction_limits={transaction_limits}
 									type={'default'}
+									scrollToTop={scrollToTop}
 								/>
 							</div>
 						</div>

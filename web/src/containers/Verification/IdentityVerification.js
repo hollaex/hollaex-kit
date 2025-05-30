@@ -234,6 +234,7 @@ class IdentityVerification extends Component {
 					text={STRINGS['USER_VERIFICATION.IDENTITY_VERIFICATION']}
 					textType="title"
 					iconPath={ICONS['VERIFICATION_ID_NEW']}
+					iconId="VERIFICATION_ID_NEW"
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<div className="verification-form-panel mt-3 mb-5">

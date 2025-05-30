@@ -188,6 +188,12 @@ class MarketRow extends Component {
 						</EditWrapper>
 					) : !loading ? (
 						<SparkLine
+							key={`${key}-${
+								(chartData[key] &&
+									chartData[key]?.close &&
+									chartData[key]?.close?.length) ||
+								0
+							}`}
 							data={
 								!chartData[key] ||
 								(chartData[key] &&
