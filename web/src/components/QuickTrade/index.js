@@ -127,6 +127,7 @@ const QuickTrade = ({
 	const [slippagePercentage, setSlippagePercentage] = useState(0);
 	const [isSwap, setSwap] = useState(true);
 	const [isSourceSelected, setIsSourceSelected] = useState(false);
+	const [isSelectTarget, setIsSelectTarget] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -195,6 +196,8 @@ const QuickTrade = ({
 		setSelectedSource(value);
 		setIsActiveFavQuickTrade(false);
 		setIsSourceSelected(true);
+		setToken();
+		setExpiry();
 	};
 
 	const onSelectTarget = (value) => {
@@ -203,6 +206,9 @@ const QuickTrade = ({
 		setTargetAmount();
 		setIsActiveFavQuickTrade(false);
 		setSelectedTarget(value);
+		setIsSelectTarget(true);
+		setToken();
+		setExpiry();
 	};
 
 	const goTo = (path) => {
@@ -444,7 +450,16 @@ const QuickTrade = ({
 				}
 			} else {
 				setTargetOptions(options);
-				setSelectedTarget(options[0]);
+				if (isSwap && isActiveFavQuickTrade) {
+					setSelectedSource(initialSelectedSource);
+					setSelectedTarget(initialSelectedTarget);
+					resetForm();
+				} else if (isSwap && (!isSelectTarget || isSourceSelected)) {
+					setSelectedTarget(options[0]);
+				}
+				setIsSelectTarget(false);
+				setIsSourceSelected(false);
+				setSwap(true);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
