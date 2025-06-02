@@ -16,6 +16,8 @@ import './index.css';
 
 const TabPane = Tabs.TabPane;
 
+const tabList = ['public-markets', 'orders', 'otc-desk', 'p2p', 'quick-trade'];
+
 const PairsTab = (props) => {
 	const [hideTabs, setHideTabs] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
@@ -50,14 +52,27 @@ const PairsTab = (props) => {
 	]);
 
 	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const tab = tabList?.find((data) => params.has(data));
+		const tabIndex = tabList?.indexOf(tab);
+
 		if (tabParams?.tab) {
 			setActiveTab(tabParams.tab);
+		} else if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
+			setActiveTab(String(tabIndex));
+		} else if (!tab) {
+			setActiveTab('0');
+			const url = new URL(window.location.href);
+			url.search = `?${tabList[0]}`;
+			window.history.replaceState(null, '', url.toString());
 		}
-	}, [tabParams]);
+	}, [tabParams, activeTab]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
-		props.router.replace('/admin/trade');
+		const url = new URL(window.location.href);
+		url.search = tabList[key] ? `?${tabList[key]}` : '';
+		window.history.replaceState(null, '', url.toString());
 	};
 
 	const handleHide = (value) => {
