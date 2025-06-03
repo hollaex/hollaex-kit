@@ -310,6 +310,7 @@ const CoinConfiguration = ({ coins }) => {
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
 														fee_markup: selectedCoin.fee_markup,
+														network: selectedCoin?.network,
 													},
 												},
 											},
