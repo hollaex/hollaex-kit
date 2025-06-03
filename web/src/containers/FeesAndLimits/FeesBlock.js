@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import { ArrowUpOutlined } from '@ant-design/icons';
 
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -113,6 +114,7 @@ const FeesBlock = ({
 	icons,
 	search,
 	quicktradePairs,
+	scrollToTop,
 }) => {
 	return (
 		<div className="wallet-assets_block">
@@ -162,6 +164,15 @@ const FeesBlock = ({
 					)}
 				</tbody>
 			</table>
+			<EditWrapper stringId="FEES_AND_LIMITS.RETURN_TO_TOP">
+				<span
+					className="pointer blue-link underline-text ml-2"
+					onClick={() => scrollToTop()}
+				>
+					{STRINGS['FEES_AND_LIMITS.RETURN_TO_TOP']}
+					<ArrowUpOutlined />
+				</span>
+			</EditWrapper>
 		</div>
 	);
 };

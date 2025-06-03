@@ -70,10 +70,59 @@ const ProfitLossSection = ({
 	const [customDateValues, setCustomDateValues] = useState();
 	const [loadingPnl, setLoadingPnl] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
+	const [selectedDateIndexes, setSelectedDateIndexes] = useState([]);
 
 	const options = {
 		chart: {
 			type: 'area',
+			events: {
+				render: function () {
+					const chart = this;
+
+					if (chart.xAxis[0].labelClicked) return;
+					chart.xAxis[0].labelClicked = true;
+
+					Object.values(chart.xAxis[0]?.ticks).forEach((tick, idx) => {
+						const label = tick.label && tick.label.element;
+						if (label) {
+							label.style.cursor = 'pointer';
+							label.onclick = () => {
+								const clickedLabel = label.textContent;
+								const matchIndex = graphData.findIndex(
+									(item) => item[0] === clickedLabel
+								);
+
+								if (matchIndex !== -1) {
+									setCurrent(matchIndex);
+									const balance = balanceHistory?.find(
+										(history) =>
+											`${moment(history?.created_at)?.date()} ${
+												month[moment(history?.created_at)?.month()]
+											}` === graphData[matchIndex][0]
+									);
+									if (balance) {
+										setCurrentBalance(balance);
+										setSelectedCustomDate(moment(balance.created_at));
+									}
+									setSelectedDateIndexes((prev) => {
+										let newIndexes;
+										if (prev?.includes(matchIndex)) {
+											newIndexes = prev?.filter((i) => i !== matchIndex);
+										} else if (prev?.length < 5) {
+											newIndexes = [...prev, matchIndex];
+										} else {
+											newIndexes = [...prev.slice(1), matchIndex];
+										}
+										return newIndexes?.sort((a, b) => a - b);
+									});
+									const point = chart.series[0].points[matchIndex];
+									chart.tooltip.refresh(point);
+								}
+							};
+						}
+					});
+				},
+			},
 		},
 		title: {
 			text: '',
@@ -81,24 +130,63 @@ const ProfitLossSection = ({
 		tooltip: {
 			className: 'profit-loss-balance-tooltip',
 			enabled: true,
+			useHTML: true,
 			formatter: function () {
-				return `<div>${getSourceDecimals(
-					balance_history_config?.currency || 'usdt',
-					this.y
-				)}</div>`;
+				if (selectedDateIndexes.length > 0) {
+					let compareTooltips = `<div><b>Compare Dates:</b></div>`;
+					selectedDateIndexes.forEach((idx) => {
+						const point = graphData[idx];
+						if (point) {
+							compareTooltips += `
+								<div style="margin-bottom:4px;">
+								<span class="selected-date">${point[0]}</span>:
+								${getSourceDecimals(balance_history_config?.currency || 'usdt', point[1])}
+								</div>
+							`;
+						}
+					});
+					compareTooltips += `<hr style="margin:4px 0"/>`;
+					return (
+						compareTooltips +
+						`<div>
+							${getSourceDecimals(balance_history_config?.currency || 'usdt', this.y)}
+						</div>`
+					);
+				} else {
+					return `<div>
+						${getSourceDecimals(balance_history_config?.currency || 'usdt', this.y)}
+					</div>`;
+				}
+			},
+			positioner: function (labelWidth, labelHeight, point) {
+				if (selectedDateIndexes?.length > 0) {
+					const chart = this.chart || (this.series && this.series.chart);
+					let chartWidth = chart && chart.chartWidth ? chart.chartWidth : 800;
+					let y = 20;
+					let x = Math.round((chartWidth - labelWidth) / 2);
+					return { x, y };
+				} else {
+					return { x: point.plotX, y: point.plotY - labelHeight };
+				}
 			},
 		},
 		xAxis: {
 			type: 'category',
 			labels: {
+				useHTML: true,
 				formatter: (item) => {
-					const color =
-						graphData?.[current || 0]?.[0] === item.value
-							? '#5D63FF'
-							: 'date-text';
+					const idx = graphData?.findIndex((g) => g[0] === item?.value);
+					const isSelected = selectedDateIndexes?.includes(idx);
+					const color = isSelected
+						? '#5D63FF'
+						: graphData?.[current || 0]?.[0] === item?.value
+						? '#5D63FF'
+						: 'date-text';
 					const fontWeight =
-						graphData?.[current || 0]?.[0] === item.value ? 'bold' : 'normal';
-					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item.value}</span>`;
+						isSelected || graphData?.[current || 0]?.[0] === item?.value
+							? 'bold'
+							: 'normal';
+					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item?.value}</span>`;
 				},
 			},
 		},
@@ -125,7 +213,8 @@ const ProfitLossSection = ({
 				point: {
 					events: {
 						click: (e, x, y) => {
-							setCurrent(e.point.x);
+							const idx = e.point.x;
+							setCurrent(idx);
 							const balance = balanceHistory.find(
 								(history) =>
 									`${moment(history.created_at).date()} ${
@@ -137,6 +226,22 @@ const ProfitLossSection = ({
 								setCurrentBalance(balance);
 								setSelectedCustomDate(moment(balance.created_at));
 							}
+							if (!isMobile) {
+								setSelectedDateIndexes((prev) => {
+									let newIndexes;
+									if (prev.includes(idx)) {
+										newIndexes = prev?.filter((i) => i !== idx);
+									} else if (prev.length < 5) {
+										newIndexes = [...prev, idx];
+									} else {
+										newIndexes = [...prev.slice(1), idx];
+									}
+									return newIndexes?.sort((a, b) => a - b);
+								});
+							}
+						},
+						mouseOver: function () {
+							setCurrent(this.x);
 						},
 					},
 				},

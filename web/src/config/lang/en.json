@@ -1863,7 +1863,8 @@
 			"LOSERS": "Losers",
 			"MARKET_CAP": "Market Cap",
 			"24H": "{0} 24H"
-		}
+		},
+		"BACK_TO_TOP": "Back to top"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
@@ -1920,6 +1921,7 @@
 		"TO_GET_ACCESS": "To get access reach out to"
 	},
 	"FEES_AND_LIMITS": {
+		"RETURN_TO_TOP": "Return to Top",
 		"LINK": "view my fees and limits",
 		"COIN_PAGE_LINK": "Trading fees & limits",
 		"BACK": {

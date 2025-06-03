@@ -6,6 +6,9 @@
 		padding: 1% 0;
 		border-bottom: 1.5px solid
 			var(--labels_important-active-labels-text-graphics);
+		img {
+			width: 2.5rem;
+		}
 
 		.auto-trader-icon {
 			svg {
@@ -89,6 +92,9 @@
 				width: 50%;
 				text-align: center;
 			}
+			img {
+				width: 3rem;
+			}
 		}
 
 		.auto-trader-table {
@@ -124,6 +130,10 @@
 								fill: var(--labels_important-active-labels-text-graphics);
 							}
 						}
+					}
+
+					.inactive-pause-icon {
+						opacity: 0.5;
 					}
 				}
 

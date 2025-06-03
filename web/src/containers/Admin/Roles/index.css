@@ -216,14 +216,10 @@
 	margin-bottom: 0px;
 }
 
-.operator-roles-wrapper {
-	height: 70vh;
-	overflow-y: auto;
-}
-
 .operator-roles-wrapper .header-section {
 	display: flex;
 	justify-content: space-between;
+	background-color: transparent !important;
 }
 
 .operator-roles-wrapper .header-section .title-content .title {
@@ -403,6 +399,10 @@
 .operator-roles-wrapper
 	.roles-management-wrapper
 	.operator-card-wrapper
+	.disabled-btn:hover,
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.button-container
 	.disabled-btn:hover {
 	cursor: not-allowed !important;
 }
@@ -500,7 +500,8 @@
 	height: 2rem;
 }
 
-.confirm-roles-delete-wrapper .button-container {
+.confirm-roles-delete-wrapper .button-container,
+.assign-role-popup-wrapper .button-container {
 	margin-top: 3%;
 	gap: 5%;
 }
@@ -517,8 +518,23 @@
 	.roles-detail-form-wrapper
 	.ant-form-item-label
 	> label,
-.operator-roles-detail-popup .roles-detail-form-wrapper .ant-divider {
+.operator-roles-detail-popup .roles-detail-form-wrapper .ant-divider,
+.operator-roles-detail-popup .popup-title,
+.operator-roles-detail-popup .roles-detail-form-wrapper .permission-tab-header {
 	color: #ffffff !important;
+}
+
+.operator-roles-detail-popup
+	.roles-detail-form-wrapper
+	.permission-tab-content {
+	max-height: 400px;
+	overflow: auto;
+	border: 1px solid #d9d9d9;
+	padding: 10px;
+}
+
+.operator-roles-detail-popup .popup-title {
+	font-size: 20px;
 }
 
 .operator-roles-detail-popup .roles-detail-form-wrapper .role-badge-wrapper {
@@ -531,7 +547,8 @@
 	min-height: 10rem;
 }
 
-.operator-roles-detail-popup .roles-detail-form-wrapper .button-container {
+.operator-roles-detail-popup .roles-detail-form-wrapper .button-container,
+.assign-role-popup-wrapper .button-container {
 	display: flex;
 	justify-content: space-between;
 	gap: 5%;
@@ -549,7 +566,8 @@
 .operator-roles-detail-popup .roles-detail-form-wrapper .ant-collapse,
 .operator-roles-detail-popup .roles-detail-form-wrapper .ant-collapse-header,
 .assign-role-popup-wrapper .ant-select-selector,
-.admin-roles-wrapper .ant-select-selector {
+.admin-roles-wrapper .ant-select-selector,
+.admin-roles-wrapper input {
 	background-color: transparent !important;
 	color: #ffffff !important;
 	border: 1px solid #ffffff;
@@ -593,8 +611,11 @@
 	.ant-modal-content
 	.ant-modal-body
 	.assign-role-title,
-.ant-select,
-.ant-select-arrow {
+.assign-role-popup-wrapper .ant-modal-content .ant-modal-body .ant-select,
+.assign-role-popup-wrapper
+	.ant-modal-content
+	.ant-modal-body
+	.ant-select-arrow {
 	color: #ffffff;
 }
 
@@ -712,6 +733,13 @@
 	gap: 0.5rem;
 	font-size: 1rem;
 }
+
+.admin-roles-wrapper-container .search-field-wrapper .operator-search-field {
+	display: flex;
+	gap: 2%;
+	width: 35%;
+}
+
 .permissions-tree {
 	.ant-tree-treenode {
 		padding: 4px 0;
@@ -740,4 +768,10 @@
 			font-size: 13px;
 		}
 	}
+}
+
+.operator-roles-wrapper .role-management {
+	display: flex;
+	flex-direction: row;
+	margin: 4rem auto;
 }

@@ -138,6 +138,8 @@ export const SET_SIGNUP_EMAIL = 'SET_SIGNUP_EMAIL';
 export const SET_EMAIL_DETAIL = 'SET_EMAIL_DETAIL';
 export const SET_IS_ACTIVE_FAV_QUICK_TRADE = 'SET_IS_ACTIVE_FAV_QUICK_TRADE';
 export const SET_ROLES = 'SET_ROLES';
+export const SET_EDIT_MODE = 'SET_EDIT_MODE';
+export const SET_TRANSACTION_PAIR = 'SET_TRANSACTION_PAIR';
 
 export const SORT = {
 	VOL: 'volume',
@@ -963,5 +965,19 @@ export const setRolesList = (rolesList) => {
 	return {
 		type: SET_ROLES,
 		payload: { rolesList },
+	};
+};
+
+export const setEditMode = (isOperatorEdit) => {
+	return {
+		type: SET_EDIT_MODE,
+		payload: { isOperatorEdit },
+	};
+};
+
+export const setTransactionPair = (transactionPair) => {
+	return {
+		type: SET_TRANSACTION_PAIR,
+		payload: { transactionPair },
 	};
 };

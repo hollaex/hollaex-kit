@@ -24,6 +24,7 @@ import {
 	changePair,
 	setIsActiveFavQuickTrade,
 	setIsQuickTrade,
+	setTransactionPair,
 } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { Button, EditWrapper, Dialog, Image } from 'components';
@@ -73,6 +74,8 @@ const QuickTrade = ({
 	setIsQuickTrade,
 	isActiveFavQuickTrade,
 	setIsActiveFavQuickTrade,
+	transactionPair,
+	setTransactionPair,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -85,7 +88,10 @@ const QuickTrade = ({
 	const queryPair = (
 		quicktradePairs[params?.pair] || quicktradePairs[flipPair(params?.pair)]
 	)?.symbol;
-	const initialPair = (queryPair || Object.keys(quicktradePairs)[0]).split('-');
+	const initialPair = (transactionPair
+		? transactionPair
+		: queryPair || Object.keys(quicktradePairs)[0]
+	).split('-');
 	const [, initialSelectedSource = sourceOptions[0]] = initialPair;
 	const initialTargetOptions = getTargetOptions(initialSelectedSource);
 	const [initialSelectedTarget = initialTargetOptions[0]] = initialPair;
@@ -120,6 +126,8 @@ const QuickTrade = ({
 	const [isHighSlippageDetected, setIsHighSlippageDetected] = useState(false);
 	const [slippagePercentage, setSlippagePercentage] = useState(0);
 	const [isSwap, setSwap] = useState(true);
+	const [isSourceSelected, setIsSourceSelected] = useState(false);
+	const [isSelectTarget, setIsSelectTarget] = useState(false);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -187,14 +195,20 @@ const QuickTrade = ({
 		setTargetAmount();
 		setSelectedSource(value);
 		setIsActiveFavQuickTrade(false);
+		setIsSourceSelected(true);
+		setToken();
+		setExpiry();
 	};
 
 	const onSelectTarget = (value) => {
 		setSpending();
 		setSourceAmount();
 		setTargetAmount();
-		setIsActiveFavQuickTrade(true);
+		setIsActiveFavQuickTrade(false);
 		setSelectedTarget(value);
+		setIsSelectTarget(true);
+		setToken();
+		setExpiry();
 	};
 
 	const goTo = (path) => {
@@ -421,22 +435,31 @@ const QuickTrade = ({
 				selectedSource !== sourceOptions[0]
 					? sourceOptions[0]
 					: sourceOptions[1];
-			const [baseCurrency = '', quoteCurrency = ''] = pair?.split('-') || [];
 			if (chain_trade_config?.active) {
 				if (isSwap) {
 					if (isActiveFavQuickTrade) {
-						setSelectedSource(baseCurrency);
-						setSelectedTarget(quoteCurrency);
+						setSelectedSource(initialSelectedSource);
+						setSelectedTarget(initialSelectedTarget);
 						resetForm();
-					} else {
+					} else if (isSourceSelected) {
 						setSelectedTarget(selectedOption);
+						setIsSourceSelected(false);
 					}
 				} else {
 					setSwap(true);
 				}
 			} else {
 				setTargetOptions(options);
-				setSelectedTarget(options[0]);
+				if (isSwap && isActiveFavQuickTrade) {
+					setSelectedSource(initialSelectedSource);
+					setSelectedTarget(initialSelectedTarget);
+					resetForm();
+				} else if (isSwap && (!isSelectTarget || isSourceSelected)) {
+					setSelectedTarget(options[0]);
+				}
+				setIsSelectTarget(false);
+				setIsSourceSelected(false);
+				setSwap(true);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -474,6 +497,7 @@ const QuickTrade = ({
 		}
 		return () => {
 			setIsQuickTrade(false);
+			setTransactionPair(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -527,6 +551,8 @@ const QuickTrade = ({
 		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
 		setTimeout(() => onSelectTarget(selectedSource), 0.1);
 		setSwap(false);
+		setIsSourceSelected(false);
+		resetForm();
 	};
 
 	const onRequoteClick = () => {
@@ -879,6 +905,7 @@ const mapDispatchToProps = (dispatch) => ({
 		setIsActiveFavQuickTrade,
 		dispatch
 	),
+	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
 });
 
 const mapStateToProps = (store) => {
@@ -898,6 +925,7 @@ const mapStateToProps = (store) => {
 		user: store.user,
 		chain_trade_config: store.app.constants.chain_trade_config,
 		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
+		transactionPair: store.app.transactionPair,
 	};
 };
 

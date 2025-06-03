@@ -332,6 +332,7 @@ class MarketSelector extends Component {
 										<div
 											className="d-flex align-items-center justify-content-between w-100"
 											onClick={() =>
+												!isLoading &&
 												this.onMarketClick(
 													key || symbol,
 													type && type !== 'pro'

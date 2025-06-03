@@ -20,8 +20,11 @@ class StringSettingsModal extends Component {
 			title: 'Languages',
 			dataIndex: 'label',
 			key: 'value',
-			render: (_, { value, label }) => (
-				<Fragment>{`${label} (${value})`}</Fragment>
+			render: (_, { value, label, icon }) => (
+				<div className="language-detail">
+					<span>{`${label} (${value})`}</span>
+					<img src={icon} alt={`${label} icon`} className="language-icon" />
+				</div>
 			),
 		},
 		{

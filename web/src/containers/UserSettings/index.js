@@ -473,7 +473,7 @@ class UserSettings extends Component {
 						text={STRINGS['ACCOUNTS.TAB_SETTINGS']}
 						textType="title"
 						iconPath={ICONS['TAB_SETTING']}
-						iconId={STRINGS['ACCOUNTS.TAB_SETTINGS']}
+						iconId="TAB_SETTING"
 					/>
 				)}
 				{!isMobile ? (

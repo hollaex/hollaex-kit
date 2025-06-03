@@ -201,7 +201,7 @@ class Summary extends Component {
 							text={`${STRINGS['SUMMARY.TITLE']}`}
 							textType="title"
 							iconPath={ICONS['TAB_SUMMARY']}
-							iconId={`${STRINGS['SUMMARY.TITLE']}`}
+							iconId={'TAB_SUMMARY'}
 						/>
 					)}
 					{isMobile && !this.state.displayReferralList && (

@@ -529,7 +529,6 @@ const AssetsBlock = ({
 									placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 									handleSearch={handleSearch}
 									showCross
-									isFocus={true}
 								/>
 							</EditWrapper>
 						</div>

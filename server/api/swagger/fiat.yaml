@@ -5,7 +5,7 @@ paths:
       operationId: createDepositRequest
       description: Create a new deposit request
       tags:
-        - fiat
+        - Fiat
       parameters:
         - name: data
           in: body
@@ -49,7 +49,7 @@ paths:
       operationId: createWithdrawalRequest
       description: Create a new withdrawal request
       tags:
-        - fiat
+        - Fiat
       parameters:
         - name: data
           in: body

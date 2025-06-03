@@ -85,6 +85,7 @@ class Form extends Component {
 						text={STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
 						textType="title"
 						iconPath={ICONS['SETTING_INTERFACE_ICON']}
+						iconId="SETTING_INTERFACE_ICON"
 					/>
 					<div className="pr-3">
 						{renderFields(formFields)}

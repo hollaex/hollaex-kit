@@ -239,6 +239,7 @@ class DocumentsVerification extends Component {
 					text={STRINGS['USER_VERIFICATION.DOCUMENT_VERIFICATION']}
 					textType="title"
 					iconPath={ICONS['VERIFICATION_DOCUMENT_NEW']}
+					iconId="VERIFICATION_DOCUMENT_NEW"
 				/>
 				<form
 					className="d-flex flex-column w-100 verification_content-form-wrapper"

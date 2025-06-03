@@ -616,19 +616,7 @@ const AboutData = ({
 	};
 
 	const renderRole = () => {
-		if (userData.is_admin) {
-			return 'admin';
-		} else if (userData.is_communicator) {
-			return 'communicator';
-		} else if (userData.is_kyc) {
-			return 'kyc';
-		} else if (userData.is_supervisor) {
-			return 'supervisor';
-		} else if (userData.is_support) {
-			return 'support';
-		} else {
-			return 'user';
-		}
+		return userData.role || 'user';
 	};
 
 	return (
@@ -1150,10 +1138,16 @@ const AboutData = ({
 									}}
 									value={null}
 								>
-									None{' '}
-									<Link to="/admin/financials?tab=2">
-										(it follows the users tier withdrawal limit)
-									</Link>
+									<span>
+										None (it follows the users{' '}
+										<Link
+											to="/admin/financials?tab=2"
+											className="underline-text"
+										>
+											tier withdrawal limit
+										</Link>
+										)
+									</span>
 								</Radio>
 								<Radio
 									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}

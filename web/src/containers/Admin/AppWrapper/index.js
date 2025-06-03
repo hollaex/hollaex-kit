@@ -121,8 +121,12 @@ class AppWrapper extends React.Component {
 	}
 
 	onHandleRoleDetails = async () => {
-		const roles = await fetchRoles();
-		this.props.setRolesList(roles?.data);
+		try {
+			const roles = await fetchRoles();
+			this.props.setRolesList(roles?.data);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	componentDidMount() {
@@ -566,7 +570,7 @@ class AppWrapper extends React.Component {
 		// 	pathNames = PATHS;
 		// }
 
-		if (features.apps) {
+		if (features.apps && checkRole() === 'admin') {
 			pathNames = [
 				...pathNames,
 				{
@@ -685,11 +689,18 @@ class AppWrapper extends React.Component {
 										.map(this.renderMenuItem)}
 								</Menu>
 								<div>
-									<div className="bottom-side-top"></div>
 									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
 										<Item className="custom-side-menu">
 											<Link to="/admin/resources">
-												<div className={'sidebar-menu'}>Resources</div>
+												<div
+													className={
+														this.props.location.pathname.includes('/resources')
+															? 'sidebar-menu resource-text active-side-menu'
+															: 'sidebar-menu resource-text'
+													}
+												>
+													Resources
+												</div>
 											</Link>
 										</Item>
 										<Item className="custom-side-menu">
