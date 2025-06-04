@@ -36,6 +36,7 @@ import { removeToken } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { assetsSelector } from 'containers/Wallet/utils';
 import { logout } from 'actions/authAction';
+import { setActiveBalanceHistory } from 'actions/walletActions';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -57,6 +58,7 @@ const MobileBarMoreOptions = ({
 	assets,
 	user,
 	logout,
+	setActiveBalanceHistory,
 }) => {
 	const [search, setSearch] = useState('');
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -900,6 +902,7 @@ const MobileBarMoreOptions = ({
 			'USER_SETTINGS.TITLE_INTERFACE': () => setSettingsTab(1),
 			'USER_SETTINGS.TITLE_NOTIFICATION': () => setSettingsTab(0),
 			'USER_SETTINGS.TITLE_CHAT': () => setSettingsTab(4),
+			'ACCOUNTS.TAB_WALLET': () => setActiveBalanceHistory(false),
 		};
 
 		const action = actions[text];
@@ -1448,6 +1451,10 @@ const mapDispatchToProps = (dispatch) => ({
 	setVerificationTab: bindActionCreators(setVerificationTab, dispatch),
 	setSettingsTab: bindActionCreators(setSettingsTab, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
 });
 
 export default connect(

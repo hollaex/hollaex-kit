@@ -478,6 +478,29 @@ const Otcdeskpopup = ({
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
 		</>
 	);
+
+	const handleFilterOptions = (input, option, coinsList) => {
+		const value = option?.value?.toLowerCase() || '';
+		const coin = coinsList?.find(
+			(coin) =>
+				(typeof coin === 'string' ? coin : coin?.symbol) === option?.value
+		);
+		const symbol = (typeof coin === 'string'
+			? coin
+			: coin?.symbol || ''
+		).toLowerCase();
+		const fullname = (typeof coin === 'string'
+			? coin
+			: coin?.fullname || ''
+		).toLowerCase();
+		const search = input?.toLowerCase() || '';
+		return (
+			symbol?.includes(search) ||
+			fullname?.includes(search) ||
+			value?.includes(search)
+		);
+	};
+
 	const renderModalContent = () => {
 		switch (type) {
 			case 'step1':
@@ -505,6 +528,10 @@ const Otcdeskpopup = ({
 									<div>What will be traded</div>
 									<div className="flex-container full-width">
 										<Select
+											showSearch
+											filterOption={(input, option) =>
+												handleFilterOptions(input, option, coins)
+											}
 											onChange={(value) => {
 												handlePreviewChange(value, 'pair_base');
 											}}
@@ -535,6 +562,10 @@ const Otcdeskpopup = ({
 									<div>What it will be priced in</div>
 									<div className="flex-container full-width">
 										<Select
+											showSearch
+											filterOption={(input, option) =>
+												handleFilterOptions(input, option, coinSecondary)
+											}
 											onChange={(value) => {
 												handlePreviewChange(value, 'pair_2');
 											}}

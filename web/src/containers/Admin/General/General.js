@@ -1602,7 +1602,7 @@ class GeneralContent extends Component {
 								<span>
 									Note, in order to generate API keys it is required to add a{' '}
 									<a
-										href="https://www.techtarget.com/whatis/definition/whitelist"
+										href="http://www.hollaex.com/blog/what-is-ip-white-listing"
 										target={'_blank'}
 										rel="noopener noreferrer"
 									>

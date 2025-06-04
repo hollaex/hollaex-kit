@@ -76,6 +76,7 @@ import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 import { renderConfirmSignout } from 'components/AppBar/Utils';
+import { setActiveBalanceHistory } from 'actions/walletActions';
 
 class App extends Component {
 	state = {
@@ -327,6 +328,9 @@ class App extends Component {
 	handleMenuChange = (path = '', cb, enableTrade = false) => {
 		if (enableTrade && path === '/trade') {
 			this.setState({ isTradeTab: !this.state.isTradeTab });
+		} else if (path === '/wallet') {
+			this.props.setActiveBalanceHistory(false);
+			this.props.router.replace('/wallet');
 		} else {
 			this.setState({
 				isTradeTab: false,
@@ -1059,6 +1063,10 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setError: bindActionCreators(setError, dispatch),
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
 });
 
 export default connect(

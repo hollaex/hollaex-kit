@@ -29,7 +29,7 @@ const P2P = () => {
 	};
 
 	return (
-		<div className="admin-earnings-container w-100">
+		<div className="admin-earnings-container blue-admin-tab-wrapper w-100">
 			<Tabs
 				defaultActiveKey="0"
 				activeKey={activeTab}
