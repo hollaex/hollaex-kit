@@ -102,7 +102,7 @@ const createExchangeStakes = (req, res) => {
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -178,7 +178,7 @@ const updateExchangeStakes = (req, res) => {
 		user_id: req.auth.sub.id
 	}, auditInfo)
 		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -202,7 +202,7 @@ const deleteExchangeStakes = (req, res) => {
 	toolsLib.stake.updateExchangeStakePool(req.swagger.params.data.value.id, { status: 'terminated' })
 		.then(() => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake pool.' });
 		})
 		.catch((err) => {
@@ -319,7 +319,7 @@ const createStaker = (req, res) => {
 		req.auth.sub.id
 	)
 		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -342,7 +342,7 @@ const deleteExchangeStaker = (req, res) => {
 
 	toolsLib.stake.deleteExchangeStaker(req.swagger.params.data.value.id, req.auth.sub.id)
 		.then(() => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake.' });
 		})
 		.catch((err) => {

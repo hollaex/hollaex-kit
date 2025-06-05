@@ -15,6 +15,7 @@ import { Input } from 'antd';
 import { renderAsset } from '../Deposits/utils';
 import { CloseOutlined } from '@ant-design/icons';
 import { requestAdminData } from 'actions/appActions';
+import BurnModal from './Burn';
 const TabPane = Tabs.TabPane;
 
 // const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
@@ -40,7 +41,16 @@ const Final = ({
 	constants = {},
 	allCoins = {},
 	isLoading,
+	handleChangeNumber,
+	exchangeData,
+	onClose,
+	handleBurn,
+	exchangeUsers,
+	userEmails,
+	handleMint,
 }) => {
+	console.log(coinFormData);
+
 	let isUpdateRequired = false;
 	if (
 		(exchange &&
@@ -62,6 +72,11 @@ const Final = ({
 			};
 		}
 	});
+
+	const showMintAndBurnButtons =
+		coinFormData?.verified &&
+		(coinFormData?.owner_id === user_id || type === 'fiat');
+
 	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
@@ -343,7 +358,7 @@ const Final = ({
 							</div>
 						)
 					) : null}
-					<div className="preview-coin-container">
+					<div className="preview-coin-container" style={{ width: '30rem' }}>
 						<div className="preview-content preview-content-align">
 							{!isPreview && !isConfigure ? (
 								<span className="preview-color-tip sub-title">
@@ -735,9 +750,12 @@ const Final = ({
 					) : null}
 				</Fragment>
 			</TabPane>
-			<TabPane tab={`${coinFormData?.symbol?.toUpperCase()} Networks`} key="1">
+			<TabPane
+				tab={`${coinFormData?.symbol?.toUpperCase()} Fee Markups`}
+				key="1"
+			>
 				<div style={{ position: 'absolute' }}>
-					<h2>{coinFormData?.symbol?.toUpperCase()} Network Protocols</h2>
+					<h2>{coinFormData?.symbol?.toUpperCase()} Fee Markups</h2>
 					<h5>
 						Below are the blockchain protocols that this asset(
 						{coinFormData?.symbol?.toUpperCase()}) operates on for deposits and
@@ -762,7 +780,7 @@ const Final = ({
 								color={meta.color}
 							/>
 						</div>
-						{coinFormData.network.split(',').map((net) => {
+						{coinFormData?.network?.split(',')?.map((net) => {
 							return (
 								<div style={{ fontWeight: 'bold' }}>
 									<div>{networkMap[net.trim()] || net}</div>
@@ -783,17 +801,17 @@ const Final = ({
 					<Table
 						className="blue-admin-table"
 						columns={columns}
-						dataSource={coinFormData.network.split(',').map((net) => {
+						dataSource={coinFormData?.network?.split(',')?.map((net) => {
 							return {
 								symbol: coinFormData.symbol,
 								net: net?.toUpperCase(),
 								fullname: coinFormData.fullname,
 								withdrawal_fee_markup:
-									coinCustomizations[coinFormData?.symbol]?.network?.[
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
 									]?.withdrawal_fee_markup,
 								deposit_fee_markup:
-									coinCustomizations[coinFormData?.symbol]?.network?.[
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
 									]?.deposit_fee_markup,
 							};
@@ -913,9 +931,9 @@ const Final = ({
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
 														...coinCustomizations[selectedCoin.symbol],
-														network: {
+														fee_markups: {
 															...coinCustomizations[selectedCoin.symbol]
-																.network,
+																.fee_markups,
 															[selectedCoin.net.toLowerCase()]: {
 																withdrawal_fee_markup:
 																	selectedCoin.withdrawal_fee_markup,
@@ -949,6 +967,34 @@ const Final = ({
 					</Modal>
 				)}
 			</TabPane>
+			{showMintAndBurnButtons && (
+				<TabPane tab="Mint" key="2">
+					<BurnModal
+						type="mint"
+						coinFormData={coinFormData}
+						exchange={exchangeData}
+						handleChangeNumber={handleChangeNumber}
+						onClose={onClose}
+						handleMint={handleMint}
+						exchangeUsers={exchangeUsers}
+						userEmails={userEmails}
+					/>
+				</TabPane>
+			)}
+			{showMintAndBurnButtons && (
+				<TabPane tab="Burn" key="3">
+					<BurnModal
+						type="burn"
+						coinFormData={coinFormData}
+						exchange={exchangeData}
+						handleChangeNumber={handleChangeNumber}
+						onClose={onClose}
+						handleBurn={handleBurn}
+						exchangeUsers={exchangeUsers}
+						userEmails={userEmails}
+					/>
+				</TabPane>
+			)}
 		</Tabs>
 	);
 };
