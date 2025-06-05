@@ -1109,7 +1109,7 @@ definitions:
       - fees
     properties:
       pair:
-         description: pair
+        description: pair
       fees:
         type: object
         minProperties: 1
