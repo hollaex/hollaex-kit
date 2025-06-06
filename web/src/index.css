@@ -15822,7 +15822,7 @@ table th {
   .transfer-details-wrapper .input-amount-wrapper,
   .transfer-details-wrapper .input-description-wrapper {
     min-width: 37rem; }
-  .button-container .green-btn {
+  .transfer-details-wrapper .transfer-form-wrapper .button-container .green-btn {
     min-width: 37rem; } }
 
 .sidebar-row {
