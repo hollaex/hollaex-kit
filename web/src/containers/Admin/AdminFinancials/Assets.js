@@ -697,8 +697,8 @@ class Assets extends Component {
 		} = this.state;
 
 		const { owner_id, created_by, verified, type } = selectedAsset;
-		const showMintAndBurnButtons =
-			verified && (owner_id === user_id || type === 'fiat');
+		// const showMintAndBurnButtons =
+		// 	verified && (owner_id === user_id || type === 'fiat');
 		const showConfigureButton = created_by === user_id || owner_id === user_id;
 
 		if (isConfigure) {
@@ -762,7 +762,7 @@ class Assets extends Component {
 								</Button>
 							)}
 							<div className="separator" />
-							{showMintAndBurnButtons && (
+							{/* {showMintAndBurnButtons && (
 								<Fragment>
 									<Button
 										className="green-btn"
@@ -780,7 +780,7 @@ class Assets extends Component {
 										Burn
 									</Button>
 								</Fragment>
-							)}
+							)} */}
 						</div>
 					</div>
 				</div>

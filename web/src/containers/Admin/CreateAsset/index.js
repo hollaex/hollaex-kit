@@ -777,6 +777,12 @@ class CreateAsset extends Component {
 						coins={this.props.coins}
 						selectedCoinSymbol={selectedCoinSymbol}
 						exchange={this.props.exchangeData}
+						handleChangeNumber={this.handleChangeNumber}
+						onClose={this.props.onClose}
+						handleBurn={this.handleBurn}
+						exchangeUsers={this.props.exchangeUsers}
+						userEmails={this.props.userEmails}
+						handleMint={this.handleMint}
 					/>
 				);
 			case 'edit-color':
