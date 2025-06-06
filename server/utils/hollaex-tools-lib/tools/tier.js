@@ -143,8 +143,20 @@ const updateTier = (level, updateData, auditInfo) => {
 };
 
 const updatePairFees = (pair, fees, auditInfo) => {
-	if (!subscribedToPair(pair)) {
-		return reject(new Error('Invalid pair'));
+	if (
+		!(typeof pair === 'string' && pair.trim()) &&
+		!(Array.isArray(pair) && pair.length > 0 && pair.every(p => typeof p === 'string' && p.trim()))
+	) {
+		return Promise.reject(new Error('Invalid pair: must be a non-empty string or array of non-empty strings'));
+	}
+
+
+	const pairs = Array.isArray(pair) ? pair : [pair];
+
+	for (const p of pairs) {
+		if (!subscribedToPair(p)) {
+			return reject(new Error(`Invalid pair: ${p}`));
+		}
 	}
 
 	const tiersToUpdate = Object.keys(fees);
@@ -168,8 +180,11 @@ const updatePairFees = (pair, fees, auditInfo) => {
 				maker: { ...tier.fees.maker },
 				taker: { ...tier.fees.taker }
 			};
-			updatedFees.maker[pair] = fees[level].maker;
-			updatedFees.taker[pair] = fees[level].taker;
+
+			for (const p of pairs) {
+				updatedFees.maker[p] = fees[level].maker;
+				updatedFees.taker[p] = fees[level].taker;
+			}
 
 			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedFees, tier.dataValues.fees);
 
