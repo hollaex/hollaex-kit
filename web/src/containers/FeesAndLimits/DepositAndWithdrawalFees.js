@@ -39,13 +39,15 @@ const renderRow = (
 	);
 };
 
-const getFeeText = (data, level, type, coin_customizations, coins) => {
+const getFeeText = (data, level, type, coin_customizations, coins, network) => {
 	const { symbol, value } = data;
 
 	let fee = value;
 
 	if (type === 'withdrawal') {
-		const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+		const feeMarkup =
+			coin_customizations?.[symbol]?.fee_markups?.[network]
+				?.withdrawal_fee_markup;
 		if (feeMarkup) {
 			const incrementUnit = coins?.[symbol]?.increment_unit;
 			const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -97,7 +99,8 @@ const getRows = (
 								level,
 								'withdrawal',
 								coin_customizations,
-								coins
+								coins,
+								network
 						  )
 						: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 					const deposit_text =
@@ -107,7 +110,8 @@ const getRows = (
 									level,
 									'deposit',
 									coin_customizations,
-									coins
+									coins,
+									network
 							  )
 							: 'N/A';
 					const index = `${c_index}_${n_index}`;
