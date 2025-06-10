@@ -123,7 +123,10 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 				)}
 				{authUser?.permissions?.includes('/admin/kit:get') && (
 					<TabPane tab="Fee Markups" key="1">
-						<CoinConfiguration location={location} />
+						<CoinConfiguration
+							location={location}
+							handleTabChange={handleTabChange}
+						/>
 					</TabPane>
 				)}
 			</Tabs>
