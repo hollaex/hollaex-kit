@@ -476,7 +476,7 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	};
 
 	return (
-		<div className="w-100">
+		<div className="admin-earnings-container w-100">
 			<Tabs
 				defaultActiveKey="0"
 				activeKey={activeTab}

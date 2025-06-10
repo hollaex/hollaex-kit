@@ -293,7 +293,7 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 	};
 
 	return (
-		<div className="admin-tiers-wrapper w-100">
+		<div className="admin-tiers-wrapper admin-earnings-container w-100">
 			<Tabs>
 				<TabPane tab="Fees" key="fees">
 					<Fees

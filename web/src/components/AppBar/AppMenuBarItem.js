@@ -139,6 +139,13 @@ const AppMenuBarItem = ({
 			icon: 'P2P_OPTION_ICON',
 			title: 'P2P.TAB_P2P',
 			path: '/p2p',
+			activePaths: [
+				'/p2p',
+				'/p2p/orders',
+				'/p2p/profile',
+				'/p2p/post-deal',
+				'/p2p/mydeals',
+			],
 			description: 'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PEER_TO_PEER',
 			description_2: 'DESKTOP_NAVIGATION.P2P_DESC',
 			isDisplay: features?.p2p,
@@ -193,7 +200,11 @@ const AppMenuBarItem = ({
 
 	const checkActiveTab = (tabOptions) => {
 		const currentPath = window.location.pathname;
-		return tabOptions?.some((option) => option?.path === currentPath);
+		return tabOptions?.some((option) =>
+			option?.activePaths
+				? option?.activePaths?.includes(currentPath)
+				: option?.path === currentPath
+		);
 	};
 
 	const getTabOptions = () => {
@@ -329,11 +340,12 @@ const DesktopDropdown = ({
 	return (
 		<div className="navigation-dropdown-container">
 			{getTabOptions()?.map((options, index) => {
-				const isActivePath =
-					options?.title === 'STAKE.CEFI_STAKING' ||
-					options?.title === 'STAKE.DEFI_STAKING'
-						? isSelectedStake === options?.title && currPath === options?.path
-						: currPath === options?.path;
+				const isActivePath = options?.activePaths
+					? options?.activePaths?.includes(currPath)
+					: options?.title === 'STAKE.CEFI_STAKING' ||
+					  options?.title === 'STAKE.DEFI_STAKING'
+					? isSelectedStake === options?.title && currPath === options?.path
+					: currPath === options?.path;
 				return (
 					options?.isDisplay && (
 						<div

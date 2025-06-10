@@ -324,7 +324,7 @@ class Chat extends Component {
 							</div>
 						</div>
 						{isActive ? (
-							<Tabs className="chat-tabs mt-5">
+							<Tabs className="chat-tabs admin-earnings-container blue-admin-tab-wrapper mt-5">
 								<TabPane tab="Messages" key="messages">
 									<Messages
 										messages={messages.slice().reverse()}
