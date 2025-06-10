@@ -60,6 +60,13 @@ export const MENU_ITEMS = {
 		{
 			id: 'p2p',
 			path: '/p2p',
+			activePaths: [
+				'/p2p',
+				'/p2p/orders',
+				'/p2p/profile',
+				'/p2p/post-deal',
+				'/p2p/mydeals',
+			],
 			icon_id: 'TAB_P2P',
 			string_id: 'ACCOUNTS.P2P',
 			hide_from_appbar: true,
@@ -90,6 +97,7 @@ export const MENU_ITEMS = {
 			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'TAB_WALLET'}`,
 			string_id: 'ACCOUNTS.TAB_WALLET',
 			hide_from_appbar: false,
+			activePaths: ['/wallet/history', '/wallet'],
 		},
 		{
 			path: '/transactions',

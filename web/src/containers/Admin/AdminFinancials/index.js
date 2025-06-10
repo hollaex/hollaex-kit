@@ -20,20 +20,47 @@ import { connect } from 'react-redux';
 
 const TabPane = Tabs.TabPane;
 
+const tabList = [
+	'assets',
+	'fee-markups',
+	'limits',
+	'summary',
+	'wallet',
+	'balances',
+	'orders',
+	'trades',
+	'deposits',
+	'withdrawals',
+	'earnings',
+	'transfers',
+	'duster',
+];
+
 const AdminFinancials = ({ router, location, user, authUser }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [hideTabs, setHideTabs] = useState(false);
 
 	const tabParams = getTabParams();
 	useEffect(() => {
-		if (tabParams) {
-			setActiveTab(tabParams.tab);
+		const params = new URLSearchParams(window.location.search);
+		const tab = tabList?.find((data) => params.has(data));
+		const tabIndex = tabList?.indexOf(tab);
+
+		if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
+			setActiveTab(String(tabIndex));
+		} else if (!tab) {
+			setActiveTab('0');
+			const url = new URL(window.location.href);
+			url.search = tabList[0] ? `?${tabList[0]}` : '';
+			window.history.replaceState(null, '', url.toString());
 		}
-	}, [tabParams]);
+	}, [tabParams, activeTab]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
-		router.replace('/admin/financials');
+		const url = new URL(window.location.href);
+		url.search = tabList[key] ? `?${tabList[key]}` : '';
+		window.history.replaceState(null, '', url.toString());
 	};
 
 	const handleHide = (isHide) => {
