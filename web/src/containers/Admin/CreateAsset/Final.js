@@ -48,9 +48,9 @@ const Final = ({
 	exchangeUsers,
 	userEmails,
 	handleMint,
+	selectedMarkupAsset = {},
+	setSelectedMarkupAsset = () => {},
 }) => {
-	console.log(coinFormData);
-
 	let isUpdateRequired = false;
 	if (
 		(exchange &&
@@ -87,12 +87,21 @@ const Final = ({
 	const [displayCostumizationModal, setDisplayCostumizationModal] = useState(
 		false
 	);
+	const [activeTab, setActiveTab] = useState('0');
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
 			setIsUpgrade(true);
 		}
 	}, [exchange]);
+
+	useEffect(() => {
+		if (Object.keys(selectedMarkupAsset)?.length) {
+			setSelectedMarkupAsset({});
+			onHandleActiveTab('1');
+		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedMarkupAsset]);
 
 	const renderNetworkFee = ([key, data], index) => {
 		const network = getNetworkLabelByKey(key);
@@ -278,13 +287,20 @@ const Final = ({
 			})
 			.catch(() => {});
 	};
+	const onHandleActiveTab = (key) => {
+		setActiveTab(key);
+	};
 	useEffect(() => {
 		// setIsLoading(true);
 		requesCoinConfiguration();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
-		<Tabs defaultActiveKey="0">
+		<Tabs
+			defaultActiveKey="0"
+			activeKey={activeTab}
+			onChange={onHandleActiveTab}
+		>
 			<TabPane tab={`${coinFormData?.symbol?.toUpperCase()} Summary`} key="0">
 				<Fragment>
 					<div className="title">

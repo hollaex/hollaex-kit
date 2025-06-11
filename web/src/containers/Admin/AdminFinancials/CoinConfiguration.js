@@ -89,7 +89,7 @@ const CoinConfiguration = ({ coins, handleTabChange }) => {
 								// setEditMode(true);
 								// setSelectedCoin(data);
 								// setDisplayCostumizationModal(true);
-								handleTabChange('0');
+								handleTabChange('0', data);
 							}}
 							style={{ backgroundColor: '#CB7300', color: 'white' }}
 						>

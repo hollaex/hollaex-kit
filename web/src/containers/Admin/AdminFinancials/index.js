@@ -39,6 +39,7 @@ const tabList = [
 const AdminFinancials = ({ router, location, user, authUser }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [hideTabs, setHideTabs] = useState(false);
+	const [selectedMarkupAsset, setSelectedMarkupAsset] = useState({});
 
 	const tabParams = getTabParams();
 	useEffect(() => {
@@ -46,7 +47,11 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 		const tab = tabList?.find((data) => params.has(data));
 		const tabIndex = tabList?.indexOf(tab);
 
-		if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
+		if (tabParams?.tab) {
+			tabList?.length > tabParams?.tab
+				? setActiveTab(tabParams?.tab)
+				: setActiveTab('0');
+		} else if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
 			setActiveTab(String(tabIndex));
 		} else if (!tab) {
 			setActiveTab('0');
@@ -56,11 +61,14 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 		}
 	}, [tabParams, activeTab]);
 
-	const handleTabChange = (key) => {
+	const handleTabChange = (key, selectedAsset = {}) => {
 		setActiveTab(key);
 		const url = new URL(window.location.href);
 		url.search = tabList[key] ? `?${tabList[key]}` : '';
 		window.history.replaceState(null, '', url.toString());
+		if (Object.keys(selectedAsset)?.length) {
+			setSelectedMarkupAsset(selectedAsset);
+		}
 	};
 
 	const handleHide = (isHide) => {
@@ -82,7 +90,12 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 			>
 				{authUser?.permissions?.includes('/admin/balance:get') && (
 					<TabPane tab="Assets" key="0">
-						<Assets location={location} handleHide={handleHide} />
+						<Assets
+							location={location}
+							handleHide={handleHide}
+							selectedMarkupAsset={selectedMarkupAsset}
+							setSelectedMarkupAsset={setSelectedMarkupAsset}
+						/>
 					</TabPane>
 				)}
 				{authUser?.permissions?.includes('/admin/balance:get') && (

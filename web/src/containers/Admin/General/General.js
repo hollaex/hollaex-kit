@@ -1594,6 +1594,29 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
+							<div className="sub-title">Suspicious Login</div>
+							<div className="description">
+								<div>
+									Enable/Disable Suspicious Login feauture for user logins
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Switch
+										checked={constants?.kit?.suspicious_login?.active}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												kit: {
+													suspicious_login: {
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
 								<span>
