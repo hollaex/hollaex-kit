@@ -51,7 +51,7 @@ module.exports = {
 
 			networks.forEach((network) => {
 				customization.fee_markups[network] = {
-					deposit_fee_markup: customization.fee_markup,
+					deposit_fee_markup: 0,
 					withdrawal_fee_markup: customization.fee_markup
 				};
 			});
