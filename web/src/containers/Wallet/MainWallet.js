@@ -73,8 +73,9 @@ class Wallet extends Component {
 		);
 		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
 
-		if (this.props.location.pathname === '/wallet/history') {
+		if (this.props.location.pathname.includes('/wallet/history')) {
 			this.setState({ activeBalanceHistory: true });
+			this.props.setActiveBalanceHistory(true);
 		}
 	}
 
@@ -96,7 +97,7 @@ class Wallet extends Component {
 		);
 	}
 
-	componentDidUpdate(_, prevState) {
+	componentDidUpdate(prevProps, prevState) {
 		const {
 			searchValue,
 			isZeroBalanceHidden,
@@ -104,6 +105,8 @@ class Wallet extends Component {
 			activeBalanceHistory,
 		} = this.state;
 		const { getActiveBalanceHistory } = this.props;
+		const { pathname, search } = window.location;
+		const { search: prevSearch } = prevProps.location || {};
 		if (
 			searchValue !== prevState.searchValue ||
 			isZeroBalanceHidden !== prevState.isZeroBalanceHidden ||
@@ -140,6 +143,10 @@ class Wallet extends Component {
 			setTimeout(() => {
 				this.props.setPricesAndAsset(this.props.balance, this.props.coins);
 			}, [1000]);
+		}
+
+		if (pathname === '/wallet' && search && search !== prevSearch) {
+			window.history.replaceState({}, '', '/wallet');
 		}
 	}
 

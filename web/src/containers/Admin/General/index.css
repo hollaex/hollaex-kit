@@ -1193,6 +1193,32 @@ h3,
 	width: 75%;
 	padding: 0.5% 0 1% 0;
 }
+.admin-earnings-container .ant-tabs-nav::before {
+	border-bottom: none;
+}
+
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	height: 6px;
+	background-color: #ffffff;
+}
+
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	top: 0px;
+}
+
+.admin-earnings-container .ant-tabs-tab .ant-tabs-tab-btn {
+	opacity: 0.6;
+	font-weight: bold;
+}
+
+.admin-content-wrapper .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	opacity: 1;
+}
+
+.blue-admin-tab-wrapper .ant-tabs-nav .ant-tabs-nav-list {
+	border-top: 1px solid #ffffff;
+	width: 100%;
+}
 
 @media screen and (min-width: 2560px) {
 	.generate-api .right-container {

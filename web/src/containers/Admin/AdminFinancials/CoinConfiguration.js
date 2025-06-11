@@ -8,7 +8,7 @@ import { updateConstants } from '../General/action';
 import { requestAdminData } from 'actions/appActions';
 import { renderAsset } from '../Deposits/utils';
 
-const CoinConfiguration = ({ coins }) => {
+const CoinConfiguration = ({ coins, handleTabChange }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [coinCustomizations, setCoinCustomizations] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -47,11 +47,33 @@ const CoinConfiguration = ({ coins }) => {
 			},
 		},
 		{
-			title: 'Fee Markup',
+			title: 'Witdrawal Fee Markup',
 			dataIndex: 'fee_markup',
 			key: 'fee_markup',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.fee_markup || '-'}</div>;
+				const markups = data?.fee_markups || {};
+				return (
+					<div className="d-flex">
+						{Object.keys(markups)
+							.map((key) => `${key}: ${markups[key]?.withdrawal_fee_markup}`)
+							.join(', ') || '-'}
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Deposit Fee Markup',
+			dataIndex: 'fee_markup',
+			key: 'fee_markup',
+			render: (user_id, data) => {
+				const markups = data?.fee_markups || {};
+				return (
+					<div className="d-flex">
+						{Object.keys(markups)
+							.map((key) => `${key}: ${markups[key]?.deposit_fee_markup}`)
+							.join(', ') || '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -64,9 +86,10 @@ const CoinConfiguration = ({ coins }) => {
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
-								setEditMode(true);
-								setSelectedCoin(data);
-								setDisplayCostumizationModal(true);
+								// setEditMode(true);
+								// setSelectedCoin(data);
+								// setDisplayCostumizationModal(true);
+								handleTabChange('0', data);
 							}}
 							style={{ backgroundColor: '#CB7300', color: 'white' }}
 						>
@@ -310,6 +333,7 @@ const CoinConfiguration = ({ coins }) => {
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
 														fee_markup: selectedCoin.fee_markup,
+														fee_markups: selectedCoin?.fee_markups,
 													},
 												},
 											},

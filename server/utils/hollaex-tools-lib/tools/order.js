@@ -887,9 +887,6 @@ const cancelAllUserOrdersByNetworkId = (networkId, symbol, opts = {
 };
 
 const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate, format, opts = { additionalHeaders: null }) => {
-	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
-	}
 
 	const params = {
 		symbol,
@@ -950,9 +947,7 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 const getAllUserTradesByKitId = async (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
-	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
-	}
+
 	// check mapKitIdToNetworkId
 	const idDictionary = await mapKitIdToNetworkId([userKitId]);
 

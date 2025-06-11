@@ -40,6 +40,9 @@ subscriber.on('message', (channel, message) => {
 					JSON.stringify({ action: 'restart' })
 				);
 				break;
+			case 'refreshApi':
+				checkStatus();
+				break;
 			default:
 				break;
 		}
@@ -120,6 +123,7 @@ const checkStatus = () => {
 				configuration.kit = status.kit;
 				configuration.email = status.email;
 
+				status.constants.fee_markups = status.kit.coin_customizations;
 				return all([
 					checkActivation(
 						status.name,
