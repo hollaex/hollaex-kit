@@ -225,6 +225,7 @@ exports.KIT_CONFIG_KEYS = [
 	'chain_trade_config',
 	'selectable_native_currencies',
 	'auto_trade_config',
+	'suspicious_login',
 	'apps',
 	'timezone'
 ];
