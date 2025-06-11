@@ -1601,11 +1601,7 @@ class GeneralContent extends Component {
 								</div>
 								<div style={{ marginTop: 10 }}>
 									<Switch
-										checked={
-											constants?.kit?.suspicious_login != null
-												? constants.kit.suspicious_login.active
-												: true
-										}
+										checked={constants?.kit?.suspicious_login?.active}
 										onChange={(checked) => {
 											this.handleSubmitGeneral({
 												kit: {

@@ -323,9 +323,9 @@ const loginPost = (req, res) => {
 
 			const successfulRecords = lastLogins.filter(login => login.status);
 
-			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
-				suspiciousLogin = true;
-			}
+			// if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+			// 	suspiciousLogin = true;
+			// }
 
 
 			const geo = geoip.lookup(ip);
@@ -349,7 +349,7 @@ const loginPost = (req, res) => {
 			}
 
 
-			const suspiciousLoginEnabled = toolsLib?.getKitConfig()?.suspicious_login != null ? toolsLib.getKitConfig()?.suspicious_login?.active : true;
+			const suspiciousLoginEnabled = toolsLib?.getKitConfig()?.suspicious_login?.active;
 
 			if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
 				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
