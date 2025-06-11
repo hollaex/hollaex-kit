@@ -220,9 +220,6 @@ const fetchP2PDisputes = (req, res) => {
 
 	const {user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 	
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerP2P.error(
@@ -267,10 +264,6 @@ const fetchP2PTransactions = (req, res) => {
 
 	const { id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerP2P.error(
 			req.uuid,
@@ -511,10 +504,7 @@ const fetchP2PFeedbacks = (req, res) => {
 
 	const { transaction_id, merchant_id, user_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerP2P.error(
 			req.uuid,

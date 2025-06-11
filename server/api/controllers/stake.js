@@ -257,9 +257,6 @@ const getExchangeStakersForUser = (req, res) => {
 
 	const { currency, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
