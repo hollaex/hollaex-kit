@@ -57,16 +57,17 @@ const Fiatmarkets = ({
 		const tab = Array.from(params.keys())[0];
 		const tabIndex = tabList?.indexOf(tab);
 
-		if (tabIndex >= 0 && String(tabIndex) !== activeTab) {
+		if (tabParams && tabParams?.tab) {
+			tabList?.length > tabParams?.tab
+				? setActiveTab(tabParams?.tab)
+				: setActiveTab('0');
+		} else if (tabIndex >= 0 && String(tabIndex) !== activeTab) {
 			setActiveTab(String(tabIndex));
 		} else if (tabIndex === -1) {
 			setActiveTab('0');
 			const url = new URL(window.location.href);
 			url.search = `?${tabList[0]}`;
 			window.history.replaceState(null, '', url.toString());
-		}
-		if (tabParams && tabParams.tab) {
-			setActiveTab(tabParams.tab);
 		}
 	}, [tabParams, activeTab]);
 
