@@ -274,8 +274,25 @@ class Assets extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		const { exchange, allCoins } = this.props;
+	componentDidUpdate(prevProps) {
+		const {
+			exchange,
+			allCoins,
+			selectedMarkupAsset = {},
+			setSelectedMarkupAsset = () => {},
+		} = this.props;
+		if (selectedMarkupAsset && Object.keys(selectedMarkupAsset)?.length) {
+			const filteredAsset = allCoins?.find(
+				(coin) =>
+					exchange?.coins?.includes(coin?.symbol) &&
+					coin?.symbol === selectedMarkupAsset?.symbol
+			);
+			if (filteredAsset) {
+				this.handlePreview(filteredAsset);
+			} else {
+				setSelectedMarkupAsset({});
+			}
+		}
 		if (
 			(JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange) &&
 				exchange &&
@@ -310,6 +327,8 @@ class Assets extends Component {
 	}
 
 	componentWillUnmount() {
+		const { setSelectedMarkupAsset = () => {} } = this.props;
+		setSelectedMarkupAsset({});
 		this.debounceLoading.cancel();
 	}
 
@@ -634,12 +653,25 @@ class Assets extends Component {
 		}
 	};
 
+	onHandleFilterAssets = () => {
+		const { filterValues } = this.state;
+		if (filterValues) {
+			const { allCoins, exchange } = this.props;
+			const coins = allCoins?.filter((val) =>
+				exchange?.coins?.includes(val?.symbol)
+			);
+			this.setState({ coins, filterValues: '' });
+		}
+	};
+
 	renderBreadcrumb = () => {
 		return (
 			<div>
 				{this.state.isPreview || this.state.isConfigure ? (
 					<Breadcrumb>
-						<Item>{this.renderLink(this.state.isFiat)}</Item>
+						<Item onClick={this.onHandleFilterAssets}>
+							{this.renderLink(this.state.isFiat)}
+						</Item>
 						<Item
 							className={
 								this.state.isPreview || this.state.isConfigure
@@ -696,9 +728,9 @@ class Assets extends Component {
 			isLoading,
 		} = this.state;
 
-		const { owner_id, created_by, verified, type } = selectedAsset;
-		const showMintAndBurnButtons =
-			verified && (owner_id === user_id || type === 'fiat');
+		const { owner_id, created_by } = selectedAsset;
+		// const showMintAndBurnButtons =
+		// 	verified && (owner_id === user_id || type === 'fiat');
 		const showConfigureButton = created_by === user_id || owner_id === user_id;
 
 		if (isConfigure) {
@@ -748,6 +780,8 @@ class Assets extends Component {
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 							isFiat={isFiat}
 							isLoading={isLoading}
+							selectedMarkupAsset={this.props.selectedMarkupAsset}
+							setSelectedMarkupAsset={this.props.setSelectedMarkupAsset}
 						/>
 					</div>
 					<div>
@@ -762,7 +796,7 @@ class Assets extends Component {
 								</Button>
 							)}
 							<div className="separator" />
-							{showMintAndBurnButtons && (
+							{/* {showMintAndBurnButtons && (
 								<Fragment>
 									<Button
 										className="green-btn"
@@ -780,7 +814,7 @@ class Assets extends Component {
 										Burn
 									</Button>
 								</Fragment>
-							)}
+							)} */}
 						</div>
 					</div>
 				</div>
