@@ -57,7 +57,9 @@ const PairsTab = (props) => {
 		const tabIndex = tabList?.indexOf(tab);
 
 		if (tabParams?.tab) {
-			setActiveTab(tabParams.tab);
+			tabList?.length > tabParams?.tab
+				? setActiveTab(tabParams?.tab)
+				: setActiveTab('0');
 		} else if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
 			setActiveTab(String(tabIndex));
 		} else if (!tab) {
