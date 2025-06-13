@@ -499,3 +499,24 @@
 .ant-form-item-extra {
 	font-size: 12px;
 }
+
+.user-role-container .user-role-icon-wrapper,
+.user-role-container .user-role-icon-wrapper svg {
+	width: 3rem;
+	height: 3rem;
+}
+
+.user-role-container .user-role-icon-wrapper {
+	position: relative;
+	bottom: 5px;
+}
+
+.user-role-container .user-role-icon-wrapper svg {
+	fill: #ffffff;
+}
+
+.user-role-container .announcer-operator-card-wrapper svg path:nth-child(1),
+.user-role-container .kyc-operator-card-wrapper svg path:nth-child(2),
+.user-role-container .support-operator-card-wrapper svg path {
+	fill: #ffffff;
+}
