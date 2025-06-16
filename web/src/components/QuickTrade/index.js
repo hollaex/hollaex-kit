@@ -721,6 +721,9 @@ const QuickTrade = ({
 										text={coins[selectedSource]?.display_name}
 										balance={selectedSourceBalance}
 										onClick={sourceTotalBalance}
+										incrementUnit={
+											coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+										}
 									/>
 								</div>
 								<InputGroup
@@ -776,6 +779,9 @@ const QuickTrade = ({
 										balance={selectedTargetBalance}
 										onClick={targetTotalBalance}
 										className="balance-wallet"
+										incrementUnit={
+											coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+										}
 									/>
 								</div>
 								<InputGroup
