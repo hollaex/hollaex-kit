@@ -151,7 +151,7 @@ const RenderWithdraw = ({
 		selectedAsset?.selectedCurrency &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
 			network
-		]?.withdrawal_fee_markup;
+		]?.withdrawal?.value;
 	if (feeMarkup) {
 		const incrementUnit =
 			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;

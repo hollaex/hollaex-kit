@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table } from 'antd';
+import { Button, Modal, Tabs, message, Table, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -261,6 +261,7 @@ const Final = ({
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
+								console.log(data);
 								setSelectedCoin(data);
 								setDisplayCostumizationModal(true);
 							}}
@@ -825,11 +826,19 @@ const Final = ({
 								withdrawal_fee_markup:
 									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
-									]?.withdrawal_fee_markup,
+									]?.withdrawal?.value,
+								symbol_withdrawal:
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
+										net?.toLowerCase()
+									]?.withdrawal?.symbol,
+								symbol_deposit:
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
+										net?.toLowerCase()
+									]?.deposit?.symbol,
 								deposit_fee_markup:
 									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
-									]?.deposit_fee_markup,
+									]?.deposit?.value,
 							};
 						})}
 						rowKey={(data) => {
@@ -903,6 +912,55 @@ const Final = ({
 								/>
 							</div>
 						</div>
+
+						<div style={{ marginBottom: 20 }}>
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Fee coin for withdrawal</div>
+								<Select
+									showSearch
+									className="select-box"
+									placeholder="Select fee coin"
+									value={selectedCoin.symbol_withdrawal}
+									style={{ width: 200 }}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											symbol_withdrawal: e,
+										});
+									}}
+								>
+									{Object.keys(allCoins).map((key) => (
+										<Select.Option value={allCoins[key].symbol}>
+											{allCoins[key].fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
+						</div>
+						<div style={{ marginBottom: 20 }}>
+							<div style={{ marginBottom: 10 }}>
+								<div className="mb-1">Fee coin for deposit</div>
+								<Select
+									showSearch
+									className="select-box"
+									placeholder="Select fee coin"
+									value={selectedCoin.symbol_deposit}
+									style={{ width: 200 }}
+									onChange={(e) => {
+										setSelectedCoin({
+											...selectedCoin,
+											symbol_deposit: e,
+										});
+									}}
+								>
+									{Object.keys(allCoins).map((key) => (
+										<Select.Option value={allCoins[key].symbol}>
+											{allCoins[key].fullname}
+										</Select.Option>
+									))}
+								</Select>
+							</div>
+						</div>
 						<div
 							style={{
 								display: 'flex',
@@ -951,10 +1009,22 @@ const Final = ({
 															...coinCustomizations[selectedCoin.symbol]
 																.fee_markups,
 															[selectedCoin.net.toLowerCase()]: {
-																withdrawal_fee_markup:
-																	selectedCoin.withdrawal_fee_markup,
-																deposit_fee_markup:
-																	selectedCoin.deposit_fee_markup,
+																withdrawal: {
+																	...coinCustomizations?.[selectedCoin?.symbol]
+																		?.fee_markups?.[
+																		selectedCoin?.net?.toLowerCase()
+																	]?.withdrawal,
+																	value: selectedCoin.withdrawal_fee_markup,
+																	symbol: selectedCoin.symbol_withdrawal,
+																},
+																deposit: {
+																	...coinCustomizations?.[selectedCoin?.symbol]
+																		?.fee_markups?.[
+																		selectedCoin?.net?.toLowerCase()
+																	]?.withdrawal,
+																	value: selectedCoin.deposit_fee_markup,
+																	symbol: selectedCoin.symbol_deposit,
+																},
 															},
 														},
 													},

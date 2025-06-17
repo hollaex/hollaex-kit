@@ -55,7 +55,7 @@ const CoinConfiguration = ({ coins, handleTabChange }) => {
 				return (
 					<div className="d-flex">
 						{Object.keys(markups)
-							.map((key) => `${key}: ${markups[key]?.withdrawal_fee_markup}`)
+							.map((key) => `${key}: ${markups[key]?.withdrawal.value}`)
 							.join(', ') || '-'}
 					</div>
 				);
