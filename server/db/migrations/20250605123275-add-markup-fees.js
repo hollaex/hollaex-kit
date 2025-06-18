@@ -32,35 +32,38 @@ module.exports = {
 
 		const statusModel = models[TABLE];
 		const status = await statusModel.findOne({});
-		const exchange = await checkActivation(status.name,
-			status.url,
-			status.activation_code,
-			status.constants);
+
+		if (status?.activation_code) {
+			const exchange = await checkActivation(status.name,
+				status.url,
+				status.activation_code,
+				status.constants);
 
 
-		for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
-			// Skip if already has fee_markups or no fee_markup defined
-			if (customization.fee_markups || customization.fee_markup == null) continue;
+			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+				// Skip if already has fee_markups or no fee_markup defined
+				if (customization.fee_markups || customization.fee_markup == null) continue;
 
-			// Find the matching coin by symbol
-			const coin = exchange.coins.find((c) => c.symbol === symbol);
-			if (!coin || !coin.network) continue;
+				// Find the matching coin by symbol
+				const coin = exchange.coins.find((c) => c.symbol === symbol);
+				if (!coin || !coin.network) continue;
 
-			const networks = coin.network.split(',').map((n) => n.trim().toLowerCase());
-			customization.fee_markups = {};
+				const networks = coin.network.split(',').map((n) => n.trim().toLowerCase());
+				customization.fee_markups = {};
 
-			networks.forEach((network) => {
-				customization.fee_markups[network] = {
-					deposit_fee_markup: 0,
-					withdrawal_fee_markup: customization.fee_markup
-				};
-			});
+				networks.forEach((network) => {
+					customization.fee_markups[network] = {
+						deposit_fee_markup: 0,
+						withdrawal_fee_markup: customization.fee_markup
+					};
+				});
+			}
+			await statusModel.update(
+				{ kit: status.kit },
+				{ where: { id: status.id } }
+			);
 		}
-		await statusModel.update(
-			{ kit: status.kit },
-			{ where: { id: status.id } }
-		);
-		
+
 	},
 
 	down: () => {
