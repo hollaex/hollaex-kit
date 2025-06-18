@@ -1,0 +1,81 @@
+'use strict';
+const TABLE = 'Status';
+const {
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE
+} = require('../../constants');
+
+const rp = require('request-promise');
+const models = require('../models');
+
+module.exports = {
+	async up(queryInterface) {
+
+		const checkActivation = (name, url, activation_code, constants = {}) => {
+			const body = {
+				name,
+				url,
+				activation_code,
+				constants
+			};
+
+			const options = {
+				method: 'POST',
+				body,
+				uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}${HOLLAEX_NETWORK_PATH_ACTIVATE}`,
+				json: true
+			};
+			return rp(options);
+		};
+
+
+		const statusModel = models[TABLE];
+		const status = await statusModel.findOne({});
+		const exchange = await checkActivation(status.name,
+			status.url,
+			status.activation_code,
+			status.constants);
+
+
+		for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+			// Skip if already has fee_markups or no fee_markup defined
+			if (customization.fee_markup == null) continue;
+
+			// Find the matching coin by symbol
+			const coin = exchange.coins.find((c) => c.symbol === symbol);
+			if (!coin || !coin.network) continue;
+
+			const networks = coin.network.split(',').map((n) => n.trim().toLowerCase());
+			customization.fee_markups = {};
+
+			networks.forEach((network) => {
+				customization.fee_markups[network] = {
+					withdrawal: {
+						value: customization?.fee_markups?.[network]?.withdrawal_fee_markup || customization.fee_markup,
+						symbol: network
+					}
+				};
+			});
+
+			customization.fee_markups[symbol] = {
+				...(customization.fee_markups[symbol] || {}),
+				deposit: {
+					value: customization?.fee_markups?.[symbol]?.deposit_fee_markup || 0,
+					symbol
+				},
+			};
+		}
+		await statusModel.update(
+			{ kit: status.kit },
+			{ where: { id: status.id } }
+		);
+		
+	},
+
+	down: () => {
+		return new Promise((resolve) => {
+			resolve();
+		});
+	}
+};

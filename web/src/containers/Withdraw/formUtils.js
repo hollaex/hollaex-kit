@@ -53,8 +53,7 @@ export const generateInitialValues = (
 	initialValues.amount = '';
 
 	const feeMarkup =
-		coin_customizations?.[symbol]?.fee_markups?.[network]
-			?.withdrawal_fee_markup;
+		coin_customizations?.[symbol]?.fee_markups?.[network]?.withdrawal?.value;
 	if (feeMarkup) {
 		const incrementUnit = coins?.[symbol]?.increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
