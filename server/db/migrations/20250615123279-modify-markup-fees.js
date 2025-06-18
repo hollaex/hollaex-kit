@@ -51,16 +51,20 @@ module.exports = {
 
 			networks.forEach((network) => {
 				customization.fee_markups[network] = {
-					deposit: {
-						value: customization?.fee_markups?.[network]?.deposit_fee_markup || 0,
-						symbol: network
-					},
 					withdrawal: {
 						value: customization?.fee_markups?.[network]?.withdrawal_fee_markup || customization.fee_markup,
 						symbol: network
 					}
 				};
 			});
+
+			customization.fee_markups[symbol] = {
+				...(customization.fee_markups[symbol] || {}),
+				deposit: {
+					value: customization?.fee_markups?.[symbol]?.deposit_fee_markup || 0,
+					symbol
+				},
+			};
 		}
 		await statusModel.update(
 			{ kit: status.kit },

@@ -88,6 +88,7 @@ const Final = ({
 		false
 	);
 	const [activeTab, setActiveTab] = useState('0');
+	const [editMode, setEditMode] = useState();
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
@@ -243,6 +244,60 @@ const Final = ({
 				);
 			},
 		},
+		// {
+		// 	title: 'Deposit Fee Markup',
+		// 	dataIndex: 'deposit_fee_markup',
+		// 	key: 'deposit_fee_markup',
+		// 	render: (user_id, data) => {
+		// 		return <div className="d-flex">{data?.deposit_fee_markup || '-'}</div>;
+		// 	},
+		// },
+		{
+			title: 'Edit',
+			dataIndex: 'edit',
+			key: 'edit',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						<Button
+							onClick={(e) => {
+								e.stopPropagation();
+								setSelectedCoin(data);
+								setDisplayCostumizationModal(true);
+								setEditMode('withdrawal');
+							}}
+							style={{ backgroundColor: '#CB7300', color: 'white' }}
+						>
+							Edit
+						</Button>
+					</div>
+				);
+			},
+		},
+	];
+
+	const columns2 = [
+		{
+			title: 'Currency',
+			dataIndex: 'symbol',
+			key: 'symbol',
+			render: (user_id, data) => {
+				return <div className="d-flex">{data?.net}</div>;
+			},
+		},
+		{
+			title: 'Name',
+			dataIndex: 'fullname',
+			key: 'fullname',
+			render: (user_id, data) => {
+				return (
+					<div className="d-flex">
+						{networkMap[data?.net?.toLowerCase()] || data?.fullname}
+					</div>
+				);
+			},
+		},
+
 		{
 			title: 'Deposit Fee Markup',
 			dataIndex: 'deposit_fee_markup',
@@ -261,9 +316,9 @@ const Final = ({
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
-								console.log(data);
 								setSelectedCoin(data);
 								setDisplayCostumizationModal(true);
+								setEditMode('deposit');
 							}}
 							style={{ backgroundColor: '#CB7300', color: 'white' }}
 						>
@@ -274,7 +329,6 @@ const Final = ({
 			},
 		},
 	];
-
 	const handleCostumizationModal = () => {
 		setDisplayCostumizationModal(false);
 		setSelectedCoin();
@@ -814,6 +868,9 @@ const Final = ({
 						network fee (blockchain fee) and is a fee collected as as source of
 						revenue by the exchange operators.
 					</div>
+					<div style={{ marginBottom: 15, fontSize: 18 }}>
+						Markup Fee for Withdrawal
+					</div>
 
 					<Table
 						className="blue-admin-table"
@@ -835,6 +892,34 @@ const Final = ({
 									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
 									]?.deposit?.symbol,
+								deposit_fee_markup:
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
+										net?.toLowerCase()
+									]?.deposit?.value,
+							};
+						})}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						pagination={false}
+					/>
+
+					<div style={{ marginBottom: 15, marginTop: 15, fontSize: 18 }}>
+						Markup Fee for Deposit
+					</div>
+
+					<Table
+						className="blue-admin-table"
+						columns={columns2}
+						dataSource={[coinFormData.symbol]?.map((net) => {
+							return {
+								symbol: coinFormData.symbol,
+								net: net?.toUpperCase(),
+								fullname: coinFormData.fullname,
+								withdrawal_fee_markup:
+									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
+										net?.toLowerCase()
+									]?.withdrawal?.value,
 								deposit_fee_markup:
 									coinCustomizations[coinFormData?.symbol]?.fee_markups?.[
 										net?.toLowerCase()
@@ -875,45 +960,48 @@ const Final = ({
 							Edit Coin Fee Markup
 						</div>
 						<div style={{ marginBottom: 30 }}>
-							Set an additional withdrawal fee for this coin to generate extra
-							revenue.
+							Set an additional fee for this coin to generate extra revenue.
 						</div>
-						<div style={{ marginBottom: 20 }}>
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Withdrawal Fee Markup</div>
-								<Input
-									type="number"
-									placeholder="Enter Fee Markup"
-									value={selectedCoin.withdrawal_fee_markup}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											withdrawal_fee_markup: e.target.value,
-										});
-									}}
-									suffix={renderAsset(selectedCoin?.symbol)}
-								/>
+						{editMode === 'withdrawal' && (
+							<div style={{ marginBottom: 20 }}>
+								<div style={{ marginBottom: 10 }}>
+									<div className="mb-1">Withdrawal Fee Markup</div>
+									<Input
+										type="number"
+										placeholder="Enter Fee Markup"
+										value={selectedCoin.withdrawal_fee_markup}
+										onChange={(e) => {
+											setSelectedCoin({
+												...selectedCoin,
+												withdrawal_fee_markup: e.target.value,
+											});
+										}}
+										suffix={renderAsset(selectedCoin?.symbol)}
+									/>
+								</div>
 							</div>
-						</div>
-						<div style={{ marginBottom: 20 }}>
-							<div style={{ marginBottom: 10 }}>
-								<div className="mb-1">Deposit Fee Markup</div>
-								<Input
-									type="number"
-									placeholder="Enter Fee Markup"
-									value={selectedCoin.deposit_fee_markup}
-									onChange={(e) => {
-										setSelectedCoin({
-											...selectedCoin,
-											deposit_fee_markup: e.target.value,
-										});
-									}}
-									suffix={renderAsset(selectedCoin?.symbol)}
-								/>
+						)}
+						{editMode === 'deposit' && (
+							<div style={{ marginBottom: 20 }}>
+								<div style={{ marginBottom: 10 }}>
+									<div className="mb-1">Deposit Fee Markup</div>
+									<Input
+										type="number"
+										placeholder="Enter Fee Markup"
+										value={selectedCoin.deposit_fee_markup}
+										onChange={(e) => {
+											setSelectedCoin({
+												...selectedCoin,
+												deposit_fee_markup: e.target.value,
+											});
+										}}
+										suffix={renderAsset(selectedCoin?.symbol)}
+									/>
+								</div>
 							</div>
-						</div>
+						)}
 
-						<div style={{ marginBottom: 20 }}>
+						{/* <div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee coin for withdrawal</div>
 								<Select
@@ -936,8 +1024,8 @@ const Final = ({
 									))}
 								</Select>
 							</div>
-						</div>
-						<div style={{ marginBottom: 20 }}>
+						</div> */}
+						{/* <div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee coin for deposit</div>
 								<Select
@@ -960,7 +1048,7 @@ const Final = ({
 									))}
 								</Select>
 							</div>
-						</div>
+						</div> */}
 						<div
 							style={{
 								display: 'flex',
@@ -1014,16 +1102,17 @@ const Final = ({
 																		?.fee_markups?.[
 																		selectedCoin?.net?.toLowerCase()
 																	]?.withdrawal,
-																	value: selectedCoin.withdrawal_fee_markup,
-																	symbol: selectedCoin.symbol_withdrawal,
+																	value:
+																		selectedCoin.withdrawal_fee_markup || 0,
+																	symbol: selectedCoin?.net?.toLowerCase(),
 																},
 																deposit: {
 																	...coinCustomizations?.[selectedCoin?.symbol]
 																		?.fee_markups?.[
-																		selectedCoin?.net?.toLowerCase()
-																	]?.withdrawal,
-																	value: selectedCoin.deposit_fee_markup,
-																	symbol: selectedCoin.symbol_deposit,
+																		selectedCoin?.symbol?.toLowerCase()
+																	]?.deposit,
+																	value: selectedCoin.deposit_fee_markup || 0,
+																	symbol: selectedCoin?.symbol,
 																},
 															},
 														},
