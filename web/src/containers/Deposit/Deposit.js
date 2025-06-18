@@ -41,6 +41,7 @@ const DepositComponent = ({
 	depositAddress,
 	router,
 	selectedNetwork,
+	coin_customizations,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -345,6 +346,17 @@ const DepositComponent = ({
 		? coins[selectedNetwork]?.icon_id
 		: coins[defaultNetwork]?.icon_id;
 	const networkOptionsIcon = coins[getDepositNetworkOptions]?.icon_id;
+
+	const renderMarkupFee = () => {
+		const feeMarkup =
+			defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[defaultCurrency]
+				?.deposit?.symbol === defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[defaultCurrency]
+				?.deposit?.value;
+
+		return feeMarkup || 0;
+	};
 
 	return (
 		<div
@@ -705,6 +717,13 @@ const DepositComponent = ({
 									</div>
 								</div>
 							))}
+						{renderMarkupFee() ? (
+							<div>
+								Fee: {renderMarkupFee()} {defaultCurrency?.toUpperCase()}
+							</div>
+						) : (
+							<div></div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -790,6 +809,7 @@ const DepositComponent = ({
 };
 
 const mapStateToProps = (state) => ({
+	coin_customizations: state.app.constants.coin_customizations,
 	getDepositCurrency: state.app.depositFields.depositCurrency,
 	getDepositNetworkOptions: state.app.depositFields.depositNetworkOptions,
 	pinnedAssets: state.app.pinned_assets,
