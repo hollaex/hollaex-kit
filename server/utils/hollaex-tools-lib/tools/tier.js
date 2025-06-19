@@ -143,7 +143,6 @@ const updateTier = (level, updateData, auditInfo) => {
 };
 
 const updatePairFees = (feesByPair, auditInfo) => {
-	console.log({ feesByPair })
 	const pairList = Object.keys(feesByPair);
 
 	if (!pairList.length) {
