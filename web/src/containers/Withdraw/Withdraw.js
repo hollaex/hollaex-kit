@@ -156,7 +156,7 @@ const RenderWithdraw = ({
 		feeMarkup &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
 			network
-		]?.withdrawal?.symbol ==
+		]?.withdrawal?.symbol ===
 			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[network]
 				?.symbol
 	) {
