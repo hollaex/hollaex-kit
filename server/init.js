@@ -23,22 +23,28 @@ const {
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
 const yaml = require('js-yaml');
+const toolsLib = require('hollaex-tools-lib');
 const fs = require('fs');
 
 let nodeLib;
 
 const getNodeLib = () => nodeLib;
 
-subscriber.on('message', (channel, message) => {
+subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
 		switch (type) {
 			case 'refreshInit':
+				await toolsLib.sleep((Math.floor(Math.random() * 5) + 1) * 1000);
 				checkStatus();
 				publisher.publish(
 					WS_HUB_CHANNEL,
 					JSON.stringify({ action: 'restart' })
 				);
+				break;
+			case 'refreshApi':
+				await toolsLib.sleep((Math.floor(Math.random() * 5) + 1) * 1000);
+				checkStatus();
 				break;
 			default:
 				break;
@@ -120,6 +126,7 @@ const checkStatus = () => {
 				configuration.kit = status.kit;
 				configuration.email = status.email;
 
+				status.constants.fee_markups = status.kit.coin_customizations;
 				return all([
 					checkActivation(
 						status.name,

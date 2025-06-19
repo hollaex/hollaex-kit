@@ -34,9 +34,17 @@
 		}
 
 		.ant-tabs-ink-bar {
-			height: 3px;
+			height: 6px;
 			background-color: #ffffff;
 			bottom: unset;
+		}
+		.ant-tabs-tab .ant-tabs-tab-btn {
+			opacity: 0.6;
+			font-weight: bold;
+		}
+
+		.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+			opacity: 1;
 		}
 	}
 }

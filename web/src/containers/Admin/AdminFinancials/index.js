@@ -20,20 +20,55 @@ import { connect } from 'react-redux';
 
 const TabPane = Tabs.TabPane;
 
+const tabList = [
+	'assets',
+	'fee-markups',
+	'limits',
+	'summary',
+	'wallet',
+	'balances',
+	'orders',
+	'trades',
+	'deposits',
+	'withdrawals',
+	'earnings',
+	'transfers',
+	'duster',
+];
+
 const AdminFinancials = ({ router, location, user, authUser }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [hideTabs, setHideTabs] = useState(false);
+	const [selectedMarkupAsset, setSelectedMarkupAsset] = useState({});
 
 	const tabParams = getTabParams();
 	useEffect(() => {
-		if (tabParams) {
-			setActiveTab(tabParams.tab);
-		}
-	}, [tabParams]);
+		const params = new URLSearchParams(window.location.search);
+		const tab = tabList?.find((data) => params.has(data));
+		const tabIndex = tabList?.indexOf(tab);
 
-	const handleTabChange = (key) => {
+		if (tabParams?.tab) {
+			tabList?.length > tabParams?.tab
+				? setActiveTab(tabParams?.tab)
+				: setActiveTab('0');
+		} else if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
+			setActiveTab(String(tabIndex));
+		} else if (!tab) {
+			setActiveTab('0');
+			const url = new URL(window.location.href);
+			url.search = tabList[0] ? `?${tabList[0]}` : '';
+			window.history.replaceState(null, '', url.toString());
+		}
+	}, [tabParams, activeTab]);
+
+	const handleTabChange = (key, selectedAsset = {}) => {
 		setActiveTab(key);
-		router.replace('/admin/financials');
+		const url = new URL(window.location.href);
+		url.search = tabList[key] ? `?${tabList[key]}` : '';
+		window.history.replaceState(null, '', url.toString());
+		if (Object.keys(selectedAsset)?.length) {
+			setSelectedMarkupAsset(selectedAsset);
+		}
 	};
 
 	const handleHide = (isHide) => {
@@ -55,7 +90,12 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 			>
 				{authUser?.permissions?.includes('/admin/balance:get') && (
 					<TabPane tab="Assets" key="0">
-						<Assets location={location} handleHide={handleHide} />
+						<Assets
+							location={location}
+							handleHide={handleHide}
+							selectedMarkupAsset={selectedMarkupAsset}
+							setSelectedMarkupAsset={setSelectedMarkupAsset}
+						/>
 					</TabPane>
 				)}
 				{authUser?.permissions?.includes('/admin/balance:get') && (
@@ -123,7 +163,10 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 				)}
 				{authUser?.permissions?.includes('/admin/kit:get') && (
 					<TabPane tab="Fee Markups" key="1">
-						<CoinConfiguration location={location} />
+						<CoinConfiguration
+							location={location}
+							handleTabChange={handleTabChange}
+						/>
 					</TabPane>
 				)}
 			</Tabs>

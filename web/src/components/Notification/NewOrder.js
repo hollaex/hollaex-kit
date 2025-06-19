@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EventListener from 'react-event-listener';
 import { CURRENCY_PRICE_FORMAT } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
@@ -9,6 +9,7 @@ import {
 } from './Notification';
 import { Button, Coin } from '../';
 import { formatToCurrency } from 'utils/currency';
+import { RiskyTrade } from 'components/QuickTrade/RiskyTrade';
 
 const generateRows = ({ order, pairData }, coins) => {
 	const { type, side, price, size } = order;
@@ -97,6 +98,21 @@ const NewOrderNotification = ({
 	coins,
 	icons: ICONS,
 }) => {
+	const { order } = data;
+
+	const getShowCoinRisky = () => {
+		const { is_risky, code } = coins[order?.symbol];
+		if (order?.side === 'buy' && is_risky) {
+			const localRiskyItems = localStorage.getItem('riskyItems');
+			const riskyItems = localRiskyItems ? JSON.parse(localRiskyItems) : {};
+			const isNotWarn = !riskyItems[code];
+			return isNotWarn;
+		}
+
+		return false;
+	};
+
+	const [showRisky, setShowRisky] = useState(getShowCoinRisky());
 	const rows = generateRows(data, coins);
 	const onConfirmClick = () => {
 		onConfirm();
@@ -111,23 +127,36 @@ const NewOrderNotification = ({
 
 	return (
 		<>
-			<NotificationWraper
-				stringId="CHECK_ORDER"
-				title={STRINGS['CHECK_ORDER']}
-				iconId="CHECK_ORDER"
-				icon={ICONS['CHECK_ORDER']}
-				className="new-order-notification"
-			>
-				<>
-					<EventListener target="document" onKeydown={onKeydown} />
-					<OrderDisplay rows={rows} />
-					<div className="d-flex">
-						<Button label={STRINGS['BACK_TEXT']} onClick={onBack} />
-						<div className="separator" />
-						<Button label={STRINGS['CONFIRM_TEXT']} onClick={onConfirmClick} />
-					</div>
-				</>
-			</NotificationWraper>
+			{showRisky ? (
+				<NotificationWraper>
+					<RiskyTrade
+						setShowRisky={setShowRisky}
+						coinData={coins[order.symbol]}
+						onCloseDialog={onBack}
+					/>
+				</NotificationWraper>
+			) : (
+				<NotificationWraper
+					stringId="CHECK_ORDER"
+					title={STRINGS['CHECK_ORDER']}
+					iconId="CHECK_ORDER"
+					icon={ICONS['CHECK_ORDER']}
+					className="new-order-notification"
+				>
+					<>
+						<EventListener target="document" onKeydown={onKeydown} />
+						<OrderDisplay rows={rows} />
+						<div className="d-flex">
+							<Button label={STRINGS['BACK_TEXT']} onClick={onBack} />
+							<div className="separator" />
+							<Button
+								label={STRINGS['CONFIRM_TEXT']}
+								onClick={onConfirmClick}
+							/>
+						</div>
+					</>
+				</NotificationWraper>
+			)}
 		</>
 	);
 };

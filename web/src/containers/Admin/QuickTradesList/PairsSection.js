@@ -159,7 +159,7 @@ class PairsSection extends Component {
 		const { pair, userId, open } = this.props;
 		requestActiveOrders({
 			user_id: userId,
-			symbol: pair ? (/^[a-z0-9]+-[a-z0-9]+$/i.test(pair) ? pair : null) : null,
+			symbol: pair || null,
 			page,
 			limit,
 			open,

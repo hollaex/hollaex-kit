@@ -213,12 +213,14 @@ const Announcement = ({
 			data?.type?.toLowerCase() === 'more',
 	};
 
-	const filteredAnnouncement = announcementList?.filter((data) => {
-		const filterCondition = optionMap[selectedOption];
-		return filterCondition
-			? filterCondition(data)
-			: data?.type?.toLowerCase() === selectedOption?.toLowerCase();
-	});
+	const filteredAnnouncement = announcementList
+		?.filter((data) => {
+			const filterCondition = optionMap[selectedOption];
+			return filterCondition
+				? filterCondition(data)
+				: data?.type?.toLowerCase() === selectedOption?.toLowerCase();
+		})
+		?.sort((a, b) => new Date(b?.created_at) - new Date(a?.created_at));
 
 	const onHandleTrade = () => {
 		if (features?.pro_trade) {

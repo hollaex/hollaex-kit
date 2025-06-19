@@ -295,7 +295,11 @@ class Container extends Component {
 			subtract(data?.data?.size, data?.data?.filled)
 		);
 		const fullfilled = formatBaseAmount(
-			math.chain(remaining).divide(data?.data?.size).multiply(100).done()
+			math
+				.chain(Number(remaining))
+				.divide(data?.data?.size)
+				.multiply(100)
+				.done()
 		);
 		const tradeSymbol = data?.data?.symbol?.split('-')[0];
 		const date = new Date();

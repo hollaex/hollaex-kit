@@ -149,8 +149,17 @@ const RenderWithdraw = ({
 
 	const feeMarkup =
 		selectedAsset?.selectedCurrency &&
-		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markup;
-	if (feeMarkup) {
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			network
+		]?.withdrawal?.value;
+	if (
+		feeMarkup &&
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			network
+		]?.withdrawal?.symbol ==
+			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[network]
+				?.symbol
+	) {
 		const incrementUnit =
 			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();

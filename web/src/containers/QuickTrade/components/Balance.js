@@ -1,8 +1,8 @@
 import React from 'react';
 import STRINGS from 'config/localizedStrings';
-import { formatCurrency } from 'utils/currency';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
-const Balance = ({ balance = 0, text, onClick }) => {
+const Balance = ({ balance = 0, text, onClick, incrementUnit = 0 }) => {
 	return (
 		<div className="balance-text font-weight-normal">
 			{text}
@@ -12,7 +12,7 @@ const Balance = ({ balance = 0, text, onClick }) => {
 				className="ml-2 pointer balance-value-text"
 				onClick={() => onClick(balance)}
 			>
-				{formatCurrency(balance)}
+				{formatCurrencyByIncrementalUnit(balance, incrementUnit)}
 			</span>
 		</div>
 	);
