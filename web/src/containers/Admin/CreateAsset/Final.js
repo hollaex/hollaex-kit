@@ -1014,7 +1014,8 @@ const Final = ({
 																		?.fee_markups?.[
 																		selectedCoin?.net?.toLowerCase()
 																	]?.withdrawal,
-																	value: selectedCoin.withdrawal_fee_markup,
+																	value:
+																		selectedCoin.withdrawal_fee_markup || 0,
 																	symbol:
 																		selectedCoin.symbol_withdrawal ||
 																		exchangeCoins?.[selectedCoin.symbol]
@@ -1026,8 +1027,8 @@ const Final = ({
 																	...coinCustomizations?.[selectedCoin?.symbol]
 																		?.fee_markups?.[
 																		selectedCoin?.net?.toLowerCase()
-																	]?.withdrawal,
-																	value: selectedCoin.deposit_fee_markup,
+																	]?.deposit,
+																	value: selectedCoin.deposit_fee_markup || 0,
 																	symbol:
 																		selectedCoin.symbol_deposit ||
 																		selectedCoin?.symbol,
