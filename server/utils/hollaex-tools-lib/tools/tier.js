@@ -142,76 +142,79 @@ const updateTier = (level, updateData, auditInfo) => {
 		});
 };
 
-const updatePairFees = (pair, fees, auditInfo) => {
-	if (
-		!(typeof pair === 'string' && pair.trim()) &&
-		!(Array.isArray(pair) && pair.length > 0 && pair.every(p => typeof p === 'string' && p.trim()))
-	) {
-		return Promise.reject(new Error('Invalid pair: must be a non-empty string or array of non-empty strings'));
+const updatePairFees = (feesByPair, auditInfo) => {
+	console.log({ feesByPair })
+	const pairList = Object.keys(feesByPair);
+
+	if (!pairList.length) {
+		return Promise.reject(new Error('No pairs provided'));
 	}
 
-
-	const pairs = Array.isArray(pair) ? pair : [pair];
-
-	for (const p of pairs) {
-		if (!subscribedToPair(p)) {
-			return reject(new Error(`Invalid pair: ${p}`));
+	for (const pair of pairList) {
+		if (!subscribedToPair(pair)) {
+			return Promise.reject(new Error(`Invalid pair: ${pair}`));
 		}
 	}
 
-	const tiersToUpdate = Object.keys(fees);
+	const allTiers = getTierLevels();
 
-	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
-		return reject(new Error('Invalid tier level given'));
+	const allTiersToUpdate = new Set();
+	for (const pair of pairList) {
+		for (const tier of Object.keys(feesByPair[pair])) {
+			if (!allTiers.includes(tier)) {
+				return Promise.reject(new Error(`Invalid tier: ${tier} for pair: ${pair}`));
+			}
+			allTiersToUpdate.add(tier);
+		}
 	}
 
-	return getModel('sequelize').transaction((transaction) => {
-		return all(tiersToUpdate.map(async (level) => {
+	return getModel('sequelize').transaction(async (transaction) => {
+		const minFees = getMinFees();
+		const updatedTiers = {};
 
-			const minFees = getMinFees();
-
-			if (fees[level].maker < minFees.maker || fees[level].taker < minFees.taker) {
-				throw new Error(`Invalid fee given. Minimum maker fee: ${minFees.maker}. Minimum taker fee: ${minFees.taker}`);
-			}
-
-			const tier = await dbQuery.findOne('tier', { where: { id: level } });
+		for (const tierId of allTiersToUpdate) {
+			const tier = await dbQuery.findOne('tier', { where: { id: tierId } });
 
 			const updatedFees = {
 				maker: { ...tier.fees.maker },
 				taker: { ...tier.fees.taker }
 			};
 
-			for (const p of pairs) {
-				updatedFees.maker[p] = fees[level].maker;
-				updatedFees.taker[p] = fees[level].taker;
+			for (const pair of pairList) {
+				if (feesByPair[pair][tierId]) {
+					const feeConfig = feesByPair[pair][tierId];
+					if (feeConfig.maker < minFees.maker || feeConfig.taker < minFees.taker) {
+						throw new Error(
+							`Invalid fee for pair ${pair} in tier ${tierId}. Minimum maker: ${minFees.maker}, taker: ${minFees.taker}`
+						);
+					}
+					updatedFees.maker[pair] = feeConfig.maker;
+					updatedFees.taker[pair] = feeConfig.taker;
+				}
 			}
 
 			createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updatedFees, tier.dataValues.fees);
 
-			return tier.update(
+			const updatedTier = await tier.update(
 				{ fees: updatedFees },
 				{ fields: ['fees'], transaction }
 			);
-		}));
-	})
-		.then((data) => {
-			const updatedTiers = {};
-			each(data, (tier) => {
-				updatedTiers[tier.id] = {
-					...tier.dataValues
-				};
-			});
 
-			publisher.publish(
-				CONFIGURATION_CHANNEL,
-				JSON.stringify({
-					type: 'update',
-					data: {
-						tiers: updatedTiers
-					}
-				})
-			);
-		});
+			updatedTiers[tierId] = { ...updatedTier.dataValues };
+		}
+
+		publisher.publish(
+			CONFIGURATION_CHANNEL,
+			JSON.stringify({
+				type: 'update',
+				data: {
+					tiers: updatedTiers
+				}
+			})
+		);
+
+		return updatedTiers;
+	});
 };
 
 const updateTiersLimits = (limits) => {
