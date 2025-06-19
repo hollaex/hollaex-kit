@@ -58,15 +58,17 @@ class Orderbook extends Component {
 		isAnimated: false,
 		isDropdownOpen: false,
 	};
+	timeouts = [];
 
 	componentDidMount() {
 		const { orderbookFetched } = this.props;
 		if (orderbookFetched) {
 			this.setDataBlockHeight();
-			setTimeout(() => {
+			const timeoutId = setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 				this.setState({ isAnimated: true });
 			}, 1000);
+			this.timeouts.push(timeoutId);
 		}
 	}
 
@@ -79,15 +81,17 @@ class Orderbook extends Component {
 			orderbookFetched === true
 		) {
 			this.setDataBlockHeight();
-			setTimeout(() => {
+			const timeoutId1 = setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
+			this.timeouts.push(timeoutId1);
 		}
 
 		if (prevProps.orderbookFetched === false && orderbookFetched === true) {
-			setTimeout(() => {
+			const timeoutId2 = setTimeout(() => {
 				this.setState({ isAnimated: true });
 			}, 1000);
+			this.timeouts.push(timeoutId2);
 		}
 	}
 
@@ -123,6 +127,8 @@ class Orderbook extends Component {
 	componentWillUnmount() {
 		const { depth } = this.props;
 		localStorage.setItem('orderbook_depth', depth);
+		(this.timeouts || []).forEach((timeoutId) => clearTimeout(timeoutId));
+		this.timeouts = [];
 	}
 
 	setRefs = (key) => (el) => {

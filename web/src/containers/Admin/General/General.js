@@ -99,6 +99,7 @@ class GeneralContent extends Component {
 			defaultEmailData: {},
 			nativeCurrencies: [],
 		};
+		this.priceAssetTimeout = null;
 	}
 
 	componentDidMount() {
@@ -863,7 +864,7 @@ class GeneralContent extends Component {
 		) {
 			this.onHandleCurrency();
 			localStorage.setItem('base_currnecy', this.state?.nativeCurrencies[0]);
-			setTimeout(() => {
+			this.priceAssetTimeout = setTimeout(() => {
 				if (
 					this.props?.user?.settings?.interface?.display_currency !==
 					this.state?.nativeCurrencies[0]
@@ -872,6 +873,10 @@ class GeneralContent extends Component {
 				}
 			}, [1000]);
 		}
+	};
+
+	componentWillUnmount = () => {
+		this.priceAssetTimeout && clearTimeout(this.priceAssetTimeout);
 	};
 
 	onHandleNavigate = () => {

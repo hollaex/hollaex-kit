@@ -192,6 +192,7 @@ class AppWrapper extends React.Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
+		this.resetTimer && this.resetTimer.cancel();
 	}
 
 	getData = async () => {

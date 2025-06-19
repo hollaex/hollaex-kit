@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { STATIC_ICONS } from 'config/icons';
 import { Button, Tooltip, Modal, Select, message, Spin } from 'antd';
@@ -58,6 +58,7 @@ const Offramp = ({
 	const [isProceed, setIsProceed] = useState(false);
 	const [offrampCurrentType, setOfframpCurrentType] = useState('');
 	const [isDisable, setIsDisable] = useState(false);
+	const visibleRef = useRef(null);
 
 	useEffect(() => {
 		let coins =
@@ -120,6 +121,7 @@ const Offramp = ({
 		if (Object.keys(offramp).length && !selectedAsset) {
 			setIsPaymentForm(true);
 		}
+		return () => visibleRef?.current && clearTimeout(visibleRef?.current);
 		// eslint-disable-next-line
 	}, []);
 
@@ -173,7 +175,7 @@ const Offramp = ({
 		showSelect = false
 	) => {
 		setSelectedAsset(coinSymb);
-		setTimeout(() => {
+		visibleRef.current = setTimeout(() => {
 			setIsVisible(true);
 		}, 100);
 		if (coinSymb) {

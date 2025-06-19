@@ -268,6 +268,9 @@ const ProfitLossSection = ({
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
+		return () => {
+			onHandleFetchBalance && onHandleFetchBalance.cancel();
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
