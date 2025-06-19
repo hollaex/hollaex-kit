@@ -134,7 +134,7 @@ const ProfitLossSection = ({
 			useHTML: true,
 			formatter: function () {
 				if (selectedDateIndexes.length > 0) {
-					let compareTooltips = `<div><b>Compare Dates:</b></div>`;
+					let compareTooltips = `<div><b>${STRINGS['PROFIT_LOSS.COMPARE_DATES']}:</b></div>`;
 					selectedDateIndexes.forEach((idx) => {
 						const point = graphData[idx];
 						if (point) {
