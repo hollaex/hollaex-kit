@@ -350,7 +350,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
 
-			if (selectedNetwork !== 'email' && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.value && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.symbol === selectedNetwork) {
+			if (selectedNetwork !== 'email' && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.value && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.symbol === fee_coin) {
 				amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markups[selectedNetwork].withdrawal?.value)).toNumber();
 			}
 		}
@@ -417,7 +417,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === network && network !== 'fiat' && network !== 'email') {
+	if (coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === fee_coin && network !== 'fiat' && network !== 'email') {
 		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markups[network].withdrawal?.value)));
 }
 	
@@ -453,7 +453,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	return {
 		fee,
 		fee_coin,
-		...(coinMarkup?.fee_markups?.[network]?.withdrawal?.value && { fee_markup: coinMarkup.fee_markups[network].withdrawal?.value })
+		...((coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === fee_coin) && { fee_markup: coinMarkup.fee_markups[network].withdrawal?.value })
 	};
 };
 
