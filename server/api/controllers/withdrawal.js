@@ -394,6 +394,7 @@ const getUserWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
+		null,
 		format.value,
 		{
 			additionalHeaders: {

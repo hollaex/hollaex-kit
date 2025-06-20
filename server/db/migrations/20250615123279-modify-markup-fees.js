@@ -32,8 +32,7 @@ module.exports = {
 
 		const statusModel = models[TABLE];
 		const status = await statusModel.findOne({});
-
-		if (status?.activation_code) {
+		if (status?.activation_code) { 
 			const exchange = await checkActivation(status.name,
 				status.url,
 				status.activation_code,
@@ -42,7 +41,7 @@ module.exports = {
 
 			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
 				// Skip if already has fee_markups or no fee_markup defined
-				if (customization.fee_markups || customization.fee_markup == null) continue;
+				if (customization.fee_markup == null) continue;
 
 				// Find the matching coin by symbol
 				const coin = exchange.coins.find((c) => c.symbol === symbol);
@@ -53,8 +52,14 @@ module.exports = {
 
 				networks.forEach((network) => {
 					customization.fee_markups[network] = {
-						deposit_fee_markup: 0,
-						withdrawal_fee_markup: customization.fee_markup
+						deposit: {
+							value: customization?.fee_markups?.[network]?.deposit_fee_markup || 0,
+							symbol: symbol
+						},
+						withdrawal: {
+							value: customization?.fee_markups?.[network]?.withdrawal_fee_markup || customization.fee_markup || 0,
+							symbol: coin.withdrawal_fees[network].symbol
+						}
 					};
 				});
 			}
@@ -62,6 +67,7 @@ module.exports = {
 				{ kit: status.kit },
 				{ where: { id: status.id } }
 			);
+
 		}
 
 	},
