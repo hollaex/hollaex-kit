@@ -156,7 +156,7 @@ class AudioCueForm extends Component {
 	}
 
 	callback = (selected) => {
-		setTimeout(
+		this.formFieldData = setTimeout(
 			() =>
 				this.setState(({ formFields: prevFormFields }) => {
 					const formFields = { ...prevFormFields };
@@ -170,6 +170,12 @@ class AudioCueForm extends Component {
 			1
 		);
 	};
+
+	componentWillUnmount() {
+		if (this.formFieldData) {
+			clearTimeout(this.formFieldData);
+		}
+	}
 
 	render() {
 		return (

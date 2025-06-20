@@ -22,6 +22,9 @@ class UploadIcon extends Component {
 				URL.revokeObjectURL(objectUrl);
 			});
 		});
+		if (this.removeIconRef) {
+			clearTimeout(this.removeIconRef);
+		}
 	}
 
 	onFileChange = ({ target: { name, files } }) => {
@@ -106,7 +109,7 @@ class UploadIcon extends Component {
 				'removedBackgroundItems',
 				JSON.stringify(removedKeys)
 			);
-			setTimeout(() => {
+			this.removeIconRef = setTimeout(() => {
 				onSave(icons);
 				this.setState({
 					loading: false,

@@ -63,6 +63,10 @@ export class SettleModal extends Component {
 
 	handleSearch = _debounce(this.searchUser, 500);
 
+	componentWillUnmount = () => {
+		this.handleSearch.cancel();
+	};
+
 	render() {
 		const {
 			toggleVisibility,

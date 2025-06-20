@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
@@ -12,6 +12,7 @@ const QRScanner = ({ closeQRScanner, getQRData, setScannedAddress }) => {
 	const [result, setResult] = useState(STRINGS['QR_CODE.NO_RESULT']);
 	const [error, setError] = useState();
 	const [stopStream, setStopStream] = useState(false);
+	const timeoutRef = useRef(null);
 
 	const onUpdate = (err, data) => {
 		if (data) {
@@ -20,7 +21,7 @@ const QRScanner = ({ closeQRScanner, getQRData, setScannedAddress }) => {
 			setResult(text);
 			setScannedAddress(text);
 			getQRData(text);
-			setTimeout(closeQRScanner, 2000);
+			timeoutRef.current = setTimeout(closeQRScanner, 2000);
 		} else {
 			setResult(STRINGS['QR_CODE.NOT_FOUND']);
 			setScannedAddress(STRINGS['QR_CODE.NOT_FOUND']);
@@ -36,7 +37,12 @@ const QRScanner = ({ closeQRScanner, getQRData, setScannedAddress }) => {
 	};
 
 	useEffect(() => {
-		return setStopStream(true);
+		return () => {
+			setStopStream(true);
+			if (timeoutRef?.current) {
+				clearTimeout(timeoutRef?.current);
+			}
+		};
 	}, []);
 
 	const facingMode = isMobile ? 'environment' : 'user';
