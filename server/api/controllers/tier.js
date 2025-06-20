@@ -67,20 +67,18 @@ const updatePairFees = (req, res) => {
 		req.auth
 	);
 
-	const { pair, fees } = req.swagger.params.data.value;
+	const { fees } = req.swagger.params.data.value;
 
 	loggerTier.info(
 		req.uuid,
 		'controllers/tier/updatePairFees pair',
-		pair
 	);
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
-	toolsLib.tier.updatePairFees(pair, fees, auditInfo)
+	toolsLib.tier.updatePairFees(fees, auditInfo)
 		.then(() => {
 			loggerTier.info(
 				req.uuid,
 				'controllers/tier/updatePairFees updated fees pair',
-				pair
 			);
 			return res.json({ message: 'Success' });
 		})
