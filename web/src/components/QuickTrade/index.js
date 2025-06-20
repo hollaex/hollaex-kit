@@ -129,6 +129,11 @@ const QuickTrade = ({
 	const [isSourceSelected, setIsSourceSelected] = useState(false);
 	const [isSelectTarget, setIsSelectTarget] = useState(false);
 
+	const errorRef = useRef(null);
+	const chartDataRef = useRef(null);
+	const lineChartRef = useRef(null);
+	const selectTargetRef = useRef(null);
+
 	const resetForm = () => {
 		setTargetAmount();
 		setSourceAmount();
@@ -142,7 +147,7 @@ const QuickTrade = ({
 		setData({});
 		setShowModal(false);
 		if (autoHide) {
-			setTimeout(() => setError(), 5000);
+			errorRef.current = setTimeout(() => setError(), 5000);
 		} else {
 			setError();
 		}
@@ -343,7 +348,7 @@ const QuickTrade = ({
 		quicktradePairs[pair]?.symbol || quicktradePairs[flipPair(pair)]?.symbol;
 
 	useEffect(() => {
-		setTimeout(() => {
+		chartDataRef.current = setTimeout(() => {
 			const pairBase = activeQuickTradePair
 				? activeQuickTradePair?.split('-')[1]
 				: pair.split('-')[1];
@@ -491,6 +496,7 @@ const QuickTrade = ({
 	}, [sourceAmount, targetAmount, selectedSource, selectedTarget, spending]);
 
 	useEffect(() => {
+		const clearDebouncedQuote = debouncedQuote?.current;
 		setMounted(true);
 		if (window.location.pathname.includes(`/quick-trade`)) {
 			setIsQuickTrade(true);
@@ -498,6 +504,13 @@ const QuickTrade = ({
 		return () => {
 			setIsQuickTrade(false);
 			setTransactionPair(null);
+			const refs = [errorRef, chartDataRef, lineChartRef, selectTargetRef];
+			refs.forEach((ref) => {
+				if (ref?.current) {
+					clearInterval(ref?.current);
+				}
+			});
+			clearDebouncedQuote && clearDebouncedQuote.cancel();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -517,7 +530,7 @@ const QuickTrade = ({
 	}, [hasExpiredOnce, time]);
 
 	useEffect(() => {
-		setTimeout(() => {
+		lineChartRef.current = setTimeout(() => {
 			const lineData = {
 				...chartData[`${activeQuickTradePair ? activeQuickTradePair : pair}`],
 			};
@@ -549,7 +562,10 @@ const QuickTrade = ({
 	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
 		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
-		setTimeout(() => onSelectTarget(selectedSource), 0.1);
+		selectTargetRef.current = setTimeout(
+			() => onSelectTarget(selectedSource),
+			0.1
+		);
 		setSwap(false);
 		setIsSourceSelected(false);
 		resetForm();

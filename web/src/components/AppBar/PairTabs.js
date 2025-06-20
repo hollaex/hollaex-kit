@@ -141,6 +141,10 @@ class PairTabs extends Component {
 		this.setIsLoading();
 	};
 
+	componentWillUnmount = () => {
+		this.setIsLoading && this.setIsLoading.cancel();
+	};
+
 	render() {
 		const {
 			activePairTab,
