@@ -101,6 +101,8 @@ class App extends Component {
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
+	debouncedPricesAndAssets = null;
+	assetsPrice = null;
 
 	UNSAFE_componentWillMount() {
 		const chatIsClosed = getChatMinimized();
@@ -134,7 +136,7 @@ class App extends Component {
 
 		this.setActiveMenu();
 
-		setTimeout(
+		this.assetsPrice = setTimeout(
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
 			5000
 		);
@@ -217,7 +219,7 @@ class App extends Component {
 			!isEqual(balance, nextProps.balance) ||
 			!isEqual(coins, nextProps.coins)
 		) {
-			debounce(
+			this.debouncedPricesAndAssets = debounce(
 				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
 				15000
 			);
@@ -273,8 +275,10 @@ class App extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+		clearInterval(this.assetsPrice);
 		window.removeEventListener('online', this.updateNetworkStatus);
 		window.removeEventListener('offline', this.updateNetworkStatus);
+		this.debouncedPricesAndAssets && this.debouncedPricesAndAssets.cancel();
 	}
 
 	updateNetworkStatus = () => {

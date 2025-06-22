@@ -54,7 +54,11 @@ export const generateInitialValues = (
 
 	const feeMarkup =
 		coin_customizations?.[symbol]?.fee_markups?.[network]?.withdrawal?.value;
-	if (feeMarkup) {
+	if (
+		feeMarkup &&
+		coin_customizations?.[symbol]?.fee_markups?.[network]?.withdrawal
+			?.symbol === withdrawal_fees?.[network]?.symbol
+	) {
 		const incrementUnit = coins?.[symbol]?.increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const roundedMarkup = new BigNumber(feeMarkup)

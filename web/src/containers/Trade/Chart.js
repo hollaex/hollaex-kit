@@ -234,6 +234,7 @@ class TVChartContainer extends React.PureComponent {
 			this.tvWidget.remove();
 			this.tvWidget = null;
 		}
+		this.ref = null;
 	}
 
 	updateChart = ({

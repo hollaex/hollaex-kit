@@ -122,6 +122,8 @@ class OperatorControls extends Component {
 		};
 	}
 
+	languageChange = null;
+
 	handleKeyDown = (event) => {
 		const { isInjectMode, isEditMode } = this.props;
 		if (event.key === 'Escape') {
@@ -164,8 +166,11 @@ class OperatorControls extends Component {
 	}
 
 	componentWillUnmount() {
+		this.doSearch.cancel();
+		this.doIconSearch.cancel();
 		document.removeEventListener('keydown', this.handleKeyDown);
 		this.removeAdminListeners();
+		clearTimeout(this.languageChange);
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
@@ -764,7 +769,7 @@ class OperatorControls extends Component {
 		const { activeLanguage, changeLanguage } = this.props;
 		pushTempContent(activeLanguage);
 		changeLanguage(getTempLanguageKey(activeLanguage));
-		setTimeout(() => changeLanguage(activeLanguage), 300);
+		this.languageChange = setTimeout(() => changeLanguage(activeLanguage), 300);
 	};
 
 	openUploadIcon = () => {

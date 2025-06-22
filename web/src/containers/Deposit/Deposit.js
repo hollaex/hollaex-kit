@@ -350,10 +350,12 @@ const DepositComponent = ({
 	const renderMarkupFee = () => {
 		const feeMarkup =
 			defaultCurrency &&
-			coin_customizations?.[defaultCurrency]?.fee_markups?.[defaultCurrency]
-				?.deposit?.symbol === defaultCurrency &&
-			coin_customizations?.[defaultCurrency]?.fee_markups?.[defaultCurrency]
-				?.deposit?.value;
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[
+				selectedNetwork || defaultCurrency
+			]?.deposit?.symbol === defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[
+				selectedNetwork || defaultCurrency
+			]?.deposit?.value;
 
 		return feeMarkup || 0;
 	};
