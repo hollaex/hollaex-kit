@@ -878,7 +878,6 @@ const getAllUsersAdmin = (opts = {
 		const condition = getModel('sequelize').literal(`bank_account @> '${jsonStr}'`);
 		query.where[Op.and] = [
 			...query.where[Op.and],
-			{ activated: true },
 			condition
 		];
 	}
