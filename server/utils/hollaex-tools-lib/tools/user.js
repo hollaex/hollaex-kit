@@ -754,6 +754,7 @@ const getAllUsersAdmin = (opts = {
 	bank: null,
 	bank_key: null,
 	bank_value: null,
+	activated: null,
 	id_number: null,
 	additionalHeaders: null
 }) => {
@@ -881,6 +882,14 @@ const getAllUsersAdmin = (opts = {
 			condition
 		];
 	}
+
+	if (opts.activated) {
+		query.where[Op.and] = [
+			...query.where[Op.and],
+			{ activated: opts.activated },
+		];
+	}
+
 
 	if (id_number) {
 		query.where[Op.and].push(

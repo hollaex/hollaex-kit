@@ -1098,6 +1098,10 @@ paths:
           required: false
           type: string
         - in: query
+          name: activated
+          required: false
+          type: boolean
+        - in: query
           name: format
           description: Specify data format
           required: false
@@ -4996,6 +5000,10 @@ paths:
           name: bank_value
           required: false
           type: string
+        - in: query
+          name: activated
+          required: false
+          type: boolean
         - in: query
           name: format
           description: Specify data format
