@@ -160,6 +160,8 @@ const getUsersAdmin = (req, res) => {
 		phone_number,
 		kyc,
 		bank,
+		bank_key,
+		bank_value,
 		id_number
 
 	} = req.swagger.params;
@@ -200,6 +202,8 @@ const getUsersAdmin = (req, res) => {
 		phone_number: phone_number.value,
 		kyc: kyc.value,
 		bank: bank.value,
+		bank_key: bank_key.value,
+		bank_value: bank_value.value,
 		id_number: id_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
@@ -3391,6 +3395,8 @@ const downloadUsersCsv = (req, res) => {
 		phone_number,
 		kyc,
 		bank,
+		bank_key,
+		bank_value,
 		id_number
 
 	} = req.swagger.params;
@@ -3432,6 +3438,8 @@ const downloadUsersCsv = (req, res) => {
 		phone_number: phone_number.value,
 		kyc: kyc.value,
 		bank: bank.value,
+		bank_key: bank_key.value,
+		bank_value: bank_value.value,
 		id_number: id_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
