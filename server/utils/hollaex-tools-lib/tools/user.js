@@ -883,7 +883,7 @@ const getAllUsersAdmin = (opts = {
 		];
 	}
 
-	if (opts.activated) {
+	if (opts.activated != null) {
 		query.where[Op.and] = [
 			...query.where[Op.and],
 			{ activated: opts.activated },
