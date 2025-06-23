@@ -752,6 +752,9 @@ const getAllUsersAdmin = (opts = {
 	phone_number: null,
 	kyc: null,
 	bank: null,
+	bank_key: null,
+	bank_value: null,
+	activated: null,
 	id_number: null,
 	additionalHeaders: null
 }) => {
@@ -867,7 +870,26 @@ const getAllUsersAdmin = (opts = {
 				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
 			];
 		}
+
+	
 	}
+
+	if (opts.bank_key != null && opts.bank_value != null) {
+		const jsonStr = JSON.stringify([{ [opts.bank_key]: opts.bank_value }]);
+		const condition = getModel('sequelize').literal(`bank_account @> '${jsonStr}'`);
+		query.where[Op.and] = [
+			...query.where[Op.and],
+			condition
+		];
+	}
+
+	if (opts.activated != null) {
+		query.where[Op.and] = [
+			...query.where[Op.and],
+			{ activated: opts.activated },
+		];
+	}
+
 
 	if (id_number) {
 		query.where[Op.and].push(
