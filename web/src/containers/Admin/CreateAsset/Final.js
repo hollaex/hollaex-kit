@@ -240,7 +240,11 @@ const Final = ({
 			key: 'withdrawal_fee_markup',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">{data?.withdrawal_fee_markup || '-'}</div>
+					<div className="d-flex">
+						{data?.withdrawal_fee_markup
+							? `${data?.withdrawal_fee_markup} ${data?.symbol_withdrawal}`
+							: '-'}
+					</div>
 				);
 			},
 		},
@@ -249,7 +253,13 @@ const Final = ({
 			dataIndex: 'deposit_fee_markup',
 			key: 'deposit_fee_markup',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.deposit_fee_markup || '-'}</div>;
+				return (
+					<div className="d-flex">
+						{data?.deposit_fee_markup
+							? `${data?.deposit_fee_markup} ${data?.symbol_deposit}`
+							: '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -801,7 +811,7 @@ const Final = ({
 							return (
 								<div style={{ fontWeight: 'bold' }}>
 									<div>{networkMap[net.trim()] || net}</div>
-									<div style={{ color: 'green' }}>Enabled</div>
+									{/* <div style={{ color: 'green' }}>Enabled</div> */}
 								</div>
 							);
 						})}
@@ -891,7 +901,7 @@ const Final = ({
 											withdrawal_fee_markup: e.target.value,
 										});
 									}}
-									suffix={renderAsset(selectedCoin?.symbol)}
+									suffix={renderAsset(selectedCoin?.symbol_withdrawal)}
 								/>
 							</div>
 						</div>
