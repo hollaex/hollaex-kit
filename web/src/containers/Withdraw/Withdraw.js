@@ -150,15 +150,16 @@ const RenderWithdraw = ({
 	const feeMarkup =
 		selectedAsset?.selectedCurrency &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
-			network
+			getWithdrawNetworkOptions
 		]?.withdrawal?.value;
 	if (
 		feeMarkup &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
-			network
+			getWithdrawNetworkOptions
 		]?.withdrawal?.symbol ===
-			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[network]
-				?.symbol
+			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+				getWithdrawNetworkOptions
+			]?.symbol
 	) {
 		const incrementUnit =
 			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;
