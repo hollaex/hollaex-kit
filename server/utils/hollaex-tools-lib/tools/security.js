@@ -68,7 +68,6 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
-const { user } = require('.');
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);

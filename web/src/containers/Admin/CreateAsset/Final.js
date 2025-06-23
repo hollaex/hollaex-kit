@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table, Select } from 'antd';
+import { Button, Modal, Tabs, message, Table } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -913,7 +913,7 @@ const Final = ({
 							</div>
 						</div>
 
-						<div style={{ marginBottom: 20 }}>
+						{/* <div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee coin for withdrawal</div>
 								<Select
@@ -960,7 +960,7 @@ const Final = ({
 									))}
 								</Select>
 							</div>
-						</div>
+						</div> */}
 						<div
 							style={{
 								display: 'flex',
