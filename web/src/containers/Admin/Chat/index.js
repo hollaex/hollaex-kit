@@ -238,6 +238,7 @@ class Chat extends Component {
 			}
 			chatWs.close();
 		}
+		this.wsInterval && clearInterval(this.wsInterval);
 	};
 
 	handleToggle = (checked) => {

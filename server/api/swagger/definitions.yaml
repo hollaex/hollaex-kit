@@ -1105,24 +1105,12 @@ definitions:
   PairFeesPut:
     type: object
     required:
-      - pair
       - fees
     properties:
       pair:
         description: pair
       fees:
         type: object
-        minProperties: 1
-        additionalProperties:
-          type: object
-          minProperties: 1
-          properties:
-            maker:
-              type: number
-              format: double
-            taker:
-              type: number
-              format: double
   OraclePriceResponse:
     type: object
     additionalProperties:

@@ -20,6 +20,8 @@ class MobileOrdersWrapper extends Component {
 			showCancelAllModal: false,
 		};
 	}
+	cancelAllOrders = null;
+	cancelAllOrdersTimeOut = null;
 
 	openConfirm = () => {
 		this.setState({
@@ -34,7 +36,7 @@ class MobileOrdersWrapper extends Component {
 			return '';
 		});
 		this.setState({ cancelDelayData });
-		setTimeout(() => {
+		this.cancelAllOrdersTimeOut = setTimeout(() => {
 			this.props.cancelAllOrders(this.props.pair, this.props.settings);
 			this.onCloseDialog();
 			this.props.allOrderCancelNotification(this.props.activeOrders);
@@ -44,10 +46,15 @@ class MobileOrdersWrapper extends Component {
 	handleCancelOrders = (id) => {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		const { activeOrders, coins, orderCancelNotification } = this.props;
-		setTimeout(() => {
+		this.cancelOrderTimeout = setTimeout(() => {
 			this.props.cancelOrder(id, this.props.settings);
 			orderCancelNotification(activeOrders, id, coins);
 		}, 700);
+	};
+
+	componentWillUnmount = () => {
+		this.cancelOrderTimeout && clearTimeout(this.cancelOrderTimeout);
+		this.cancelAllOrdersTimeOut && clearTimeout(this.cancelAllOrdersTimeOut);
 	};
 
 	onCloseDialog = () => {

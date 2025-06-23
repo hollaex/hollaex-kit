@@ -96,6 +96,13 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 
 	const handleSearch = _debounce(searchUser, 1000);
 
+	useEffect(() => {
+		return () => {
+			handleSearch && handleSearch.cancel();
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	const onHandleDisable = () => {
 		if (
 			(orderPayload && orderPayload.maker_fee) ||
