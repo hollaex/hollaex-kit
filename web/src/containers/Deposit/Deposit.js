@@ -351,10 +351,10 @@ const DepositComponent = ({
 		const feeMarkup =
 			defaultCurrency &&
 			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				selectedNetwork || defaultCurrency
+				renderNetworkField(networkData)
 			]?.deposit?.symbol === defaultCurrency &&
 			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				selectedNetwork || defaultCurrency
+				renderNetworkField(networkData)
 			]?.deposit?.value;
 
 		return feeMarkup || 0;
