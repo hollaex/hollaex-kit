@@ -162,6 +162,35 @@ const checkStatus = () => {
 				}
 			}
 
+			let hasUpdate = false;
+			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+				if (customization?.fee_markup == null) continue;
+
+				const coin = exchange?.coins?.find((c) => c.symbol === symbol);
+				if (!coin || !coin?.network) continue;
+
+				const networks = coin?.network?.split(',')?.map((n) => n?.trim()?.toLowerCase()) || [];
+
+				for(const network of networks) {
+					if (!customization?.fee_markups?.[network]?.withdrawal?.symbol) continue;
+					if (!coin?.withdrawal_fees?.[network]?.symbol) continue;
+
+					
+					if (customization?.fee_markups?.[network]?.withdrawal?.symbol != coin?.withdrawal_fees?.[network]?.symbol) {
+						hasUpdate = true;
+						customization.fee_markups[network].withdrawal.symbol = coin?.withdrawal_fees?.[network]?.symbol;
+						customization.fee_markups[network].withdrawal.value = 0;
+					}
+				}
+			}
+
+			if (hasUpdate) {
+				Status.update(
+					{ kit: status.kit },
+					{ where: { id: status.id } }
+				);
+			}
+
 			for (let pair of exchange.pairs) {
 				exchangePairs.push(pair.name);
 				configuration.pairs[pair.name] = pair;
