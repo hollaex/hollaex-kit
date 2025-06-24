@@ -2,7 +2,7 @@
 version: '3'
 services:
   hollaex-kit-redis:
-    image: redis:7.2.0-alpine
+    image: redis:8.0.2-alpine
     depends_on:
       - hollaex-kit-db
     networks:

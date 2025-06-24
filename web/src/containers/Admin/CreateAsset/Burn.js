@@ -107,6 +107,11 @@ const Burn = ({
 
 	const handleSearch = _debounce(searchUser, 1000);
 
+	useEffect(() => {
+		return () => handleSearch && handleSearch.cancel();
+		// eslint-disable-next-line
+	}, []);
+
 	const checkEmail = (rule, value, callback) => {
 		let baseData = dataSource;
 		let emailData = baseData.filter((data) => data.id === parseInt(value, 10));

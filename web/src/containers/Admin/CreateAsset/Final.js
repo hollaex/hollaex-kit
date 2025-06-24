@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table, Select } from 'antd';
+import { Button, Modal, Tabs, message, Table } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -141,9 +141,46 @@ const Final = ({
 			</div>
 		);
 	};
+	const renderCoinFee = ([key, data], index) => {
+		const network = getNetworkLabelByKey(key);
+		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
 
+		return (
+			<div key={key} className="pb-3">
+				{network ? (
+					<div>
+						<b className="caps-first">network</b>: {network}
+					</div>
+				) : null}
+				<Fragment>
+					{data &&
+						Object.entries(data).map(([key, value]) => {
+							if (key === 'active' && withdrawal_fees) {
+								return (
+									<div key={key}>
+										{value ? (
+											<span style={{ color: 'green' }}>Enabled</span>
+										) : (
+											<span style={{ color: 'red' }}>Disabled</span>
+										)}
+									</div>
+								);
+							}
+							return <></>;
+						})}
+					{keyArr > 1 && index === 0 ? (
+						<div className="border-separator"></div>
+					) : null}
+				</Fragment>
+			</div>
+		);
+	};
 	const renderFees = (fees) => {
 		return Object.entries(fees).map(renderNetworkFee);
+	};
+
+	const renderCoinFees = (fees) => {
+		return Object.entries(fees).map(renderCoinFee);
 	};
 
 	const handleMoveBack = () => {
@@ -240,7 +277,11 @@ const Final = ({
 			key: 'withdrawal_fee_markup',
 			render: (user_id, data) => {
 				return (
-					<div className="d-flex">{data?.withdrawal_fee_markup || '-'}</div>
+					<div className="d-flex">
+						{data?.withdrawal_fee_markup
+							? `${data?.withdrawal_fee_markup} ${data?.symbol_withdrawal}`
+							: '-'}
+					</div>
 				);
 			},
 		},
@@ -249,7 +290,13 @@ const Final = ({
 			dataIndex: 'deposit_fee_markup',
 			key: 'deposit_fee_markup',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.deposit_fee_markup || '-'}</div>;
+				return (
+					<div className="d-flex">
+						{data?.deposit_fee_markup
+							? `${data?.deposit_fee_markup} ${data?.symbol_deposit}`
+							: '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -797,14 +844,8 @@ const Final = ({
 								color={meta.color}
 							/>
 						</div>
-						{coinFormData?.network?.split(',')?.map((net) => {
-							return (
-								<div style={{ fontWeight: 'bold' }}>
-									<div>{networkMap[net.trim()] || net}</div>
-									<div style={{ color: 'green' }}>Enabled</div>
-								</div>
-							);
-						})}
+
+						{renderCoinFees(withdrawal_fees)}
 					</div>
 
 					<h4>Chain markup fee:</h4>
@@ -891,7 +932,7 @@ const Final = ({
 											withdrawal_fee_markup: e.target.value,
 										});
 									}}
-									suffix={renderAsset(selectedCoin?.symbol)}
+									suffix={renderAsset(selectedCoin?.symbol_withdrawal)}
 								/>
 							</div>
 						</div>
@@ -913,7 +954,7 @@ const Final = ({
 							</div>
 						</div>
 
-						<div style={{ marginBottom: 20 }}>
+						{/* <div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee coin for withdrawal</div>
 								<Select
@@ -960,7 +1001,7 @@ const Final = ({
 									))}
 								</Select>
 							</div>
-						</div>
+						</div> */}
 						<div
 							style={{
 								display: 'flex',

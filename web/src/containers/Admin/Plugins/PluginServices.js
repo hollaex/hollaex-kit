@@ -39,6 +39,7 @@ class PluginServices extends Component {
 			vaultSupportCoins: [],
 			pluginsData: {},
 		};
+		this.pluginFormTimeout = null;
 	}
 
 	componentDidMount() {
@@ -149,7 +150,7 @@ class PluginServices extends Component {
 			if (initialData.name) {
 				const apiName = this.normalizeAPIName(initialData.name);
 				if (apiName !== initialData.name) {
-					setTimeout(() => {
+					this.pluginFormTimeout = setTimeout(() => {
 						this.props.change('PLUGINS_FORM', 'name', apiName);
 					}, 200);
 				}
@@ -182,6 +183,10 @@ class PluginServices extends Component {
 			}
 		}
 		this.setState({ services, title, connectStatus, initialValues });
+	};
+
+	componentWillUnmount = () => {
+		this.pluginFormTimeout && clearTimeout(this.pluginFormTimeout);
 	};
 
 	normalizeAPIName = (name = '') => {

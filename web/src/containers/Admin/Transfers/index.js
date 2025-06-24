@@ -65,6 +65,7 @@ const Transfer = ({ coins = {}, assets }) => {
 	useEffect(() => {
 		return () => {
 			handleLoading.cancel();
+			handleSearch.cancel();
 		};
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

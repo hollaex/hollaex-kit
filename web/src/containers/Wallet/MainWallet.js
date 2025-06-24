@@ -55,6 +55,8 @@ class Wallet extends Component {
 		};
 	}
 
+	priceAssetsTimeout = null;
+
 	componentDidMount() {
 		this.generateSections(
 			this.props.changeSymbol,
@@ -140,7 +142,7 @@ class Wallet extends Component {
 				baseCurrency: this.props.user?.settings?.interface?.display_currency,
 			});
 
-			setTimeout(() => {
+			this.priceAssetsTimeout = setTimeout(() => {
 				this.props.setPricesAndAsset(this.props.balance, this.props.coins);
 			}, [1000]);
 		}
@@ -149,6 +151,10 @@ class Wallet extends Component {
 			window.history.replaceState({}, '', '/wallet');
 		}
 	}
+
+	componentWillUnmount = () => {
+		this.priceAssetsTimeout && clearTimeout(this.priceAssetsTimeout);
+	};
 
 	getMobileSlider = (coins, oraclePrices) => {
 		const result = {};
