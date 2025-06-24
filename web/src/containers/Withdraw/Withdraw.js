@@ -33,6 +33,7 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
+	calculateFeeMarkup,
 	networkList,
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
@@ -162,7 +163,11 @@ const RenderWithdraw = ({
 			]?.symbol
 	) {
 		const incrementUnit =
-			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;
+			coins?.[
+				coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+					getWithdrawNetworkOptions
+				]?.symbol
+			]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
@@ -1222,10 +1227,11 @@ const RenderWithdraw = ({
 																		</div>
 																		{isActiveNetwork ? (
 																			<span className="secondary-text">
-																				{calculateFee(
+																				{calculateFeeMarkup(
 																					selectedAsset?.selectedCurrency,
 																					getSelectedSymbol,
-																					coins
+																					coins,
+																					coin_customizations
 																				)}
 																				<span className="ml-1">
 																					{calculateFeeCoin(
