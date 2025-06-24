@@ -141,9 +141,46 @@ const Final = ({
 			</div>
 		);
 	};
+	const renderCoinFee = ([key, data], index) => {
+		const network = getNetworkLabelByKey(key);
+		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
 
+		return (
+			<div key={key} className="pb-3">
+				{network ? (
+					<div>
+						<b className="caps-first">network</b>: {network}
+					</div>
+				) : null}
+				<Fragment>
+					{data &&
+						Object.entries(data).map(([key, value]) => {
+							if (key === 'active' && withdrawal_fees) {
+								return (
+									<div key={key}>
+										{value ? (
+											<span style={{ color: 'green' }}>Enabled</span>
+										) : (
+											<span style={{ color: 'red' }}>Disabled</span>
+										)}
+									</div>
+								);
+							}
+							return <></>;
+						})}
+					{keyArr > 1 && index === 0 ? (
+						<div className="border-separator"></div>
+					) : null}
+				</Fragment>
+			</div>
+		);
+	};
 	const renderFees = (fees) => {
 		return Object.entries(fees).map(renderNetworkFee);
+	};
+
+	const renderCoinFees = (fees) => {
+		return Object.entries(fees).map(renderCoinFee);
 	};
 
 	const handleMoveBack = () => {
@@ -807,14 +844,8 @@ const Final = ({
 								color={meta.color}
 							/>
 						</div>
-						{coinFormData?.network?.split(',')?.map((net) => {
-							return (
-								<div style={{ fontWeight: 'bold' }}>
-									<div>{networkMap[net.trim()] || net}</div>
-									{/* <div style={{ color: 'green' }}>Enabled</div> */}
-								</div>
-							);
-						})}
+
+						{renderCoinFees(withdrawal_fees)}
 					</div>
 
 					<h4>Chain markup fee:</h4>
