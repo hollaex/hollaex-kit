@@ -1299,7 +1299,7 @@ const checkPermission = (req, user) => {
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-
+	apiPath = apiPath.replace(/\?.*$/, '');
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;
