@@ -94,7 +94,7 @@ const DepositComponent = ({
 	const min = coins[currentCurrency];
 	const isDeposit = coins[getDepositCurrency]?.allow_deposit;
 	const networkHasTag = ['xrp', 'xlm', 'ton'];
-	const hasTag = ['xrp', 'xlm', 'ton', 'pmn'];
+	const hasTag = ['xrp', 'xlm', 'ton'];
 
 	useEffect(() => {
 		const topWallet = assets
