@@ -397,8 +397,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc(100vh - 8rem);
-    max-height: calc(100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -416,8 +416,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc(100vh - 14rem);
-    max-height: calc(100vh - 14rem);
+    min-height: calc( 100vh - 14rem);
+    max-height: calc( 100vh - 14rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -676,8 +676,8 @@ table th {
 
 .layout-mobile.signout-confirmation-popup-wrapper .signout-confirmation-popup-description .signout-confirmation-content {
   justify-content: center;
-  min-height: calc(100vh - 15rem - 10rem);
-  max-height: calc(100vh - 15rem - 10rem); }
+  min-height: calc( 100vh - 15rem - 10rem);
+  max-height: calc( 100vh - 15rem - 10rem); }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
@@ -4263,8 +4263,8 @@ table th {
       color: var(--trading_selling-related-elements); }
 
 .layout-mobile .trade-container .content-with-bar {
-  min-height: calc(100vh - 16rem) !important;
-  max-height: calc(100vh - 16rem) !important; }
+  min-height: calc( 100vh - 16rem) !important;
+  max-height: calc( 100vh - 16rem) !important; }
 
 .layout-mobile .trade-container .orderBook-wrapper {
   max-height: 100% !important;
@@ -5274,8 +5274,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc(100vh - 14rem);
-  max-height: calc(100vh - 14rem); }
+  min-height: calc( 100vh - 14rem);
+  max-height: calc( 100vh - 14rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -5442,7 +5442,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc(100vh - 11rem); }
+  max-height: calc( 100vh - 11rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -16041,7 +16041,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc(100vh - 15rem - 10rem); }
+      height: calc( 100vh - 15rem - 10rem); }
       .modal-market-menu .app-bar-add-tab-content .scroll-view .app-bar-add-tab-content-list {
         font-size: 13px; }
   .modal-market-menu .app-bar-tab-overflow-content {
@@ -17563,8 +17563,8 @@ table th {
   min-height: unset;
   max-height: unset; }
   .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container {
-    min-height: calc(100vh - 10rem);
-    max-height: calc(100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     display: flex;
     flex-direction: column;
     justify-content: space-between; }
@@ -19230,14 +19230,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc(100vh - 5rem);
-  max-height: calc(100vh - 5rem);
+  min-height: calc( 100vh - 5rem);
+  max-height: calc( 100vh - 5rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc(100vh - 15rem);
-    max-height: calc(100vh - 15rem);
+    min-height: calc( 100vh - 15rem);
+    max-height: calc( 100vh - 15rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
