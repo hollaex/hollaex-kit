@@ -705,6 +705,22 @@ const DepositComponent = ({
 											readOnly
 										></Input>
 									</div>
+									{renderMarkupFee() ? (
+										<div className="warning-text d-flex mt-2">
+											<ExclamationCircleFilled className="mt-1 mr-2" />
+											<div className="address-warning-text">
+												<EditWrapper>
+													{STRINGS.formatString(
+														STRINGS['DEPOSIT_FORM_FEE_WARNING'],
+														renderMarkupFee(),
+														defaultCurrency?.toUpperCase()
+													)}
+												</EditWrapper>
+											</div>
+										</div>
+									) : (
+										<></>
+									)}
 									<div className="warning-text d-flex mt-2">
 										<ExclamationCircleFilled className="mt-1 mr-2" />
 										<div className="address-warning-text">
@@ -719,13 +735,6 @@ const DepositComponent = ({
 									</div>
 								</div>
 							))}
-						{renderMarkupFee() ? (
-							<div>
-								Fee: {renderMarkupFee()} {defaultCurrency?.toUpperCase()}
-							</div>
-						) : (
-							<div></div>
-						)}
 					</div>
 				</div>
 			</div>
