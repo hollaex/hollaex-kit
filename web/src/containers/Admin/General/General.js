@@ -1622,6 +1622,41 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
+							<div className="sub-title">Test Environment Key</div>
+							<div className="description">
+								<div>
+									Test Environment Key to allow test endpoints to be used
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Input
+										defaultValue={constants?.kit?.test_key}
+										placeholder={'Enter Test Environment Key'}
+										onChange={(e) => {
+											this.setState({
+												test_key: e.target.value,
+											});
+										}}
+									/>
+								</div>
+								<div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={() => {
+											this.handleSubmitGeneral({
+												kit: {
+													test_key: this.state.test_key,
+												},
+											});
+										}}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
 								<span>

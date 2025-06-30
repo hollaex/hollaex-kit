@@ -42,6 +42,26 @@ const requestOtp = (req, res) => {
 		});
 };
 
+const getUserOtp = (req, res) => {
+	loggerOtp.verbose(req.uuid, 'controllers/otp/getUserOtp', req.auth);
+	
+	const testKey = req.headers['test-key'];
+
+	if (toolsLib?.getKitConfig()?.test_key !== testKey) {
+		throw new Error('Invalid test environment key');
+	}
+
+	toolsLib.security.getUserOtpCode(1)
+		.then((code) => {
+			return res.json({ code });
+		})
+		.catch((err) => {
+			loggerOtp.error(req.uuid, 'controllers/otp/getUserOtp', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 const activateOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/activateOtp', req.auth);
 	const { id } = req.auth.sub;
@@ -164,5 +184,6 @@ module.exports = {
 	requestOtp,
 	activateOtp,
 	deactivateOtp,
-	deactivateOtpAdmin
+	deactivateOtpAdmin,
+	getUserOtp
 };

@@ -226,6 +226,7 @@ exports.KIT_CONFIG_KEYS = [
 	'selectable_native_currencies',
 	'auto_trade_config',
 	'suspicious_login',
+	'test_key',
 	'apps',
 	'timezone'
 ];
