@@ -51,6 +51,8 @@ import DustSection from './DustSection';
 import moment from 'moment';
 import _toLower from 'lodash/toLower';
 
+const PAGE_SIZE = 50;
+
 const AssetsBlock = ({
 	coins,
 	pairs,
@@ -95,6 +97,7 @@ const AssetsBlock = ({
 	const [plLoading, setPlLoading] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
 	const [isDisplayCurrency, setIsDisplayCurrency] = useState(false);
+	const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
 	const handleUpgrade = (info = {}) => {
 		if (
@@ -111,10 +114,11 @@ const AssetsBlock = ({
 	const isUpgrade = handleUpgrade(info);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (isMobile) return;
 		fetchPlHistory()
 			.then((res) => {
-				setUserPL(res);
+				if (isMounted) setUserPL(res);
 			})
 			.catch((err) => err);
 
@@ -124,6 +128,7 @@ const AssetsBlock = ({
 			end_date: moment().subtract().toISOString(),
 		})
 			.then((response) => {
+				if (!isMounted) return;
 				const length = 6;
 
 				let newGraphData = [];
@@ -149,9 +154,10 @@ const AssetsBlock = ({
 				setPlLoading(false);
 			})
 			.catch((error) => {
-				setPlLoading(false);
+				if (isMounted) setPlLoading(false);
 			});
 		return () => {
+			isMounted = false;
 			setIsSearchActive(false);
 		};
 		// eslint-disable-next-line
@@ -252,6 +258,10 @@ const AssetsBlock = ({
 
 	const onHandlePopupClose = () => {
 		setIsDisplayCurrency(false);
+	};
+
+	const onHandleViewMore = () => {
+		setVisibleCount((prev) => prev + PAGE_SIZE);
 	};
 
 	return showDustSection ? (
@@ -621,298 +631,309 @@ const AssetsBlock = ({
 						</tr>
 					</thead>
 					<tbody>
-						{assets.map(
-							(
-								[
-									key,
-									{
-										increment_unit,
-										allow_deposit,
-										allow_withdrawal,
-										oraclePrice,
-										balance,
-										fullname,
-										symbol = '',
-										display_name,
-										icon_id,
-									} = DEFAULT_COIN_DATA,
-								],
-								index
-							) => {
-								const markets = getAllAvailableMarkets(key, quicktrade);
-								const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-								const balanceText =
-									key === BASE_CURRENCY
-										? formatCurrencyByIncrementalUnit(balance, increment_unit)
-										: formatCurrencyByIncrementalUnit(
-												calculateOraclePrice(balance, oraclePrice),
-												baseCoin.increment_unit
-										  );
-								return (
-									<tr className="table-row table-bottom-border" key={key}>
-										<td className="table-icon td-fit" />
-										<td className="td-name td-fit">
-											{assets && !loading ? (
-												isMobile ? (
-													<div className="d-flex align-items-center wallet-hover cursor-pointer">
-														<Link
-															to={`/wallet/${key.toLowerCase()}`}
-															className="mt-3"
-														>
-															<Coin iconId={icon_id} type="CS11" />
-														</Link>
-														<Link to={`/wallet/${key.toLowerCase()}`}>
-															<div className="px-2 font-weight-bold">
-																<EditWrapper
-																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
-																>
-																	{symbol?.toUpperCase()}
-																</EditWrapper>
-															</div>
-															<div className="ml-2 fill_secondary-color">
-																<EditWrapper
-																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
-																>
-																	{fullname}
-																</EditWrapper>
-															</div>
-														</Link>
-													</div>
-												) : (
-													<div className="d-flex align-items-center wallet-hover cursor-pointer">
-														<Link to={`/wallet/${key.toLowerCase()}`}>
-															<Coin iconId={icon_id} />
-														</Link>
-														<Link to={`/wallet/${key.toLowerCase()}`}>
-															<div className="px-2">
-																<EditWrapper
-																	stringId={`${symbol?.toUpperCase()}_FULLNAME`}
-																>
-																	{fullname}
-																</EditWrapper>
-															</div>
-														</Link>
-													</div>
-												)
-											) : (
-												<div
-													className="loading-row-anime w-half"
-													style={{
-														animationDelay: `.${index + 1}s`,
-													}}
-												/>
-											)}
-										</td>
-										{isMobile ? (
-											<td className="td-amount">
-												{assets && baseCoin && !loading && increment_unit ? (
-													<div className="d-flex justify-content-end">
-														<Dropdown
-															size="small"
-															overlayClassName="custom-dropdown-style wallet-asset-dropdown"
-															style={{
-																width: 130,
-															}}
-															trigger={isMobile ? ['click'] : ['hover']}
-															overlay={
-																<Menu
-																	onClick={({ key }) => {
-																		if (key === 'SUMMARY.DEPOSIT') {
-																			return browserHistory?.push(
-																				`/wallet/${symbol?.toLowerCase()}/deposit`
-																			);
-																		} else if (
-																			key === 'WITHDRAW_PAGE.WITHDRAW'
-																		) {
-																			return browserHistory?.push(
-																				`/wallet/${symbol?.toLowerCase()}/withdraw`
-																			);
-																		} else {
-																			goToTrade(key, quicktrade);
-																		}
-																	}}
-																>
-																	{markets.map((market) => {
-																		const { display_name, icon_id } =
-																			pairs[market] ||
-																			quicktrade.find(
-																				({ symbol }) => symbol === market
-																			) ||
-																			{};
-																		return (
-																			<Menu.Item className="caps" key={market}>
-																				<div className="d-flex align-items-center">
-																					<Coin
-																						iconId={icon_id}
-																						type={isMobile ? 'CS6' : 'CS2'}
-																					/>
-																					<div className="app_bar-pair-font">
-																						{display_name}
-																					</div>
-																				</div>
-																			</Menu.Item>
-																		);
-																	})}
-																	<Menu.Item
-																		key="SUMMARY.DEPOSIT"
-																		className="caps"
+						{assets
+							?.slice(0, visibleCount)
+							?.map(
+								(
+									[
+										key,
+										{
+											increment_unit,
+											allow_deposit,
+											allow_withdrawal,
+											oraclePrice,
+											balance,
+											fullname,
+											symbol = '',
+											display_name,
+											icon_id,
+										} = DEFAULT_COIN_DATA,
+									],
+									index
+								) => {
+									const markets = getAllAvailableMarkets(key, quicktrade);
+									const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+									const balanceText =
+										key === BASE_CURRENCY
+											? formatCurrencyByIncrementalUnit(balance, increment_unit)
+											: formatCurrencyByIncrementalUnit(
+													calculateOraclePrice(balance, oraclePrice),
+													baseCoin.increment_unit
+											  );
+									return (
+										<tr className="table-row table-bottom-border" key={key}>
+											<td className="table-icon td-fit" />
+											<td className="td-name td-fit">
+												{assets && !loading ? (
+													isMobile ? (
+														<div className="d-flex align-items-center wallet-hover cursor-pointer">
+															<Link
+																to={`/wallet/${key.toLowerCase()}`}
+																className="mt-3"
+															>
+																<Coin iconId={icon_id} type="CS11" />
+															</Link>
+															<Link to={`/wallet/${key.toLowerCase()}`}>
+																<div className="px-2 font-weight-bold">
+																	<EditWrapper
+																		stringId={`${symbol?.toUpperCase()}_FULLNAME`}
 																	>
-																		<div className="d-flex align-items-center">
-																			<span className="arrow-icon">
-																				<Image
-																					wrapperClassName="arrow-up-down-icon"
-																					icon={ICONS['WALLET_ARROW_DOWN']}
-																				/>
-																			</span>
-																			<EditWrapper stringId="SUMMARY.DEPOSIT">
-																				{STRINGS['SUMMARY.DEPOSIT']}
-																			</EditWrapper>
-																		</div>
-																	</Menu.Item>
-																	<Menu.Item
-																		key="WITHDRAW_PAGE.WITHDRAW"
-																		className="caps"
-																	>
-																		<div className="d-flex align-items-center">
-																			<span className="arrow-icon">
-																				<Image
-																					wrapperClassName="arrow-up-down-icon"
-																					icon={ICONS['WALLET_ARROW_UP']}
-																				/>
-																			</span>
-																			<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW">
-																				{STRINGS['WITHDRAW_PAGE.WITHDRAW']}
-																			</EditWrapper>
-																		</div>
-																	</Menu.Item>
-																</Menu>
-															}
-														>
-															<div className="amount-field">
-																<div className="d-flex flex-column align-items-end">
-																	<div className="font-weight-bold">
-																		{balance}
-																	</div>
-																	{key !== BASE_CURRENCY &&
-																		parseFloat(balanceText || 0) > 0 && (
-																			<div className="fill_secondary-color">
-																				{`(≈  ${balanceText})`}
-																			</div>
-																		)}
+																		{symbol?.toUpperCase()}
+																	</EditWrapper>
 																</div>
-																<MoreOutlined className="more-icon" />
-															</div>
-														</Dropdown>
-													</div>
-												) : (
-													<div
-														className="loading-row-anime w-full"
-														style={{
-															animationDelay: `.${index + 1}s`,
-														}}
-													/>
-												)}
-											</td>
-										) : (
-											<td className="td-amount">
-												{assets && baseCoin && !loading && increment_unit ? (
-													<div className="d-flex">
-														<div className="mr-4">
-															{STRINGS.formatString(
-																CURRENCY_PRICE_FORMAT,
-																formatCurrencyByIncrementalUnit(
-																	balance,
-																	increment_unit
-																),
-																display_name
-															)}
+																<div className="ml-2 fill_secondary-color">
+																	<EditWrapper
+																		stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																	>
+																		{fullname}
+																	</EditWrapper>
+																</div>
+															</Link>
 														</div>
-														{key !== BASE_CURRENCY &&
-															parseFloat(balanceText || 0) > 0 && (
-																<div>
-																	{`(≈ ${baseCoin.display_name} ${balanceText})`}
-																</div>
-															)}
-													</div>
-												) : (
-													<div
-														className="loading-row-anime w-full"
-														style={{
-															animationDelay: `.${index + 1}s`,
-														}}
-													/>
-												)}
-											</td>
-										)}
-										{!isMobile && <th className="td-amount" />}
-										{!isMobile && (
-											<td className="td-wallet">
-												{!loading ? (
-													<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
-														<ActionNotification
-															stringId="WALLET_BUTTON_BASE_DEPOSIT"
-															text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
-															iconId="BLUE_PLUS"
-															iconPath={ICONS['BLUE_DEPOSIT_ICON']}
-															onClick={() => navigate(`wallet/${key}/deposit`)}
-															className="csv-action action-button-wrapper"
-															showActionText={isMobile}
-															disable={!allow_deposit}
-														/>
-														<ActionNotification
-															stringId="WALLET_BUTTON_BASE_WITHDRAW"
-															text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
-															iconId="BLUE_PLUS"
-															iconPath={ICONS['BLUE_WITHROW_ICON']}
-															onClick={() => navigate(`wallet/${key}/withdraw`)}
-															className="csv-action action-button-wrapper"
-															showActionText={isMobile}
-															disable={!allow_withdrawal}
-														/>
-													</div>
-												) : (
-													<div
-														className="loading-row-anime"
-														style={{
-															animationDelay: `.${index + 1}s`,
-														}}
-													/>
-												)}
-											</td>
-										)}
-										{!isMobile && (
-											<td>
-												{!loading ? (
-													markets.length > 1 ? (
-														<TradeInputGroup
-															quicktrade={quicktrade}
-															markets={markets}
-															goToTrade={goToTrade}
-															pairs={pairs}
-														/>
 													) : (
-														<ActionNotification
-															stringId="TRADE_TAB_TRADE"
-															text={STRINGS['TRADE_TAB_TRADE']}
-															iconId="BLUE_TRADE_ICON"
-															iconPath={ICONS['BLUE_TRADE_ICON']}
-															onClick={() => goToTrade(markets[0], quicktrade)}
-															className="csv-action"
-															showActionText={isMobile}
-															disable={markets.length === 0}
-														/>
+														<div className="d-flex align-items-center wallet-hover cursor-pointer">
+															<Link to={`/wallet/${key.toLowerCase()}`}>
+																<Coin iconId={icon_id} />
+															</Link>
+															<Link to={`/wallet/${key.toLowerCase()}`}>
+																<div className="px-2">
+																	<EditWrapper
+																		stringId={`${symbol?.toUpperCase()}_FULLNAME`}
+																	>
+																		{fullname}
+																	</EditWrapper>
+																</div>
+															</Link>
+														</div>
 													)
 												) : (
 													<div
-														className="loading-row-anime"
+														className="loading-row-anime w-half"
 														style={{
 															animationDelay: `.${index + 1}s`,
 														}}
 													/>
 												)}
 											</td>
-										)}
-										{/* {hasEarn && (
+											{isMobile ? (
+												<td className="td-amount">
+													{assets && baseCoin && !loading && increment_unit ? (
+														<div className="d-flex justify-content-end">
+															<Dropdown
+																size="small"
+																overlayClassName="custom-dropdown-style wallet-asset-dropdown"
+																style={{
+																	width: 130,
+																}}
+																trigger={isMobile ? ['click'] : ['hover']}
+																overlay={
+																	<Menu
+																		onClick={({ key }) => {
+																			if (key === 'SUMMARY.DEPOSIT') {
+																				return browserHistory?.push(
+																					`/wallet/${symbol?.toLowerCase()}/deposit`
+																				);
+																			} else if (
+																				key === 'WITHDRAW_PAGE.WITHDRAW'
+																			) {
+																				return browserHistory?.push(
+																					`/wallet/${symbol?.toLowerCase()}/withdraw`
+																				);
+																			} else {
+																				goToTrade(key, quicktrade);
+																			}
+																		}}
+																	>
+																		{markets.map((market) => {
+																			const { display_name, icon_id } =
+																				pairs[market] ||
+																				quicktrade.find(
+																					({ symbol }) => symbol === market
+																				) ||
+																				{};
+																			return (
+																				<Menu.Item
+																					className="caps"
+																					key={market}
+																				>
+																					<div className="d-flex align-items-center">
+																						<Coin
+																							iconId={icon_id}
+																							type={isMobile ? 'CS6' : 'CS2'}
+																						/>
+																						<div className="app_bar-pair-font">
+																							{display_name}
+																						</div>
+																					</div>
+																				</Menu.Item>
+																			);
+																		})}
+																		<Menu.Item
+																			key="SUMMARY.DEPOSIT"
+																			className="caps"
+																		>
+																			<div className="d-flex align-items-center">
+																				<span className="arrow-icon">
+																					<Image
+																						wrapperClassName="arrow-up-down-icon"
+																						icon={ICONS['WALLET_ARROW_DOWN']}
+																					/>
+																				</span>
+																				<EditWrapper stringId="SUMMARY.DEPOSIT">
+																					{STRINGS['SUMMARY.DEPOSIT']}
+																				</EditWrapper>
+																			</div>
+																		</Menu.Item>
+																		<Menu.Item
+																			key="WITHDRAW_PAGE.WITHDRAW"
+																			className="caps"
+																		>
+																			<div className="d-flex align-items-center">
+																				<span className="arrow-icon">
+																					<Image
+																						wrapperClassName="arrow-up-down-icon"
+																						icon={ICONS['WALLET_ARROW_UP']}
+																					/>
+																				</span>
+																				<EditWrapper stringId="WITHDRAW_PAGE.WITHDRAW">
+																					{STRINGS['WITHDRAW_PAGE.WITHDRAW']}
+																				</EditWrapper>
+																			</div>
+																		</Menu.Item>
+																	</Menu>
+																}
+															>
+																<div className="amount-field">
+																	<div className="d-flex flex-column align-items-end">
+																		<div className="font-weight-bold">
+																			{balance}
+																		</div>
+																		{key !== BASE_CURRENCY &&
+																			parseFloat(balanceText || 0) > 0 && (
+																				<div className="fill_secondary-color">
+																					{`(≈  ${balanceText})`}
+																				</div>
+																			)}
+																	</div>
+																	<MoreOutlined className="more-icon" />
+																</div>
+															</Dropdown>
+														</div>
+													) : (
+														<div
+															className="loading-row-anime w-full"
+															style={{
+																animationDelay: `.${index + 1}s`,
+															}}
+														/>
+													)}
+												</td>
+											) : (
+												<td className="td-amount">
+													{assets && baseCoin && !loading && increment_unit ? (
+														<div className="d-flex">
+															<div className="mr-4">
+																{STRINGS.formatString(
+																	CURRENCY_PRICE_FORMAT,
+																	formatCurrencyByIncrementalUnit(
+																		balance,
+																		increment_unit
+																	),
+																	display_name
+																)}
+															</div>
+															{key !== BASE_CURRENCY &&
+																parseFloat(balanceText || 0) > 0 && (
+																	<div>
+																		{`(≈ ${baseCoin.display_name} ${balanceText})`}
+																	</div>
+																)}
+														</div>
+													) : (
+														<div
+															className="loading-row-anime w-full"
+															style={{
+																animationDelay: `.${index + 1}s`,
+															}}
+														/>
+													)}
+												</td>
+											)}
+											{!isMobile && <th className="td-amount" />}
+											{!isMobile && (
+												<td className="td-wallet">
+													{!loading ? (
+														<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
+															<ActionNotification
+																stringId="WALLET_BUTTON_BASE_DEPOSIT"
+																text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
+																iconId="BLUE_PLUS"
+																iconPath={ICONS['BLUE_DEPOSIT_ICON']}
+																onClick={() =>
+																	navigate(`wallet/${key}/deposit`)
+																}
+																className="csv-action action-button-wrapper"
+																showActionText={isMobile}
+																disable={!allow_deposit}
+															/>
+															<ActionNotification
+																stringId="WALLET_BUTTON_BASE_WITHDRAW"
+																text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
+																iconId="BLUE_PLUS"
+																iconPath={ICONS['BLUE_WITHROW_ICON']}
+																onClick={() =>
+																	navigate(`wallet/${key}/withdraw`)
+																}
+																className="csv-action action-button-wrapper"
+																showActionText={isMobile}
+																disable={!allow_withdrawal}
+															/>
+														</div>
+													) : (
+														<div
+															className="loading-row-anime"
+															style={{
+																animationDelay: `.${index + 1}s`,
+															}}
+														/>
+													)}
+												</td>
+											)}
+											{!isMobile && (
+												<td>
+													{!loading ? (
+														markets.length > 1 ? (
+															<TradeInputGroup
+																quicktrade={quicktrade}
+																markets={markets}
+																goToTrade={goToTrade}
+																pairs={pairs}
+															/>
+														) : (
+															<ActionNotification
+																stringId="TRADE_TAB_TRADE"
+																text={STRINGS['TRADE_TAB_TRADE']}
+																iconId="BLUE_TRADE_ICON"
+																iconPath={ICONS['BLUE_TRADE_ICON']}
+																onClick={() =>
+																	goToTrade(markets[0], quicktrade)
+																}
+																className="csv-action"
+																showActionText={isMobile}
+																disable={markets.length === 0}
+															/>
+														)
+													) : (
+														<div
+															className="loading-row-anime"
+															style={{
+																animationDelay: `.${index + 1}s`,
+															}}
+														/>
+													)}
+												</td>
+											)}
+											{/* {hasEarn && (
 										<td>
 											<ActionNotification
 												stringId="STAKE.EARN"
@@ -926,12 +947,25 @@ const AssetsBlock = ({
 											/>
 										</td>
 									)} */}
-									</tr>
-								);
-							}
-						)}
+										</tr>
+									);
+								}
+							)}
 					</tbody>
 				</table>
+
+				{visibleCount < assets?.length && (
+					<div className="d-flex justify-content-center my-3">
+						<EditWrapper stringId="STAKE_DETAILS.VIEW_MORE">
+							<span
+								className="blue-link pointer text-decoration-underline"
+								onClick={onHandleViewMore}
+							>
+								{STRINGS['STAKE_DETAILS.VIEW_MORE']}
+							</span>
+						</EditWrapper>
+					</div>
+				)}
 
 				{isMobile && (
 					<div className="profit-loss-link mb-5">

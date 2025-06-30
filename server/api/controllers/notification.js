@@ -48,6 +48,35 @@ const handleCurrencyDeposit = (req, res) => {
 		fee_coin
 	} = req.swagger.params.data.value;
 
+
+	loggerNotification.verbose(
+		'controller/notification/handleCurrencyDeposit data',
+		'currency',
+		currency,
+		'user_id',
+		user_id,
+		'amount',
+		amount,
+		'txid',
+		txid,
+		'address',
+		address,
+		'is_confirmed',
+		is_confirmed,
+		'rejected',
+		rejected,
+		'created_at',
+		created_at,
+		'network',
+		network,
+		'fee',
+		fee,
+		'description',
+		description,
+		'fee_coin',
+		fee_coin
+	);
+
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
 			if (!toolsLib.subscribedToCoin(currency)) {

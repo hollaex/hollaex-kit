@@ -5,7 +5,7 @@ const PERMISSION_COLUMNS = [
 	'can_read',
 	'can_trade',
 	'can_withdraw'
-]
+];
 
 module.exports = {
 	async up(queryInterface, Sequelize) {
@@ -30,7 +30,7 @@ module.exports = {
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await Promise.all(COLUMNS.map(async (COLUMN) => {
+		await Promise.all(PERMISSION_COLUMNS.map(async (COLUMN) => {
 			await queryInterface.removeColumn(TABLE, COLUMN);
 		}));
 

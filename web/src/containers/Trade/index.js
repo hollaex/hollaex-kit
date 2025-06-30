@@ -184,6 +184,8 @@ class Trade extends PureComponent {
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
+		this.reconnectTimeout = null;
+		this.layoutChangeTimeout = null;
 	}
 
 	UNSAFE_componentWillMount() {
@@ -241,7 +243,7 @@ class Trade extends PureComponent {
 	onResetLayout = () => {
 		const { resetTools } = this.props;
 		resetTools();
-		setTimeout(
+		this.layoutChangeTimeout = setTimeout(
 			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
 			1000
 		);
@@ -249,10 +251,19 @@ class Trade extends PureComponent {
 
 	componentWillUnmount() {
 		document.removeEventListener('resetlayout', this.onResetLayout);
-		clearTimeout(this.priceTimeOut);
-		clearTimeout(this.sizeTimeOut);
+		this.priceTimeOut && clearTimeout(this.priceTimeOut);
+		this.sizeTimeOut && clearTimeout(this.sizeTimeOut);
+		this.reconnectTimeout && clearTimeout(this.reconnectTimeout);
+		this.layoutChangeTimeout && clearTimeout(this.layoutChangeTimeout);
 		this.closeOrderbookSocket();
 		this.props.setIsProTrade(false);
+		if (this.storeOrderData && this.storeOrderData.cancel) {
+			this.storeOrderData.cancel();
+		}
+		this.chartBlock = null;
+		this.priceRef = null;
+		this.sizeRef = null;
+		this.sliderRef = null;
 	}
 
 	setSymbol = (symbol = '') => {
@@ -261,7 +272,7 @@ class Trade extends PureComponent {
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '', orderbookFetched: false }, () => {
-			setTimeout(() => {
+			this.priceTimeOut = setTimeout(() => {
 				this.setState({ symbol });
 			}, 1000);
 		});
@@ -437,7 +448,7 @@ class Trade extends PureComponent {
 			this.setState({ wsInitialized: false });
 
 			if (!isIntentionalClosure(evt)) {
-				setTimeout(() => {
+				this.reconnectTimeout = setTimeout(() => {
 					this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 				}, 1000);
 			}
@@ -874,7 +885,7 @@ class Trade extends PureComponent {
 	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
 
 	onStopResize = () => {
-		setTimeout(this.dispatchResizeEvent, 500);
+		this.sizeTimeOut = setTimeout(this.dispatchResizeEvent, 500);
 	};
 
 	render() {

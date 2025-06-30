@@ -209,6 +209,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 's':
 			endpoint = 'https://sonicscan.org/tx/';
 			break;
+		case 'sui':
+			endpoint = 'https://suiscan.xyz/mainnet/tx/';
+			break;
 		default:
 			endpoint = '';
 			break;

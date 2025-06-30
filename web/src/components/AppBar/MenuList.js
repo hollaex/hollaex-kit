@@ -32,7 +32,7 @@ class MenuList extends Component {
 		) {
 			this.setState({ isOpen: !this.state.isOpen }, () => {
 				if (this.state.isOpen) {
-					setTimeout(() => {
+					this.transition = setTimeout(() => {
 						this.setState({
 							startTransition: true,
 						});
@@ -47,6 +47,7 @@ class MenuList extends Component {
 	};
 
 	componentWillUnmount() {
+		this.transition && clearTimeout(this.transition);
 		document.removeEventListener('click', this.onOutsideClick);
 	}
 

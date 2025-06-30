@@ -105,6 +105,8 @@ const P2POrder = ({
 		// Cleanup the event listener on component unmount
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
+			buttonRef.current = null;
+			ref.current = null;
 		};
 	}, []);
 

@@ -230,6 +230,13 @@ const OtcDeskContainer = ({
 
 	const handleSearch = _debounce(searchUser, 1000);
 
+	useEffect(() => {
+		return () => {
+			handleSearch.cancel();
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	const createBrokerData = async () => {
 		const body = {
 			...previewData,

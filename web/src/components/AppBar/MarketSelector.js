@@ -60,6 +60,10 @@ class MarketSelector extends Component {
 		}
 	}
 
+	componentWillUnmount = () => {
+		this.debouncedSetLoadingFalse && this.debouncedSetLoadingFalse.cancel();
+	};
+
 	tabListMenuItems = () => {
 		const { symbols, selectedTabMenu, isLoading } = this.state;
 		const { coins } = this.props;

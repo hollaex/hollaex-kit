@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useRef,
+	Fragment,
+} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Checkbox } from 'antd';
@@ -56,6 +62,7 @@ const DustSection = ({
 	const [loadingResult, setLoadingResult] = useState(false);
 	const [result, setResult] = useState();
 	const [error, setError] = useState();
+	const errorTimeoutRef = useRef(null);
 
 	const getPrices = useCallback(async () => {
 		try {
@@ -150,7 +157,7 @@ const DustSection = ({
 						: err.message;
 				setEstimationData([]);
 				setError(_error);
-				setTimeout(setError, 4000);
+				errorTimeoutRef.current = setTimeout(setError, 4000);
 			})
 			.finally(() => {
 				setLoadingEstimations(false);
@@ -169,7 +176,7 @@ const DustSection = ({
 					setShowConfirmation(false);
 					setShowSuccess(false);
 					setError(failedAssets);
-					setTimeout(setError, 4000);
+					errorTimeoutRef.current = setTimeout(setError, 4000);
 				} else {
 					let total = 0;
 					convertedAssets.forEach(({ size = 0, price = 0 }) => {
@@ -189,12 +196,20 @@ const DustSection = ({
 				setShowConfirmation(false);
 				setShowSuccess(false);
 				setError(_error);
-				setTimeout(setError, 4000);
+				errorTimeoutRef.current = setTimeout(setError, 4000);
 			})
 			.finally(() => {
 				setLoadingResult(false);
 			});
 	};
+
+	useEffect(() => {
+		return () => {
+			if (errorTimeoutRef?.current) {
+				clearTimeout(errorTimeoutRef?.current);
+			}
+		};
+	}, []);
 
 	const renderError = () => {
 		if (Array.isArray(error)) {

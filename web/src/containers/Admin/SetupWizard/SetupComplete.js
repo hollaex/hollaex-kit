@@ -63,13 +63,18 @@ class ExchangeSetup extends Component {
 			isLoading: true,
 			buttonLoading: false,
 		};
+		this.loadingTimeout = null;
 	}
 
 	componentDidMount() {
-		setTimeout(() => {
+		this.loadingTimeout = setTimeout(() => {
 			this.setState({ isLoading: false });
 		}, 10000);
 	}
+
+	componentWillUnmount = () => {
+		this.loadingTimeout && clearTimeout(this.loadingTimeout);
+	};
 
 	renderStatus = () => {
 		return (

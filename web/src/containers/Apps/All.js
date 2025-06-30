@@ -124,6 +124,13 @@ const All = ({
 		debounced.current(search, apps);
 	}, [search, apps]);
 
+	useEffect(() => {
+		const clearDebounced = debounced?.current;
+		return () => {
+			clearDebounced.cancel();
+		};
+	}, []);
+
 	return (
 		<div>
 			<div className="settings-form-wrapper">

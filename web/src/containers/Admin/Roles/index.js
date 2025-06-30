@@ -409,6 +409,13 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	};
 	const handleSearch = _debounce(searchUser, 1000);
 
+	useEffect(() => {
+		return () => {
+			handleSearch.cancel();
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	const onHandleTabChange = (tab) => {
 		setActiveTab(tab);
 	};

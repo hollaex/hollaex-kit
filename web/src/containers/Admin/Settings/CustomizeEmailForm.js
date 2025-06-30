@@ -295,6 +295,10 @@ const CustomizeEmailForm = ({
 
 	useEffect(() => {
 		setButtonSubmitting(true);
+		return () => {
+			onChange.cancel();
+		};
+		// eslint-disable-next-line
 	}, []);
 
 	const onHandleChange = (e) => {

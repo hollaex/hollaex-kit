@@ -55,6 +55,12 @@ class TradeHistory extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.setIsLoading) {
+			this.setIsLoading.cancel();
+		}
+	}
+
 	calculateHeaders = () => {
 		const headers = this.generateHeaders(this.props.pairs[this.props.pair]);
 		this.setState({ headers });

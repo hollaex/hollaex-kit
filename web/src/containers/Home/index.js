@@ -88,6 +88,8 @@ class Home extends Component {
 		expandedQuestion: null,
 	};
 
+	carouselRef = null;
+
 	UNSAFE_componentWillMount() {
 		const { isReady, router } = this.props;
 
@@ -113,9 +115,15 @@ class Home extends Component {
 		this.generateSections(sections);
 		setSignupEmail(null);
 		setEmailDetail(null);
-		setTimeout(() => {
+		this.carouselRef = setTimeout(() => {
 			this.setState({ carouselLoading: false });
 		}, 3000);
+	}
+
+	componentWillUnmount() {
+		if (this.carouselRef) {
+			clearTimeout(this.carouselRef);
+		}
 	}
 
 	goTo = (path) => () => {

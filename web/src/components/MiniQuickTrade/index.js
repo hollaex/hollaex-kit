@@ -33,6 +33,7 @@ const MiniQuickTrade = ({
 }) => {
 	const convertInputRef = useRef(null);
 	const toInputRef = useRef(null);
+	const selectedTargetRef = useRef(null);
 
 	const handleFocusInput = (ref) => {
 		if (ref.current) {
@@ -218,7 +219,14 @@ const MiniQuickTrade = ({
 	}, [sourceAmount, targetAmount, selectedSource, selectedTarget, spending]);
 
 	useEffect(() => {
+		const clearDebouncedQuote = debouncedQuote?.current;
 		setMounted(true);
+		return () => {
+			if (selectedTargetRef?.current) {
+				clearTimeout(selectedTargetRef?.current);
+			}
+			clearDebouncedQuote && clearDebouncedQuote.cancel();
+		};
 	}, []);
 
 	const [loadingSource, loadingTarget] =
@@ -228,7 +236,10 @@ const MiniQuickTrade = ({
 
 	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
-		setTimeout(() => onSelectTarget(selectedSource), 0.1);
+		selectedTargetRef.current = setTimeout(
+			() => onSelectTarget(selectedSource),
+			0.1
+		);
 	};
 
 	return (

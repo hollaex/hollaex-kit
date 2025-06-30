@@ -152,6 +152,8 @@ const Otcdeskpopup = ({
 		kitPlan !== 'crypto' && 'gateio',
 		kitPlan !== 'crypto' && 'okx',
 	];
+	const connectPopupRef = useRef(null);
+	const errorMsgRef = useRef(null);
 	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
@@ -251,6 +253,17 @@ const Otcdeskpopup = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen]);
 
+	useEffect(() => {
+		return () => {
+			if (connectPopupRef?.current) {
+				clearTimeout(connectPopupRef.current);
+			}
+			if (errorMsgRef?.current) {
+				clearTimeout(errorMsgRef.current);
+			}
+		};
+	}, []);
+
 	const isUpgrade = handleUpgrade(kit.info);
 	const noHedgeOption =
 		kit?.info?.plan == null ||
@@ -310,13 +323,13 @@ const Otcdeskpopup = ({
 			const markets = await getTrackedExchangeMarkets(selectedApiType);
 			setHedgeMarkets(markets);
 
-			setTimeout(() => {
+			connectPopupRef.current = setTimeout(() => {
 				setLoading(false);
 				setConnectpop(e);
 			}, 5000);
 		} catch (error) {
 			const errMsg = error.data ? error.data.message : error.message;
-			setTimeout(() => {
+			errorMsgRef.current = setTimeout(() => {
 				setLoading(false);
 				setErrorMsg(errMsg);
 			}, 5000);

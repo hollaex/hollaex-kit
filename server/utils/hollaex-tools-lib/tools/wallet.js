@@ -53,7 +53,7 @@ const isValidAddress = (currency, address, network) => {
 		return WAValidator.validate(address, currency);
 	} else if (currency === 'xrp') {
 		return WAValidator.validate(address.split(':')[0], currency);
-	} else if (currency === 'etn' || currency === 'ton') {
+	} else if (currency === 'etn' || currency === 'ton' || currency === 'sui') {
 		// skip the validation
 		return true;
 	} else {
@@ -419,7 +419,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	if (coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === fee_coin && network !== 'fiat' && network !== 'email') {
 		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markups[network].withdrawal?.value)));
-}
+	}
 	
 	if (fee_coin === currency) {
 		const totalAmount =

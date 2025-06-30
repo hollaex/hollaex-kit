@@ -20,6 +20,8 @@ class ChartEmbed extends PureComponent {
 		symbol: '',
 	};
 
+	symbolTimeout = null;
+
 	UNSAFE_componentWillMount() {
 		const {
 			isReady,
@@ -41,10 +43,14 @@ class ChartEmbed extends PureComponent {
 	setSymbol = (symbol = '') => {
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
-			setTimeout(() => {
+			this.symbolTimeout = setTimeout(() => {
 				this.setState({ symbol });
 			}, 1000);
 		});
+	};
+
+	componentWillUnmount = () => {
+		this.symbolTimeout && clearTimeout(this.symbolTimeout);
 	};
 
 	setChartRef = (el) => {

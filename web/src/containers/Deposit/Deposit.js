@@ -94,7 +94,7 @@ const DepositComponent = ({
 	const min = coins[currentCurrency];
 	const isDeposit = coins[getDepositCurrency]?.allow_deposit;
 	const networkHasTag = ['xrp', 'xlm', 'ton'];
-	const hasTag = ['xrp', 'xlm', 'ton', 'pmn'];
+	const hasTag = ['xrp', 'xlm', 'ton'];
 
 	useEffect(() => {
 		const topWallet = assets
@@ -351,10 +351,10 @@ const DepositComponent = ({
 		const feeMarkup =
 			defaultCurrency &&
 			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				selectedNetwork || defaultCurrency
+				renderNetworkField(networkData)
 			]?.deposit?.symbol === defaultCurrency &&
 			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				selectedNetwork || defaultCurrency
+				renderNetworkField(networkData)
 			]?.deposit?.value;
 
 		return feeMarkup || 0;

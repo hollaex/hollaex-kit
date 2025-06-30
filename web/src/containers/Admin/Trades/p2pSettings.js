@@ -141,6 +141,9 @@ const P2PSettings = ({
 		if (p2p_config?.bank_payment_methods?.length > 0) {
 			setPaymentMethods([...p2p_config?.bank_payment_methods, ...methods]);
 		}
+		return () => {
+			handleSearch.cancel();
+		};
 	}, []);
 
 	const handleEmailChange = (value) => {

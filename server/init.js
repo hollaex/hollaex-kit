@@ -23,7 +23,6 @@ const {
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
 const yaml = require('js-yaml');
-const toolsLib = require('hollaex-tools-lib');
 const fs = require('fs');
 
 let nodeLib;
@@ -33,9 +32,12 @@ const getNodeLib = () => nodeLib;
 subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
+		const delay = (ms) => {
+			return new Promise((resolve) => setTimeout(resolve, ms));
+		};
 		switch (type) {
 			case 'refreshInit':
-				await toolsLib.sleep((Math.floor(Math.random() * 5) + 1) * 1000);
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
 				checkStatus();
 				publisher.publish(
 					WS_HUB_CHANNEL,
@@ -43,7 +45,7 @@ subscriber.on('message', async (channel, message) => {
 				);
 				break;
 			case 'refreshApi':
-				await toolsLib.sleep((Math.floor(Math.random() * 5) + 1) * 1000);
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
 				checkStatus();
 				break;
 			default:
@@ -158,6 +160,35 @@ const checkStatus = () => {
 				} else {
 					configuration.coins[coin.symbol] = coin;
 				}
+			}
+
+			let hasUpdate = false;
+			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+				if (customization?.fee_markup == null) continue;
+
+				const coin = exchange?.coins?.find((c) => c.symbol === symbol);
+				if (!coin || !coin?.network) continue;
+
+				const networks = coin?.network?.split(',')?.map((n) => n?.trim()?.toLowerCase()) || [];
+
+				for(const network of networks) {
+					if (!customization?.fee_markups?.[network]?.withdrawal?.symbol) continue;
+					if (!coin?.withdrawal_fees?.[network]?.symbol) continue;
+
+					
+					if (customization?.fee_markups?.[network]?.withdrawal?.symbol != coin?.withdrawal_fees?.[network]?.symbol) {
+						hasUpdate = true;
+						customization.fee_markups[network].withdrawal.symbol = coin?.withdrawal_fees?.[network]?.symbol;
+						customization.fee_markups[network].withdrawal.value = 0;
+					}
+				}
+			}
+
+			if (hasUpdate) {
+				Status.update(
+					{ kit: status.kit },
+					{ where: { id: status.id } }
+				);
 			}
 
 			for (let pair of exchange.pairs) {

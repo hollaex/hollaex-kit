@@ -68,7 +68,6 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
-const { user } = require('.');
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -1300,7 +1299,7 @@ const checkPermission = (req, user) => {
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-
+	apiPath = apiPath.replace(/\?.*$/, '');
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;

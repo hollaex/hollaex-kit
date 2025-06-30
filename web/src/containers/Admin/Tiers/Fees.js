@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 import _get from 'lodash/get';
 // import { PercentageOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
-import { CurrencyBall } from '../../../components';
+import { Coin } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
+import {
+	flipPair,
+	quicktradePairSelector,
+} from 'containers/QuickTrade/components/utils';
 
-const getHeaders = (userTiers, ICONS, onEditFees) => {
+const getHeaders = (userTiers, ICONS, onEditFees, coins) => {
 	const headers = [
 		{
 			title: 'Pairs',
@@ -19,8 +23,11 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 			fixed: 'left',
 			render: (pair_base, { name }) => (
 				<div className="d-flex align-items-center">
-					<CurrencyBall symbol={pair_base} name={pair_base} size="m" />
-					<div className="ml-1">{name}</div>
+					<Coin
+						type="CS4"
+						iconId={coins[pair_base] && coins[pair_base]?.icon_id}
+					/>
+					<div className="ml-1 caps">{name}</div>
 				</div>
 			),
 		},
@@ -82,19 +89,6 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 		title: 'Trading fee percentages',
 		children,
 	});
-	headers.push({
-		title: 'Adjust fee values',
-		dataIndex: 'name',
-		key: 'action',
-		align: 'right',
-		width: 150,
-		fixed: 'right',
-		render: (name) => (
-			<span className="admin-link-highlight" onClick={() => onEditFees(name)}>
-				Adjust fees
-			</span>
-		),
-	});
 	return headers;
 };
 
@@ -103,6 +97,8 @@ const Fees = ({
 	allIcons: { dark: ICONS = {} },
 	onEditFees,
 	constants: { native_currency },
+	coins,
+	quicktradePairs,
 }) => {
 	const constructTierData = () => {
 		let feesData = Object.keys(userTiers).map((level) => {
@@ -115,6 +111,11 @@ const Fees = ({
 					pair_2: splitPair[1],
 				};
 				return resData;
+			});
+			condition = condition?.filter((data) => {
+				return (
+					quicktradePairs[data?.name] || quicktradePairs[flipPair(data?.name)]
+				);
 			});
 			condition = Object.assign({}, condition);
 			return condition;
@@ -132,31 +133,23 @@ const Fees = ({
 
 	return (
 		<div className="admin-tiers-wrapper">
-			<div className="d-flex">
-				<div>
-					<Image
-						icon={STATIC_ICONS['FEES_SECTION_ICON']}
-						wrapperClassName="tier-section-icon mx-3"
-					/>
+			<div className="d-flex justify-content-between align-items-center mb-4">
+				<div className="d-flex flex-column">
+					<span className="font-weight-bold admin-tier-title">
+						Trading Fees
+					</span>
+					<span className="admin-tier-description description">
+						Below are the trading fees applied to user account tiers and market
+						pair.
+					</span>
 				</div>
-				<div>
-					<div className="sub-title">
-						User asset deposit & withdrawal limits
-					</div>
-					<div className="description mx-2">
-						Set the amount allowed to be withdrawn and deposited for each coin
-						on your exchange
-					</div>
-					<div className="description mt-4">
-						{`All amounts are valued in your set native currency ${native_currency}. You can
-						change the native currency for your exchange in the general setup
-						page or change a specific assets limit value type by clicking 'Adjust limits' below.`}
-					</div>
-				</div>
+				<Button onClick={() => onEditFees()} className="green-btn no-border">
+					Edit Fees
+				</Button>
 			</div>
 			<div className="my-4">
 				<Table
-					columns={getHeaders(userTiers, ICONS, onEditFees)}
+					columns={getHeaders(userTiers, ICONS, onEditFees, coins)}
 					dataSource={tierPairsData}
 					rowKey={(data) => data.id}
 					bordered
@@ -170,6 +163,8 @@ const Fees = ({
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
+	coins: state.app.coins,
+	quicktradePairs: quicktradePairSelector(state),
 });
 
 export default connect(mapStateToProps)(withConfig(Fees));

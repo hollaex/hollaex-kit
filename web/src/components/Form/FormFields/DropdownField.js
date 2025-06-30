@@ -33,11 +33,15 @@ class DropdownField extends Component {
 		if (!this.props.disabled) {
 			this.onChangeOpen(!this.state.isOpen);
 			if (this.input && this.props.autocomplete) {
-				setTimeout(() => {
+				this.inputRef = setTimeout(() => {
 					this.input.focus();
 				}, 150);
 			}
 		}
+	};
+
+	componentWillUnmount = () => {
+		clearTimeout(this.inputRef);
 	};
 
 	onChangeOpen = (isOpen = false) => {

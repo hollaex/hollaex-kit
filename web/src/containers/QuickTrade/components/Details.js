@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
 import { Radio } from 'antd';
@@ -37,6 +37,9 @@ const Details = ({
 	const [sevenDayChartData, setSevenDayChartData] = useState([]);
 	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
+
+	const oneDayRef = useRef(null);
+	const sevenDayRef = useRef(null);
 
 	const [pairBase, pair_2] = pair.split('-');
 
@@ -97,14 +100,14 @@ const Details = ({
 
 	useEffect(() => {
 		const renderSevenDays = () => {
-			setTimeout(() => {
+			sevenDayRef.current = setTimeout(() => {
 				setCoinStats(sevenDayData);
 				setChartData([...sevenDayChartData]);
 			}, 0);
 		};
 
 		const renderOneDay = () => {
-			setTimeout(() => {
+			oneDayRef.current = setTimeout(() => {
 				setCoinStats(oneDayData);
 				setChartData([...oneDayChartData]);
 			}, 0);
@@ -114,6 +117,17 @@ const Details = ({
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showSevenDay, oneDayData, sevenDayData, pair]);
+
+	useEffect(() => {
+		return () => {
+			const timeoutRefs = [oneDayRef, sevenDayRef];
+			timeoutRefs.forEach((ref) => {
+				if (ref?.current) {
+					clearTimeout(ref?.current);
+				}
+			});
+		};
+	}, []);
 
 	const handleClick = () => {
 		if (!isNetwork && !brokerUsed) {

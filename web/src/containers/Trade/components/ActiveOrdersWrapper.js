@@ -27,6 +27,12 @@ class OrdersWrapper extends Component {
 			cancelDelayData: [],
 			showCancelAllModal: false,
 		};
+		this.cancelTimeouts = [];
+	}
+
+	componentWillUnmount() {
+		(this.cancelTimeouts || []).forEach((timeoutId) => clearTimeout(timeoutId));
+		this.cancelTimeouts = [];
 	}
 
 	openConfirm = () => {
@@ -47,12 +53,13 @@ class OrdersWrapper extends Component {
 			cancelDelayData = [...cancelDelayData, id];
 		});
 		this.setState({ cancelDelayData });
-		setTimeout(() => {
+		const timeoutId = setTimeout(() => {
 			cancelAllOrders(activeOrdersMarket, settings);
 			this.onCloseDialog();
 			settings.notification.popup_order_canceled &&
 				this.props.allOrderCancelNotification(activeOrders);
 		}, 700);
+		this.cancelTimeouts.push(timeoutId);
 	};
 
 	handleCancelOrders = (id) => {
@@ -64,11 +71,12 @@ class OrdersWrapper extends Component {
 			orderCancelNotification,
 		} = this.props;
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
-		setTimeout(() => {
+		const timeoutId = setTimeout(() => {
 			cancelOrder(id, settings);
 			settings.notification.popup_order_canceled &&
 				orderCancelNotification(activeOrders, id, coins);
 		}, 700);
+		this.cancelTimeouts.push(timeoutId);
 	};
 
 	onCloseDialog = () => {
