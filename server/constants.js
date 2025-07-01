@@ -226,7 +226,6 @@ exports.KIT_CONFIG_KEYS = [
 	'selectable_native_currencies',
 	'auto_trade_config',
 	'suspicious_login',
-	'test_key',
 	'apps',
 	'timezone'
 ];
@@ -237,7 +236,8 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp'
+	'smtp',
+	'test_key',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [

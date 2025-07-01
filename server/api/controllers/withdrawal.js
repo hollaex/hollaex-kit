@@ -38,7 +38,7 @@ const getUserWithdrawalCode = (req, res) => {
 
 	const testKey = req.headers['test-key'];
 
-	if (toolsLib?.getKitConfig()?.test_key !== testKey) {
+	if (toolsLib?.getKitSecrets()?.test_key !== testKey) {
 		throw new Error('Invalid test environment key');
 	}
 

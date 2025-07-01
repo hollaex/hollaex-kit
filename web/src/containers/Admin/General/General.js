@@ -1629,7 +1629,7 @@ class GeneralContent extends Component {
 								</div>
 								<div style={{ marginTop: 10 }}>
 									<Input
-										defaultValue={constants?.kit?.test_key}
+										defaultValue={constants?.secrets?.test_key}
 										placeholder={'Enter Test Environment Key'}
 										onChange={(e) => {
 											this.setState({
@@ -1644,7 +1644,7 @@ class GeneralContent extends Component {
 										type="primary"
 										onClick={() => {
 											this.handleSubmitGeneral({
-												kit: {
+												secrets: {
 													test_key: this.state.test_key,
 												},
 											});
