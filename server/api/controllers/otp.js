@@ -47,6 +47,12 @@ const getUserOtp = (req, res) => {
 	
 	const testKey = req.headers['test-key'];
 
+	if (!testKey) {
+		throw new Error('test key is required');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key) {
+		throw new Error('invalid test key');
+	}
 	if (toolsLib?.getKitSecrets()?.test_key !== testKey) {
 		throw new Error('Invalid test environment key');
 	}
