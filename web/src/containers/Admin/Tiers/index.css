@@ -56,6 +56,14 @@
 .fee-indicator-icon {
 	width: 8rem;
 }
+.admin-earnings-container
+	.admin-tiers-wrapper
+	.tier-fees-table-wrapper
+	.fee-indicator-icon
+	svg
+	.st1 {
+	fill: #000000;
+}
 .tier-section-icon {
 	width: 4rem;
 }
@@ -208,6 +216,11 @@
 	top: 4%;
 }
 
+.edit-fees-popup-wrapper .blue-admin-input-wrapper .ant-input-suffix {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
 .edit-fees-popup-wrapper .ant-modal-close,
 .selected-fees-edit-popup-wrapper .ant-modal-close,
 .reset-fees-popup-wrapper .ant-modal-close,
@@ -216,6 +229,7 @@
 	.ant-input-suffix
 	.ant-input-clear-icon {
 	color: #ffffff;
+	margin-left: 6px;
 }
 
 .edit-fees-popup-wrapper .admin-tiers-table-wrapper {
@@ -239,6 +253,10 @@
 .edit-fees-popup-wrapper
 	.admin-tiers-table-wrapper
 	.admin-tiers-table
+	.tier-arrow-icon,
+.admin-earnings-container
+	.admin-tiers-wrapper
+	.tier-fees-table-wrapper
 	.tier-arrow-icon {
 	padding: 0 5px;
 }
@@ -253,16 +271,40 @@
 .edit-fees-popup-wrapper
 	.admin-tiers-table-wrapper
 	.admin-tiers-table
+	.tier-arrow-icon:hover,
+.admin-earnings-container
+	.admin-tiers-wrapper
+	.tier-fees-table-wrapper
 	.tier-arrow-icon:hover {
 	background-color: rgba(255, 255, 255, 0.1);
 	opacity: 0.8;
+}
+.admin-earnings-container .admin-tiers-wrapper .tier-fees-table-wrapper th,
+.admin-earnings-container .admin-tiers-wrapper .tier-fees-table-wrapper td {
+	padding: 12px 12px;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-table-wrapper
+	.admin-tier-filters-wrapper {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	padding: 1.5% 0;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-table-wrapper
+	.admin-tier-filters-wrapper.filters-scrolled {
+	background-color: var(--admin_panel_modal_background);
 }
 
 .edit-fees-popup-wrapper .admin-tiers-table-wrapper .admin-tier-filters-wrapper,
 .edit-fees-popup-wrapper
 	.admin-tiers-table-wrapper
 	.admin-tier-filters-wrapper
-	.admin-tier-filters {
+	.admin-tier-filters,
+.edit-fees-popup-wrapper .admin-tiers-table-wrapper {
 	gap: 2%;
 	row-gap: 20px;
 }
@@ -275,6 +317,10 @@
 .edit-fees-popup-wrapper
 	.admin-tiers-table-wrapper
 	.admin-tiers-table
+	.tier-arrow-icon,
+.admin-earnings-container
+	.admin-tiers-wrapper
+	.tier-fees-table-wrapper
 	.tier-arrow-icon,
 .reset-fees-popup-wrapper .reset-fees-title {
 	font-size: 26px;
@@ -291,6 +337,36 @@
 .edit-fees-popup-wrapper .blue-admin-select-wrapper {
 	width: 15rem;
 	min-width: 13rem;
+	opacity: 1;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.inactive-field
+	.ant-select-selector,
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.inactive-field.ant-input-affix-wrapper {
+	opacity: 0.6 !important;
+	border-color: #ffffff !important;
+}
+
+.edit-fees-popup-wrapper .admin-tiers-wrapper .ant-input-affix-wrapper:hover,
+.edit-fees-popup-wrapper .admin-tiers-wrapper .ant-input-affix-wrapper-focused,
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.blue-admin-select-wrapper
+	.ant-select-selector:hover,
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.blue-admin-select-wrapper
+	.ant-select-selector:focus,
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.blue-admin-select-wrapper
+	.ant-select-selector:active {
+	border-color: #ffffff !important;
+	box-shadow: none !important;
 }
 
 .edit-fees-popup-wrapper
@@ -322,8 +398,15 @@
 	height: 20%;
 	padding-top: 7px !important;
 	padding-bottom: 7px !important;
-	border: 1px solid #ffffff;
+	border: 1px solid #1890ff !important;
 	border-radius: 5px;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.blue-admin-select-wrapper.ant-select-focused
+	.ant-select-selector:hover {
+	border: 1px solid #1890ff !important;
 }
 
 .edit-fees-popup-wrapper .blue-admin-input-wrapper {
@@ -331,6 +414,7 @@
 	border-radius: 20px;
 	padding: 10px;
 	padding-left: 20px;
+	border-color: #1890ff;
 }
 
 .edit-fees-popup-wrapper .admin-edit-title-wrapper {
@@ -381,6 +465,7 @@
 	.selected-market {
 	display: flex;
 	gap: 5px;
+	flex-wrap: wrap;
 }
 
 .selected-fees-edit-popup-wrapper
@@ -567,6 +652,14 @@
 
 .edit-fees-popup-wrapper
 	.admin-tiers-wrapper
+	.button-container
+	.select-update-btn {
+	background-color: #1890ff !important;
+	color: #ffffff;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
 	.admin-tiers-table-wrapper
 	.admin-tiers-table
 	.shadow-left {
@@ -586,5 +679,51 @@
 	.admin-tiers-table-wrapper
 	.admin-tiers-table
 	.highlighted-fee {
-	border: 2px solid #1890ff !important;
+	border: 3px solid #1890ff !important;
+	color: #1890ff;
+}
+
+.edit-fees-popup-wrapper .review-fee-tier-wrapper {
+	background-color: var(--admin_panel_header_section) !important;
+}
+
+.edit-fees-popup-wrapper .tier-fee-popup-wrapper {
+	background-image: url('/assets/images/edit-global-trading-fees-by-tiers.png');
+	background-repeat: no-repeat;
+	background-position-y: 5rem;
+	max-height: 92vh;
+	overflow-y: auto;
+}
+
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.admin-tiers-table-wrapper
+	.admin-tiers-table
+	.highlighted-fee-col,
+.edit-fees-popup-wrapper
+	.admin-tiers-wrapper
+	.admin-tiers-table-wrapper
+	.ant-table-tbody
+	> tr.ant-table-row:hover
+	> td {
+	background: var(--admin_panel_card_background) !important;
+}
+
+.edit-fees-popup-wrapper .admin-tiers-wrapper .button-container .divider {
+	width: 2px;
+	background-color: #ffffff;
+}
+
+.selected-fees-edit-popup-wrapper
+	.selected-fees-edit-details
+	.selected-fees-edit-description
+	.selected-fees
+	.filter-tier-icon {
+	position: relative !important;
+	bottom: 10% !important;
+}
+
+.admin-tiers-wrapper .admin-tiers-table-wrapper .back-to-top {
+	position: absolute;
+	left: 2%;
 }

@@ -21,7 +21,8 @@ import {
 	flipPair,
 	quicktradePairSelector,
 } from 'containers/QuickTrade/components/utils';
-import { Coin } from 'components';
+import { Coin, Image } from 'components';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const TabPane = Tabs.TabPane;
 
@@ -167,7 +168,13 @@ const renderContent = (
 	}
 };
 
-const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
+const Tiers = ({
+	constants = {},
+	allIcons: { dark: ICONS = {} },
+	allCoins = [],
+	coins,
+	quicktradePair,
+}) => {
 	const [userTiers, setTiers] = useState({});
 	const [isNew, setNew] = useState(false);
 	const [isOpen, setOpen] = useState(false);
@@ -197,9 +204,22 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 	const [selectedDetails, setSelectedDetails] = useState({
 		selectedMarkets: [],
 		selectedTiers: [],
+		selectedFee: {},
 	});
 	const [filteredTableData, setFilteredTableData] = useState([]);
 	const [isActiveEditFees, setIsActiveEditFees] = useState(false);
+
+	const isConfirmEdit =
+		!editFeeInput ||
+		(editFeeInput &&
+			Number(selectedFeesEdit?.value) === Number(editFeeInput)) ||
+		(tierFilters?.filterFee &&
+			Number(tierFilters?.filterFee) === Number(editFeeInput));
+	const markets = new Set([
+		'section-title-broker',
+		'section-title-pro',
+		'section-title-network',
+	]);
 
 	useEffect(() => {
 		if (userTiers && Object.keys(userTiers).length) {
@@ -269,6 +289,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 			...prev,
 			selectedMarkets: [],
 			selectedTiers: [],
+			selectedFee: {},
 		}));
 	};
 	const onTypeChange = (type) => {
@@ -362,6 +383,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 	};
 
 	const handleSelectFeesEdit = (details) => {
+		feeCount(details);
 		setIsFeesEdit(true);
 		setSelectedFeesEdit(details);
 		setEditFeeInput(details?.value);
@@ -375,11 +397,6 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 		} = userTierListDetails[level];
 
 		let marketCount = 0;
-		const markets = new Set([
-			'section-title-broker',
-			'section-title-pro',
-			'section-title-network',
-		]);
 
 		const onHandleCount = (symbol) => {
 			if (type === 'confirmMarketCount') {
@@ -410,14 +427,30 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 				const isMaker = editType === 'maker' || filterType === 'maker';
 				const isTaker = editType === 'taker' || filterType === 'taker';
 
-				if (isMaker && maker[key] === feeValue) {
+				if (
+					!isTaker &&
+					isMaker &&
+					!markets?.has(key) &&
+					(maker[key] === feeValue ||
+						editType === 'maker' ||
+						editType === 'tier')
+				) {
 					onHandleCount(key);
-				} else if (isTaker && taker[key] === feeValue) {
+				} else if (
+					!isMaker &&
+					isTaker &&
+					!markets?.has(key) &&
+					(taker[key] === feeValue ||
+						editType === 'taker' ||
+						editType === 'tier')
+				) {
 					onHandleCount(key);
 				} else if (
 					!isMaker &&
 					!isTaker &&
-					(maker[key] === feeValue || taker[key] === feeValue)
+					(maker[key] === feeValue ||
+						taker[key] === feeValue ||
+						(editType === 'tier' && !markets?.has(key)))
 				) {
 					onHandleCount(key);
 				}
@@ -425,9 +458,6 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 				onHandleCount(key);
 			}
 		});
-		if (marketCount === 0 && isFeesEdit && filterFee && filterFee !== '') {
-			setIsFeesEdit(false);
-		}
 		return marketCount;
 	};
 
@@ -454,7 +484,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 
 	const tierEffected = () => {
 		if (!selectedFeesEdit) return '';
-		const { editType, level, market, marketType } = selectedFeesEdit;
+		const { editType, level } = selectedFeesEdit;
 		const {
 			filterTier,
 			filterType,
@@ -468,39 +498,12 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 			case 'maker':
 			case 'taker':
 			case 'selectedFees':
-				const {
-					fees: { maker, taker },
-				} = userTierListDetails[level];
-				if (editType === 'selectedFees' || !filterFee) {
-					addTier(level);
-				} else if (
-					filterFee &&
-					filterFee !== '' &&
-					['tier', 'maker', 'taker']?.includes(editType)
-				) {
-					filteredTableData.forEach(({ key }) => {
-						const feeValue = Number(filterFee);
-						const isMaker = editType === 'maker' || filterType === 'maker';
-						const isTaker = editType === 'taker' || filterType === 'taker';
-
-						if (isMaker && maker[key] === feeValue) {
-							addTier(level);
-						} else if (isTaker && taker[key] === feeValue) {
-							addTier(level);
-						} else if (
-							!isMaker &&
-							!isTaker &&
-							(maker[key] === feeValue || taker[key] === feeValue)
-						) {
-							addTier(level);
-						}
-					});
-				}
+				addTier(level);
 				break;
 			case 'market':
 			case 'marketType':
 			case 'allTier':
-				if (filterFee) {
+				if (filterFee && editType === 'allTier') {
 					const { selectedTiers } = selectedDetails;
 					const details = selectedTiers?.length ? selectedTiers : [];
 					Object.entries(userTierListDetails || {}).forEach(
@@ -516,30 +519,9 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 									: filterType === 'maker' && maker
 									? [maker]
 									: [maker, taker];
-
-							if (editType === 'market' && market) {
-								(filteredType || []).forEach((data) => {
-									if (
-										allowedPairs?.includes(market) &&
-										((filterTier &&
-											filterTier === tierLevel &&
-											data[market] === Number(filterFee)) ||
-											(!filterTier &&
-												data[market] === Number(filterFee) &&
-												!details?.includes(tierLevel)))
-									) {
-										details.push(tierLevel);
-									}
-								});
-							} else if (
-								(editType === 'marketType' && marketType) ||
-								filterMarketType
-							) {
+							if (filterMarketType) {
 								Object.values(quicktradePair || {}).forEach((data) => {
-									if (
-										data?.type === marketType ||
-										data?.type === filterMarketType
-									) {
+									if (data?.type === filterMarketType) {
 										(filteredType || []).forEach((fees) => {
 											if (!allowedPairs?.includes(data?.symbol)) return;
 											if (filterTier) {
@@ -549,7 +531,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 														!details?.includes(tierLevel) &&
 														filterTier === tierLevel
 													) {
-														if (marketType) {
+														if (filterMarket) {
 															data?.symbol === filterMarket &&
 																details.push(tierLevel);
 														} else if (
@@ -578,14 +560,13 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 															details.push(tierLevel);
 													} else if (data?.symbol?.includes(searchText)) {
 														details.push(tierLevel);
-													} else if (
-														!filterTier &&
-														!searchText &&
-														!filterMarket
-													) {
-														details.push(tierLevel);
 													}
 												}
+											} else if (
+												!details?.includes(tierLevel) &&
+												fees[data?.symbol] === Number(filterFee)
+											) {
+												details.push(tierLevel);
 											}
 										});
 									}
@@ -687,258 +668,168 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 		}
 	};
 
-	const feeCount = (details) => {
-		if (!details) return '';
-		const { editType, market, marketType, level, value } = details;
-		const {
-			filterTier,
-			filterType,
-			filterFee,
-			searchText,
-			filterMarketType,
-			filterMarket,
-		} = tierFilters;
-		if (filterFee) {
-			let feeCount = null;
-			Object.entries(userTierListDetails).forEach(
-				([
-					tierLevel,
-					{
-						fees: { taker, maker },
+	const setFeeCount = (level, type, market, value) => {
+		setSelectedDetails((prev) => ({
+			...prev,
+			selectedFee: {
+				...prev.selectedFee,
+				[level]: {
+					...prev.selectedFee?.[level],
+					[type]: {
+						...prev.selectedFee?.[level]?.[type],
+						[market]: value,
 					},
-				]) => {
-					const tierFees = [...Object.values(taker), ...Object.values(maker)];
-					const filteredType =
-						(filterType === 'taker' || editType === 'taker') && taker
-							? [taker]
-							: (filterType === 'maker' || editType === 'maker') && maker
-							? [maker]
-							: [maker, taker];
-					if (editType === 'selectedFees' && value) {
-						if (Number(value) === Number(filterFee) && !feeCount) {
-							feeCount++;
-						}
-					} else if (editType === 'market' && market) {
-						filteredType.forEach((data) => {
+				},
+			},
+		}));
+	};
+
+	const feeCount = (details, countType = '') => {
+		let feeCount = 0;
+		if (!details) {
+			countType === 'reviewCount' &&
+				setSelectedDetails((prev) => ({ ...prev, selectedFee: {} }));
+			return null;
+		}
+		const { editType, market, marketType, level, type, value } = details;
+		const { filterTier, filterType, filterFee } = tierFilters;
+		if (editType === 'selectedFees') {
+			feeCount++;
+			if (countType === 'reviewCount') {
+				setFeeCount(level, type, market, value);
+			}
+			return feeCount;
+		}
+
+		const types =
+			filterType === 'taker' || editType === 'taker'
+				? ['taker']
+				: editType === 'maker' || filterType === 'maker'
+				? ['maker']
+				: ['taker', 'maker'];
+		filteredTableData.forEach((marketDetails) => {
+			if (!markets.has(marketDetails?.key)) {
+				types.forEach((type) => {
+					if (editType === 'marketType') {
+						Object.values(quicktradePair).forEach((pair) => {
 							if (
-								(filterTier &&
-									filterTier === tierLevel &&
-									data[market] === Number(filterFee)) ||
-								(!filterTier && data[market] === Number(filterFee))
+								marketType &&
+								pair?.type === marketType &&
+								pair?.symbol === marketDetails?.key
 							) {
-								feeCount++;
-							}
-						});
-					} else if (
-						editType === 'tier' ||
-						editType === 'taker' ||
-						editType === 'maker'
-					) {
-						if (tierLevel === level) {
-							filteredType.forEach((data) => {
-								Object.entries(data).forEach(([asset, fee]) => {
-									if (filterMarketType) {
-										Object.values(quicktradePair).forEach((tradePair) => {
-											if (tradePair?.type === filterMarketType) {
+								Object.entries(userTierListDetails).forEach(
+									([idx, details]) => {
+										Object.entries(details?.fees[type]).forEach(
+											([asset, value]) => {
 												if (
-													asset === tradePair?.symbol &&
-													fee === Number(filterFee)
+													(filterTier &&
+														idx === filterTier &&
+														asset === marketDetails?.key) ||
+													(!filterTier && asset === marketDetails?.key)
 												) {
-													if (searchText || filterMarket) {
-														if (filterMarket) {
-															asset === filterMarket && feeCount++;
-														} else if (
-															asset?.includes(searchText) &&
-															searchText !== ''
-														) {
-															feeCount++;
-														}
-													} else {
-														feeCount++;
+													if (countType === 'reviewCount') {
+														setFeeCount(idx, type, asset, value);
 													}
+													feeCount++;
 												}
 											}
-										});
-									} else if (searchText || filterMarket) {
-										if (filterMarket && fee === Number(filterFee)) {
-											asset === filterMarket && feeCount++;
-										} else if (
-											asset?.includes(searchText) &&
-											searchText !== '' &&
-											fee === Number(filterFee)
+										);
+									}
+								);
+							}
+						});
+					} else if (editType === 'market' && market) {
+						if (marketDetails?.key === market) {
+							Object.entries(userTierListDetails).forEach(([idx, details]) => {
+								Object.entries(details?.fees[type]).forEach(
+									([asset, value]) => {
+										if (
+											(filterTier && idx === filterTier && asset === market) ||
+											(!filterTier && asset === market)
 										) {
+											if (countType === 'reviewCount') {
+												setFeeCount(idx, type, asset, value);
+											}
 											feeCount++;
 										}
-									} else {
-										(quicktradePair[asset] ||
-											quicktradePair[flipPair(asset)]) &&
-											fee === Number(filterFee) &&
-											feeCount++;
 									}
-								});
+								);
 							});
 						}
 					} else if (
-						(editType === 'marketType' && marketType) ||
-						filterMarketType
+						editType === 'taker' ||
+						editType === 'maker' ||
+						editType === 'tier'
 					) {
-						Object.values(quicktradePair).forEach((data) => {
-							if (
-								data?.type === marketType ||
-								data?.type === filterMarketType
-							) {
-								filteredType.forEach((fees) => {
-									if (filterTier) {
-										if (searchText || filterMarket) {
-											if (
-												filterMarket &&
-												fees[data?.symbol] === Number(filterFee)
-											) {
-												data?.symbol === filterMarket &&
-													filterTier === tierLevel &&
-													feeCount++;
-											} else if (
-												data?.symbol?.includes(searchText) &&
-												searchText !== '' &&
-												fees[data?.symbol] === Number(filterFee)
-											) {
-												filterTier === tierLevel && feeCount++;
-											}
-										} else if (
-											filterTier === tierLevel &&
-											!searchText &&
-											!filterMarket &&
-											fees[data?.symbol] === Number(filterFee)
-										) {
-											feeCount++;
-										}
-									} else if (searchText || filterMarket) {
-										if (filterMarket) {
-											data?.symbol === filterMarket &&
-												fees[data?.symbol] === Number(filterFee) &&
-												feeCount++;
-										} else if (
-											data?.symbol?.includes(searchText) &&
-											searchText !== ''
-										) {
-											fees[data?.symbol] === Number(filterFee) && feeCount++;
-										} else if (
-											!filterTier &&
-											!searchText &&
-											!filterMarket &&
-											fees[data?.symbol] === Number(filterFee)
-										) {
-											feeCount++;
-										}
-									} else if (fees[data?.symbol] === Number(filterFee)) {
-										feeCount++;
-									}
-								});
-							}
-						});
-					} else if (filterType && filterTier) {
-						if (filterTier === tierLevel) {
-							Object.entries(filterType === 'maker' ? maker : taker).forEach(
+						if (level) {
+							Object.entries(userTierListDetails[level]?.fees[type]).forEach(
 								([asset, fee]) => {
-									if (searchText || filterMarket) {
-										if (filterMarket) {
-											asset === filterMarket &&
-												fee === Number(filterFee) &&
-												feeCount++;
-										} else if (
-											asset?.includes(searchText) &&
-											searchText !== '' &&
-											fee === Number(filterFee)
-										) {
-											feeCount++;
-										}
-									} else {
-										(quicktradePair[asset] ||
-											quicktradePair[flipPair(asset)]) &&
-											fee === Number(filterFee) &&
-											feeCount++;
+									if (asset === marketDetails?.key) {
+										countType === 'reviewCount' &&
+											setFeeCount(level, type, asset, fee);
+										feeCount += 1;
 									}
 								}
 							);
 						}
-					} else if (filterType) {
-						Object.entries(filterType === 'maker' ? maker : taker).forEach(
-							([asset, fee]) => {
-								if (searchText || filterMarket) {
-									if (filterMarket) {
-										fee === Number(filterFee) &&
-											asset === filterMarket &&
-											feeCount++;
-									} else if (
-										asset?.includes(searchText) &&
-										searchText !== '' &&
-										fee === Number(filterFee)
-									) {
-										feeCount++;
-									}
-								} else {
-									(quicktradePair[asset] || quicktradePair[flipPair(asset)]) &&
-										fee === Number(filterFee) &&
-										feeCount++;
-								}
-							}
-						);
-					} else if (filterTier) {
-						if (filterTier === tierLevel) {
-							filteredType.forEach((tierFee) => {
-								Object.entries(tierFee).forEach(([asset, fee]) => {
-									if (searchText || filterMarket) {
-										if (filterMarket) {
-											asset === filterMarket &&
-												fee === Number(filterFee) &&
-												feeCount++;
-										} else if (
-											asset?.includes(searchText) &&
-											searchText !== '' &&
-											fee === Number(filterFee)
-										) {
-											feeCount++;
-										}
-									} else {
-										(quicktradePair[asset] ||
-											quicktradePair[flipPair(asset)]) &&
-											fee === Number(filterFee) &&
-											feeCount++;
-									}
-								});
-							});
-						}
-					} else if (searchText || filterMarket) {
-						filteredType.forEach((fees) => {
-							Object.entries(fees).forEach(([key, value]) => {
-								if (filterMarket) {
-									key === filterMarket &&
-										value === Number(filterFee) &&
-										feeCount++;
-								} else if (
-									key?.includes(searchText) &&
-									value === Number(filterFee) &&
-									searchText !== ''
-								) {
-									feeCount++;
-								}
-							});
-						});
 					} else {
-						tierFees.forEach((fee, idx) => {
-							const allPairs = [...Object.keys(maker), ...Object.keys(taker)];
-							const pair = allPairs[idx];
-							if (
-								fee === Number(filterFee) &&
-								(quicktradePair[pair] || quicktradePair[flipPair(pair)])
-							)
-								feeCount++;
-						});
+						if (
+							(filterTier && filterTier !== undefined && filterFee) ||
+							(!filterFee && filterTier)
+						) {
+							Object.entries(
+								userTierListDetails[filterTier]?.fees[type]
+							).forEach(([asset, fee]) => {
+								if (filterFee && filterTier) {
+									if (
+										Number(fee) === Number(filterFee) &&
+										marketDetails?.key === asset
+									) {
+										if (countType === 'reviewCount') {
+											setFeeCount(filterTier, type, asset, fee);
+										}
+										feeCount++;
+									}
+								} else if (!filterFee && filterTier) {
+									if (asset === marketDetails?.key) {
+										countType === 'reviewCount' &&
+											setFeeCount(filterTier, type, asset, fee);
+										feeCount += 1;
+									}
+								}
+							});
+						} else {
+							Object.entries(userTierListDetails).forEach(
+								([level, details]) => {
+									Object.entries(details?.fees[type]).forEach(
+										([asset, fee]) => {
+											if (filterFee) {
+												if (
+													Number(fee) === Number(filterFee) &&
+													marketDetails?.key === asset
+												) {
+													if (countType === 'reviewCount') {
+														setFeeCount(level, type, asset, fee);
+													}
+													feeCount++;
+												}
+											} else if (!filterFee) {
+												if (asset === marketDetails?.key) {
+													countType === 'reviewCount' &&
+														setFeeCount(level, type, asset, fee);
+													feeCount++;
+												}
+											}
+										}
+									);
+								}
+							);
+						}
 					}
-				}
-			);
-			return feeCount;
-		}
+				});
+			}
+		});
+		return feeCount;
 	};
 
 	const isFeeMatch = (feeValue, filterFee) =>
@@ -953,7 +844,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 			filterFee,
 			filterType,
 		} = filters;
-		const { marketType } = selectedFeesEdit;
+		const { marketType, editType } = selectedFeesEdit || {};
 		const pairType = (quicktradePair[pair] || quicktradePair[flipPair(pair)])
 			?.type;
 
@@ -961,13 +852,14 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 		if (filterMarket && pair !== filterMarket) return false;
 		if (filterMarketType && pairType !== filterMarketType) return false;
 		if (marketType && pairType !== marketType) return false;
-		if (searchText && !pair?.toLowerCase().includes(searchText?.toLowerCase()))
+		if (searchText && !pair?.toLowerCase()?.includes(searchText?.toLowerCase()))
 			return false;
 		if (
 			filterFee !== undefined &&
 			filterFee !== null &&
 			filterFee !== '' &&
-			!isFeeMatch(feeValue, filterFee)
+			!isFeeMatch(feeValue, filterFee) &&
+			editType === 'allTier'
 		)
 			return false;
 		if (filterType && filterType !== 'all' && filterType !== feeType)
@@ -977,7 +869,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 
 	const handleConfirmEditFee = () => {
 		const { level, market, type, editType } = selectedFeesEdit;
-
+		feeCount(selectedFeesEdit, 'reviewCount');
 		tierEffected();
 		setTierFilters({
 			filterTier: null,
@@ -1002,9 +894,13 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 				const pairs = updatedTiers[tierIdx]?.fees?.[feeType] || {};
 				Object.keys(pairs).forEach((pair) => {
 					const feeValue = Number(pairs[pair]);
-					if (shouldApplyFee(pair, feeType, feeValue, filters, tierIdx)) {
-						setFee(tierIdx, feeType, pair);
-					}
+					filteredTableData.forEach(({ key }) => {
+						if (!markets.has(key) && key === pair) {
+							if (shouldApplyFee(pair, feeType, feeValue, filters, tierIdx)) {
+								setFee(tierIdx, feeType, pair);
+							}
+						}
+					});
 				});
 			};
 
@@ -1013,10 +909,16 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 					['maker', 'taker'].forEach((feeType) => {
 						const pairs = fees?.[feeType] || {};
 						Object.keys(pairs).forEach((pair) => {
-							const feeValue = Number(pairs[pair]);
-							if (shouldApplyFee(pair, feeType, feeValue, filters, tierIdx)) {
-								setFee(tierIdx, feeType, pair);
-							}
+							filteredTableData.forEach(({ key }) => {
+								if (!markets.has(key) && key === pair) {
+									const feeValue = Number(pairs[pair]);
+									if (
+										shouldApplyFee(pair, feeType, feeValue, filters, tierIdx)
+									) {
+										setFee(tierIdx, feeType, pair);
+									}
+								}
+							});
 						});
 					});
 				});
@@ -1087,6 +989,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 			...prev,
 			selectedMarkets: [],
 			selectedTiers: [],
+			selectedFee: {},
 		}));
 	};
 
@@ -1105,7 +1008,7 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 	};
 
 	const renderLabelContent = (labelTag, text) => (
-		<span>
+		<span className="d-flex">
 			{labelTag}
 			{text}
 		</span>
@@ -1137,12 +1040,38 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 			searchText,
 			filterTier,
 		} = tierFilters;
+		const isFilterActive = Object.values(tierFilters || {}).every((data) => {
+			return !data;
+		});
 		const pairBase = market?.split('-')[0];
+		const isIcon = Object.entries(tierFilters || {}).every(([key, value]) => {
+			return (
+				(key === 'filterTier' && value) || (key !== 'filterTier' && !value)
+			);
+		});
+		const isFilterTier = (level) => {
+			if (ICONS[`LEVEL_ACCOUNT_ICON_${level}`]) {
+				return true;
+			}
+			return false;
+		};
 		switch (editType) {
 			case 'tier':
-				return `'Tier ${level}'`;
+				return (
+					<div
+						className={`d-flex align-items-center justify-content-center text-nowrap
+                 ${isFilterTier(level) ? 'filter-tier-icon' : ''}`}
+					>
+						<Image
+							icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
+							wrapperClassName="table-tier-icon mr-2"
+						/>
+						<span className="no-wrap">{`Tier ${level}`}</span>
+					</div>
+				);
+
 			case 'selectedFees':
-				return `'${value}% fees'.`;
+				return `${value}% fees`;
 			case 'market':
 				return (
 					<div className="selected-market">
@@ -1153,9 +1082,25 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 					</div>
 				);
 			case 'marketType':
-				return marketType && `${getMarketTypeLabel(marketType)}`;
+				return getMarketTypeLabel(marketType) || '';
 			case 'allTier': {
-				const tierLabel = filterTier ? `Tier ${filterTier}` : null;
+				const tierLabel =
+					filterTier && isIcon ? (
+						<div
+							className={`d-flex align-items-center justify-content-center text-nowrap
+                    ${isFilterTier(filterTier) ? 'filter-tier-icon' : ''}`}
+						>
+							<Image
+								icon={ICONS[`LEVEL_ACCOUNT_ICON_${filterTier}`]}
+								wrapperClassName="table-tier-icon mr-1"
+							/>
+							<span className="no-wrap">{`Tier ${filterTier}`}</span>
+						</div>
+					) : filterTier && !isIcon ? (
+						`Tier ${filterTier}`
+					) : (
+						''
+					);
 				const coinIcon = filterMarket
 					? coins[filterMarket?.split('-')[0]]?.icon_id
 					: null;
@@ -1169,86 +1114,25 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 						<span className="caps">{filterMarket?.toUpperCase()}</span>
 					</div>
 				);
+				const marketTypeLabel =
+					filterMarketType && getMarketTypeLabel(filterMarketType);
 
-				if (filterFee && filterMarket && filterType) {
-					return renderMarketContent(
-						labelSpan,
-						marketDiv,
-						`'${filterFee}% ${filterType} fees'`
-					);
-				}
-				if (filterFee && filterMarket) {
-					return renderMarketContent(
-						labelSpan,
-						marketDiv,
-						`'${filterFee}% fees'`
-					);
-				}
-				if (filterFee && filterType) {
-					return renderLabelContent(
-						labelSpan,
-						`'${filterFee}% ${filterType} fees'`
-					);
-				}
-				if (filterMarket && filterType) {
-					return renderMarketContent(
-						labelSpan,
-						marketDiv,
-						`'${filterType} fees'`
-					);
-				}
+				let desc = '';
+				if (filterFee) desc += `${filterFee}%`;
+				if (filterType) desc += `${desc ? ' ' : ''}${filterType} fees`;
+				else if (filterFee) desc += ` fees`;
+				if (searchText)
+					desc += `${desc ? ' ' : ''}${searchText?.toUpperCase()}`;
+				if (!filterFee && !filterType && !searchText && marketTypeLabel)
+					desc += marketTypeLabel;
+				if (desc && marketTypeLabel && !desc.includes(marketTypeLabel))
+					desc += ` : ${marketTypeLabel}`;
+				if (!desc && !marketTypeLabel && isFilterActive) desc = 'ALL';
+
 				if (filterMarket) {
-					return (
-						<div className="selected-market">
-							{labelSpan}
-							{coinIcon && <Coin type="CS4" iconId={coinIcon} />}
-							<span className="caps">{filterMarket?.toUpperCase()}</span>
-						</div>
-					);
+					return renderMarketContent(labelSpan, marketDiv, desc);
 				}
-				if (filterType) {
-					return renderLabelContent(labelSpan, `'${filterType} fees'`);
-				}
-				if (filterFee && filterMarketType && filterType) {
-					return renderLabelContent(
-						labelSpan,
-						`'${filterFee}% ${filterType} fees : ${getMarketTypeLabel(
-							filterMarketType
-						)}'`
-					);
-				}
-				if (filterFee && filterMarketType) {
-					return renderLabelContent(
-						labelSpan,
-						`'${filterFee}% fees : ${getMarketTypeLabel(filterMarketType)}'`
-					);
-				}
-				if (filterMarket && filterMarketType) {
-					return renderMarketContent(
-						labelSpan,
-						marketDiv,
-						`'${getMarketTypeLabel(filterMarketType)}'`
-					);
-				}
-				if (filterType && filterMarketType) {
-					return renderLabelContent(
-						labelSpan,
-						`'${filterType} fees : ${getMarketTypeLabel(filterMarketType)}'`
-					);
-				}
-				if (filterMarketType) {
-					return renderLabelContent(
-						labelSpan,
-						`${getMarketTypeLabel(filterMarketType)}`
-					);
-				}
-				if (searchText) {
-					return renderLabelContent(labelSpan, `'${searchText}'`);
-				}
-				if (filterFee) {
-					return renderLabelContent(labelSpan, `'${filterFee}% fees'`);
-				}
-				return renderLabelContent(labelSpan, `'ALL'.`);
+				return renderLabelContent(labelSpan, desc);
 			}
 			default:
 				return `Tier ${level}: ${type}`;
@@ -1358,11 +1242,9 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 							<span className="selected-fees">{selectedFees}</span>
 						</span>
 						<span className="bold">Market affected: {marketsEffected()}</span>
-						{tierFilters?.filterFee && feeCount(selectedFeesEdit) && (
-							<span className="bold">
-								Fee Count: {feeCount(selectedFeesEdit)}
-							</span>
-						)}
+						<span className="bold">
+							Fee Count: {feeCount(selectedFeesEdit, 'popupFee')}
+						</span>
 					</div>
 					<div className="selected-fees-edit-inputs">
 						<span>Fee</span>
@@ -1386,11 +1268,11 @@ const Tiers = ({ constants = {}, allCoins = [], coins, quicktradePair }) => {
 						</Button>
 						<Button
 							className={
-								!editFeeInput
+								isConfirmEdit
 									? 'green-btn no-border w-50 confirm-btn'
 									: 'green-btn no-border w-50'
 							}
-							disabled={!editFeeInput}
+							disabled={isConfirmEdit}
 							onClick={handleConfirmEditFee}
 						>
 							Confirm
@@ -1436,4 +1318,4 @@ const mapStateToProps = (state) => ({
 	quicktradePair: quicktradePairSelector(state),
 });
 
-export default connect(mapStateToProps)(Tiers);
+export default connect(mapStateToProps)(withConfig(Tiers));
