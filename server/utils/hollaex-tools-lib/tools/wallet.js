@@ -1264,6 +1264,27 @@ const getWallets = async (
 		});
 };
 
+const getUserWithdrawalCode = async () => {
+	const data = await client.hgetallAsync(WITHDRAWALS_REQUEST_KEY);
+	if (!data) return null;
+
+	let latestToken = null;
+	let latestTimestamp = 0;
+
+	for (const [token, rawString] of Object.entries(data)) {
+		try {
+			const parsed = JSON.parse(rawString);
+			if (parsed.timestamp > latestTimestamp) {
+				latestTimestamp = parsed.timestamp;
+				latestToken = token;
+			}
+		} catch (e) {
+			return e;
+		}
+	}
+	return latestToken;
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawal,
@@ -1292,5 +1313,6 @@ module.exports = {
 	isValidAddress,
 	validateDeposit,
 	getWallets,
-	calculateWithdrawalMax
+	calculateWithdrawalMax,
+	getUserWithdrawalCode
 };

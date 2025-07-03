@@ -1622,6 +1622,65 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
+							<div className="sub-title">Test Environment Key</div>
+							<div className="description">
+								<div>
+									Test Environment Key to allow test endpoints to be used
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Input
+										defaultValue={constants?.secrets?.test_key?.value}
+										placeholder={'Enter Test Environment Key'}
+										onChange={(e) => {
+											this.setState({
+												test_key: e.target.value,
+											});
+										}}
+									/>
+								</div>
+
+								<div style={{ marginTop: 10, marginBottom: 10 }}>
+									<span style={{ marginRight: 10, fontWeight: 'bold' }}>
+										Enable
+									</span>
+									<Switch
+										checked={constants?.secrets?.test_key?.active}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														value:
+															this.state.test_key ||
+															constants?.secrets?.test_key?.value,
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+								<div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={() => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														active: constants?.secrets?.test_key?.active,
+														value: this.state.test_key,
+													},
+												},
+											});
+										}}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
 								<span>

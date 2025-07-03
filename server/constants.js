@@ -236,7 +236,8 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp'
+	'smtp',
+	'test_key',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
