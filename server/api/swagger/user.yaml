@@ -547,7 +547,7 @@ paths:
         - bearer
       x-security-scopes:
         - user
-  /user/test/get-otp:
+  /test/user/get-otp:
     x-swagger-router-controller: otp
     get:
       operationId: getUserOtp
@@ -570,7 +570,7 @@ paths:
             $ref: "#/definitions/MessageResponse"
       x-security-scopes:
         - user
-  /user/test/get-withdrawal-code:
+  /test/user/get-withdrawal-code:
     x-swagger-router-controller: withdrawal
     get:
       operationId: getUserWithdrawalCode
