@@ -563,68 +563,66 @@ class AppBar extends Component {
 							constants?.features?.announcement &&
 							isLoggedIn() &&
 							this.renderAnnouncementTopbar()}
-						{(!isLoggedIn() || isHome) && (
-							<MobileBarWrapper
-								className={classnames(
-									'd-flex',
-									'app_bar-mobile',
-									'align-items-center',
-									!isHome
-										? 'justify-content-center'
-										: 'justify-content-between px-4'
-								)}
-							>
-								<Link to="/">
-									<div
-										style={{
-											backgroundImage: `url(${constants.logo_image})`,
-										}}
-										className="homeicon-svg"
-									/>
-								</Link>
-								{isHome && (
-									<div className="app-navbar-wrapper">
-										{languageFormValue
-											?.filter(({ value }) => value === activeLanguage)
-											?.map(({ value, icon, label }, index) => (
-												<div
-													key={index}
-													className="language_option"
-													onClick={() => this.onHandleOpenPopup()}
-												>
-													<Image
-														icon={icon}
-														alt={label}
-														wrapperClassName="flag-icon mr-2"
-													/>
-													<span className="caps text-nowrap">
-														{value}
-														{user?.settings?.interface?.display_currency && (
-															<span>
-																/{user?.settings?.interface?.display_currency}
-															</span>
-														)}
-													</span>
-												</div>
-											))}
-										<div
-											className={
-												isHome ? 'login-container ml-3' : 'login-container'
-											}
-											onClick={() => this.onHandleNavigate()}
-										>
-											<EditWrapper
-												stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+						<MobileBarWrapper
+							className={classnames(
+								'd-flex',
+								'app_bar-mobile',
+								'align-items-center',
+								!isHome
+									? 'justify-content-center'
+									: 'justify-content-between px-4'
+							)}
+						>
+							<Link to="/">
+								<div
+									style={{
+										backgroundImage: `url(${constants.logo_image})`,
+									}}
+									className="homeicon-svg"
+								/>
+							</Link>
+							{isHome && (
+								<div className="app-navbar-wrapper">
+									{languageFormValue
+										?.filter(({ value }) => value === activeLanguage)
+										?.map(({ value, icon, label }, index) => (
+											<div
+												key={index}
+												className="language_option"
+												onClick={() => this.onHandleOpenPopup()}
 											>
-												{!isLoggedIn()
-													? STRINGS['LOGIN_TEXT'].toUpperCase()
-													: STRINGS['ACCOUNT_TEXT']}
-											</EditWrapper>
-										</div>
+												<Image
+													icon={icon}
+													alt={label}
+													wrapperClassName="flag-icon mr-2"
+												/>
+												<span className="caps text-nowrap">
+													{value}
+													{user?.settings?.interface?.display_currency && (
+														<span>
+															/{user?.settings?.interface?.display_currency}
+														</span>
+													)}
+												</span>
+											</div>
+										))}
+									<div
+										className={
+											isHome ? 'login-container ml-3' : 'login-container'
+										}
+										onClick={() => this.onHandleNavigate()}
+									>
+										<EditWrapper
+											stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+										>
+											{!isLoggedIn()
+												? STRINGS['LOGIN_TEXT'].toUpperCase()
+												: STRINGS['ACCOUNT_TEXT']}
+										</EditWrapper>
 									</div>
-								)}
-							</MobileBarWrapper>
-						)}
+								</div>
+							)}
+						</MobileBarWrapper>
 						{isLoggedIn() && this.renderAnnouncementPopup()}
 					</div>
 				) : (

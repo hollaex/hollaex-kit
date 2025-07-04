@@ -306,7 +306,8 @@ const ProfitLossSection = ({
 			url.search = selectedTabList[0] ? `?${selectedTabList[0]}` : '';
 			window.history.replaceState(null, '', url.toString());
 		}
-	}, [activeTab, selectedTabList]);
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onHandleFetchBalance = debounce(
 		(page = 1, limit) => {
@@ -1086,7 +1087,7 @@ const ProfitLossSection = ({
 												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 										</div>
 									</div>
-									<div onClick={() => setActiveTab('2')}>
+									<div onClick={() => onHandleTab('2')}>
 										<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
 											<span className="profit-loss-tab-label">
 												{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
@@ -1094,7 +1095,7 @@ const ProfitLossSection = ({
 										</EditWrapper>
 									</div>
 
-									<div onClick={() => setActiveTab('1')}>
+									<div onClick={() => onHandleTab('1')}>
 										<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
 											<span className="profit-loss-tab-label">
 												{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
@@ -1248,14 +1249,14 @@ const ProfitLossSection = ({
 								</div>
 								{isMobile && (
 									<div className="profit-loss-link mb-5">
-										<div onClick={() => setActiveTab('2')}>
+										<div onClick={() => onHandleTab('2')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
 												</span>
 											</EditWrapper>
 										</div>
-										<div onClick={() => setActiveTab('0')}>
+										<div onClick={() => onHandleTab('0')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
@@ -1431,7 +1432,7 @@ const ProfitLossSection = ({
 								</div>
 								{isMobile && (
 									<div className="profit-loss-link mb-5">
-										<div onClick={() => setActiveTab('0')}>
+										<div onClick={() => onHandleTab('0')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
@@ -1439,7 +1440,7 @@ const ProfitLossSection = ({
 											</EditWrapper>
 										</div>
 
-										<div onClick={() => setActiveTab('1')}>
+										<div onClick={() => onHandleTab('1')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
