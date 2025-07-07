@@ -1137,7 +1137,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Merchant fee: </div>
-										<div>{merchantFee}</div>
+										<div>{merchantFee}%</div>
 									</div>
 									<div
 										onClick={() => {
@@ -1163,7 +1163,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Buyer fee: </div>
-										<div>{userFee}</div>
+										<div>{userFee}%</div>
 									</div>
 									<div
 										onClick={() => {
