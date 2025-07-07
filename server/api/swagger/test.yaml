@@ -1,0 +1,53 @@
+paths:
+  /test/user/get-otp:
+    x-swagger-router-controller: otp
+    get:
+      operationId: getUserOtp
+      description: Generate OTP code for OTP verification
+      tags:
+        - User
+        - OTP
+      parameters:
+        - in: query
+          name: user_id
+          description: "user id to get the otp from"
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Created
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        401:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      x-security-scopes:
+        - user
+  /test/user/get-withdrawal-code:
+    x-swagger-router-controller: withdrawal
+    get:
+      operationId: getUserWithdrawalCode
+      description: getUserWithdrawalCode
+      tags:
+        - User
+      responses:
+        200:
+          description: Created
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        401:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      x-security-scopes:
+        - user   
