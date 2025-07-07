@@ -60,7 +60,7 @@ const getUserOtp = (req, res) => {
 		throw new Error('Invalid test environment key');
 	}
 
-	toolsLib.security.getUserOtpCode(1)
+	toolsLib.security.getUserOtpCode(req.swagger.params.user_id)
 		.then((code) => {
 			return res.json({ code });
 		})
