@@ -318,23 +318,22 @@ const scheduleAutoTrade = () => {
 			const timezone = getTimezone();
 			const now = moment().tz(timezone);
 			const currentHour = now.hour();
-			const currentDay = now.day();
-			const currentDate = now.date();
-			const lastExecutionThreshold = now.clone().subtract(1, 'day').startOf('day');
+			const today = now.clone().startOf('day');
+
+			const hoursToCheck = [
+				currentHour,
+				(currentHour - 1 + 24) % 24,
+				(currentHour - 2 + 24) % 24,
+			];
 
 			const autoTradeConfigs = await autoTradeConfigModel.findAll({
 				where: {
 					active: true,
-					trade_hour: currentHour,
-					[Op.or]: [
-						{ last_execution_date: { [Op.is]: null } },
-						{ last_execution_date: { [Op.lt]: lastExecutionThreshold.toDate() } },
-						{ frequency: 'daily' }
-					],
+					trade_hour: hoursToCheck,
 					[Op.or]: [
 						{ frequency: 'daily' },
-						{ frequency: 'weekly', week_days: { [Op.contains]: [currentDay] } },
-						{ frequency: 'monthly', day_of_month: currentDate }
+						{ frequency: 'weekly' },
+						{ frequency: 'monthly' }
 					]
 				}
 			});
@@ -345,17 +344,62 @@ const scheduleAutoTrade = () => {
 			}
 
 			for (const autoTradeConfig of autoTradeConfigs) {
-				const { trade_hour, user_id, spend_coin, buy_coin, spend_amount, last_execution_date } = autoTradeConfig;
+				const {
+					frequency,
+					week_days,
+					day_of_month,
+					last_execution_date,
+					trade_hour,
+					user_id,
+					spend_coin,
+					buy_coin,
+					spend_amount,
+				} = autoTradeConfig;
 
-				let lastExecDate = last_execution_date ? moment(last_execution_date).tz(timezone) : now.clone().subtract(1, 'day');
+				const lastExecDate = last_execution_date
+					? moment(last_execution_date).tz(timezone)
+					: null;
 
-				while (lastExecDate.isBefore(now, 'day')) {
-					lastExecDate.add(1, 'day');
-					loggerPlugin.verbose('plugins/job/scheduleAutoTrade auto trade job config', autoTradeConfig);
+				let shouldRun = false;
 
-					await executeTrade(autoTradeConfig);
+				if (!lastExecDate || lastExecDate.isBefore(today, 'day')) {
+					if (frequency === 'daily') {
+						shouldRun = true;
+					}
+					else if (frequency === 'weekly' && week_days && week_days.includes(now.day())) {
+						shouldRun = true;
+					}
+					else if (frequency === 'monthly' && day_of_month === now.date()) {
+						shouldRun = true;
+					}
+				}
 
-					await autoTradeConfig.update({ last_execution_date: lastExecDate.toDate() });
+				if (shouldRun) {
+					loggerPlugin.verbose('plugins/job/scheduleAutoTrade auto trade job config (missed trade being caught up)', {
+						id: autoTradeConfig.id,
+						user_id,
+						trade_hour,
+						frequency,
+						last_execution_date,
+						now: now.toISOString()
+					});
+					try {
+						await executeTrade(autoTradeConfig);
+						await autoTradeConfig.update({ last_execution_date: now.clone().toDate() });
+					} catch (err) {
+						loggerPlugin.error(
+							'plugins/job/scheduleAutoTrade failed to execute missed trade',
+							{
+								id: autoTradeConfig.id,
+								user_id,
+								error: err.message,
+								trade_hour,
+								frequency,
+								last_execution_date,
+								now: now.toISOString()
+							}
+						);
+					}
 				}
 
 				const reminderHour = (trade_hour - 12 + 24) % 24;
@@ -373,7 +417,6 @@ const scheduleAutoTrade = () => {
 					);
 				}
 			}
-
 		} catch (err) {
 			loggerPlugin.error('plugins/job/scheduleAutoTrade auto trade job error', err.message);
 		}
