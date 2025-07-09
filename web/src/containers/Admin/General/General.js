@@ -1621,7 +1621,7 @@ class GeneralContent extends Component {
 							</div>
 						</div>
 						<div className="divider"></div>
-						<div className="general-wrapper mb-5">
+						{/* <div className="general-wrapper mb-5">
 							<div className="sub-title">Test Environment Key</div>
 							<div className="description">
 								<div>
@@ -1678,8 +1678,8 @@ class GeneralContent extends Component {
 									</Button>
 								</div>
 							</div>
-						</div>
-						<div className="divider"></div>
+						</div> */}
+						{/* <div className="divider"></div> */}
 						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
