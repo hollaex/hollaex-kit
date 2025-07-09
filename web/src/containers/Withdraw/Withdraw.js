@@ -151,21 +151,21 @@ const RenderWithdraw = ({
 	const feeMarkup =
 		selectedAsset?.selectedCurrency &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
-			getWithdrawNetworkOptions
+			getWithdrawNetworkOptions || network
 		]?.withdrawal?.value;
 	if (
 		feeMarkup &&
 		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
-			getWithdrawNetworkOptions
+			getWithdrawNetworkOptions || network
 		]?.withdrawal?.symbol ===
 			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
-				getWithdrawNetworkOptions
+				getWithdrawNetworkOptions || network
 			]?.symbol
 	) {
 		const incrementUnit =
 			coins?.[
 				coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
-					getWithdrawNetworkOptions
+					getWithdrawNetworkOptions || network
 				]?.symbol
 			]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -1096,10 +1096,11 @@ const RenderWithdraw = ({
 																<span className="ml-1 secondary-text">
 																	(
 																	<span>
-																		{calculateFee(
+																		{calculateFeeMarkup(
 																			selectedAsset?.selectedCurrency,
 																			network,
-																			coins
+																			coins,
+																			coin_customizations
 																		)}
 																	</span>
 																	<span className="ml-1">
