@@ -248,10 +248,6 @@ $tabs-title--margin: 2rem;
 
 .layout-mobile {
 	.trade-container {
-		.content-with-bar {
-			min-height: $max-content-double-height-mobile !important;
-			max-height: $max-content-double-height-mobile !important;
-		}
 		.orderBook-wrapper {
 			max-height: 100% !important;
 			min-height: 100% !important;

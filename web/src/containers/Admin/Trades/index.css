@@ -891,3 +891,19 @@
 .p2p-feedbacks-wrapper .blue-admin-table .comments-title {
 	width: 20rem;
 }
+
+.admin-earnings-container .p2p-payment-details .p2p-payment-methods-filter {
+	min-width: 15rem;
+}
+
+.admin-earnings-container
+	.p2p-payment-details
+	.p2p-payment-methods-filter
+	.ant-select-selector,
+.admin-earnings-container
+	.p2p-payment-details
+	.p2p-payment-methods-filter
+	.ant-select-arrow {
+	background: transparent;
+	color: #ffffff;
+}
