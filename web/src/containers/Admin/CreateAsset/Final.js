@@ -845,7 +845,7 @@ const Final = ({
 							/>
 						</div>
 
-						{renderCoinFees(withdrawal_fees)}
+						{withdrawal_fees && renderCoinFees(withdrawal_fees)}
 					</div>
 
 					<h4>Chain markup fee:</h4>
