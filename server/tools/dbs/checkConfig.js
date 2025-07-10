@@ -4,6 +4,7 @@ const { Status } = require('../../db/models');
 const { publisher } = require('../../db/pubsub');
 const { CONFIGURATION_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
 const { isBoolean } = require('lodash');
+const crypto = require('crypto');
 
 Status.findOne()
 	.then((status) => {
@@ -86,6 +87,12 @@ Status.findOne()
 				send_email_to_support: existingSecrets.emails ? (existingSecrets.emails.send_email_to_support || (process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false) : ((process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false),
 				sender: existingSecrets.emails ? (existingSecrets.emails.sender || '') : '',
 				audit: existingSecrets.emails ? (existingSecrets.emails.audit || '') : ''
+			},
+			test_key: existingSecrets.test_key || {
+				value: 'exch_' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+					(c ^ crypto.randomBytes(1)[0] & 15 >> c / 4).toString(16)
+				),
+				active: false
 			},
 			captcha: {
 				secret_key: existingSecrets.captcha ? (existingSecrets.captcha.secret_key || process.env.CAPTCHA_SECRET_KEY) : process.env.CAPTCHA_SECRET_KEY
