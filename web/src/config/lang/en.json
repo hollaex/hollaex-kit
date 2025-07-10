@@ -2585,7 +2585,11 @@
 			"SET_BUY_ORDER": "Set Buy Order",
 			"SETUP_ORDER": "Setup Order",
 			"BUY_AUTOMATICALLY": "Buy Automatically",
-			"DCA": "DCA"
+			"DCA": "DCA",
+			"TIERS": "Tiers",
+			"UPGRADE": "Upgrade",
+			"DETAILS": "Details",
+			"FRIENDS": "Friends"
 		}
 	},
 	"CONNECTIONS": {
