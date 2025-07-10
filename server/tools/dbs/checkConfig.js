@@ -4,6 +4,7 @@ const { Status } = require('../../db/models');
 const { publisher } = require('../../db/pubsub');
 const { CONFIGURATION_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
 const { isBoolean } = require('lodash');
+const crypto = require('crypto');
 
 Status.findOne()
 	.then((status) => {
@@ -66,6 +67,11 @@ Status.findOne()
 			coin_customizations: existingKitConfigurations.coin_customizations || {},
 			balance_history_config: existingKitConfigurations.balance_history_config || {},
 			suspicious_login: existingKitConfigurations.suspicious_login || { active: false },
+			test_key: existingKitConfigurations.test_key || {
+				value: 'exch_' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+					(c ^ crypto.randomBytes(1)[0] & 15 >> c / 4).toString(16)
+				),
+				active: false },
 			p2p_config: existingKitConfigurations.p2p_config || {},
 			fiat_fees: existingKitConfigurations.fiat_fees || {},
 			selectable_native_currencies: existingKitConfigurations?.selectable_native_currencies || [existingKitConfigurations.native_currency || process.env.NATIVE_CURRENCY || 'usdt'],

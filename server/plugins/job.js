@@ -402,19 +402,21 @@ const scheduleAutoTrade = () => {
 					}
 				}
 
-				const reminderHour = (trade_hour - 12 + 24) % 24;
-				if (currentHour === reminderHour) {
-					const user = await toolsLib.user.getUserByKitId(user_id);
-					sendEmail(
-						MAILTYPE.AUTO_TRADE_REMINDER,
-						user.email,
-						{
-							spend_amount,
-							spend_coin,
-							buy_coin,
-						},
-						user.settings
-					);
+				if (frequency !== 'daily') {
+					const reminderHour = (trade_hour - 12 + 24) % 24;
+					if (currentHour === reminderHour) {
+						const user = await toolsLib.user.getUserByKitId(user_id);
+						sendEmail(
+							MAILTYPE.AUTO_TRADE_REMINDER,
+							user.email,
+							{
+								spend_amount,
+								spend_coin,
+								buy_coin,
+							},
+							user.settings
+						);
+					}
 				}
 			}
 		} catch (err) {
