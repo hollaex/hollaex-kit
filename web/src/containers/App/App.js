@@ -726,7 +726,7 @@ class App extends Component {
 		const filteredList = getBrowserTitle?.find(
 			(data) =>
 				(query?.tab && data?.query === query?.tab) ||
-				(data?.query === search && data?.path === pathname) ||
+				(search?.includes(data?.query) && data?.path === pathname) ||
 				(!data?.query && data?.path === pathname) ||
 				data?.activePath?.includes(pathname)
 		);
