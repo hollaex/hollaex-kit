@@ -739,10 +739,12 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SETUP_ORDER'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_AUTOMATICALLY'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.DCA'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.TRADER'],
+				STRINGS['TRADE_TAB_TRADE'],
 			],
 		},
 		{
-			icon_id: 'INTERFACE_OPTION_ICON',
+			icon_id: 'SETTING_INTERFACE_ICON',
 			iconText: 'USER_SETTINGS.TITLE_INTERFACE',
 			path: '/settings?interface',
 			isDisplay: true,
@@ -1106,7 +1108,11 @@ const MobileBarMoreOptions = ({
 															]
 														}
 														wrapperClassName="icon-logo"
-														type="CS8"
+														type={
+															data?.icon_id === 'SETTING_INTERFACE_ICON'
+																? 'CS9'
+																: 'CS8'
+														}
 													/>
 													{data?.icon_id === 'REFERRAL_OPTION_ICON' && (
 														<span>
