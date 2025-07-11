@@ -9,7 +9,7 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import querystring from 'query-string';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
@@ -77,6 +77,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 import { renderConfirmSignout } from 'components/AppBar/Utils';
 import { setActiveBalanceHistory } from 'actions/walletActions';
+import { browserTitleSelector } from 'config/browserTitle';
 
 class App extends Component {
 	state = {
@@ -719,6 +720,53 @@ class App extends Component {
 		this.logout();
 	};
 
+	onHandleBrowserTitle = () => {
+		const { router, getBrowserTitle, coins, constants } = this.props;
+		const { pathname, search, query } = router.location;
+		const filteredList = getBrowserTitle?.find(
+			(data) =>
+				(query?.tab && data?.query === query?.tab) ||
+				(data?.query === search && data?.path === pathname) ||
+				(!data?.query && data?.path === pathname) ||
+				data?.activePath?.includes(pathname)
+		);
+		if (filteredList) {
+			return filteredList?.browserTitle;
+		} else {
+			if (pathname?.startsWith('/prices/coin/')) {
+				const [, , , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${symbol?.toUpperCase()} ${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_ASSET_INFORMATION']
+					} | ${constants?.api_name}`;
+				}
+			}
+			if (pathname?.startsWith('/stake/details/')) {
+				const [, , , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_STAKE_DETAILS']
+					} ${symbol?.toUpperCase()} | ${constants?.api_name}`;
+				}
+			} else if (
+				pathname?.startsWith('/wallet/') &&
+				!pathname?.includes('deposit') &&
+				!pathname?.includes('withdraw')
+			) {
+				const [, , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_WALLET_ASSET']
+					} ${symbol?.toUpperCase()} ${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_WALLET_DETAILS']
+					} | ${this.props.constants?.api_name}`;
+				}
+			} else {
+				return constants?.api_name;
+			}
+		}
+	};
+
 	render() {
 		const {
 			symbol,
@@ -791,7 +839,7 @@ class App extends Component {
 			<ThemeProvider>
 				<div>
 					<Helmet>
-						<title>{constants.title}</title>
+						<title>{this.onHandleBrowserTitle()}</title>
 						<meta name="description" content={constants.description} />
 					</Helmet>
 					<Socket
@@ -1063,6 +1111,8 @@ class App extends Component {
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	user: store.user,
+	getBrowserTitle: browserTitleSelector(store),
+	coins: store.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1076,4 +1126,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withEdit(withConfig(App)));
+)(withRouter(withEdit(withConfig(App))));
