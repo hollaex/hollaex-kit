@@ -286,6 +286,7 @@ const DepositComponent = ({
 				stepThree: false,
 				stepFour: false,
 			});
+			router.replace('/wallet/deposit');
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);

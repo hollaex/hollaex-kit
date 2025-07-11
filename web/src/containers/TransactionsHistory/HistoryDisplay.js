@@ -103,7 +103,7 @@ const HistoryDisplay = (props) => {
 								stringId="ACCORDIAN.DEPOSIT"
 								text={STRINGS['ACCORDIAN.DEPOSIT']}
 								className="blue-icon"
-								onClick={() => browserHistory.push('wallet/deposit')}
+								onClick={() => browserHistory.push('/wallet/deposit')}
 							/>
 						)}
 						{!isMobile && (
@@ -111,7 +111,7 @@ const HistoryDisplay = (props) => {
 								stringId="ACCORDIAN.VOLUME"
 								text={STRINGS['ACCORDIAN.VOLUME']}
 								className="blue-icon"
-								onClick={() => browserHistory.push('wallet/volume')}
+								onClick={() => browserHistory.push('/wallet/volume')}
 							/>
 						)}
 						{!isMobile && count > 0 && !isFromWallet && activeTab !== 1 && (

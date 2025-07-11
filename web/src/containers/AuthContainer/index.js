@@ -70,6 +70,7 @@ class AuthContainer extends Component {
 
 	componentDidMount() {
 		this.props.getExchangeInfo();
+		document.title = this.props.constants?.api_name;
 	}
 
 	onOpenDialog = () => {

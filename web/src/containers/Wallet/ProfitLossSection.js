@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -40,6 +40,7 @@ const ProfitLossSection = ({
 	assets,
 	loading = false,
 	onHandleRefresh = () => {},
+	router,
 }) => {
 	const month = Array.apply(0, Array(12)).map(function (_, i) {
 		return moment().month(i).format('MMM');
@@ -304,7 +305,7 @@ const ProfitLossSection = ({
 			setActiveTab('0');
 			const url = new URL(window.location.href);
 			url.search = selectedTabList[0] ? `?${selectedTabList[0]}` : '';
-			window.history.replaceState(null, '', url.toString());
+			router.replace(`${url?.pathname}${url?.search}`);
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -812,7 +813,7 @@ const ProfitLossSection = ({
 		url.search = selectedTabList[activeKey]
 			? `?${selectedTabList[activeKey]}`
 			: '';
-		window.history.replaceState(null, '', url.toString());
+		router.replace(`${url?.pathname}${url?.search}`);
 	};
 
 	function calculatePercentages(totalValue, value) {
@@ -1486,4 +1487,4 @@ const mapDispatchToProps = (dispatch) => ({});
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(ProfitLossSection));
+)(withRouter(withConfig(ProfitLossSection)));

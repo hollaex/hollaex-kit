@@ -870,7 +870,7 @@ const AssetsBlock = ({
 																iconId="BLUE_PLUS"
 																iconPath={ICONS['BLUE_DEPOSIT_ICON']}
 																onClick={() =>
-																	navigate(`wallet/${key}/deposit`)
+																	navigate(`/wallet/${key}/deposit`)
 																}
 																className="csv-action action-button-wrapper"
 																showActionText={isMobile}
@@ -882,7 +882,7 @@ const AssetsBlock = ({
 																iconId="BLUE_PLUS"
 																iconPath={ICONS['BLUE_WITHROW_ICON']}
 																onClick={() =>
-																	navigate(`wallet/${key}/withdraw`)
+																	navigate(`/wallet/${key}/withdraw`)
 																}
 																className="csv-action action-button-wrapper"
 																showActionText={isMobile}
