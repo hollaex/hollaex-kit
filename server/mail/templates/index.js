@@ -485,6 +485,17 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{confirmation_link\}/g, data.confirmation_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false`);
 		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false&freeze_account=true`);
 	}
+	else if (type === MAILTYPE.SUSPICIOUS_LOGIN_CODE) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{location\}/g, data.country || 'Unknown Location');
+		html = html.replace(/\$\{device\}/g, data.device || 'Unknown Device');
+		html = html.replace(/\$\{time\}/g, data.time || 'Unknown Time');
+		html = html.replace(/\$\{confirmation_code\}/g, data.verification_code);
+		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false&freeze_account=true`);
+	}
+
 
 	return html;
 };

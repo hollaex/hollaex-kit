@@ -175,6 +175,10 @@
 		"SUSPICIOUS_LOGIN": {
 			"html": "<div><p>Caro(a) ${name},</p><p>Detectamos uma tentativa recente de login na sua conta a partir de um novo dispositivo ou localização. Se foi você, confirme o login para proteger sua conta. Caso contrário, tome medidas imediatas para proteger sua conta.</p><p><strong>Detalhes do login:</strong><br />Endereço IP: ${ip}<br />Localização: ${location}<br />Dispositivo: ${device}<br />Horário: ${time}</p><p>Escolha uma das opções abaixo para continuar:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmar login</Button></a></div><p>Se você não fez essa tentativa de login, recomendamos <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">congelar sua conta</a> imediatamente para evitar acesso não autorizado.</p><p>Atenciosamente,<br />Equipe ${api_name}</p></div>",
 			"title": "Alerta de Login Suspeito"
+		},
+		"SUSPICIOUS_LOGIN_CODE": {
+			"title": "Alerta de login suspeito",
+			"html": "<div><p>Olá ${name},</p><p>Detectamos uma tentativa recente de login em sua conta a partir de um novo dispositivo ou local. Se foi você, utilize o código abaixo para confirmar o login. Caso contrário, tome medidas imediatas para proteger sua conta.</p><p><strong>Detalhes do login:</strong><br />Endereço IP: ${ip}<br />Localização: ${location}<br />Dispositivo: ${device}<br />Horário: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Se <strong>não foi você</strong>, recomendamos <a href=\"${freeze_account_link}\">congelar sua conta</a> imediatamente para evitar acessos não autorizados.</p><p>Atenciosamente,<br />Equipe ${api_name}</p></div>"
 		}
 	}
 }
