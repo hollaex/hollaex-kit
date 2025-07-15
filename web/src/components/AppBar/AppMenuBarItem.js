@@ -35,6 +35,8 @@ const AppMenuBarItem = ({
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
 	pairs,
+	withdrawCurrency,
+	depositCurrency,
 }) => {
 	const filteredMarkets = getFavourites?.filter((fav) =>
 		Object.keys(pairs).some((data) => data === fav || data === flipPair(fav))
@@ -70,7 +72,9 @@ const AppMenuBarItem = ({
 			icon: 'DEPOSIT_OPTION_ICON',
 			title: 'SUMMARY.DEPOSIT',
 			description: 'DESKTOP_NAVIGATION.DEPOSIT_DESC',
-			path: '/wallet/deposit',
+			path: depositCurrency
+				? `/wallet/${depositCurrency}/deposit`
+				: '/wallet/deposit',
 			isDisplay: true,
 		},
 		{
@@ -105,7 +109,9 @@ const AppMenuBarItem = ({
 			icon: 'WITHDRAW_OPTION_ICON',
 			title: 'WITHDRAW_PAGE.WITHDRAW',
 			description: 'DESKTOP_NAVIGATION.WITHDRAW_DESC',
-			path: '/wallet/withdraw',
+			path: withdrawCurrency
+				? `/wallet/${withdrawCurrency}/withdraw`
+				: '/wallet/withdraw',
 			isDisplay: true,
 		},
 	];
@@ -196,7 +202,7 @@ const AppMenuBarItem = ({
 		const tabOptions = getTabOptions();
 		setIsTabActive(checkActiveTab(tabOptions));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [window.location.pathname]);
+	}, [window.location.pathname, depositCurrency, withdrawCurrency]);
 
 	const checkActiveTab = (tabOptions) => {
 		const currentPath = window.location.pathname;
@@ -430,6 +436,8 @@ const mapStateToProps = (state) => ({
 	getRemoteRoutes: state.app.remoteRoutes,
 	getStake: state.app.selectedStake,
 	pairs: state.app.pairs,
+	withdrawCurrency: state.app.withdrawFields.withdrawCurrency,
+	depositCurrency: state.app.depositFields.depositCurrency,
 });
 
 const mapDispatchToProps = (dispatch) => ({
