@@ -303,10 +303,10 @@ const verifyOtp = (userSecret, userDigits) => {
 	return serverDigits.includes(userDigits);
 };
 
-const getUserOtpCode = (user_id) => {
+const getUserOtpCode = (user_id, usedParam = true) => {
 	return dbQuery.findOne('otp code', {
 		where: {
-			used: true,
+			used: usedParam,
 			user_id
 		},
 		attributes: ['id', 'secret'],
