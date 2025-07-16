@@ -54,6 +54,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { getViewport } from 'helpers/viewPort';
 import strings from 'config/localizedStrings';
 import { formatCurrency } from 'utils';
+import { flipPair } from 'containers/QuickTrade/components/utils';
 
 const GridLayout = WidthProvider(RGL);
 const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
@@ -238,6 +239,24 @@ class Trade extends PureComponent {
 
 	componentDidMount() {
 		document.addEventListener('resetlayout', this.onResetLayout);
+	}
+
+	componentDidUpdate() {
+		const {
+			params: { pair },
+			pairs,
+		} = this.props;
+		const flippedPair = flipPair(pair);
+		if (pair && pairs && flippedPair) {
+			if (Object.keys(pairs)?.includes(flippedPair)) {
+				this.props.router.push(`/trade/${flippedPair}`);
+			} else if (
+				!Object.keys(pairs)?.includes(pair) &&
+				!Object.keys(pairs)?.includes(flippedPair)
+			) {
+				this.props.router.push(`/prices/coin/${pair.split('-')[0]}`);
+			}
+		}
 	}
 
 	onResetLayout = () => {
