@@ -258,13 +258,15 @@ const Burn = ({
 					<TextArea placeholder="description" rows={3} />
 				</Form.Item>
 
-				<div
-					onClick={() => {
-						setDisplayAdvanced(!displayAdvanced);
-					}}
-					className="underline-text fs-12 pointer mb-3 toggle-advance-text"
-				>
-					{displayAdvanced ? 'Hide Advanced' : 'Show Advance'}
+				<div className="mb-3">
+					<span
+						className="underline-text fs-12 pointer toggle-advance-text"
+						onClick={() => {
+							setDisplayAdvanced(!displayAdvanced);
+						}}
+					>
+						{displayAdvanced ? 'Hide Advanced' : 'Show Advanced'}
+					</span>
 				</div>
 				{displayAdvanced && (
 					<>
@@ -289,7 +291,11 @@ const Burn = ({
 					</>
 				)}
 
-				<Button type="primary" className="green-btn" htmlType="submit">
+				<Button
+					type="primary"
+					className="green-btn no-border"
+					htmlType="submit"
+				>
 					REVIEW
 				</Button>
 			</Form>
