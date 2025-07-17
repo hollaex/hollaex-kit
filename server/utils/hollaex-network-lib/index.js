@@ -3685,7 +3685,6 @@ class HollaExNetwork {
 
 		let [protocol, baseUrl] = this.apiUrl.split('://');
 
-		baseUrl = 'hollaex-core-hollaex-core-server-1:10080'
 		this.wsUrl =
 			protocol === 'https'
 				? `wss://${baseUrl}/stream?exchange_id=${this.exchange_id}`
