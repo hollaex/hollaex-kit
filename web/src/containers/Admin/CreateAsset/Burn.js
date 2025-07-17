@@ -36,8 +36,13 @@ const Burn = ({
 	const [formValues, setFormValues] = useState({});
 	const [isConfirmSubmit, setIsConfirmSubmit] = useState(false);
 	const [isDisplayReusePopup, setIsDisplayReusePopup] = useState(false);
-	const [isConfirmRepeat, setIsConfirmRepeat] = useState('yes');
+	const [isConfirmRepeat, setIsConfirmRepeat] = useState('no');
 	const [isLoading, setIsLoading] = useState(false);
+	const [advancedFields, setAdvancedFields] = useState({
+		transaction_id: null,
+		fee: null,
+		address: null,
+	});
 
 	const userDetail = dataSource?.find(
 		(data) => Number(data?.id) === Number(formValues?.user_id)
@@ -72,6 +77,11 @@ const Burn = ({
 		isConfirmSubmit && setIsConfirmSubmit(false);
 		isDisplayReusePopup && setIsDisplayReusePopup(false);
 		form.resetFields();
+		setAdvancedFields({
+			transaction_id: null,
+			fee: null,
+			address: null,
+		});
 	};
 
 	const onHandleNext = () => {
@@ -79,20 +89,18 @@ const Burn = ({
 		if (isConfirmRepeat === 'no') {
 			setFormValues({});
 			form.resetFields();
+			setAdvancedFields({
+				transaction_id: null,
+				fee: null,
+				address: null,
+			});
 		}
 	};
 
 	const handleSubmit = (values) => {
 		if (values) {
-			const {
-				amount,
-				user_id,
-				description,
-				status,
-				transaction_id,
-				fee,
-				address,
-			} = values;
+			const { amount, user_id, description, status } = values;
+			const { transaction_id, fee, address } = advancedFields;
 
 			const formProps = {
 				currency: coinFormData.symbol,
@@ -105,7 +113,7 @@ const Burn = ({
 				...(address && { address }),
 			};
 			setIsConfirmSubmit(false);
-			setIsConfirmRepeat('yes');
+			setIsConfirmRepeat('no');
 			if (type === 'mint') {
 				handleMint(formProps);
 				onClose();
@@ -127,6 +135,11 @@ const Burn = ({
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 				form.resetFields();
+				setAdvancedFields({
+					transaction_id: null,
+					fee: null,
+					address: null,
+				});
 			}
 		}
 	};
@@ -144,6 +157,11 @@ const Burn = ({
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 				form.resetFields();
+				setAdvancedFields({
+					transaction_id: null,
+					fee: null,
+					address: null,
+				});
 			}
 		}
 	};
@@ -185,7 +203,7 @@ const Burn = ({
 				/>
 				<div className="title ml-2">{type === 'burn' ? 'Burn' : 'Mint'}</div>
 			</div>
-			<div>
+			<div className="mb-3">
 				{type === 'burn'
 					? 'Burning will reduce the supply of the asset in existence.'
 					: 'Minting will create new supply of the asset into existence.'}
@@ -274,19 +292,46 @@ const Burn = ({
 							Transaction ID <span className="optional-text">(optional)</span>
 						</h3>
 						<Form.Item name="transaction_id">
-							<Input placeholder="Transaction ID" />
+							<Input
+								placeholder="Transaction ID"
+								value={advancedFields?.transaction_id}
+								onChange={(e) => {
+									setAdvancedFields({
+										...advancedFields,
+										transaction_id: e.target.value?.trim(),
+									});
+								}}
+							/>
 						</Form.Item>
 						<h3>
 							Fees <span className="optional-text">(optional)</span>
 						</h3>
 						<Form.Item name="fee">
-							<InputNumber placeholder="Amount" />
+							<InputNumber
+								placeholder="Amount"
+								value={advancedFields?.fee}
+								onChange={(value) => {
+									setAdvancedFields({
+										...advancedFields,
+										fee: value,
+									});
+								}}
+							/>
 						</Form.Item>
 						<h3>
 							Address <span className="optional-text">(optional)</span>
 						</h3>
 						<Form.Item name="address">
-							<Input placeholder="Address" />
+							<Input
+								placeholder="Address"
+								value={advancedFields?.address}
+								onChange={(e) => {
+									setAdvancedFields({
+										...advancedFields,
+										address: e.target.value?.trim(),
+									});
+								}}
+							/>
 						</Form.Item>
 					</>
 				)}
@@ -360,30 +405,30 @@ const Burn = ({
 							</div>
 						</div>
 					</div>
-					{(formValues?.transaction_id ||
-						formValues?.fee ||
-						formValues?.address) && (
+					{(advancedFields?.transaction_id ||
+						advancedFields?.fee ||
+						advancedFields?.address) && (
 						<>
 							<div className="confirm-sender-transfer-details mt-5">
 								<span className="sender-title caps">Advance</span>
 								<div className="mb-3">
-									{formValues?.transaction_id && (
+									{advancedFields?.transaction_id && (
 										<div className="d-flex asset-field flex-wrap">
 											<span className="bold">Transaction ID:</span>
-											<span>{formValues?.transaction_id}</span>
+											<span>{advancedFields?.transaction_id}</span>
 										</div>
 									)}
-									{formValues?.fee && (
+									{advancedFields?.fee && (
 										<div className="d-flex asset-field flex-wrap">
 											<span className="bold">Fee:</span>
-											<span>{formValues?.fee}</span>
+											<span>{advancedFields?.fee}</span>
 											<span className="caps">({coinFormData?.symbol})</span>
 										</div>
 									)}
-									{formValues?.address && (
+									{advancedFields?.address && (
 										<div className="d-flex asset-field flex-wrap">
 											<span className="bold">Address:</span>
-											<span>{formValues?.address}</span>
+											<span>{advancedFields?.address}</span>
 										</div>
 									)}
 								</div>
