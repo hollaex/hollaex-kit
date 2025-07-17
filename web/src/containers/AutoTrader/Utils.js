@@ -1,15 +1,15 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
-import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
 import { Button, Coin, Dialog, EditWrapper, Image } from 'components';
 
-export const AutoTraderEmptydata = ({ setIsRenderPopup }) => {
+export const AutoTraderEmptydata = ({ setIsRenderPopup, icons }) => {
 	return (
-		<div className="auto-trader-empty-table">
+		<div className="auto-trader-empty-table d-flex flex-column">
 			<Image
 				icon={icons['AUTO_TRADER_ICON']}
+				iconId="AUTO_TRADER_ICON"
 				wrapperClassName="auto-trader-icon"
 			/>
 			<span>
@@ -80,6 +80,7 @@ export const ConfirmAutoTrade = ({
 			}}
 			className="auto-trader-popup-wrapper auto-trader-confirm-popup-wrapper"
 			shouldCloseOnOverlayClick={false}
+			label="confirm-auto-trade-popup"
 		>
 			<div className="auto-trader-popup-container auto-trader-confirm-popup-container">
 				<EditWrapper stringId="AUTO_TRADER.REVIEW_AND_CONFIRM">

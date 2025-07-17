@@ -105,6 +105,8 @@ const P2POrder = ({
 		// Cleanup the event listener on component unmount
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
+			buttonRef.current = null;
+			ref.current = null;
 		};
 	}, []);
 
@@ -371,6 +373,7 @@ const P2POrder = ({
 				onCloseDialog={() => {
 					setDisplayAppealModel(false);
 				}}
+				label="transaction-appeal-popup"
 			>
 				<div className="transaction-appeal-popup-container important-text">
 					<div className="transaction-appeal-title">
@@ -458,6 +461,7 @@ const P2POrder = ({
 					onCloseDialog={() => {
 						setDisplayFeedbackModel(false);
 					}}
+					label="feedback-submit-popup"
 				>
 					<div className="feedback-submit-popup-container">
 						<div className="submit-feedback-title">
@@ -552,6 +556,7 @@ const P2POrder = ({
 					onCloseDialog={() => {
 						setDisplayCancelWarning(false);
 					}}
+					label="cancel-popup"
 				>
 					<div className="feedback-submit-popup-container">
 						<div className="submit-feedback-title">
@@ -616,6 +621,7 @@ const P2POrder = ({
 						setDisplayConfirmWarning(false);
 						setIsDecalred(false);
 					}}
+					label="confirm-popup"
 				>
 					<div className="feedback-submit-popup-container">
 						<div className="d-flex justify-content-center">
@@ -715,6 +721,7 @@ const P2POrder = ({
 				isOpen={displayReleasedAmountPopup}
 				onCloseDialog={() => setDisplayReleasedAmountPopup(false)}
 				className="release-amount-popup-wrapper feedback-submit-popup-wrapper"
+				label="release-amount-popup"
 			>
 				<div className="release-amount-details-container">
 					<div className="order-complete-title important-text">
@@ -788,7 +795,7 @@ const P2POrder = ({
 								)}
 							</div>
 							<div className="trade-step-container">
-								<div className={isOrderCreated && 'important-text'}>
+								<div className={isOrderCreated ? 'important-text' : ''}>
 									<EditWrapper stringId="P2P.STEP_1">
 										{STRINGS['P2P.STEP_1']}:
 									</EditWrapper>
@@ -814,7 +821,7 @@ const P2POrder = ({
 								)}
 							</div>
 							<div className="trade-step-container">
-								<div className={isOrderVerified && 'important-text'}>
+								<div className={isOrderVerified ? 'important-text' : ''}>
 									<EditWrapper stringId="P2P.STEP_2">
 										{STRINGS['P2P.STEP_2']}:
 									</EditWrapper>
@@ -839,7 +846,7 @@ const P2POrder = ({
 								{isOrderConfirmed && <CheckCircleTwoTone />}
 							</div>
 							<div className="trade-step-container">
-								<div className={isOrderConfirmed && 'important-text'}>
+								<div className={isOrderConfirmed ? 'important-text' : ''}>
 									<EditWrapper stringId="P2P.STEP_3">
 										{STRINGS['P2P.STEP_3']}:
 									</EditWrapper>
@@ -952,7 +959,7 @@ const P2POrder = ({
 											</span>
 											<Coin
 												iconId={
-													coins[selectedOrder?.deal?.buying_asset].icon_id
+													coins[selectedOrder?.deal?.buying_asset]?.icon_id
 												}
 												type={isMobile ? 'CS10' : 'CS4'}
 											/>
@@ -968,7 +975,7 @@ const P2POrder = ({
 											</span>
 											<Coin
 												iconId={
-													coins[selectedOrder?.deal?.spending_asset].icon_id
+													coins[selectedOrder?.deal?.spending_asset]?.icon_id
 												}
 												type={isMobile ? 'CS10' : 'CS4'}
 											/>
@@ -1157,14 +1164,19 @@ const P2POrder = ({
 										<div>{selectedOrder?.payment_method_used?.system_name}</div>
 									</div>
 
-									{selectedOrder?.payment_method_used?.fields?.map((x) => {
-										return (
-											<div className="payment-methods-list">
-												<div className="font-weight-bold">{x?.name}:</div>
-												<div>{x?.value}</div>
-											</div>
-										);
-									})}
+									{selectedOrder?.payment_method_used?.fields?.map(
+										(x, index) => {
+											return (
+												<div
+													className="payment-methods-list"
+													key={`payment-field-${index}`}
+												>
+													<div className="font-weight-bold">{x?.name}:</div>
+													<div>{x?.value}</div>
+												</div>
+											);
+										}
+									)}
 								</div>
 							</div>
 							<div className="order-verification-container secondary-text">
@@ -1248,7 +1260,7 @@ const P2POrder = ({
 													}}
 												>
 													<EditWrapper stringId="P2P.GO_DEPOSIT">
-														<span className={!isMobile && 'fs-12'}>
+														<span className={!isMobile ? 'fs-12' : ''}>
 															{STRINGS['P2P.GO_DEPOSIT']}
 														</span>
 													</EditWrapper>
@@ -1321,7 +1333,7 @@ const P2POrder = ({
 													}}
 												>
 													<EditWrapper stringId="P2P.GO_WITHDRAWALS">
-														<span className={!isMobile && 'fs-12'}>
+														<span className={!isMobile ? 'fs-12' : ''}>
 															{STRINGS['P2P.GO_WITHDRAWALS']}
 														</span>
 													</EditWrapper>
@@ -1664,7 +1676,10 @@ const P2POrder = ({
 										{selectedOrder?.messages?.map((message, index) => {
 											if (index === 0) {
 												return (
-													<div className="initial-message">
+													<div
+														className="initial-message"
+														key={`message-${index}`}
+													>
 														<div>
 															{message.sender_id === selectedOrder?.merchant_id
 																? selectedOrder?.merchant?.full_name
@@ -1682,7 +1697,10 @@ const P2POrder = ({
 											} else {
 												if (message.type === 'notification') {
 													return (
-														<div className="notification-message d-flex flex-column text-center my-3">
+														<div
+															className="notification-message d-flex flex-column text-center my-3"
+															key={`notification-${index}`}
+														>
 															{message.message === 'BUYER_PAID_ORDER' &&
 															user.id === selectedOrder.user_id ? (
 																selectedOrder?.deal?.side === 'sell' ? (
@@ -1726,7 +1744,10 @@ const P2POrder = ({
 												} else {
 													if (message.sender_id === user.id) {
 														return (
-															<div className="user-message-wrapper">
+															<div
+																className="user-message-wrapper"
+																key={`user-message-${index}`}
+															>
 																<div className="user-message-container">
 																	<span className="user-name">
 																		<EditWrapper stringId="P2P.YOU">
@@ -1746,7 +1767,10 @@ const P2POrder = ({
 														);
 													} else {
 														return (
-															<div className="merchant-message-wrapper">
+															<div
+																className="merchant-message-wrapper"
+																key={`merchant-message-${index}`}
+															>
 																<div className="merchant-message-container">
 																	<div className="merchant-detail">
 																		<div className="important-text">
@@ -1802,10 +1826,13 @@ const P2POrder = ({
 															: 'send-btn blue-link'
 													}
 													ref={buttonRef}
-													onClick={
-														selectedOrder?.transaction_status === 'active' &&
-														sendChatMessage
-													}
+													onClick={() => {
+														if (
+															selectedOrder?.transaction_status === 'active'
+														) {
+															sendChatMessage();
+														}
+													}}
 												>
 													<EditWrapper stringId="P2P.SEND_UPPER">
 														{STRINGS['P2P.SEND_UPPER']}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Divider, Button, Tabs, Row, Spin, Modal, Input } from 'antd';
 import { reduxForm, reset } from 'redux-form';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -71,6 +71,7 @@ export const EmailSettingsForm = ({
 	emailTypeData,
 	constants,
 	defaultEmailData,
+	handleTabChange,
 }) => {
 	const fields = generateAdminSettings('email');
 	const [isOpen, setIsOpen] = useState(false);
@@ -81,6 +82,15 @@ export const EmailSettingsForm = ({
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [smtpError, setSmtpError] = useState('');
 	const [isDisable, setIsDisable] = useState(false);
+	const settingsFormRef = useRef(null);
+
+	useEffect(() => {
+		return () => {
+			if (settingsFormRef?.current) {
+				clearTimeout(settingsFormRef?.current);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		if (
@@ -149,7 +159,7 @@ export const EmailSettingsForm = ({
 		updateTestEmail(body)
 			.then((res) => {
 				if (res) {
-					setTimeout(() => {
+					settingsFormRef.current = setTimeout(() => {
 						handleConfirm();
 					}, 3000);
 				}
@@ -305,6 +315,7 @@ export const EmailSettingsForm = ({
 						defaultLanguage={defaults && defaults.language}
 						emailType={emailTypeData}
 						defaultEmailData={defaultEmailData}
+						handleTabChange={handleTabChange}
 					/>
 				) : (
 					<Spin />

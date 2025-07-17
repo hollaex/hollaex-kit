@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { Image, IconTitle, EditWrapper } from 'components';
+import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import FeesBlock from './FeesBlock';
@@ -22,6 +23,9 @@ const TradingFees = ({
 	search,
 	setSearch,
 	user,
+	quicktradePairs,
+	scrollToTop,
+	constants,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -59,8 +63,8 @@ const TradingFees = ({
 								<div>
 									<div>
 										<Select
-											defaultValue={selectedLevel}
-											value={selectedLevel}
+											defaultValue={selectedLevel?.toString()}
+											value={selectedLevel?.toString()}
 											style={{ width: '20rem' }}
 											className="coin-select custom-select-input-style elevated"
 											dropdownClassName="custom-select-style"
@@ -93,27 +97,25 @@ const TradingFees = ({
 											{STRINGS['FEE_REDUCTION']}: {user.discount}%
 										</div>
 									</div>
-									<div
-										className="blue-link pointer text-uppercase mt-2"
-										onClick={() => browserHistory.push('/referral')}
-									>
-										<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
-											{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
-										</EditWrapper>
-									</div>
+									{constants?.features?.referral_history_config && (
+										<div
+											className="blue-link pointer text-uppercase mt-2"
+											onClick={() => browserHistory.push('/referral')}
+										>
+											<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
+												{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
+											</EditWrapper>
+										</div>
+									)}
 								</>
 							)}
 						</div>
 						<div className="w-100 pl-3">
 							<div
-								className={classnames(
-									'd-flex',
-									'justify-content-between',
-									'align-center',
-									{
-										'flex-direction-column': isMobile,
-									}
-								)}
+								className={classnames('d-flex', 'justify-content-between', {
+									'align-center': !isMobile,
+									'flex-direction-column align-items-start': isMobile,
+								})}
 							>
 								<div>
 									<IconTitle
@@ -122,8 +124,9 @@ const TradingFees = ({
 											STRINGS['FEES_AND_LIMITS.TABS.TRADING_FEES.TABLE.TITLE']
 										}
 										textType="title bold text-align-left"
-										iconPath={ICONS['FEES_AND_LIMITS_TRADING_FEES']}
-										className="fees-limits-title"
+										iconPath={ICONS['FEES_OPTION_ICON']}
+										className="fees-limits-title market-trading-fees-title"
+										iconId="FEES_OPTION_ICON"
 									/>
 									<div className="py-4">
 										<div>
@@ -159,6 +162,8 @@ const TradingFees = ({
 								discount={0}
 								tiers={config_level}
 								search={search}
+								quicktradePairs={quicktradePairs}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>
@@ -171,11 +176,11 @@ const TradingFees = ({
 const mapStateToProps = (state) => {
 	const setQuickTradePairs = (inputArray) => {
 		const transformedData = {};
-	
+
 		inputArray.forEach((item, index) => {
-			const [pair_base, pair_2] = item.symbol.split("-");
+			const [pair_base, pair_2] = item.symbol.split('-');
 			transformedData[item.symbol] = {
-				id: index, 
+				id: index,
 				name: item.symbol,
 				pair_base: pair_base,
 				pair_2: pair_2,
@@ -187,18 +192,20 @@ const mapStateToProps = (state) => {
 				icon_id: item.icon_id,
 			};
 		});
-	
+
 		return transformedData;
-	}
+	};
 	return {
 		coins: state.app.coins,
 		pairs: setQuickTradePairs(state.app.quicktrade),
+		quicktradePairs: quicktradePairSelector(state),
 		config_level: state.app.config_level,
 		options: Object.entries(state.app.config_level).map(([key, { name }]) => ({
 			value: key,
 			label: name,
 		})),
 		user: state.user || {},
+		constants: state.app.constants,
 	};
 };
 

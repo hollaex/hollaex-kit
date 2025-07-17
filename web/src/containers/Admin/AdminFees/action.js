@@ -12,10 +12,10 @@ export const getFees = (params = {}) => {
 	return requestAuthenticated(url);
 };
 export const getFeesDownload = (params = {}) => {
-	let url = '/admin/fees';
+	let url = '/admin/fees/csv';
 	const values = querystring.stringify(params);
 	if (values) {
-		url = `/admin/fees?${values}`;
+		url = `/admin/fees/csv?${values}`;
 	}
 	return axios({
 		method: 'GET',

@@ -17,7 +17,11 @@ import {
 	HeaderSection,
 	Loader,
 } from 'components';
-import { openContactForm, setLimitTab } from 'actions/appActions';
+import {
+	openContactForm,
+	setLimitTab,
+	setSelectedAccount,
+} from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 
 const Index = ({
@@ -26,13 +30,30 @@ const Index = ({
 	router,
 	selectedAccount,
 	getLimitTab,
+	setSelectedAccount,
 }) => {
 	const [selectedLevel, setSelectedLevel] = useState(
 		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
 	);
 	const [tabs, setTabs] = useState([]);
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState(isMobile ? null : 0);
 	const [search, setSearch] = useState();
+
+	const scrollToTop = () => {
+		const scrollOptions = { top: 0, behavior: 'smooth' };
+		if (isMobile) {
+			return document
+				.querySelector('.app_container-content')
+				?.scrollTo(scrollOptions);
+		} else {
+			return window.scrollTo(scrollOptions);
+		}
+	};
+
+	useEffect(() => {
+		setSelectedAccount(verification_level);
+		//eslint-disable-next-line
+	}, []);
 
 	useEffect(() => {
 		const updateTabs = () => {
@@ -42,6 +63,7 @@ const Index = ({
 				setActiveTab,
 				search,
 				setSearch,
+				scrollToTop,
 			};
 
 			const tabs = [
@@ -94,12 +116,38 @@ const Index = ({
 	}, [selectedAccount]);
 
 	useEffect(() => {
-		if (getLimitTab) {
+		if (getLimitTab >= 0) {
 			setActiveTab(getLimitTab);
 		}
+
+		if (!isMobile) {
+			if (router.location.search.includes('withdrawal-fees')) {
+				setActiveTab(1);
+			} else if (router.location.search.includes('withdrawal-limit')) {
+				setActiveTab(2);
+			} else {
+				setActiveTab(0);
+			}
+		}
+		setRenderTab();
+		return () => {
+			setLimitTab(isMobile ? null : 0);
+		};
 		//eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		setRenderTab();
+		//eslint-disable-next-line
+	}, [activeTab]);
+
+	const setRenderTab = () => {
+		return activeTab === 0
+			? router.push('/fees-and-limits?trading-fees')
+			: activeTab === 1
+			? router.push('/fees-and-limits?withdrawal-fees')
+			: activeTab === 2 && router.push('/fees-and-limits?withdrawal-limits');
+	};
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (
 			tabs[activeTab].content
@@ -109,12 +157,18 @@ const Index = ({
 
 	return config_level && Object.keys(config_level).length ? (
 		<div className="presentation_container apply_rtl settings_container fees_limits">
-			{!isMobile && (
+			{!isMobile ? (
 				<IconTitle
 					stringId="FEES_AND_LIMITS.TITLE"
 					text={STRINGS['FEES_AND_LIMITS.TITLE']}
 					textType="title"
 				/>
+			) : (
+				<EditWrapper stringId="FEES_AND_LIMITS.TITLE">
+					<span className="fees-and-limit-title font-weight-bold">
+						{STRINGS['FEES_AND_LIMITS.TITLE']}
+					</span>
+				</EditWrapper>
 			)}
 
 			<HeaderSection>
@@ -174,6 +228,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	setLimitTab: bindActionCreators(setLimitTab, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setSelectedAccount: bindActionCreators(setSelectedAccount, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Index));

@@ -235,7 +235,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 	const apiKey = req.headers['api-key'];
 	if (apiKey && req) {
-		const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
 		const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 		const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 		const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -246,7 +245,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			req.method,
 			req.originalUrl,
 			req.body,
-			endpointScopes,
 			endpointPermissions,
 			ip);
 
@@ -932,9 +930,6 @@ const cancelAllUserOrdersByNetworkId = (networkId, symbol, opts = {
 };
 
 const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate, format, opts = { additionalHeaders: null }) => {
-	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
-	}
 
 	const params = {
 		symbol,
@@ -995,9 +990,7 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 const getAllUserTradesByKitId = async (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
-	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
-	}
+
 	// check mapKitIdToNetworkId
 	const idDictionary = await mapKitIdToNetworkId([userKitId]);
 

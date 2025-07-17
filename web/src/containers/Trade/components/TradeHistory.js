@@ -15,6 +15,7 @@ import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import math from 'mathjs';
 import { opacifyNumber } from 'helpers/opacify';
+import debounce from 'lodash.debounce';
 
 const { Option } = Select;
 
@@ -25,6 +26,7 @@ class TradeHistory extends Component {
 		isprevious: false,
 		isBase: true,
 		isOpen: false,
+		isLoading: true,
 	};
 
 	UNSAFE_componentWillMount() {
@@ -53,12 +55,21 @@ class TradeHistory extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.setIsLoading) {
+			this.setIsLoading.cancel();
+		}
+	}
+
 	calculateHeaders = () => {
 		const headers = this.generateHeaders(this.props.pairs[this.props.pair]);
 		this.setState({ headers });
 	};
 
+	setIsLoading = debounce(() => this.setState({ isLoading: false }), 250);
+
 	generateData = (data) => {
+		this.setState({ isLoading: true });
 		let pairData = this.props.pairs[this.props.pair] || {};
 		let constructedData = data.map((value, index) => {
 			// let temp = data[index - 1] ? data[index - 1] : {};
@@ -73,6 +84,7 @@ class TradeHistory extends Component {
 			return { ...value, isSameBefore, upDownRate, price, sizePrice };
 		});
 		this.setState({ data: constructedData });
+		this.setIsLoading();
 	};
 
 	onSelect = (isBase) => this.setState({ isBase });
@@ -195,6 +207,7 @@ class TradeHistory extends Component {
 					data={data}
 					// rowClassName="trade_history-row-wrapper"
 					cssTransitionClassName="trade-history-record"
+					loading={this.state.isLoading}
 				/>
 			</div>
 		);

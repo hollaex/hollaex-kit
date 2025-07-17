@@ -144,6 +144,20 @@ class Container extends Component {
 		this.props.requestTiers();
 	};
 
+	setTheme = () => {
+		const { themeOptions, activeTheme } = this.props;
+		const isValidTheme = themeOptions.some(
+			(option) => option.value === this.props?.router?.location?.query?.theme
+		);
+		if (
+			activeTheme !== this.props?.router?.location?.query?.theme &&
+			isValidTheme
+		) {
+			this.props.changeTheme(this.props?.router?.location?.query?.theme);
+			localStorage.setItem('theme', this.props?.router?.location?.query?.theme);
+		}
+	};
+
 	getUserDetails = () => {
 		const { themeOptions } = this.props;
 		const isValidTheme = themeOptions.some(
@@ -201,6 +215,13 @@ class Container extends Component {
 										},
 									},
 								};
+							}
+							if (
+								!this.props.router.location.query.theme &&
+								data.settings.interface.theme
+							) {
+								this.props.changeTheme(data.settings.interface.theme);
+								localStorage.setItem('theme', data.settings.interface.theme);
 							}
 							if (
 								data.settings.interface.theme !== this.props.activeTheme &&
@@ -274,7 +295,11 @@ class Container extends Component {
 			subtract(data?.data?.size, data?.data?.filled)
 		);
 		const fullfilled = formatBaseAmount(
-			math.chain(remaining).divide(data?.data?.size).multiply(100).done()
+			math
+				.chain(Number(remaining))
+				.divide(data?.data?.size)
+				.multiply(100)
+				.done()
 		);
 		const tradeSymbol = data?.data?.symbol?.split('-')[0];
 		const date = new Date();
@@ -387,6 +412,10 @@ class Container extends Component {
 			this.getUserDetails();
 		}
 
+		if (!isLoggedIn()) {
+			this.setTheme();
+		}
+
 		privateSocket.onopen = (evt) => {
 			privateSocket.send(
 				JSON.stringify({
@@ -440,10 +469,12 @@ class Container extends Component {
 						this.props.setUserOrders(data.data);
 					} else if (data.action === 'insert') {
 						const isNotification =
+							(data?.data?.status === 'new' &&
+								this.props.settings.notification.popup_order_new) ||
 							(data?.data?.status === 'filled' &&
-								this.state.selectedPair !== data?.data?.symbol) ||
-							!this.state.isOrderStatus ||
-							data?.data?.status === 'new';
+								(this.state.selectedPair !== data?.data?.symbol ||
+									!this.state.isOrderStatus) &&
+								this.props.settings.notification.popup_order_completed);
 						if (isNotification) {
 							this.toastNotification(data);
 						}
@@ -473,11 +504,11 @@ class Container extends Component {
 								selectedPair: data?.data?.symbol,
 							});
 							this.props.updateOrder(data.data);
-							this.toastNotification(data);
 							if (
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_partially_filled
 							) {
+								this.toastNotification(data);
 								// data.filled = data.filled - filled;
 								// if (isMobile) {
 								// 	this.props.setSnackDialog({
@@ -508,7 +539,6 @@ class Container extends Component {
 								isOrderStatus: data?.data?.status,
 								selectedPair: data?.data?.symbol,
 							});
-							this.toastNotification(data);
 							const ordersDeleted = this.props.orders.filter((order, index) => {
 								return data.data.id === order.id;
 							});
@@ -517,6 +547,7 @@ class Container extends Component {
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_completed
 							) {
+								this.toastNotification(data);
 								ordersDeleted.forEach((orderDeleted) => {
 									// if (isMobile) {
 									// 	this.props.setSnackDialog({

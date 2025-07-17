@@ -656,8 +656,18 @@
 		}
 	}
 
+	.address-book-tab-header-content {
+		.address-book-icon {
+			.icon_title-wrapper {
+				margin-left: unset !important;
+			}
+		}
+	}
 	.address-book-form {
 		.address-book-content-wrapper {
+			.address-book-description {
+				font-size: 1.3rem;
+			}
 			.address-book-table-wrapper {
 				.table-content {
 					overflow-x: scroll;

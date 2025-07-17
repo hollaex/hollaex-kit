@@ -8,6 +8,7 @@ import {
 	CaretDownOutlined,
 	CheckCircleOutlined,
 	InfoCircleOutlined,
+	CheckCircleTwoTone,
 } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 
@@ -37,13 +38,14 @@ const TabPane = Tabs.TabPane;
 const RECORD_LIMIT = 20;
 
 const ReferralList = ({
-	affiliation_code,
+	// affiliation_code,
 	affiliation,
 	setSnackNotification,
 	coins,
 	referral_history_config,
 	icons: ICON,
 	router,
+	features,
 }) => {
 	const [balanceHistory, setBalanceHistory] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +75,7 @@ const ReferralList = ({
 
 	const [displayCreateLink, setDisplayCreateLink] = useState(false);
 	const [displaySettle, setDisplaySettle] = useState(false);
+	const [isSuccessfullySettled, setIsSuccessfullySettled] = useState(false);
 	const [linkStep, setLinkStep] = useState(0);
 	const [referralCode, setReferralCode] = useState();
 	const [selectedOption, setSelectedOption] = useState(0);
@@ -84,42 +87,66 @@ const ReferralList = ({
 	const [activeTab, setActiveTab] = useState('0');
 	const [realizedData, setRealizedData] = useState([]);
 
+	const tabList = ['summary', 'history'];
+
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+		router.replace(`/referral?${tabList[key]}`);
 	};
 	useEffect(() => {
-		fetchReferralCodes()
-			.then((res) => {
-				setReferralCodes(res.data);
-			})
-			.catch((err) => err);
+		if (features?.referral_history_config) {
+			const params = new URLSearchParams(window.location.search);
+			const tab = tabList?.find((data) => params.has(data));
+			const tabIndex = tabList?.indexOf(tab);
+			if (tabIndex !== -1 && tab) {
+				setActiveTab(tabIndex?.toString());
+				router.replace(`/referral?${tabList[tabIndex]}`);
+			} else {
+				router.replace(`/referral?${tabList[activeTab]}`);
+			}
 
-		fetchRealizedFeeEarnings()
-			.then((res) => {
-				setRealizedData(res);
-			})
-			.catch((err) => err);
-		fetchUnrealizedFeeEarnings()
-			.then((res) => {
-				if (res?.data?.length > 0) {
-					let earnings = 0;
+			fetchReferralCodes()
+				.then((res) => {
+					setReferralCodes(res.data);
+				})
+				.catch((err) => err);
 
-					res.data.forEach((earning) => {
-						earnings += earning.accumulated_fees;
-					});
+			fetchRealizedFeeEarnings()
+				.then((res) => {
+					setRealizedData(res);
+				})
+				.catch((err) => err);
+			fetchUnrealizedFeeEarnings()
+				.then((res) => {
+					if (res?.data?.length > 0) {
+						let earnings = 0;
 
-					setUnrealizedEarnings(
-						getSourceDecimals(
-							referral_history_config?.currency || 'usdt',
-							earnings
-						)
-					);
-				}
-			})
-			.catch((err) => err);
-		getUserReferrals();
+						res.data.forEach((earning) => {
+							earnings += earning.accumulated_fees;
+						});
+
+						setUnrealizedEarnings(
+							getSourceDecimals(
+								referral_history_config?.currency || 'usdt',
+								earnings
+							)
+						);
+					}
+				})
+				.catch((err) => err);
+			getUserReferrals();
+		} else {
+			router.push('/summary');
+		}
 		// eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		if (router.location?.search === '') {
+			router.replace(`/referral?${tabList[activeTab]}`);
+		}
+		// eslint-disable-next-line
+	}, [router.location?.search]);
 
 	const HEADERS = [
 		{
@@ -304,13 +331,13 @@ const ReferralList = ({
 		});
 	};
 
-	const handleSettlementNotification = () => {
-		setSnackNotification({
-			icon: ICONS.COPY_NOTIFICATION,
-			content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
-			timer: 2000,
-		});
-	};
+	// const handleSettlementNotification = () => {
+	// 	setSnackNotification({
+	// 		icon: ICONS.COPY_NOTIFICATION,
+	// 		content: STRINGS['REFERRAL_LINK.SETTLEMENT_SUCCESS'],
+	// 		timer: 2000,
+	// 	});
+	// };
 
 	const showErrorMessage = (message) => {
 		setSnackNotification({
@@ -414,8 +441,7 @@ const ReferralList = ({
 				.catch((err) => err);
 
 			setDisplaySettle(false);
-			handleSettlementNotification();
-			setActiveTab('1');
+			setIsSuccessfullySettled(true);
 		} catch (error) {
 			showErrorMessage(error.data.message);
 		}
@@ -600,6 +626,11 @@ const ReferralList = ({
 		setLinkStep(0);
 	};
 
+	const onHandleCloseSuccessfulPopup = () => {
+		setIsSuccessfullySettled(false);
+		setActiveTab('1');
+	};
+
 	const createReferralCode = () => {
 		return (
 			<div className="referral-pop-up-wrapper">
@@ -607,6 +638,7 @@ const ReferralList = ({
 					className="referral_table_theme create_referral_wrapper"
 					isOpen={displayCreateLink}
 					onCloseDialog={() => onHandleClose()}
+					label="create-referral-popup"
 				>
 					{linkStep === 0 && (
 						<>
@@ -829,7 +861,7 @@ const ReferralList = ({
 														if (
 															earningRate >= 0 &&
 															earningRate <=
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 														) {
 															let newDiscount = discount;
 															if (discount >= 10) {
@@ -838,14 +870,14 @@ const ReferralList = ({
 															}
 															if (
 																earningRate + newDiscount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setEarningRate(earningRate + 10);
 														}
 													} else {
 														if (
 															discount >= 0 &&
-															discount <= referral_history_config.earning_rate
+															discount <= referral_history_config?.earning_rate
 														) {
 															let newEarningRate = earningRate;
 															if (earningRate >= 10) {
@@ -855,7 +887,7 @@ const ReferralList = ({
 															}
 															if (
 																newEarningRate + discount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setDiscount(discount + 10);
 														}
@@ -876,7 +908,7 @@ const ReferralList = ({
 														if (
 															earningRate > 0 &&
 															earningRate <=
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 														) {
 															const newEarningRate = earningRate - 10;
 															if (newEarningRate === 0) return;
@@ -884,20 +916,20 @@ const ReferralList = ({
 																setEarningRate(newEarningRate);
 															if (
 																newEarningRate + discount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setDiscount(discount + 10);
 														}
 													} else {
 														if (
 															discount > 0 &&
-															discount <= referral_history_config.earning_rate
+															discount <= referral_history_config?.earning_rate
 														) {
 															const newDiscount = discount - 10;
 															if (discount >= 10) setDiscount(newDiscount);
 															if (
 																earningRate + newDiscount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setEarningRate(earningRate + 10);
 														}
@@ -1129,6 +1161,7 @@ const ReferralList = ({
 				isOpen={displaySettle}
 				width={'480'}
 				onCloseDialog={() => setDisplaySettle(false)}
+				label="settle-referral-popup"
 			>
 				<div className="settle">
 					<div className="settle-popup-wrapper fs-13">
@@ -1182,6 +1215,7 @@ const ReferralList = ({
 				className="referral_table_theme"
 				isOpen={displaySettle}
 				onCloseDialog={() => setDisplaySettle(false)}
+				label="settle-referral-popup"
 			>
 				<div>
 					<div className="settle-popup-wrapper fs-13">
@@ -1202,7 +1236,7 @@ const ReferralList = ({
 						<div className="mt-4">
 							<span className="font-weight-bold">Amount to settle:</span>{' '}
 							{unrealizedEarnings}{' '}
-							{(referral_history_config?.currency || 'usdt').toUpperCase()}
+							{(referral_history_config?.currency || 'usdt')?.toUpperCase()}
 						</div>
 
 						<div className="mt-5">
@@ -1240,6 +1274,52 @@ const ReferralList = ({
 		);
 	};
 
+	const renderSuccessfulSettleReferral = () => {
+		return (
+			<Dialog
+				className="referral_table_theme"
+				isOpen={isSuccessfullySettled}
+				width={'480'}
+				onCloseDialog={() => onHandleCloseSuccessfulPopup()}
+				label="settle-referral-popup"
+			>
+				<div className="settle">
+					<div className="settle-popup-wrapper fs-13">
+						<div className="earning-icon-wrapper align-items-center">
+							<span className="check-icon">
+								<CheckCircleTwoTone />
+							</span>
+							<div className="earning-label ml-1">
+								<EditWrapper stringId="REFERRAL_LINK.SUCCESSFULLY_SETTLED">
+									{STRINGS['REFERRAL_LINK.SUCCESSFULLY_SETTLED']}
+								</EditWrapper>
+							</div>
+						</div>
+						<div className="mt-4">
+							{STRINGS.formatString(
+								STRINGS['REFERRAL_LINK.SETTLE_AMOUNT'],
+								<span className="font-weight-bold">{unrealizedEarnings}</span>,
+								<span className="font-weight-bold">
+									{(referral_history_config?.currency || 'usdt')?.toUpperCase()}
+								</span>
+							)}
+						</div>
+					</div>
+					<div className="referral-popup-btn-wrapper">
+						<AntButton
+							onClick={() => onHandleCloseSuccessfulPopup()}
+							className="okay-btn"
+							type="default"
+						>
+							<EditWrapper stringId="DUST.SUCCESSFUL.VIEW_HISTORY">
+								{STRINGS['DUST.SUCCESSFUL.VIEW_HISTORY']?.toUpperCase()}
+							</EditWrapper>
+						</AntButton>
+					</div>
+				</div>
+			</Dialog>
+		);
+	};
 	const getSourceDecimals = (symbol, value) => {
 		const incrementUnit = coins[symbol].increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -1270,6 +1350,7 @@ const ReferralList = ({
 				)}
 				{displayCreateLink && createReferralCode()}
 				{displaySettle && settleReferral()}
+				{isSuccessfullySettled && renderSuccessfulSettleReferral()}
 				{!isMobile && (
 					<div>
 						<span
@@ -1378,7 +1459,7 @@ const ReferralList = ({
 														)}{' '}
 														{(
 															referral_history_config?.currency || 'usdt'
-														).toUpperCase()}{' '}
+														)?.toUpperCase()}{' '}
 													</div>
 												</div>
 												<div className="earn-info-border mt-3"></div>
@@ -1396,7 +1477,7 @@ const ReferralList = ({
 																STRINGS['REFERRAL_LINK.SETTLE_HERE']
 															} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
 																referral_history_config?.minimum_amount
-															} ${(referral_history_config?.currency).toUpperCase()})`}
+															} ${referral_history_config?.currency?.toUpperCase()})`}
 														>
 															<InfoCircleOutlined />
 														</Tooltip>
@@ -1448,7 +1529,7 @@ const ReferralList = ({
 												)}{' '}
 												{(
 													referral_history_config?.currency || 'usdt'
-												).toUpperCase()}{' '}
+												)?.toUpperCase()}{' '}
 											</div>
 										</div>
 										<div className="earn-info-border mt-3"></div>
@@ -1466,7 +1547,7 @@ const ReferralList = ({
 														STRINGS['REFERRAL_LINK.SETTLE_HERE']
 													} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
 														referral_history_config?.minimum_amount
-													} ${(referral_history_config?.currency).toUpperCase()})`}
+													} ${referral_history_config?.currency?.toUpperCase()})`}
 												>
 													<InfoCircleOutlined />
 												</Tooltip>
@@ -1721,7 +1802,7 @@ const ReferralList = ({
 													)}{' '}
 													{(
 														referral_history_config?.currency || 'usdt'
-													).toUpperCase()}{' '}
+													)?.toUpperCase()}{' '}
 												</span>
 											</div>
 										</div>
@@ -1874,6 +1955,7 @@ const mapStateToProps = (state) => ({
 	referral_history_config: state.app.constants.referral_history_config,
 	affiliation: state.user.affiliation || {},
 	is_hap: state.user.is_hap,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({

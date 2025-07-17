@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import debounce from 'lodash.debounce';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -17,16 +18,24 @@ import { MarketsSelector } from 'containers/Trade/utils';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import {
+	changePair,
 	changeSparkLineChartData,
+	setIsActiveFavQuickTrade,
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
+	setMarketRefresh,
+	setTransactionPair,
 } from 'actions/appActions';
 import icons from 'config/icons/dark';
+import { Loading } from 'containers/DigitalAssets/components/utils';
+import { flipPair } from 'containers/QuickTrade/components/utils';
 
 let isMounted = false;
 class PairTabs extends Component {
 	state = {
 		activePairTab: '',
+		refreshPairTab: 0,
+		isLoading: false,
 		// sparkLine: [],
 	};
 
@@ -36,7 +45,11 @@ class PairTabs extends Component {
 		if (router && router.params.pair) {
 			active = router.params.pair;
 		}
-		this.setState({ activePairTab: active });
+		const activePair =
+			Object.keys(pairs).find(
+				(data) => data === active || data === flipPair(active)
+			) || null;
+		this.setState({ activePairTab: activePair });
 		this.initTabs(pairs, active);
 	}
 
@@ -79,14 +92,27 @@ class PairTabs extends Component {
 	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair, isQuickTrade) => {
-		const { router } = this.props;
+		const {
+			router,
+			pairs,
+			setIsActiveFavQuickTrade,
+			setTransactionPair,
+			changePair,
+		} = this.props;
+		const activePair =
+			Object.keys(pairs).find(
+				(data) => data === pair || data === flipPair(pair)
+			) || null;
 		if (pair) {
+			setTransactionPair(null);
 			if (isQuickTrade) {
+				setIsActiveFavQuickTrade(true);
+				changePair(pair);
 				router.push(`/quick-trade/${pair}`);
 			} else {
 				router.push(`/trade/${pair}`);
 			}
-			this.setState({ activePairTab: pair });
+			this.setState({ activePairTab: activePair });
 		}
 	};
 
@@ -100,6 +126,23 @@ class PairTabs extends Component {
 		const { setIsToolsVisible, setIsMarketDropdownVisible } = this.props;
 		setIsToolsVisible(visible);
 		setIsMarketDropdownVisible(false);
+	};
+
+	setIsLoading = debounce(() => {
+		this.setState({ isLoading: false });
+	}, 250);
+
+	marketRefreshHandler = () => {
+		this.setState((prev) => ({
+			refreshPairTab: prev.refreshPairTab + 1,
+			isLoading: true,
+		}));
+		this.props.setMarketRefresh(true);
+		this.setIsLoading();
+	};
+
+	componentWillUnmount = () => {
+		this.setIsLoading && this.setIsLoading.cancel();
 	};
 
 	render() {
@@ -157,6 +200,7 @@ class PairTabs extends Component {
 							)}
 						>
 							<Dropdown
+								key={this.state.refreshPairTab}
 								id="selector-nav-container"
 								className="market-selector-dropdown"
 								overlayClassName="market-selector-dropdown-wrapper"
@@ -188,18 +232,24 @@ class PairTabs extends Component {
 								>
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
-											<Coin iconId={icon_id} type="CS4" />
-											<div className="app_bar-currency-txt ml-1">
-												{display_name}:
-											</div>
-											<div className="title-font ml-1">
-												{formatToCurrency(close, increment_price)}
-											</div>
-											<PriceChange
-												className="markets-drop-down"
-												market={market}
-												key={key}
-											/>
+											{!this.state.isLoading ? (
+												<span className="d-flex align-items-center justify-content-between">
+													<Coin iconId={icon_id} type="CS4" />
+													<div className="app_bar-currency-txt ml-1">
+														{display_name}:
+													</div>
+													<div className="title-font ml-1">
+														{formatToCurrency(close, increment_price)}
+													</div>
+													<PriceChange
+														className="markets-drop-down"
+														market={market}
+														key={key}
+													/>
+												</span>
+											) : (
+												<Loading index={0} />
+											)}
 											<SparkLine
 												data={
 													!sparkLineChartData[key] ||
@@ -212,6 +262,7 @@ class PairTabs extends Component {
 												containerProps={{
 													style: { height: '100%', width: '100%' },
 												}}
+												key={this.state.refreshPairTab}
 											/>
 										</div>
 									) : (
@@ -249,10 +300,35 @@ class PairTabs extends Component {
 									markets={[...filterQuickTrade, ...markets]}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
+									isLoading={this.state.isLoading}
+									key={this.state.refreshPairTab}
 								/>
 							)}
 						</Slider>
 					</div>
+					{location.pathname.indexOf('/trade/') === 0 && (
+						<div className="d-flex h-100 tools-button border-left">
+							<div
+								className={classnames(
+									'app_bar-pair-content',
+									'market-trigger',
+									'd-flex',
+									'justify-content-between',
+									'px-2'
+								)}
+							>
+								<div
+									className="selector-trigger narrow app_bar-pair-tab tools w-100 h-100"
+									onClick={() => this.marketRefreshHandler()}
+								>
+									<Image
+										icon={icons['REFRESH_ICON']}
+										wrapperClassName="trading-icon"
+									/>
+								</div>
+							</div>
+						</div>
+					)}
 					{location.pathname.indexOf('/trade/') === 0 && (
 						<div className="d-flex h-100 tools-button border-left">
 							<div
@@ -302,6 +378,7 @@ const mapStateToProps = (state) => {
 			sparkLineChartData,
 			isMarketDropdownVisible,
 			isToolsVisible,
+			isMarketRefresh,
 		},
 		orderbook: { prices },
 	} = state;
@@ -317,6 +394,7 @@ const mapStateToProps = (state) => {
 		sparkLineChartData,
 		isMarketDropdownVisible,
 		isToolsVisible,
+		isMarketRefresh,
 	};
 };
 
@@ -330,6 +408,13 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setIsToolsVisible: bindActionCreators(setIsToolsVisible, dispatch),
+	setMarketRefresh: bindActionCreators(setMarketRefresh, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
+	setIsActiveFavQuickTrade: bindActionCreators(
+		setIsActiveFavQuickTrade,
+		dispatch
+	),
+	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
 });
 
 export default connect(

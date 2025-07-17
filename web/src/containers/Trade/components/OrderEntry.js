@@ -385,7 +385,7 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { change, resetSlider } = this.props;
+		const { change, resetSlider = () => {} } = this.props;
 		this.setState({ sliderVal: 0 });
 		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');

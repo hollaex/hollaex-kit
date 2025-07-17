@@ -45,6 +45,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { sendEmailCode } from 'actions/userAction';
 import moment from 'moment';
 import { CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { onHandleBadge, roleStyles } from '../Roles/RoleManagement';
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 
 const ModalBtn = ({ onClick, btnName, disabled, className }) => {
@@ -573,63 +574,19 @@ const AboutData = ({
 		city: address.city,
 	};
 
-	const renderIcons = () => {
-		if (userData.is_admin) {
-			return (
-				<img
-					src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
-					className="user-info-icon"
-					alt="EyeIcon"
-				/>
-			);
-		} else if (userData.is_communicator) {
-			return (
-				<ReactSVG
-					src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-					className="user-info-icon"
-				/>
-			);
-		} else if (userData.is_kyc) {
-			return (
-				<ReactSVG
-					src={STATIC_ICONS.BLUE_SCREEN_KYC}
-					className="user-info-icon"
-				/>
-			);
-		} else if (userData.is_supervisor) {
-			return (
-				<ReactSVG
-					src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-					className="user-info-icon"
-				/>
-			);
-		} else if (userData.is_support) {
-			return (
-				<ReactSVG
-					src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-					className="user-info-icon"
-				/>
-			);
-		} else {
-			return <UserOutlined className="user-icon" />;
-		}
+	const renderRole = () => {
+		return userData.role || 'user';
 	};
 
-	const renderRole = () => {
-		if (userData.is_admin) {
-			return 'admin';
-		} else if (userData.is_communicator) {
-			return 'communicator';
-		} else if (userData.is_kyc) {
-			return 'kyc';
-		} else if (userData.is_supervisor) {
-			return 'supervisor';
-		} else if (userData.is_support) {
-			return 'support';
-		} else {
-			return 'user';
-		}
+	const renderRoleIcon = () => {
+		return roleStyles[renderRole()]
+			? roleStyles[renderRole()]?.rolesImage
+			: onHandleBadge(userData?.role);
 	};
+
+	const defaultRole = roleStyles[userData?.role?.toLowerCase()]
+		? `user-role-icon ${roleStyles[userData?.role?.toLowerCase()]?.cardWrapper}`
+		: 'user-role-icon';
 
 	return (
 		<div>
@@ -999,7 +956,16 @@ const AboutData = ({
 								</div>
 								<div className="user-info-separator"></div>
 								<div className="user-role-container">
-									<div>{renderIcons()}</div>
+									<div className="user-role-icon-wrapper">
+										{userData?.role ? (
+											<Image
+												icon={renderRoleIcon()}
+												wrapperClassName={defaultRole}
+											/>
+										) : (
+											<UserOutlined className="user-icon" />
+										)}
+									</div>
 									<div className="user-info-label">Role: {renderRole()}</div>
 									<div className="ml-4">
 										<Link to="/admin/roles">
@@ -1150,10 +1116,16 @@ const AboutData = ({
 									}}
 									value={null}
 								>
-									None{' '}
-									<Link to="/admin/financials?tab=2">
-										(it follows the users tier withdrawal limit)
-									</Link>
+									<span>
+										None (it follows the users{' '}
+										<Link
+											to="/admin/financials?tab=2"
+											className="underline-text"
+										>
+											tier withdrawal limit
+										</Link>
+										)
+									</span>
 								</Radio>
 								<Radio
 									style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}

@@ -375,6 +375,9 @@ const CeFi = ({ coins, features, kit }) => {
 		getAllUserData();
 		setIsLoading(true);
 		requestStakes(queryFilters.page, queryFilters.limit);
+		return () => {
+			handleSearch.cancel();
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

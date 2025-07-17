@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { Helmet } from 'react-helmet';
@@ -8,7 +9,7 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import querystring from 'query-string';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
@@ -27,12 +28,14 @@ import {
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
+	setError,
 } from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import { getChatMinimized, setChatMinimized } from 'utils/theme';
-import { isLoggedIn, isAdmin } from 'utils/token';
+// eslint-disable-next-line
+import { isLoggedIn, isAdmin, hasPermissions } from 'utils/token';
 import {
 	AppBar,
 	AppMenuBar,
@@ -73,6 +76,8 @@ import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 import { renderConfirmSignout } from 'components/AppBar/Utils';
+import { setActiveBalanceHistory } from 'actions/walletActions';
+import { browserTitleSelector } from 'config/browserTitle';
 
 class App extends Component {
 	state = {
@@ -93,9 +98,12 @@ class App extends Component {
 		isProTrade: false,
 		isQuickTrade: false,
 		isLogout: false,
+		isOnline: navigator.onLine,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
+	debouncedPricesAndAssets = null;
+	assetsPrice = null;
 
 	UNSAFE_componentWillMount() {
 		const chatIsClosed = getChatMinimized();
@@ -129,7 +137,7 @@ class App extends Component {
 
 		this.setActiveMenu();
 
-		setTimeout(
+		this.assetsPrice = setTimeout(
 			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
 			5000
 		);
@@ -166,6 +174,8 @@ class App extends Component {
 				window.location.reload();
 			});
 		}
+		window.addEventListener('online', this.updateNetworkStatus);
+		window.addEventListener('offline', this.updateNetworkStatus);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -210,7 +220,7 @@ class App extends Component {
 			!isEqual(balance, nextProps.balance) ||
 			!isEqual(coins, nextProps.coins)
 		) {
-			debounce(
+			this.debouncedPricesAndAssets = debounce(
 				() => this.props.setPricesAndAsset(nextProps.balance, nextProps.coins),
 				15000
 			);
@@ -245,6 +255,12 @@ class App extends Component {
 			const newUrl = `${currentUrl}?${params.toString()}`;
 			this.props.router.replace(newUrl);
 		}
+		if (!this.state.isOnline) {
+			this.props.setError({
+				message: STRINGS['ERROR_TAB.NETWORK_ERROR_MESSAGE'],
+			});
+			return;
+		}
 	}
 
 	componentWillUnmount() {
@@ -260,7 +276,15 @@ class App extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+		clearInterval(this.assetsPrice);
+		window.removeEventListener('online', this.updateNetworkStatus);
+		window.removeEventListener('offline', this.updateNetworkStatus);
+		this.debouncedPricesAndAssets && this.debouncedPricesAndAssets.cancel();
 	}
+
+	updateNetworkStatus = () => {
+		this.setState({ isOnline: navigator.onLine });
+	};
 
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
@@ -309,6 +333,9 @@ class App extends Component {
 	handleMenuChange = (path = '', cb, enableTrade = false) => {
 		if (enableTrade && path === '/trade') {
 			this.setState({ isTradeTab: !this.state.isTradeTab });
+		} else if (path === '/wallet') {
+			this.props.setActiveBalanceHistory(false);
+			this.props.router.replace('/wallet');
 		} else {
 			this.setState({
 				isTradeTab: false,
@@ -693,6 +720,53 @@ class App extends Component {
 		this.logout();
 	};
 
+	onHandleBrowserTitle = () => {
+		const { router, getBrowserTitle, coins, constants } = this.props;
+		const { pathname, search, query } = router.location;
+		const filteredList = getBrowserTitle?.find(
+			(data) =>
+				(query?.tab && data?.query === query?.tab) ||
+				(search?.includes(data?.query) && data?.path === pathname) ||
+				(!data?.query && data?.path === pathname) ||
+				data?.activePath?.includes(pathname)
+		);
+		if (filteredList) {
+			return filteredList?.browserTitle;
+		} else {
+			if (pathname?.startsWith('/prices/coin/')) {
+				const [, , , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${symbol?.toUpperCase()} ${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_ASSET_INFORMATION']
+					} | ${constants?.api_name}`;
+				}
+			}
+			if (pathname?.startsWith('/stake/details/')) {
+				const [, , , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_STAKE_DETAILS']
+					} ${symbol?.toUpperCase()} | ${constants?.api_name}`;
+				}
+			} else if (
+				pathname?.startsWith('/wallet/') &&
+				!pathname?.includes('deposit') &&
+				!pathname?.includes('withdraw')
+			) {
+				const [, , symbol] = pathname?.split('/');
+				if (coins && coins[symbol]) {
+					return `${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_WALLET_ASSET']
+					} ${symbol?.toUpperCase()} ${
+						STRINGS['BROWSER_TAB_TITLE.TITLE_WALLET_DETAILS']
+					} | ${this.props.constants?.api_name}`;
+				}
+			} else {
+				return constants?.api_name;
+			}
+		}
+	};
+
 	render() {
 		const {
 			symbol,
@@ -765,7 +839,7 @@ class App extends Component {
 			<ThemeProvider>
 				<div>
 					<Helmet>
-						<title>{constants.title}</title>
+						<title>{this.onHandleBrowserTitle()}</title>
 						<meta name="description" content={constants.description} />
 					</Helmet>
 					<Socket
@@ -824,7 +898,7 @@ class App extends Component {
 										onMenuChange={this.handleMenuChange}
 										isHome={isHome}
 									>
-										{isBrowser && isMenubar && (
+										{isBrowser && (
 											<AppMenuBar
 												menuItems={menuItems}
 												activePath={this.state.activeMenu}
@@ -934,6 +1008,8 @@ class App extends Component {
 											},
 											{
 												menu: activeNotification.type === MARKET_SELECTOR,
+												'signout-confirmation-popup-wrapper':
+													activeNotification.type === LOGOUT_CONFORMATION,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -1010,9 +1086,11 @@ class App extends Component {
 						{showFooter && !isChartEmbed && <AppFooter constants={constants} />}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && !isChartEmbed && (
-					<OperatorControls initialData={this.props.location} />
-				)}
+				{this.props?.user?.permissions?.length > 0 &&
+					isBrowser &&
+					!isChartEmbed && (
+						<OperatorControls initialData={this.props.location} />
+					)}
 				<Dialog
 					label="successful_dialog"
 					isOpen={isCustomNotification}
@@ -1032,6 +1110,20 @@ class App extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
+	user: store.user,
+	getBrowserTitle: browserTitleSelector(store),
+	coins: store.app.coins,
 });
 
-export default connect(mapStateToProps)(withEdit(withConfig(App)));
+const mapDispatchToProps = (dispatch) => ({
+	setError: bindActionCreators(setError, dispatch),
+	setActiveBalanceHistory: bindActionCreators(
+		setActiveBalanceHistory,
+		dispatch
+	),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(withEdit(withConfig(App))));

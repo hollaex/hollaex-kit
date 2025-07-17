@@ -59,6 +59,7 @@ export const ConnectionPopup = ({
 			isOpen={isDisplayPopup?.isDisplayConnection}
 			onCloseDialog={() => onHandleClose('connection')}
 			className="check-connection-popup-wrapper"
+			label="check-connection-popup"
 		>
 			<div className="check-connection-popup-container">
 				<div className="connection-title-wrapper">
@@ -324,6 +325,7 @@ export const ReconnectPopup = ({ isDisplayPopup, onHandleClose }) => {
 			isOpen={isDisplayPopup?.isDisplayReconnect}
 			onCloseDialog={() => onHandleClose('reconnect')}
 			className="reconnect-popup-wrapper"
+			label="reconnect-popup"
 		>
 			<div className="reconnect-popup-container">
 				<div className="reconnect-title-wrapper">
@@ -372,13 +374,22 @@ export const renderConfirmSignout = (
 			isOpen={isVisible}
 			className="signout-confirmation-popup-wrapper"
 			onCloseDialog={() => onHandleclose()}
+			label="signout-confirmation-popup"
 		>
 			<div className="signout-confirmation-popup-description">
-				<span className="signout-title">
-					<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
-						{STRINGS['LOGOUT_CONFIRM_TEXT']}
-					</EditWrapper>
-				</span>
+				<div className="signout-confirmation-content">
+					<Image icon={icons['TAB_SIGNOUT']} wrapperClassName="sign-out-icon" />
+					<span className="signout-title">
+						<EditWrapper stringId="CONFIRM_TEXT">
+							{STRINGS['CONFIRM_TEXT']} {STRINGS['SIGN_OUT_TEXT']}
+						</EditWrapper>
+					</span>
+					<span className="signout-description-content">
+						<EditWrapper stringId="LOGOUT_CONFIRM_TEXT">
+							{STRINGS['LOGOUT_CONFIRM_TEXT']}
+						</EditWrapper>
+					</span>
+				</div>
 				<div className="signout-confirmation-button-wrapper">
 					<Button
 						className="cancel-btn"
@@ -481,115 +492,133 @@ export const LanguageDisplayPopup = ({
 			isOpen={isVisible}
 			onCloseDialog={() => onHandleClose()}
 			className="language-popup-wrapper"
+			label="language-popup"
 		>
 			<div className="language-popup-container">
-				<div className="title-container">
-					<Image
-						iconId={'LANGUAGE_OPTION_ICON'}
-						icon={icons['LANGUAGE_OPTION_ICON']}
-						wrapperClassName="icon-logo"
-					/>
-					<EditWrapper stringId="LANGUAGE_SWITCHER.LANGUAGE_TITLE">
-						<span>
-							{isCurrency
-								? STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']
-								: STRINGS['LANGUAGE_SWITCHER.LANGUAGE_TITLE']}
-						</span>
-					</EditWrapper>
-				</div>
-				{!isCurrency && (
-					<div className="language-field w-100">
-						<EditWrapper stringId="USER_SETTINGS.TITLE_LANGUAGE">
-							<span className="font-weight-bold">
-								{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+				<div className="language-popup-details-wrapper">
+					<div className="title-container">
+						<Image
+							iconId={'LANGUAGE_OPTION_ICON'}
+							icon={icons['LANGUAGE_OPTION_ICON']}
+							wrapperClassName="icon-logo"
+						/>
+						<EditWrapper stringId="LANGUAGE_SWITCHER.LANGUAGE_TITLE">
+							<span>
+								{isCurrency
+									? STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']
+									: STRINGS['LANGUAGE_SWITCHER.LANGUAGE_TITLE']}
 							</span>
 						</EditWrapper>
-						<EditWrapper stringId="SETTINGS_LANGUAGE_LABEL">
+					</div>
+					{!isCurrency && (
+						<div className="language-field w-100">
+							<EditWrapper stringId="USER_SETTINGS.TITLE_LANGUAGE">
+								<span className="font-weight-bold">
+									{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+								</span>
+							</EditWrapper>
+							<EditWrapper stringId="SETTINGS_LANGUAGE_LABEL">
+								<span className="secondary-text">
+									{STRINGS['SETTINGS_LANGUAGE_LABEL']}
+								</span>
+							</EditWrapper>
+							<Select
+								value={selectedLanguage}
+								size="small"
+								onChange={(value) => setSelectedLanguage(value)}
+								bordered={false}
+								suffixIcon={
+									isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />
+								}
+								className="custom-select-input-style appbar select-language-wrapper"
+								dropdownClassName={
+									isMobile
+										? 'custom-select-style select-option-wrapper language-select-dropdown-wrapper language-select-dropdown-wrapper-mobile'
+										: 'custom-select-style select-option-wrapper language-select-dropdown-wrapper'
+								}
+								getPopupContainer={handlePopupContainer}
+								virtual={false}
+								open={isOpen}
+								onDropdownVisibleChange={(open) => setIsOpen(open)}
+								listHeight={165}
+							>
+								{languageFormValue?.map(({ value, icon, label }) => (
+									<Option value={value} key={value} className="capitalize">
+										<div className="language_option">
+											<Image
+												icon={icon}
+												alt={label}
+												wrapperClassName="flag-icon"
+											/>
+											<span className="caps important-text">{label}</span>
+										</div>
+									</Option>
+								))}
+							</Select>
+						</div>
+					)}
+					<div className="language-field w-100">
+						<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY">
+							<span className="font-weight-bold">
+								{isCurrency
+									? STRINGS['CURRENCY']
+									: STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']}
+							</span>
+						</EditWrapper>
+						<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC">
 							<span className="secondary-text">
-								{STRINGS['SETTINGS_LANGUAGE_LABEL']}
+								{STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC']}
 							</span>
 						</EditWrapper>
 						<Select
-							value={selectedLanguage}
-							size="small"
-							onChange={(value) => setSelectedLanguage(value)}
-							bordered={false}
-							suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
+							value={selectedCurrency}
 							className="custom-select-input-style appbar select-language-wrapper"
-							dropdownClassName="custom-select-style select-option-wrapper language-select-dropdown-wrapper"
+							dropdownClassName={
+								isMobile
+									? 'custom-select-style select-currency-wrapper select-currency-wrapper-mobile'
+									: 'custom-select-style select-currency-wrapper'
+							}
+							onChange={(value) => setSelectedCurrency(value)}
+							placeholder={STRINGS['CURRENCY']}
+							suffixIcon={
+								isDisplayCurrencyOpen ? (
+									<CaretUpOutlined />
+								) : (
+									<CaretDownOutlined />
+								)
+							}
 							getPopupContainer={handlePopupContainer}
 							virtual={false}
-							open={isOpen}
-							onDropdownVisibleChange={(open) => setIsOpen(open)}
+							open={isDisplayCurrencyOpen}
+							onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
+							listHeight={90}
 						>
-							{languageFormValue?.map(({ value, icon, label }) => (
-								<Option value={value} key={value} className="capitalize">
-									<div className="language_option">
-										<Image
-											icon={icon}
-											alt={label}
-											wrapperClassName="flag-icon mr-2"
+							{selectable_native_currencies?.map((data) => {
+								return (
+									<Option key={data} value={data}>
+										<Coin
+											type={isMobile ? 'CS8' : 'CS4'}
+											iconId={coins[data]?.icon_id}
 										/>
-										<span className="caps important-text">{label}</span>
-									</div>
-								</Option>
-							))}
+										<span>{coins[data]?.fullname}</span>({data?.toUpperCase()})
+									</Option>
+								);
+							})}
 						</Select>
 					</div>
-				)}
-				<div className="language-field w-100">
-					<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY">
-						<span className="font-weight-bold">
-							{isCurrency
-								? STRINGS['CURRENCY']
-								: STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY']}
-						</span>
-					</EditWrapper>
-					<EditWrapper stringId="LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC">
-						<span className="secondary-text">
-							{STRINGS['LANGUAGE_SWITCHER.DISPLAY_CURRENCY_DESC']}
-						</span>
-					</EditWrapper>
-					<Select
-						value={selectedCurrency}
-						className="custom-select-input-style appbar select-language-wrapper"
-						dropdownClassName="custom-select-style select-currency-wrapper"
-						onChange={(value) => setSelectedCurrency(value)}
-						placeholder={STRINGS['CURRENCY']}
-						suffixIcon={
-							isDisplayCurrencyOpen ? (
-								<CaretUpOutlined />
-							) : (
-								<CaretDownOutlined />
-							)
-						}
-						getPopupContainer={handlePopupContainer}
-						virtual={false}
-						open={isDisplayCurrencyOpen}
-						onDropdownVisibleChange={(open) => setIsDisplayCurrencyOpen(open)}
-					>
-						{selectable_native_currencies?.map((data) => {
-							return (
-								<Option key={data} value={data}>
-									<Coin type="CS4" iconId={coins[data]?.icon_id} />
-									<span>{coins[data]?.fullname}</span>({data?.toUpperCase()})
-								</Option>
-							);
-						})}
-					</Select>
-				</div>
-				<div className="mt-4">
-					<EditWrapper stringId="PROFIT_LOSS.VIEW_MORE">
-						{STRINGS.formatString(
-							STRINGS['PROFIT_LOSS.VIEW_MORE'],
-							<span
-								className="blue-link text-decoration-underline"
-								onClick={() => onHandleNavigate()}
-							>
-								{STRINGS['LANGUAGE_SWITCHER.SETTINGS']}
-							</span>
-						)}
-					</EditWrapper>
+					<div className="mt-4">
+						<EditWrapper stringId="PROFIT_LOSS.VIEW_MORE">
+							{STRINGS.formatString(
+								STRINGS['PROFIT_LOSS.VIEW_MORE'],
+								<span
+									className="blue-link text-decoration-underline"
+									onClick={() => onHandleNavigate()}
+								>
+									{STRINGS['LANGUAGE_SWITCHER.SETTINGS']}
+								</span>
+							)}
+						</EditWrapper>
+					</div>
 				</div>
 				<div className="button-container">
 					<Button
@@ -609,10 +638,11 @@ export const LanguageDisplayPopup = ({
 };
 
 export const renderAnnouncementMessage = (message, maxLength = 100) => {
+	const announcementMessage = message?.replace(/(<([^>]+)>)/gi, ' ');
 	const maxAnnouncementMessage =
-		message?.length > maxLength
-			? message?.substring(0, maxLength) + '...'
-			: message;
+		announcementMessage?.length > maxLength
+			? announcementMessage?.substring(0, maxLength)?.trim() + '...'
+			: announcementMessage;
 
 	return (
 		<div

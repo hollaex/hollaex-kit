@@ -23,7 +23,8 @@ const applyKitChanges = (req, res) => {
 		})
 		.catch((err) => {
 			loggerNotification.verbose('controller/notification/applyKitChanges', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -46,6 +47,35 @@ const handleCurrencyDeposit = (req, res) => {
 		description,
 		fee_coin
 	} = req.swagger.params.data.value;
+
+
+	loggerNotification.verbose(
+		'controller/notification/handleCurrencyDeposit data',
+		'currency',
+		currency,
+		'user_id',
+		user_id,
+		'amount',
+		amount,
+		'txid',
+		txid,
+		'address',
+		address,
+		'is_confirmed',
+		is_confirmed,
+		'rejected',
+		rejected,
+		'created_at',
+		created_at,
+		'network',
+		network,
+		'fee',
+		fee,
+		'description',
+		description,
+		'fee_coin',
+		fee_coin
+	);
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -120,7 +150,7 @@ const handleCurrencyDeposit = (req, res) => {
 				'controller/notification/handleCurrencyDeposit',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req?.auth?.sub?.lang)}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req?.auth?.sub?.lang)?.message}` });
 		});
 };
 
@@ -217,7 +247,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 				'controller/notification/handleCurrencyWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req?.auth?.sub?.lang)}` });
+			return res.status(err.statusCode || 400).json({ message: `Fail - ${errorMessageConverter(err, req?.auth?.sub?.lang)?.message}` });
 		});
 };
 

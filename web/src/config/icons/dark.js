@@ -335,7 +335,7 @@ const nestedIcons = {
 	LOGIN_OPTION_ICON: '/assets/images/login-option-icon.svg',
 	SESSION_OPTION_ICON: '/assets/images/session-option-icon.svg',
 	BANK_OPTION_ICON: '/assets/images/bank-option-icon.svg',
-	AUDIO_OPTION_ICON: '/assets/images/audio-option-icon.svg',
+	AUDIO_OPTION_ICON: '/assets/images/audio.svg',
 	ADDRESS_OPTION_ICON: '/assets/images/address-option-icon.svg',
 	NOTIFICATION_OPTION_ICON: '/assets/images/notification-option-icon.svg',
 	HELP_OPTION_ICON: '/assets/images/help-bubble.svg',
@@ -353,7 +353,28 @@ const nestedIcons = {
 	ONRAMPER_ICON: '/assets/images/onramper.svg',
 	HOT_ICON: '/assets/images/fire-emoji.svg',
 	AUTO_TRADER_ICON: '/assets/images/auto-trade.svg',
-	ANNOUNCEMENT_ICON: '/assets/images/feature-announce.svg',
+	ANNOUNCEMENT_ICON: '/assets/images/announcement-option-icon.svg',
+	SPARKLE_ICON: '/assets/images/sparkle-icon.svg',
+	NETWORK_ERROR: '/assets/images/network-error.svg',
+	SERVER_ERROR: '/assets/images/server-error.svg',
+	SERVER_MAINTENANCE_ERROR: '/assets/images/server-maintenance-error.svg',
+	TOO_MANY_REQUEST_ERROR: '/assets/images/too-many-request-error.svg',
+
+	FROZEN_ICON: '/assets/images/frozen.svg',
+	CONFIRM_FREEZE_ICON: '/assets/images/confirm-freeze.svg',
+
+	HOME_PAGE_TRADE_ICON: '/assets/images/home-page-trade.png',
+	DI_LANDING_PAGE_SECTION_QUESTION_SECTION: '/assets/images/faq-background.png',
+	DI_LANDING_PAGE_SECTION_QUICK_TRADE_CALCULATOR:
+		'/assets/images/global-background.png',
+	DI_LANDING_PAGE_SECTION_CREATE_ACCOUNT_SECTION:
+		'/assets/images/world-dots-lines.png',
+	ACCOUNT_FUNDING: '/assets/images/account-funding.svg',
+	WORLD_TRADE: '/assets/images/world-trade.svg',
+	API_BUILDER: '/assets/images/api-builder.svg',
+	LIVE_TRADE_ICON: '/assets/images/live-trade-icon.svg',
+
+	HIGH_SLIPPAGE_WARNING: '/assets/images/high-slippage-warning.svg',
 };
 
 const icons = flatten(nestedIcons, options);

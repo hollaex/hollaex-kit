@@ -25,6 +25,8 @@ import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disabl
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
+import classnames from 'classnames';
+import ThemeProvider from 'containers/ThemeProvider';
 import {
 	setLocalVersions,
 	getLocalVersions,
@@ -37,6 +39,7 @@ import {
 	consoleKitInfo,
 	getContracts,
 	modifySections,
+	setupAxiosInterceptors,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -76,6 +79,7 @@ import {
 	DIGITAL_ASSETS_SORT,
 	setExchangeTimeZone,
 	setAppAnnouncements,
+	setErrorCount,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -94,10 +98,19 @@ import {
 	setLoadingImage,
 	setLoadingStyle,
 } from 'helpers/boot';
-import { filterPinnedAssets, handleUpgrade } from 'utils/utils';
+import {
+	filterPinnedAssets,
+	handleUpgrade,
+	NetworkError,
+	ServerError,
+	ServerMaintenanceError,
+	TooManyRequestError,
+} from 'utils/utils';
 import { isLoggedIn } from 'utils/token';
 import { getAnnouncementDetails } from 'containers/Announcement/actions';
+import { ErrorBoundary } from 'components';
 
+setupAxiosInterceptors();
 consoleKitInfo();
 consolePluginDevModeInfo();
 
@@ -319,20 +332,57 @@ const bootstrapApp = (
 
 	render(
 		<Provider store={store}>
-			<EditProvider>
-				<ConfigProvider initialConfig={appConfig}>
-					<Router
-						routes={generateRoutes(remoteRoutes)}
-						history={browserHistory}
-					/>
-				</ConfigProvider>
-			</EditProvider>
+			<ErrorBoundary>
+				<EditProvider>
+					<ConfigProvider initialConfig={appConfig}>
+						<Router
+							routes={generateRoutes(remoteRoutes)}
+							history={browserHistory}
+						/>
+					</ConfigProvider>
+				</EditProvider>
+			</ErrorBoundary>
 		</Provider>,
 		document.getElementById('root')
 	);
 };
 
+const renderInitialError = (err) => {
+	const getErrorCount = store.getState()?.app.errorCount || 0;
+	render(
+		<Provider store={store}>
+			<EditProvider>
+				<ThemeProvider>
+					<div
+						className={classnames(
+							'important-text',
+							'd-flex ',
+							'justify-content-between',
+							'align-center',
+							'flex-direction-column',
+							'py-5',
+							'font-title',
+							'h-100'
+						)}
+					>
+						{!navigator.onLine ? (
+							<NetworkError />
+						) : err?.response?.status === 504 ? (
+							<ServerError />
+						) : err?.response?.status === 429 ? (
+							<TooManyRequestError />
+						) : (
+							getErrorCount >= 3 && <ServerMaintenanceError />
+						)}
+					</div>
+				</ThemeProvider>
+			</EditProvider>
+		</Provider>,
+		document.getElementById('root')
+	);
+};
 const initialize = async () => {
+	const getErrorCount = store.getState()?.app.errorCount || 0;
 	try {
 		const [
 			configs,
@@ -350,6 +400,11 @@ const initialize = async () => {
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);
+		if (!navigator.onLine || getErrorCount >= 3 || err?.response?.status) {
+			renderInitialError(err);
+		} else {
+			store.dispatch(setErrorCount(getErrorCount + 1));
+		}
 	}
 };
 

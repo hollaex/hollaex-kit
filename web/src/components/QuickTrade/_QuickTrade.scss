@@ -356,6 +356,45 @@ $close-icon--height: 2rem;
 	}
 }
 
+.high-slippage-popup-wrapper {
+	.ReactModal__Content {
+		width: 40rem;
+		.high-slippage-popup-container {
+			.high-slippage-popup-title {
+				padding: 2% 0;
+				border-bottom: 2px solid $colors-border;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				.high-slippage-warning-icon {
+					svg {
+						width: 4rem;
+						height: 4rem;
+					}
+				}
+				.title-text {
+					font-size: 1.8rem;
+				}
+			}
+			.high-slippage-popup-content {
+				padding: 2% 4%;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 1rem;
+			}
+			.button-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 3%;
+				margin-top: 10%;
+			}
+		}
+	}
+}
+
 .layout-mobile {
 	.ReactModal__Overlay {
 		.ReactModal__Content {
@@ -455,6 +494,7 @@ $close-icon--height: 2rem;
 					font-size: $font-size-mobile-txt !important;
 					margin: auto;
 					text-align: center;
+					padding-bottom: 10%;
 				}
 			}
 		}

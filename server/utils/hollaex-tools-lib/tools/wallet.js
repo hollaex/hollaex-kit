@@ -53,7 +53,7 @@ const isValidAddress = (currency, address, network) => {
 		return WAValidator.validate(address, currency);
 	} else if (currency === 'xrp') {
 		return WAValidator.validate(address.split(':')[0], currency);
-	} else if (currency === 'etn' || currency === 'ton') {
+	} else if (currency === 'etn' || currency === 'ton' || currency === 'sui') {
 		// skip the validation
 		return true;
 	} else {
@@ -350,8 +350,8 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 			amount = new BigNumber(balance[`${currency}_available`]).minus(new BigNumber(fee)).toNumber();
 
-			if (coinMarkup?.fee_markup && selectedNetwork !== 'email') {
-				amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markup)).toNumber();
+			if (selectedNetwork !== 'email' && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.value && coinMarkup?.fee_markups?.[selectedNetwork]?.withdrawal?.symbol === fee_coin) {
+				amount = new BigNumber(amount).minus(new BigNumber(coinMarkup.fee_markups[selectedNetwork].withdrawal?.value)).toNumber();
 			}
 		}
 
@@ -417,8 +417,8 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
-	if (coinMarkup?.fee_markup && network !== 'fiat' && network !== 'email') {
-		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markup)));
+	if (coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === fee_coin && network !== 'fiat' && network !== 'email') {
+		fee = math.number(math.add(math.bignumber(fee), math.bignumber(coinMarkup.fee_markups[network].withdrawal?.value)));
 	}
 	
 	if (fee_coin === currency) {
@@ -453,7 +453,7 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 	return {
 		fee,
 		fee_coin,
-		...(coinMarkup?.fee_markup && { fee_markup: coinMarkup.fee_markup })
+		...((coinMarkup?.fee_markups?.[network]?.withdrawal?.value && coinMarkup?.fee_markups?.[network]?.withdrawal?.symbol === fee_coin) && { fee_markup: coinMarkup.fee_markups[network].withdrawal?.value })
 	};
 };
 
@@ -689,6 +689,7 @@ const getUserTransactionsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -719,6 +720,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						description,
 						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
@@ -746,6 +748,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						description,
 						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
@@ -846,6 +849,7 @@ const getUserDepositsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -868,6 +872,7 @@ const getUserDepositsByKitId = (
 		endDate,
 		transactionId,
 		address,
+		description,
 		format,
 		opts
 	);
@@ -889,6 +894,7 @@ const getUserWithdrawalsByKitId = (
 	endDate,
 	transactionId,
 	address,
+	description,
 	format,
 	opts = {
 		additionalHeaders: null
@@ -911,6 +917,7 @@ const getUserWithdrawalsByKitId = (
 		endDate,
 		transactionId,
 		address,
+		description,
 		format,
 		opts
 	);
@@ -1257,6 +1264,27 @@ const getWallets = async (
 		});
 };
 
+const getUserWithdrawalCode = async () => {
+	const data = await client.hgetallAsync(WITHDRAWALS_REQUEST_KEY);
+	if (!data) return null;
+
+	let latestToken = null;
+	let latestTimestamp = 0;
+
+	for (const [token, rawString] of Object.entries(data)) {
+		try {
+			const parsed = JSON.parse(rawString);
+			if (parsed.timestamp > latestTimestamp) {
+				latestTimestamp = parsed.timestamp;
+				latestToken = token;
+			}
+		} catch (e) {
+			return e;
+		}
+	}
+	return latestToken;
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawal,
@@ -1285,5 +1313,6 @@ module.exports = {
 	isValidAddress,
 	validateDeposit,
 	getWallets,
-	calculateWithdrawalMax
+	calculateWithdrawalMax,
+	getUserWithdrawalCode
 };

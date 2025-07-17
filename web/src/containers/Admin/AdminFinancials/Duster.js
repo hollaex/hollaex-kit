@@ -1,9 +1,17 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ReactSVG } from 'react-svg';
-import { Select, InputNumber, Switch, Modal, Button, message } from 'antd';
+import {
+	Select,
+	InputNumber,
+	Switch,
+	Modal,
+	Button,
+	message,
+	Tooltip,
+} from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import isNumber from 'lodash.isnumber';
 
 import { updateConstants } from 'containers/Admin/General/action';
@@ -109,8 +117,12 @@ const Duster = ({
 			</Fragment>
 
 			<div className="admin-chat-feature-wrapper pt-4">
-				<div className={classnames({ 'disabled-area': isDustUpgrade })}>
-					<div className="switch-wrapper m-1">
+				<div>
+					<div
+						className={`switch-wrapper m-1 ${
+							isDustUpgrade ? 'disabled-area' : ''
+						}`}
+					>
 						<div className="d-flex">
 							<span
 								className={
@@ -153,7 +165,14 @@ const Duster = ({
 					</div>
 
 					<div className="w-50 mt-3">
-						<div className="sub-title">Spread</div>
+						<div className="sub-title">
+							<span>Spread </span>
+							<Tooltip
+								title={`Add a conversion price spread to earn little income whenever a user converts their wallet's dust.`}
+							>
+								<ExclamationCircleOutlined />
+							</Tooltip>
+						</div>
 						<InputNumber
 							name="spread"
 							min={0}
@@ -163,7 +182,7 @@ const Duster = ({
 					</div>
 
 					<div className="w-50 my-3">
-						<div className="sub-title">Maker Id</div>
+						<div className="sub-title">Maker User Id</div>
 						<InputNumber
 							name="maker"
 							min={0}
@@ -176,10 +195,7 @@ const Duster = ({
 						type="primary"
 						onClick={() => setOpenConfirmation(true)}
 						disabled={
-							isDustUpgrade ||
-							(isCustom && !custom) ||
-							!isNumber(spread) ||
-							!isNumber(maker)
+							(isCustom && !custom) || !isNumber(spread) || !isNumber(maker)
 						}
 						size="large"
 						className="green-btn minimal-btn my-3"

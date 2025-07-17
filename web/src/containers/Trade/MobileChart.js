@@ -49,14 +49,17 @@ class MobileChart extends Component {
 						</div>
 					}
 					setRef={this.setChartRef}
-					className="f-1 overflow-x"
+					className="f-1 overflow-x trade-chart"
 					alignChildTitle={true}
 				>
 					{pair && chartHeight > 0 && (
 						<TVChartContainer symbol={symbol} pairData={pairData} />
 					)}
 				</TradeBlock>
-				<TradeBlock title={STRINGS['PUBLIC_SALES']} className="f-1">
+				<TradeBlock
+					title={STRINGS['PUBLIC_SALES']}
+					className="f-1 trade-public-sales"
+				>
 					<TradeHistory pairData={pairData} language={activeLanguage} />
 				</TradeBlock>
 			</div>

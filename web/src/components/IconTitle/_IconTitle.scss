@@ -110,6 +110,24 @@ $title--margin: 1rem;
 		text-transform: capitalize;
 		padding-top: 0.25rem !important;
 	}
+
+	.market-trading-fees-title {
+		.icon_title-text {
+			font-size: 1.5rem !important;
+		}
+
+		.icon_title-svg {
+			width: 4rem !important;
+
+			svg {
+				width: 2.5rem !important;
+			}
+		}
+	}
+
+	.fees-and-limit-title {
+		font-size: 22px;
+	}
 }
 
 .cancel-widrawal-pop-up {

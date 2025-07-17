@@ -88,23 +88,50 @@ const NotificationsList = ({
 		browserHistory.push('/announcement');
 	};
 
-	if (!announcements.length) {
-		return <div className="notifications_list-wrapper">No data</div>;
+	const filteredAnnouncement = announcements?.filter(
+		(data) => data?.is_dropdown
+	);
+
+	if (!announcements?.length || !filteredAnnouncement?.length) {
+		return (
+			<div className="notifications_list-wrapper">
+				<div className="notifications_list-wrapper text-align-center py-3">
+					No data
+				</div>
+				<div className="view-announcement-link">
+					<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
+						<span
+							className="blue-link text-decoration-underline"
+							onClick={() => {
+								browserHistory.push('/announcement');
+								setOpen(false);
+							}}
+						>
+							{STRINGS['ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'].toUpperCase()}
+						</span>
+					</EditWrapper>
+				</div>
+			</div>
+		);
 	}
+
 	return (
-		<div className="notifications_list-wrapper">
-			{announcements.map((announcement, index) => (
-				<span
-					onClick={() => onHandleNavigate(announcement)}
-					className="pointer"
-				>
-					<NotificationItem
-						key={announcement?.id}
-						ICONS={ICONS}
-						{...announcement}
-					/>
-				</span>
-			))}
+		<div className="h-100">
+			<div className="notifications_list-wrapper">
+				{filteredAnnouncement?.map((announcement, index) => (
+					<span
+						onClick={() => onHandleNavigate(announcement)}
+						className="pointer"
+						key={index}
+					>
+						<NotificationItem
+							key={announcement?.id}
+							ICONS={ICONS}
+							{...announcement}
+						/>
+					</span>
+				))}
+			</div>
 			<div className="view-announcement-link">
 				<EditWrapper stringId="ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT">
 					<span

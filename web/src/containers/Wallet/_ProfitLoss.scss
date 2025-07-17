@@ -148,6 +148,20 @@
 	}
 }
 
+.profit-loss-balance-tooltip {
+	path {
+		fill: var(--base_background);
+		stroke: var(--labels_secondary-inactive-label-text-graphics);
+		stroke-width: unset;
+	}
+	span {
+		color: var(--labels_secondary-inactive-label-text-graphics) !important;
+	}
+	.selected-date {
+		color: #5d63ff !important;
+	}
+}
+
 .layout-mobile {
 	.wallet-assets_block {
 		.balance-history {

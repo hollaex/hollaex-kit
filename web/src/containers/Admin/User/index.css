@@ -44,6 +44,10 @@
 .user-container .ant-tabs-nav::before {
 	border-bottom: 1px solid #ffffff;
 }
+.admin-user-container .blue-admin-table .ant-table-row-expand-icon,
+.ant-table-row-expand-icon:focus {
+	color: #000000;
+}
 .admin-user-container .ant-table-thead > tr > th {
 	background-color: var(--admin_panel_table_thead);
 	color: var(--admin_panel_main_font);
@@ -494,4 +498,25 @@
 .add-user-modal .ant-form-item-explain,
 .ant-form-item-extra {
 	font-size: 12px;
+}
+
+.user-role-container .user-role-icon-wrapper,
+.user-role-container .user-role-icon-wrapper svg {
+	width: 3rem;
+	height: 3rem;
+}
+
+.user-role-container .user-role-icon-wrapper {
+	position: relative;
+	bottom: 5px;
+}
+
+.user-role-container .user-role-icon-wrapper svg {
+	fill: #ffffff;
+}
+
+.user-role-container .announcer-operator-card-wrapper svg path:nth-child(1),
+.user-role-container .kyc-operator-card-wrapper svg path:nth-child(2),
+.user-role-container .support-operator-card-wrapper svg path {
+	fill: #ffffff;
 }

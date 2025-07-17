@@ -61,11 +61,15 @@ const LoginTable = () => {
 			dataIndex: 'country',
 			key: 'country',
 			render: (user_id, data) => {
+				const filteredCountry = COUNTRIES_OPTIONS.find(
+					(country) => country?.value === data?.country
+				);
 				return (
-					<div className="d-flex">
-						{COUNTRIES_OPTIONS.find(
-							(country) => country?.value === data?.country
-						)?.label || '-'}
+					<div className="d-flex align-items-center">
+						{filteredCountry && (
+							<span className="w-25">{filteredCountry?.icon}</span>
+						)}
+						<span className="ml-1 w-75">{filteredCountry?.label || '-'}</span>
 					</div>
 				);
 			},
@@ -179,7 +183,7 @@ const LoginTable = () => {
 	};
 
 	return (
-		<div>
+		<div className="login-details-wrapper">
 			<div style={{ color: '#ccc' }}>
 				Below are details of users login history. It is sorted by default from
 				the last login attempt to the exchange. You can apply filters to the

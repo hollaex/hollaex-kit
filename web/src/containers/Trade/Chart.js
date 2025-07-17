@@ -234,6 +234,7 @@ class TVChartContainer extends React.PureComponent {
 			this.tvWidget.remove();
 			this.tvWidget = null;
 		}
+		this.ref = null;
 	}
 
 	updateChart = ({
@@ -316,6 +317,17 @@ class TVChartContainer extends React.PureComponent {
 		const tvWidget = new widget(widgetOptions);
 
 		tvWidget.onChartReady(() => {
+			tvWidget.save((tvChartObject) => {
+				let chartID =
+					tvChartObject['charts'][0]['panes'][0]['sources'][0]['id'];
+
+				let chartToSave = {
+					tvChartId: chartID,
+					chartObject: tvChartObject,
+					lastUpdate: Math.floor(Date.now() / 1000),
+				};
+				localStorage.setItem(`chart_${symbol}`, JSON.stringify(chartToSave));
+			});
 			if (localStorage.getItem(`chart_${symbol}`)) {
 				tvWidget.load(
 					JSON.parse(localStorage.getItem(`chart_${symbol}`)).chartObject
@@ -412,7 +424,9 @@ class TVChartContainer extends React.PureComponent {
 			} else if (data.price > lastBar.high) {
 				lastBar.high = data.price;
 			}
-			lastBar.volume = lastBar.volume ? Number(lastBar.volume) + Number(data.size) : data.size;
+			lastBar.volume = lastBar.volume
+				? Number(lastBar.volume) + Number(data.size)
+				: data.size;
 			lastBar.close = data.price;
 			if (!lastBar.low) lastBar.low = 0;
 			if (!lastBar.close) lastBar.close = 0;

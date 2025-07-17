@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { message, Table, Button, Spin, Modal, Input, Select } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+
 import {
 	getTransactionLimits,
 	updateTransactionLimits,
 	deleteTransactionLimit,
 } from './action';
 import { requestTiers } from '../User/actions';
-import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { connect } from 'react-redux';
 import { setTransactionLimits } from 'actions/appActions';
-import { bindActionCreators } from 'redux';
+import { renderAsset } from '../Deposits/utils';
 const { Option } = Select;
 
 const TransactionLimits = ({ coins, setLimits }) => {
@@ -510,6 +512,7 @@ const TransactionLimits = ({ coins, setLimits }) => {
 											amount: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedData?.currency)}
 								/>
 							</div>
 
@@ -525,6 +528,7 @@ const TransactionLimits = ({ coins, setLimits }) => {
 											monthly_amount: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedData?.currency)}
 								/>
 							</div>
 						</div>
@@ -696,6 +700,7 @@ const TransactionLimits = ({ coins, setLimits }) => {
 											amount: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedData?.currency)}
 								/>
 							</div>
 
@@ -711,6 +716,7 @@ const TransactionLimits = ({ coins, setLimits }) => {
 											monthly_amount: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedData?.currency)}
 								/>
 							</div>
 						</div>

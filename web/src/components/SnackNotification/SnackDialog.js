@@ -83,6 +83,7 @@ class SnackDialog extends Component {
 	componentWillUnmount() {
 		if (timeout) clearTimeout(timeout);
 		if (closeTimeOut) clearTimeout(closeTimeOut);
+		document.removeEventListener('click', this.onOutsideClick);
 	}
 
 	render() {

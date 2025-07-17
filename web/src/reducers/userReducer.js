@@ -112,6 +112,8 @@ const INITIAL_STATE = {
 			popup_order_confirmation: true,
 			popup_order_completed: true,
 			popup_order_partially_filled: true,
+			popup_order_new: true,
+			popup_order_canceled: true,
 		},
 		interface: {
 			theme: THEME_DEFAULT,
@@ -138,6 +140,9 @@ const INITIAL_STATE = {
 	affiliation: {},
 	is_hap: false,
 	meta: {},
+	configs: [],
+	permissions: [],
+	restrictions: [],
 	network_id: null,
 	...USER_DATA,
 };
@@ -171,6 +176,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				nationality,
 				meta,
 				network_id,
+				configs,
+				permissions,
+				restrictions,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -211,6 +219,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				meta,
 				network_id,
 				nationality,
+				configs,
+				permissions,
+				restrictions,
 			};
 		}
 		case 'SET_USER_DATA': {

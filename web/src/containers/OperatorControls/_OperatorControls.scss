@@ -7,12 +7,16 @@ $operator-controls__panel-border-color: #a7a7a7;
 
 @import './components/ImageUpload';
 
+.operator-controls__details {
+	width: 100vw !important;
+}
 .operator-controls__wrapper {
 	position: fixed;
 	bottom: -106px;
-	width: 100vw;
+	width: max-content;
 	transition: all 0.25s ease-out 0s;
 	color: $operator-controls__panel-text-color;
+	z-index: 10 !important;
 
 	&.open {
 		bottom: 0;
@@ -23,6 +27,7 @@ $operator-controls__panel-border-color: #a7a7a7;
 .operator-controls__buttons-wrapper {
 	display: flex;
 	margin-left: 57px;
+	width: max-content;
 }
 
 .operator-controls__button {
@@ -340,6 +345,9 @@ $operator-controls__panel-border-color: #a7a7a7;
 		margin-left: 0.4rem;
 		font-size: 1rem;
 	}
+	.operator-control-error-text {
+		color: #ff0000;
+	}
 }
 
 .operator-controls__modal-open #root {
@@ -393,6 +401,17 @@ $operator-controls__panel-border-color: #a7a7a7;
 	&table {
 		border-collapse: collapse !important;
 	}
+	.language-detail {
+		display: flex;
+		gap: 5px;
+		justify-content: flex-start;
+		text-wrap: nowrap;
+		.language-icon {
+			width: 1.8rem;
+			height: 1.8rem;
+			object-fit: contain;
+		}
+	}
 
 	& thead > tr > th,
 	& tbody > tr > td {
@@ -432,5 +451,11 @@ $operator-controls__panel-border-color: #a7a7a7;
 	.ant-input {
 		color: $operator-controls__panel-text-color !important;
 		background-color: $operator-controls__panel-main-color !important;
+	}
+}
+
+.confirmation-icon-popup {
+	.ant-modal-body {
+		background-color: $operator-controls__panel-main-color;
 	}
 }

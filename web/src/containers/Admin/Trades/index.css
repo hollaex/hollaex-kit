@@ -803,6 +803,10 @@
 	cursor: text;
 }
 
+.p2p-admin-select-asset .ant-select-item-option-content .asset-name {
+	color: #000000;
+}
+
 .p2p-admin-confirm-warning-popup-wrapper .ant-modal-body,
 .otc-broker-popup-wrapper .ant-modal-body {
 	background-color: #27339d;
@@ -854,4 +858,52 @@
 	.asset-icon {
 	position: relative;
 	top: 3px;
+}
+
+.p2p-admin-settings-details-wrapper .p2p-settings-title {
+	font-size: 20px;
+}
+
+.p2p-admin-settings-details-wrapper .p2p-description {
+	color: #ccc;
+	font-size: 1.1rem;
+}
+
+.p2p-dispute-details-wrapper .resolution-filter-select {
+	width: 15rem;
+}
+
+.p2p-setup-popup-wrapper .p2p-settings-multiple-select .ant-select-selector {
+	display: flex;
+	align-items: center;
+	gap: 1.5%;
+}
+
+.p2p-feedbacks-wrapper .p2p-feedback-title-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.p2p-feedbacks-wrapper .p2p-feedback-title-wrapper .p2p-feedback-description {
+	color: #b6b6b6;
+}
+
+.p2p-feedbacks-wrapper .blue-admin-table .comments-title {
+	width: 20rem;
+}
+
+.admin-earnings-container .p2p-payment-details .p2p-payment-methods-filter {
+	min-width: 15rem;
+}
+
+.admin-earnings-container
+	.p2p-payment-details
+	.p2p-payment-methods-filter
+	.ant-select-selector,
+.admin-earnings-container
+	.p2p-payment-details
+	.p2p-payment-methods-filter
+	.ant-select-arrow {
+	background: transparent;
+	color: #ffffff;
 }

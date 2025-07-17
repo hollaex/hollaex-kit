@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 import { Button, Checkbox, message } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 
@@ -26,6 +27,7 @@ const P2PMyDeals = ({
 	refresh,
 	setSelectedDealEdit,
 	setTab,
+	router,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
 	const [checks, setCheks] = useState([]);
@@ -41,7 +43,7 @@ const P2PMyDeals = ({
 	}, [refresh]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
+		const min = coins[currency]?.min;
 		const formattedAmount = formatToCurrency(amount, min);
 		return formattedAmount;
 	};
@@ -67,9 +69,10 @@ const P2PMyDeals = ({
 			)}
 		>
 			<Dialog
-				isOpen={dealRemoveConfirmation}
+				isOpen={!!dealRemoveConfirmation}
 				onCloseDialog={() => setDealRemoveConfirmation(false)}
 				className="confirmation-remove-deal-popup-wrapper"
+				label="confirmation-remove-deal"
 			>
 				<div className="remove-deal-popup-container">
 					<span className="remove-description fs-16">
@@ -119,7 +122,11 @@ const P2PMyDeals = ({
 								setCheks([]);
 							}
 						}}
-						className={isMobile ? 'fs-24 whiteTextP2P' : 'whiteTextP2P'}
+						className={
+							isMobile
+								? 'fs-24 whiteTextP2P deals-checkbox-wrapper'
+								: 'whiteTextP2P deals-checkbox-wrapper'
+						}
 					>
 						{myDeals.length === 0 ? (
 							<EditWrapper stringId="P2P.NO_DEALS">
@@ -127,7 +134,9 @@ const P2PMyDeals = ({
 							</EditWrapper>
 						) : (
 							<EditWrapper stringId="P2P.NUM_DEALS">
-								{myDeals.length} {STRINGS['P2P.NUM_DEALS']}
+								<span className="text-nowrap">
+									{myDeals.length} {STRINGS['P2P.NUM_DEALS']}
+								</span>
 							</EditWrapper>
 						)}
 					</Checkbox>
@@ -234,9 +243,9 @@ const P2PMyDeals = ({
 							</tr>
 						</thead>
 						<tbody>
-							{myDeals.map((deal) => {
+							{myDeals.map((deal, index) => {
 								return (
-									<tr className="table-row">
+									<tr className="table-row" key={index}>
 										<td className="td-fit w-fit-content">
 											<Checkbox
 												checked={checks.find((id) => id === deal.id)}
@@ -330,6 +339,7 @@ const P2PMyDeals = ({
 												onClick={() => {
 													setSelectedDealEdit(deal);
 													setTab('3');
+													router.replace('/p2p/post-deal');
 												}}
 												ghost
 												className="whiteTextP2P edit-deal-btn"
@@ -346,7 +356,7 @@ const P2PMyDeals = ({
 						</tbody>
 					</table>
 				) : (
-					<NoDealsData trade="deals" />
+					<NoDealsData trade="deals" icons={ICONS} />
 				)}
 			</div>
 		</div>
@@ -361,4 +371,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps)(withConfig(P2PMyDeals));
+export default connect(mapStateToProps)(withRouter(withConfig(P2PMyDeals)));

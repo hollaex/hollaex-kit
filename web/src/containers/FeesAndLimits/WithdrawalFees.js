@@ -21,6 +21,7 @@ const WithdrawalFees = ({
 	setSearch,
 	coin_customizations,
 	fiat_fees,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -58,8 +59,8 @@ const WithdrawalFees = ({
 								<div>
 									<div>
 										<Select
-											defaultValue={selectedLevel}
-											value={selectedLevel}
+											defaultValue={selectedLevel?.toString()}
+											value={selectedLevel?.toString()}
 											style={{ width: '20rem' }}
 											className="coin-select custom-select-input-style elevated"
 											dropdownClassName="custom-select-style"
@@ -80,16 +81,12 @@ const WithdrawalFees = ({
 								</div>
 							</div>
 						</div>
-						<div className="w-100 pl-3">
+						<div className={isMobile ? 'w-100 pl-2' : 'w-100 pl-3'}>
 							<div
-								className={classnames(
-									'd-flex',
-									'justify-content-between',
-									'align-center',
-									{
-										'flex-direction-column': isMobile,
-									}
-								)}
+								className={classnames('d-flex', 'justify-content-between', {
+									'flex-direction-column align-items-start': isMobile,
+									'align-items-center': !isMobile,
+								})}
 							>
 								<div>
 									<IconTitle
@@ -102,6 +99,7 @@ const WithdrawalFees = ({
 										textType="title bold text-align-left"
 										iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_FEES']}
 										className="fees-limits-title"
+										iconId="FEES_AND_LIMITS_WITHDRAWAL_FEES"
 									/>
 									<div className="py-4">
 										<div>
@@ -136,6 +134,7 @@ const WithdrawalFees = ({
 								search={search}
 								coin_customizations={coin_customizations}
 								fiat_fees={fiat_fees}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>

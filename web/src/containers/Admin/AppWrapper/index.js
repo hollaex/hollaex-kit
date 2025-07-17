@@ -7,8 +7,16 @@ import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
-
-import { PATHS, ADMIN_PATHS, SUPERVISOR_PATH } from '../paths';
+// eslint-disable-next-line
+import {
+	// eslint-disable-next-line
+	PATHS,
+	ADMIN_PATHS,
+	// eslint-disable-next-line
+	SUPERVISOR_PATH,
+	// eslint-disable-next-line
+	pathToPermissionMap,
+} from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
@@ -16,7 +24,11 @@ import {
 	isSupport,
 	isSupervisor,
 	isAdmin,
+	// eslint-disable-next-line
 	checkRole,
+	getRole,
+	// eslint-disable-next-line
+	getPermissions,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
 import { logout } from 'actions/authAction';
@@ -33,6 +45,7 @@ import {
 	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
+	setRolesList,
 } from 'actions/appActions';
 import { SESSION_TIME } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
@@ -52,6 +65,9 @@ import {
 } from '../AdminFinancials/action';
 import Timer from './Timer';
 import { getTabParams } from '../AdminFinancials/Assets';
+import { roleStyles } from '../Roles/RoleManagement';
+import { fetchRoles } from '../Roles/action';
+import { isColorDark } from '../Roles/Utils';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -104,8 +120,18 @@ class AppWrapper extends React.Component {
 		};
 	}
 
+	onHandleRoleDetails = async () => {
+		try {
+			const roles = await fetchRoles();
+			this.props.setRolesList(roles?.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	componentDidMount() {
 		this.getData();
+		this.onHandleRoleDetails();
 		// this.getAssets();
 
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
@@ -166,6 +192,7 @@ class AppWrapper extends React.Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
+		this.resetTimer && this.resetTimer.cancel();
 	}
 
 	getData = async () => {
@@ -445,86 +472,38 @@ class AppWrapper extends React.Component {
 	};
 
 	renderItems = () => {
-		switch (checkRole()) {
-			case 'supervisor':
-				return (
-					<div className="role-section bg-black">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_SUPERVISOR}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Supervisor</div>
-						</div>
-					</div>
-				);
-			case 'kyc':
-				return (
-					<div className="role-section bg-grey">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_KYC}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label black">Role:</div>
-							<div className="sub-label black">KYC</div>
-						</div>
-					</div>
-				);
-			case 'communicator':
-				return (
-					<div className="role-section bg-orange">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_COMMUNICATON_SUPPORT_ROLE}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Communicator</div>
-						</div>
-					</div>
-				);
-			case 'support':
-				return (
-					<div className="role-section bg-yellow">
-						<div>
-							<ReactSVG
-								src={STATIC_ICONS.BLUE_SCREEN_EXCHANGE_SUPPORT_ROLE}
-								className="sider-icons"
-							/>
-						</div>
-						<div>
-							<div className="main-label black">Role:</div>
-							<div className="sub-label black">Support</div>
-						</div>
-					</div>
-				);
-			case 'admin':
-				return (
-					<div className="role-section">
-						<div>
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_EYE_ICON}
-								className="sider-icons"
-								alt="EyeIcon"
-							/>
-						</div>
-						<div>
-							<div className="main-label">Role:</div>
-							<div className="sub-label">Administrator</div>
-						</div>
-					</div>
-				);
-			default:
-				return <div></div>;
-		}
+		const { rolesList } = this.props;
+		const selectedRole = rolesList?.find(
+			(role) => role?.role_name?.toLowerCase() === getRole()
+		);
+		const isRoleDark = isColorDark(selectedRole?.color)
+			? `${
+					roleStyles[getRole()]?.cardWrapper
+			  } role-section operator-control-card-light`
+			: `${
+					roleStyles[getRole()]?.cardWrapper
+			  } role-section operator-control-card-dark`;
+		return (
+			<div
+				className={isRoleDark}
+				style={{ backgroundColor: selectedRole?.color }}
+			>
+				<div>
+					<ReactSVG
+						src={
+							roleStyles[getRole()]?.rolesImage ||
+							STATIC_ICONS.BLUE_SCREEN_EYE_ICON
+						}
+						className="sider-icons slider-role-badge"
+						alt="EyeIcon"
+					/>
+				</div>
+				<div>
+					<div className="main-label">Role:</div>
+					<div className="sub-label text-capitalize">{getRole()}</div>
+				</div>
+			</div>
+		);
 	};
 
 	getMyPlugins = (params = {}) => {
@@ -563,15 +542,36 @@ class AppWrapper extends React.Component {
 			isConfigure,
 		} = this.state;
 		let pathNames = [];
+
+		const userPermissions = this.props?.user?.permissions || [];
+
+		pathNames = ADMIN_PATHS.filter((item) => {
+			if (item.path === '/admin') return true;
+			const requiredPrefixes = pathToPermissionMap[item.path] || [
+				`${item.path}:`,
+			];
+			return requiredPrefixes.some((prefix) =>
+				userPermissions.some((p) => p.startsWith(prefix))
+			);
+		});
+
 		if (checkRole() === 'admin') {
-			pathNames = ADMIN_PATHS;
-		} else if (checkRole() === 'supervisor') {
-			pathNames = [...PATHS, ...SUPERVISOR_PATH];
-		} else {
-			pathNames = PATHS;
+			pathNames.push({
+				path: '/admin/billing',
+				label: 'Billing',
+				routeKey: 'billing',
+			});
 		}
 
-		if (features.apps) {
+		// if (checkRole() === 'admin') {
+		// 	pathNames = ADMIN_PATHS;
+		// } else if (checkRole() === 'supervisor') {
+		// 	pathNames = [...PATHS, ...SUPERVISOR_PATH];
+		// } else {
+		// 	pathNames = PATHS;
+		// }
+
+		if (features.apps && checkRole() === 'admin') {
 			pathNames = [
 				...pathNames,
 				{
@@ -582,14 +582,16 @@ class AppWrapper extends React.Component {
 			];
 		}
 
-		pathNames = [
-			...pathNames,
-			{
-				path: '/admin/announcement',
-				label: 'Announcements',
-				routeKey: 'adminView',
-			},
-		];
+		if (features.announcement) {
+			pathNames = [
+				...pathNames,
+				{
+					path: '/admin/announcement',
+					label: 'Announcements',
+					routeKey: 'adminView',
+				},
+			];
+		}
 
 		myPlugins.forEach((data) => {
 			if (data.enabled && data.enabled_admin_view) {
@@ -688,11 +690,18 @@ class AppWrapper extends React.Component {
 										.map(this.renderMenuItem)}
 								</Menu>
 								<div>
-									<div className="bottom-side-top"></div>
 									<Menu mode="vertical" style={{ lineHeight: '64px' }}>
 										<Item className="custom-side-menu">
 											<Link to="/admin/resources">
-												<div className={'sidebar-menu'}>Resources</div>
+												<div
+													className={
+														this.props.location.pathname.includes('/resources')
+															? 'sidebar-menu resource-text active-side-menu'
+															: 'sidebar-menu resource-text'
+													}
+												>
+													Resources
+												</div>
 											</Link>
 										</Item>
 										<Item className="custom-side-menu">
@@ -731,6 +740,7 @@ const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	constants: state.app.constants,
 	user: state.user,
+	rolesList: state.app.rolesList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -748,6 +758,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setRolesList: bindActionCreators(setRolesList, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

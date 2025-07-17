@@ -6,8 +6,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
 import { updateConstants } from '../General/action';
 import { requestAdminData } from 'actions/appActions';
+import { renderAsset } from '../Deposits/utils';
 
-const CoinConfiguration = ({ coins }) => {
+const CoinConfiguration = ({ coins, handleTabChange }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [coinCustomizations, setCoinCustomizations] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -46,11 +47,33 @@ const CoinConfiguration = ({ coins }) => {
 			},
 		},
 		{
-			title: 'Fee Markup',
+			title: 'Witdrawal Fee Markup',
 			dataIndex: 'fee_markup',
 			key: 'fee_markup',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.fee_markup || '-'}</div>;
+				const markups = data?.fee_markups || {};
+				return (
+					<div className="d-flex">
+						{Object.keys(markups)
+							.map((key) => `${key}: ${markups[key]?.withdrawal?.value}`)
+							.join(', ') || '-'}
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Deposit Fee Markup',
+			dataIndex: 'fee_markup',
+			key: 'fee_markup',
+			render: (user_id, data) => {
+				const markups = data?.fee_markups || {};
+				return (
+					<div className="d-flex">
+						{Object.keys(markups)
+							.map((key) => `${key}: ${markups[key]?.deposit?.value}`)
+							.join(', ') || '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -63,9 +86,10 @@ const CoinConfiguration = ({ coins }) => {
 						<Button
 							onClick={(e) => {
 								e.stopPropagation();
-								setEditMode(true);
-								setSelectedCoin(data);
-								setDisplayCostumizationModal(true);
+								// setEditMode(true);
+								// setSelectedCoin(data);
+								// setDisplayCostumizationModal(true);
+								handleTabChange('0', data);
 							}}
 							style={{ backgroundColor: '#CB7300', color: 'white' }}
 						>
@@ -167,8 +191,10 @@ const CoinConfiguration = ({ coins }) => {
 	return (
 		<div>
 			<div style={{ color: '#ccc' }}>
-				Below, You can add/edit extra fees for each coin available in your
-				exchange
+				Add a markup fee on blockchain asset withdrawals for each coin listed on
+				your exchange. This additional fee is charged on top of the standard
+				withdrawal fees and can serve as an extra revenue stream for your
+				exchange operations.
 			</div>
 			<div>
 				<div style={{ marginTop: 20 }}></div>
@@ -250,7 +276,10 @@ const CoinConfiguration = ({ coins }) => {
 						>
 							Edit Coin Fee Markup
 						</div>
-						<div style={{ marginBottom: 30 }}>Congifure fee markups</div>
+						<div style={{ marginBottom: 30 }}>
+							Set an additional withdrawal fee for this coin to generate extra
+							revenue.
+						</div>
 						<div style={{ marginBottom: 20 }}>
 							<div style={{ marginBottom: 10 }}>
 								<div className="mb-1">Fee Markup</div>
@@ -264,6 +293,7 @@ const CoinConfiguration = ({ coins }) => {
 											fee_markup: e.target.value,
 										});
 									}}
+									suffix={renderAsset(selectedCoin?.symbol)}
 								/>
 							</div>
 						</div>
@@ -273,7 +303,6 @@ const CoinConfiguration = ({ coins }) => {
 								flexDirection: 'row',
 								gap: 15,
 								justifyContent: 'space-between',
-								marginBottom: 20,
 							}}
 						>
 							<Button
@@ -304,6 +333,7 @@ const CoinConfiguration = ({ coins }) => {
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
 														fee_markup: selectedCoin.fee_markup,
+														fee_markups: selectedCoin?.fee_markups,
 													},
 												},
 											},

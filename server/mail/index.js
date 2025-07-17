@@ -42,7 +42,7 @@ const sendEmail = (
 		}
 		case MAILTYPE.LOGIN: {
 			if (data.time) data.time = formatDate(data.time, language);
-			if (data.ip) data.country = getCountryFromIp(data.ip);
+			if (data.ip && !data.country) data.country = getCountryFromIp(data.ip);
 			break;
 		}
 		case MAILTYPE.SIGNUP:
@@ -60,6 +60,7 @@ const sendEmail = (
 		case MAILTYPE.BANK_VERIFIED:
 		case MAILTYPE.CONFIRM_EMAIL:
 		case MAILTYPE.LOCKED_ACCOUNT:
+		case MAILTYPE.SUSPICIOUS_LOGIN:
 		case MAILTYPE.USER_DELETED:
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL:
@@ -92,7 +93,7 @@ const sendEmail = (
 			break;
 		}
 		case MAILTYPE.OTP_DISABLED:
-		case MAILTYPE.OTP_ENABLED:{
+		case MAILTYPE.OTP_ENABLED: {
 			if (data.time) data.time = formatDate(data.time, language);
 			if (data.ip) data.country = getCountryFromIp(data.ip);
 			to.BccAddresses = BCC_ADDRESSES();
@@ -119,7 +120,7 @@ const sendRawEmail = (
 	text
 ) => {
 	let from = SUPPORT_SOURCE();
-	
+
 	const payload = {
 		from,
 		to: receivers,

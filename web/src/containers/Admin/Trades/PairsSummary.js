@@ -264,12 +264,12 @@ class PairsSummary extends Component {
 		this.setState({ filterValues });
 	};
 
-	onClickFilter = () => {
+	onClickFilter = (isClearField = true) => {
 		const { filterValues } = this.state;
 		const { allPairs, pairs } = this.props;
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
 		const lowercasedValue = filterValues.toLowerCase();
-		if (lowercasedValue) {
+		if (lowercasedValue && isClearField) {
 			let result = pairsData.filter((list = {}) => {
 				return (
 					(list.name && list.name.toLowerCase().includes(lowercasedValue)) ||
@@ -751,7 +751,7 @@ class PairsSummary extends Component {
 		const pendingPairs =
 			allPairs &&
 			allPairs.filter((data) => pairs.includes(data.name) && !data.verified);
-		if (!this.state.pairs || !this.state.pairs.length) {
+		if (!allPairs.length) {
 			return <Spin size="large" className="m-top" />;
 		}
 		return (

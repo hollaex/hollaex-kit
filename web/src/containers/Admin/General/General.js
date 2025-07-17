@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Switch, Button, Modal, message, Spin, Input, Select } from 'antd';
+import {
+	Switch,
+	Button,
+	Modal,
+	message,
+	Spin,
+	Input,
+	Select,
+	Tooltip,
+} from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -15,7 +24,11 @@ import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
-import { requestAdminData, setConfig } from '../../../actions/appActions';
+import {
+	requestAdminData,
+	setConfig,
+	setHomePageSetting,
+} from '../../../actions/appActions';
 import {
 	tokenGenerated,
 	requestTokens,
@@ -43,12 +56,16 @@ import {
 } from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import {
+	CloseCircleOutlined,
+	ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
 import { isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { minimalTimezoneSet } from '../Settings/Utils';
+import { STATIC_ICONS } from 'config/icons';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -94,7 +111,15 @@ class GeneralContent extends Component {
 			isDisable: false,
 			defaultEmailData: {},
 			nativeCurrencies: [],
+			testKeyDetails: {
+				test_key: null,
+				isActive: false,
+			},
+			isDisplayKey: false,
+			isConfirmSave: false,
+			confirmText: null,
 		};
+		this.priceAssetTimeout = null;
 	}
 
 	componentDidMount() {
@@ -155,7 +180,14 @@ class GeneralContent extends Component {
 		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
-				this.setState({ constants: res.data, loading: false });
+				this.setState({
+					constants: res.data,
+					testKeyDetails: {
+						test_key: res.data?.secrets?.test_key?.value || '',
+						isActive: res.data?.secrets?.test_key?.active || false,
+					},
+					loading: false,
+				});
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
@@ -370,6 +402,7 @@ class GeneralContent extends Component {
 			.then((res) => {
 				this.setState({ constants: res });
 				this.props.setConfig(res.kit);
+				this.props.setHomePageSetting(res.kit.features.home_page);
 				message.success('Updated successfully');
 				this.setState({ buttonSubmitting: false });
 				this.handleDisable(true);
@@ -612,6 +645,9 @@ class GeneralContent extends Component {
 
 	handleClose = () => {
 		this.setState({ isVisible: false, selectedCountry: { isFocus: false } });
+		if (this.state.screen === 'testEnvironmentKey') {
+			this.setState({ confirmText: '' });
+		}
 	};
 
 	handleBackConfirm = () => {
@@ -623,6 +659,8 @@ class GeneralContent extends Component {
 			});
 		} else if (screen === 'step3') {
 			this.setState({ isVisible: false });
+		} else if (screen === 'testEnvironmentKey') {
+			this.setState({ isVisible: false, confirmText: '' });
 		}
 	};
 
@@ -666,6 +704,7 @@ class GeneralContent extends Component {
 			constants,
 			selectedCountry,
 			removeCountryValue,
+			testKeyDetails,
 		} = this.state;
 		if (screen === 'step2') {
 			if (
@@ -684,6 +723,20 @@ class GeneralContent extends Component {
 		} else if (screen === 'step3') {
 			this.handleSubmitName({ black_list_countries: removeCountryValue });
 			this.setState({ isVisible: false });
+		} else if (screen === 'testEnvironmentKey') {
+			this.setState({
+				isVisible: false,
+				isConfirmSave: !this.state.isConfirmSave,
+				confirmText: '',
+			});
+			this.handleSubmitGeneral({
+				secrets: {
+					test_key: {
+						value: testKeyDetails?.test_key,
+						active: testKeyDetails?.isActive,
+					},
+				},
+			});
 		}
 	};
 
@@ -747,8 +800,69 @@ class GeneralContent extends Component {
 		}
 	};
 	renderModalContent = () => {
-		const { screen, removeCountryLabel, selectedCountry } = this.state;
+		const {
+			screen,
+			removeCountryLabel,
+			selectedCountry,
+			testKeyDetails,
+		} = this.state;
 		switch (screen) {
+			case 'testEnvironmentKey':
+				return (
+					<div className="test-environment-popup-content">
+						<span className="bold title-text">
+							Enable this Key for Remote Access
+						</span>
+						<div className="test-environment-description-wrapper d-flex flex-column">
+							<div className="image-wrapper mt-4">
+								<Image
+									icon={STATIC_ICONS['TEST_ENVIRONMENT_ICON']}
+									wrapperClassName="test-key-icon"
+								/>
+								{testKeyDetails?.test_key && (
+									<span className="ml-3">{testKeyDetails?.test_key}</span>
+								)}
+							</div>
+							<div className="mt-3 mb-3 d-flex flex-column">
+								<span>
+									You are about to enable remote access to your exchange. This
+									will be used for testing preposes, however this is still a
+									sensitive action that requires you to keep the above key
+									hidden and safe.
+								</span>
+								<span className="my-2 mt-4">Do you understand?</span>
+							</div>
+							<Input
+								placeholder={`Type 'I UNDERSTAND' to proceed`}
+								className="mt-2 w-75"
+								size="middle"
+								value={this.state.confirmText}
+								onChange={(e) => {
+									this.setState({ confirmText: e.target?.value });
+								}}
+							/>
+						</div>
+						<div className="button-container mt-5">
+							<Button
+								className="green-btn no-border w-50"
+								onClick={this.handleBackConfirm}
+							>
+								Back
+							</Button>
+							<Button
+								className={
+									this.state.confirmText !== 'I UNDERSTAND'
+										? 'green-btn no-border w-50 disabled-content'
+										: 'green-btn no-border w-50'
+								}
+								onClick={this.handleConfirm}
+								disabled={this.state.confirmText !== 'I UNDERSTAND'}
+							>
+								Yes, Proceed
+							</Button>
+						</div>
+					</div>
+				);
 			case 'step2':
 				return (
 					<div className="general-geo-wrapper">
@@ -858,7 +972,7 @@ class GeneralContent extends Component {
 		) {
 			this.onHandleCurrency();
 			localStorage.setItem('base_currnecy', this.state?.nativeCurrencies[0]);
-			setTimeout(() => {
+			this.priceAssetTimeout = setTimeout(() => {
 				if (
 					this.props?.user?.settings?.interface?.display_currency !==
 					this.state?.nativeCurrencies[0]
@@ -867,6 +981,25 @@ class GeneralContent extends Component {
 				}
 			}, [1000]);
 		}
+	};
+
+	componentWillUnmount = () => {
+		this.priceAssetTimeout && clearTimeout(this.priceAssetTimeout);
+	};
+
+	onHandleNavigate = () => {
+		const { features, handleTabChange } = this.props;
+		features?.home_page ? browserHistory.push('/') : handleTabChange('3');
+	};
+
+	handletoggle = (checked) => {
+		this.setState({
+			testKeyDetails: {
+				...this.state.testKeyDetails,
+				isActive: checked,
+			},
+			isConfirmSave: !this.state.isConfirmSave,
+		});
 	};
 
 	render() {
@@ -891,6 +1024,9 @@ class GeneralContent extends Component {
 			isDisable,
 			emailData,
 			defaultEmailData,
+			testKeyDetails,
+			isDisplayKey,
+			isConfirmSave,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const {
@@ -899,6 +1035,7 @@ class GeneralContent extends Component {
 			activeTab,
 			handleTabChange,
 			enabledPlugins,
+			features,
 		} = this.props;
 		const generalFields = getGeneralFields(coins);
 
@@ -916,7 +1053,8 @@ class GeneralContent extends Component {
 		return (
 			<div>
 				<div className="general-wrapper">
-					{activeTab === 'branding' ? (
+					{this.props.user?.configs?.includes('api_name') &&
+					activeTab === 'branding' ? (
 						<div>
 							<div className="sub-title">Exchange Name</div>
 							<NameForm
@@ -930,7 +1068,8 @@ class GeneralContent extends Component {
 							<div className="divider"></div>
 						</div>
 					) : null}
-					{activeTab === 'localization' ? (
+					{this.props.user?.configs?.includes('defaults') &&
+					activeTab === 'localization' ? (
 						<div>
 							<div>
 								<div className="sub-title">Country</div>
@@ -944,184 +1083,210 @@ class GeneralContent extends Component {
 								/>
 							</div>
 							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Timezone</div>
-								<Select
-									onChange={(e) => {
-										this.handleInputChangeTimezone('timezone', e);
-									}}
-									value={this?.state?.constants?.secrets?.emails?.timezone}
-									placeholder="Select email timezone"
-								>
-									{minimalTimezoneSet.map((timezone) => {
-										return (
-											<Select.Option value={timezone.value}>
-												{timezone.label}
-											</Select.Option>
-										);
-									})}
-								</Select>
-							</div>
-							<Button
-								style={{ width: 120 }}
-								type="primary"
-								onClick={this.handleSaveTimezone}
-							>
-								Save
-							</Button>
+
+							{this.props.user?.configs?.includes('timezone') && (
+								<>
+									<div>
+										<div className="sub-title">Timezone</div>
+										<Select
+											onChange={(e) => {
+												this.handleInputChangeTimezone('timezone', e);
+											}}
+											value={this?.state?.constants?.secrets?.emails?.timezone}
+											placeholder="Select email timezone"
+										>
+											{minimalTimezoneSet.map((timezone) => {
+												return (
+													<Select.Option value={timezone.value}>
+														{timezone.label}
+													</Select.Option>
+												);
+											})}
+										</Select>
+									</div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={this.handleSaveTimezone}
+									>
+										Save
+									</Button>
+								</>
+							)}
 							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Language</div>
-								<div className="description">
-									You can edit language and strings{' '}
+
+							{this.props.user?.configs?.includes('valid_languages') && (
+								<div>
+									<div className="sub-title">Language</div>
+									<div className="description">
+										You can edit language and strings{' '}
+										<span
+											onClick={() =>
+												browserHistory.push('/account?stringSettings=true')
+											}
+											className="general-edit-link"
+										>
+											here
+										</span>
+										.
+									</div>
 									<span
 										onClick={() =>
 											browserHistory.push('/account?stringSettings=true')
 										}
-										className="general-edit-link"
+										className="general-edit-link general-edit-link-position"
 									>
-										here
+										Edit
 									</span>
-									.
+									<LanguageForm
+										initialValues={initialLanguageValues}
+										onSubmit={this.handleSubmitDefault}
+										buttonText={'Save'}
+										buttonClass="green-btn minimal-btn"
+										fields={generalFields.section_2}
+										buttonSubmitting={buttonSubmitting}
+									/>
 								</div>
-								<span
-									onClick={() =>
-										browserHistory.push('/account?stringSettings=true')
-									}
-									className="general-edit-link general-edit-link-position"
-								>
-									Edit
-								</span>
-								<LanguageForm
-									initialValues={initialLanguageValues}
-									onSubmit={this.handleSubmitDefault}
-									buttonText={'Save'}
-									buttonClass="green-btn minimal-btn"
-									fields={generalFields.section_2}
-									buttonSubmitting={buttonSubmitting}
-								/>
-							</div>
+							)}
 							<div className="divider" />
-							<div>
-								<div className="sub-title">Theme</div>
-								<div className="description">
-									You can edit theme and create new themes{' '}
+							{this.props.user?.configs?.includes('strings') && (
+								<div>
+									<div className="sub-title">Theme</div>
+									<div className="description">
+										You can edit theme and create new themes{' '}
+										<span
+											onClick={() =>
+												browserHistory.push('/account?themeSettings=true')
+											}
+											className="general-edit-link"
+										>
+											here
+										</span>
+										.
+									</div>
 									<span
 										onClick={() =>
 											browserHistory.push('/account?themeSettings=true')
 										}
-										className="general-edit-link"
+										className="general-edit-link general-edit-link-position"
 									>
-										here
+										Edit
 									</span>
-									.
-								</div>
-								<span
-									onClick={() =>
-										browserHistory.push('/account?themeSettings=true')
-									}
-									className="general-edit-link general-edit-link-position"
-								>
-									Edit
-								</span>
-								<ThemeForm
-									initialValues={initialThemeValues}
-									onSubmit={this.handleSubmitDefault}
-									buttonText={'Save'}
-									buttonClass="green-btn minimal-btn"
-									fields={generalFields.section_3}
-									buttonSubmitting={buttonSubmitting}
-								/>
-							</div>
-							<div className="divider"></div>
-							<div className="mb-5">
-								<div className="sub-title">Native currency</div>
-								<div className="description">
-									This currency unit will be used for valuing
-									deposits/withdrawals and other important areas.
-								</div>
-								<div className="coins-list">
-									<NativeCurrencyForm
-										initialValues={{
-											native_currency: kit.native_currency,
-										}}
-										onSubmit={this.handleSubmitName}
+									<ThemeForm
+										initialValues={initialThemeValues}
+										onSubmit={this.handleSubmitDefault}
 										buttonText={'Save'}
 										buttonClass="green-btn minimal-btn"
-										fields={generalFields.section_4}
+										fields={generalFields.section_3}
 										buttonSubmitting={buttonSubmitting}
 									/>
 								</div>
-							</div>
+							)}
 							<div className="divider"></div>
-							<div className="mb-5">
-								<div className="sub-title">Other currency display options</div>
-								<div className="description">
-									The user can select these other currencies as alternative
-									valuation options to the 'default' above.
-								</div>
-								<div className="coins-list">
-									{this.state.nativeCurrencies?.map((coin) => {
-										return (
-											<div
-												className="d-flex"
-												style={{ fontSize: '1rem', marginBottom: 5 }}
-											>
-												<Coins type={coin} />
-												<span style={{ position: 'relative', left: 5, top: 8 }}>
-													{coins?.[coin]?.fullname}
-												</span>
-												<span
-													onClick={() => {
-														this.setState({
-															nativeCurrencies: this.state.nativeCurrencies.filter(
-																(c) => c !== coin
-															),
-														});
-													}}
-													style={{
-														cursor: 'pointer',
-														position: 'relative',
-														top: 10,
-														left: 12,
-													}}
-												>
-													<CloseCircleOutlined style={{ fontSize: 16 }} />
-												</span>
-											</div>
-										);
-									})}
-
-									<div>
-										<Select
-											placeholder="Add alternative currency"
-											style={{ marginTop: 20 }}
-											onChange={(e) => {
-												if (this.state.nativeCurrencies.includes(e)) return;
-												this.setState({
-													nativeCurrencies: [...this.state.nativeCurrencies, e],
-												});
-											}}
-										>
-											{Object.keys(coins).map((key) => (
-												<Option value={key}>{coins[key].fullname}</Option>
-											))}
-										</Select>
+							{this.props.user?.configs?.includes(
+								'selectable_native_currencies'
+							) && (
+								<div className="mb-5">
+									<div className="sub-title">Native currency</div>
+									<div className="description">
+										This currency unit will be used for valuing
+										deposits/withdrawals and other important areas.
 									</div>
-
-									<Button
-										style={{ width: 120, marginTop: 10 }}
-										type="primary"
-										className={`green-btn btn-48`}
-										onClick={() => this.onHandleSubmit()}
-									>
-										SAVE
-									</Button>
+									<div className="coins-list">
+										<NativeCurrencyForm
+											initialValues={{
+												native_currency: kit.native_currency,
+											}}
+											onSubmit={this.handleSubmitName}
+											buttonText={'Save'}
+											buttonClass="green-btn minimal-btn"
+											fields={generalFields.section_4}
+											buttonSubmitting={buttonSubmitting}
+										/>
+									</div>
 								</div>
-							</div>
+							)}
+							<div className="divider"></div>
+							{this.props.user?.configs?.includes(
+								'selectable_native_currencies'
+							) && (
+								<div className="mb-5">
+									<div className="sub-title">
+										Other currency display options
+									</div>
+									<div className="description">
+										The user can select these other currencies as alternative
+										valuation options to the 'default' above.
+									</div>
+									<div className="coins-list">
+										{this.state.nativeCurrencies?.map((coin) => {
+											return (
+												<div
+													className="d-flex"
+													style={{ fontSize: '1rem', marginBottom: 5 }}
+												>
+													<Coins type={coin} />
+													<span
+														style={{ position: 'relative', left: 5, top: 8 }}
+													>
+														{coins?.[coin]?.fullname}
+													</span>
+													<span
+														onClick={() => {
+															this.setState({
+																nativeCurrencies: this.state.nativeCurrencies.filter(
+																	(c) => c !== coin
+																),
+															});
+														}}
+														style={{
+															cursor: 'pointer',
+															position: 'relative',
+															top: 10,
+															left: 12,
+														}}
+													>
+														<CloseCircleOutlined style={{ fontSize: 16 }} />
+													</span>
+												</div>
+											);
+										})}
+
+										<div>
+											<Select
+												placeholder="Add alternative currency"
+												style={{ marginTop: 20 }}
+												onChange={(e) => {
+													if (this.state.nativeCurrencies.includes(e)) return;
+													this.setState({
+														nativeCurrencies: [
+															...this.state.nativeCurrencies,
+															e,
+														],
+													});
+												}}
+											>
+												{Object.keys(coins).map((key) => (
+													<Option value={key}>{coins[key].fullname}</Option>
+												))}
+											</Select>
+										</div>
+
+										<Button
+											style={{ width: 120, marginTop: 10 }}
+											type="primary"
+											className={`green-btn btn-48`}
+											onClick={() => this.onHandleSubmit()}
+										>
+											SAVE
+										</Button>
+									</div>
+								</div>
+							)}
 						</div>
 					) : null}
-					{activeTab === 'branding' ? (
+					{this.props.user?.configs?.includes('defaults') &&
+					activeTab === 'branding' ? (
 						<div>
 							{publishJSON.map((item, key) => {
 								return (
@@ -1144,6 +1309,25 @@ class GeneralContent extends Component {
 									</div>
 								);
 							})}
+							<div
+								className={features.home_page ? 'mb-5' : 'mb-5 disable-feature'}
+							>
+								<div className="sub-title">Landing page</div>
+								<div className="description">
+									<span>
+										This is typically the first page your users will see. You
+										can activate the{' '}
+										<span
+											className="underline-text pointer"
+											onClick={() => this.onHandleNavigate()}
+										>
+											home page
+										</span>{' '}
+										here.
+									</span>
+								</div>
+							</div>
+							<div className="divider"></div>
 							<div className="mb-5">
 								<div className="sub-title">Onboarding background image</div>
 								<div className="description">
@@ -1158,7 +1342,8 @@ class GeneralContent extends Component {
 							</div>
 						</div>
 					) : null}
-					{activeTab === 'onboarding' ? (
+					{this.props.user?.configs?.includes('new_user_is_activated') &&
+					activeTab === 'onboarding' ? (
 						<div>
 							<h2>Onboarding</h2>
 							<div className="description">
@@ -1225,7 +1410,8 @@ class GeneralContent extends Component {
 							/>
 						</div>
 					) : null}
-					{activeTab === 'email' ? (
+					{this.props.user?.configs?.includes('emails') &&
+					activeTab === 'email' ? (
 						<div>
 							<div className="form-wrapper">
 								<div className="disable-button">
@@ -1239,13 +1425,15 @@ class GeneralContent extends Component {
 										emailTypeData={emailTypeData}
 										constants={constants}
 										defaultEmailData={defaultEmailData}
+										handleTabChange={handleTabChange}
 									/>
 								</div>
 							</div>
 						</div>
 					) : null}
 				</div>
-				{activeTab === 'footer' ? (
+				{this.props.user?.configs?.includes('description') &&
+				activeTab === 'footer' ? (
 					<div>
 						<div className="general-wrapper">
 							<Description
@@ -1281,7 +1469,8 @@ class GeneralContent extends Component {
 						<div className="mb-5"></div>
 					</div>
 				) : null}
-				{activeTab === 'help_info' ? (
+				{this.props.user?.configs?.includes('links') &&
+				activeTab === 'help_info' ? (
 					<div className="general-wrapper">
 						<h3>Help pop up</h3>
 						<p>
@@ -1321,14 +1510,27 @@ class GeneralContent extends Component {
 						/>
 					</div>
 				) : null}
-				{activeTab === 'apps' ? (
+				{this.props.user?.configs?.includes('apps') && activeTab === 'apps' ? (
 					<div className="general-wrapper">
 						<h3>Mobile Application Configurations</h3>
-						<p>
-							You can configure below fields for you mobile application. Those
-							are publicly available for the users.
-						</p>
-
+						<div className="d-flex flex-column mb-3">
+							<span>
+								You can configure below fields for you mobile application. Those
+								are publicly available for the users.
+							</span>
+							<span>
+								Learn more about the{' '}
+								<Link
+									className="underline-text pointer"
+									href="https://docsend.com/view/32twj3pvkip355ef"
+									target="_blank"
+								>
+									{' '}
+									white-label crypto app
+								</Link>{' '}
+								here.
+							</span>
+						</div>
 						<div style={{}}>
 							<div style={{ marginBottom: 16 }}>
 								<label
@@ -1435,7 +1637,8 @@ class GeneralContent extends Component {
 						</div>
 					</div>
 				) : null}
-				{activeTab === 'features' ? (
+				{this.props.user?.configs?.includes('features') &&
+				activeTab === 'features' ? (
 					<InterfaceForm
 						initialValues={kit.features}
 						constants={constants}
@@ -1448,7 +1651,8 @@ class GeneralContent extends Component {
 						enabledPlugins={enabledPlugins}
 					/>
 				) : null}
-				{activeTab === 'security' ? (
+				{this.props.user?.configs?.includes('security') &&
+				activeTab === 'security' ? (
 					<div>
 						<div className="general-wrapper">
 							<div className="sub-title">Geofencing</div>
@@ -1499,6 +1703,11 @@ class GeneralContent extends Component {
 								visible={this.state.isVisible}
 								footer={null}
 								onCancel={this.handleClose}
+								className={
+									this.state.screen === 'testEnvironmentKey'
+										? 'test-environment-popup-wrapper'
+										: ''
+								}
 							>
 								{this.renderModalContent()}
 							</Modal>
@@ -1516,6 +1725,162 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
+							<div className="sub-title">Suspicious Login</div>
+							<div className="description">
+								<div>
+									Enable/Disable Suspicious Login feauture for user logins
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Switch
+										checked={constants?.kit?.suspicious_login?.active}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												kit: {
+													suspicious_login: {
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="divider"></div>
+						{/* <div className="general-wrapper mb-5">
+							<div className="sub-title">Test Environment Key</div>
+							<div className="description">
+								<div>
+									Test Environment Key to allow test endpoints to be used
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Input
+										defaultValue={constants?.secrets?.test_key?.value}
+										placeholder={'Enter Test Environment Key'}
+										onChange={(e) => {
+											this.setState({
+												test_key: e.target.value,
+											});
+										}}
+									/>
+								</div>
+
+								<div style={{ marginTop: 10, marginBottom: 10 }}>
+									<span style={{ marginRight: 10, fontWeight: 'bold' }}>
+										Enable
+									</span>
+									<Switch
+										checked={constants?.secrets?.test_key?.active}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														value:
+															this.state.test_key ||
+															constants?.secrets?.test_key?.value,
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+								<div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={() => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														active: constants?.secrets?.test_key?.active,
+														value: this.state.test_key,
+													},
+												},
+											});
+										}}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
+						</div> */}
+						<div className="general-wrapper my-5">
+							<div className="d-flex align-items-center">
+								<span className="sub-title mr-2">Tech Access Key</span>
+								<Tooltip
+									title={`Creates an access key for HollaEx®'s technical team to run remote diagnostics tests for exchange troubleshooting. Enable only when instructed to do so`}
+									overlayClassName="tech-access-tooltip"
+									placement="right"
+								>
+									<ExclamationCircleOutlined />
+								</Tooltip>
+							</div>
+							<div className="description d-flex flex-column">
+								<span>
+									Only enabled this when explicitly instructed by the HollaEx®
+									tech team.
+								</span>
+								{!isDisplayKey ? (
+									<span
+										className="underline-text pointer mt-3"
+										onClick={() => this.setState({ isDisplayKey: true })}
+									>
+										Show key
+									</span>
+								) : (
+									<div className="mt-3">
+										<div
+											className={
+												isConfirmSave || testKeyDetails?.isActive
+													? 'd-flex'
+													: 'd-flex disabled-content'
+											}
+										>
+											<div className="divider-container mr-3"></div>
+											<div className="d-flex justify-content-between align-items-center toggle-container">
+												<div className="d-flex flex-column">
+													<span className="bold">
+														Your Test Environment Key:
+													</span>
+													{testKeyDetails?.test_key && (
+														<span>{testKeyDetails?.test_key}</span>
+													)}
+												</div>
+												<div>
+													<span className="bold">
+														{testKeyDetails?.isActive ? 'Enable' : 'Disabled'}
+													</span>
+													<Switch
+														checked={testKeyDetails?.isActive}
+														onChange={this.handletoggle}
+														className="ml-2"
+													/>
+												</div>
+											</div>
+										</div>
+										<Button
+											className={
+												!isConfirmSave
+													? 'green-btn no-border mt-3 minimal-btn disabled-content'
+													: 'green-btn minimal-btn no-border mt-3'
+											}
+											onClick={() =>
+												this.setState({
+													isVisible: true,
+													screen: 'testEnvironmentKey',
+												})
+											}
+											disabled={!isConfirmSave}
+										>
+											Save
+										</Button>
+									</div>
+								)}
+							</div>
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
 							<div className="sub-title">API keys</div>
 							<div className="description d-flex flex-column">
 								<span>
@@ -1524,7 +1889,7 @@ class GeneralContent extends Component {
 								<span>
 									Note, in order to generate API keys it is required to add a{' '}
 									<a
-										href="https://www.techtarget.com/whatis/definition/whitelist"
+										href="http://www.hollaex.com/blog/what-is-ip-white-listing"
 										target={'_blank'}
 										rel="noopener noreferrer"
 									>
@@ -1556,6 +1921,7 @@ const mapStateToProps = (state) => ({
 	selectable_native_currencies:
 		state.app.constants.selectable_native_currencies,
 	balance: state.user.balance,
+	features: state.app.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1564,6 +1930,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setHomePageSetting: bindActionCreators(setHomePageSetting, dispatch),
 });
 
 export default connect(

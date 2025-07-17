@@ -12,7 +12,7 @@ import P2POrders from './P2POrders';
 import P2PPostDeal from './P2PPostDeal';
 import P2PProfile from './P2PProfile';
 import P2POrder from './P2POrder/P2POrder';
-import { EditWrapper } from 'components';
+import { EditWrapper, MobileBarTabs } from 'components';
 import { fetchTransactions } from './actions/p2pActions';
 const TabPane = Tabs.TabPane;
 
@@ -74,6 +74,8 @@ const P2P = ({
 		}
 		if (arr?.[2] === 'mydeals') {
 			setTab('4');
+		} else if (!arr?.[2]) {
+			setTab('0');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [window.location.pathname]);
@@ -82,6 +84,75 @@ const P2P = ({
 		setSelectedProfile(merchant);
 		setTab('2');
 	};
+
+	const tabContent = [
+		{
+			title: STRINGS['P2P.TAB_P2P'],
+			content: (
+				<P2PDash
+					setDisplayOrder={setDisplayOrder}
+					refresh={refresh}
+					setSelectedTransaction={setSelectedTransaction}
+					changeProfileTab={changeProfileTab}
+					setTab={setTab}
+					tab={tab}
+				/>
+			),
+		},
+		{
+			title: STRINGS['P2P.TAB_ORDERS'],
+			content: (
+				<P2POrders
+					setDisplayOrder={setDisplayOrder}
+					setSelectedTransaction={setSelectedTransaction}
+					refresh={refresh}
+					displayUserFeedback={displayUserFeedback}
+					setDisplayUserFeedback={setDisplayUserFeedback}
+					userFeedback={userFeedback}
+					setUserFeedback={setUserFeedback}
+					selectedProfile={selectedProfile}
+					setSelectedProfile={setSelectedProfile}
+					userProfile={userProfile}
+					setUserProfile={setUserProfile}
+					tab={tab}
+				/>
+			),
+		},
+		{
+			title: STRINGS['P2P.TAB_PROFILE'],
+			content: (
+				<P2PProfile
+					setSelectedProfile={setSelectedProfile}
+					selectedProfile={selectedProfile}
+					setRefresh={setRefresh}
+				/>
+			),
+		},
+		{
+			title: STRINGS['P2P.TAB_POST_DEAL'],
+			content: (
+				<P2PPostDeal
+					tab={tab}
+					setTab={setTab}
+					setRefresh={setRefresh}
+					refresh={refresh}
+					selectedDealEdit={selectedDealEdit}
+					setSelectedDealEdit={setSelectedDealEdit}
+				/>
+			),
+		},
+		{
+			title: STRINGS['P2P.TAB_MY_DEALS'],
+			content: (
+				<P2PMyDeals
+					setTab={setTab}
+					setRefresh={setRefresh}
+					refresh={refresh}
+					setSelectedDealEdit={setSelectedDealEdit}
+				/>
+			),
+		},
+	];
 	return (
 		<div className="p2p-summary-container">
 			{!displayOrder && !isMobile && (
@@ -98,7 +169,13 @@ const P2P = ({
 					</div>
 				</>
 			)}
-
+			{isMobile && !displayOrder && (
+				<MobileBarTabs
+					tabs={tabContent}
+					activeTab={Number(tab)}
+					setActiveTab={setTab}
+				/>
+			)}
 			{displayOrder && (
 				<P2POrder
 					setDisplayOrder={setDisplayOrder}
@@ -115,7 +192,7 @@ const P2P = ({
 					setSelectedProfile={setSelectedProfile}
 				/>
 			)}
-			{!displayOrder && (
+			{!displayOrder && !isMobile && (
 				<Tabs
 					defaultActiveKey="0"
 					activeKey={tab}
@@ -211,6 +288,9 @@ const P2P = ({
 							</>
 						)}
 				</Tabs>
+			)}
+			{isMobile && !displayOrder && (
+				<div className="content-with-bar">{tabContent[tab].content}</div>
 			)}
 		</div>
 	);

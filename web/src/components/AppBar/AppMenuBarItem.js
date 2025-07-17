@@ -16,6 +16,7 @@ import {
 } from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { setActiveBalanceHistory } from 'actions/walletActions';
+import { flipPair } from 'containers/QuickTrade/components/utils';
 
 const AppMenuBarItem = ({
 	path,
@@ -33,7 +34,14 @@ const AppMenuBarItem = ({
 	getStake,
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
+	pairs,
+	withdrawCurrency,
+	depositCurrency,
 }) => {
+	const filteredMarkets = getFavourites?.filter((fav) =>
+		Object.keys(pairs).some((data) => data === fav || data === flipPair(fav))
+	);
+
 	const summaryOptions = [
 		{
 			icon: 'INTERFACE_OPTION_ICON',
@@ -64,7 +72,9 @@ const AppMenuBarItem = ({
 			icon: 'DEPOSIT_OPTION_ICON',
 			title: 'SUMMARY.DEPOSIT',
 			description: 'DESKTOP_NAVIGATION.DEPOSIT_DESC',
-			path: '/wallet/deposit',
+			path: depositCurrency
+				? `/wallet/${depositCurrency}/deposit`
+				: '/wallet/deposit',
 			isDisplay: true,
 		},
 		{
@@ -99,7 +109,9 @@ const AppMenuBarItem = ({
 			icon: 'WITHDRAW_OPTION_ICON',
 			title: 'WITHDRAW_PAGE.WITHDRAW',
 			description: 'DESKTOP_NAVIGATION.WITHDRAW_DESC',
-			path: '/wallet/withdraw',
+			path: withdrawCurrency
+				? `/wallet/${withdrawCurrency}/withdraw`
+				: '/wallet/withdraw',
 			isDisplay: true,
 		},
 	];
@@ -124,8 +136,8 @@ const AppMenuBarItem = ({
 			title: 'SUMMARY.MARKETS',
 			description: 'DESKTOP_NAVIGATION.MARKET_DESC',
 			path:
-				getFavourites && getFavourites.length
-					? `/trade/${getFavourites[0]}`
+				getFavourites && getFavourites?.length && filteredMarkets?.length > 0
+					? `/trade/${filteredMarkets[0]}`
 					: `/trade/${getMarkets[0]?.key}`,
 			isDisplay: features?.pro_trade,
 		},
@@ -133,6 +145,13 @@ const AppMenuBarItem = ({
 			icon: 'P2P_OPTION_ICON',
 			title: 'P2P.TAB_P2P',
 			path: '/p2p',
+			activePaths: [
+				'/p2p',
+				'/p2p/orders',
+				'/p2p/profile',
+				'/p2p/post-deal',
+				'/p2p/mydeals',
+			],
 			description: 'MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.PEER_TO_PEER',
 			description_2: 'DESKTOP_NAVIGATION.P2P_DESC',
 			isDisplay: features?.p2p,
@@ -183,11 +202,15 @@ const AppMenuBarItem = ({
 		const tabOptions = getTabOptions();
 		setIsTabActive(checkActiveTab(tabOptions));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [window.location.pathname]);
+	}, [window.location.pathname, depositCurrency, withdrawCurrency]);
 
 	const checkActiveTab = (tabOptions) => {
 		const currentPath = window.location.pathname;
-		return tabOptions?.some((option) => option?.path === currentPath);
+		return tabOptions?.some((option) =>
+			option?.activePaths
+				? option?.activePaths?.includes(currentPath)
+				: option?.path === currentPath
+		);
 	};
 
 	const getTabOptions = () => {
@@ -210,6 +233,13 @@ const AppMenuBarItem = ({
 		setIsMarketDropdownVisible(false);
 		setIsToolsVisible(false);
 	};
+
+	const tabOptions = getTabOptions();
+	const hasDisplayableOption = tabOptions?.some((option) => option?.isDisplay);
+
+	if (!hasDisplayableOption) {
+		return null;
+	}
 
 	return (
 		<Tooltip
@@ -239,18 +269,20 @@ const AppMenuBarItem = ({
 			>
 				<div className="app-menu-bar-content-item d-flex text_overflow align-items-center">
 					<EditWrapper stringId={stringId}>
-						{STRINGS[stringId] === 'Others' && getRemoteRoutes?.length > 0 ? (
+						{STRINGS[stringId] === STRINGS['DESKTOP_NAVIGATION.OTHERS'] &&
+						getRemoteRoutes?.length > 0 ? (
 							<span>{STRINGS[stringId]}</span>
-						) : STRINGS[stringId] !== 'Others' ? (
+						) : STRINGS[stringId] !== STRINGS['DESKTOP_NAVIGATION.OTHERS'] ? (
 							<span>{STRINGS[stringId]}</span>
 						) : null}
 					</EditWrapper>
-					{STRINGS[stringId] === 'Others' && getRemoteRoutes?.length > 0 ? (
+					{STRINGS[stringId] === STRINGS['DESKTOP_NAVIGATION.OTHERS'] &&
+					getRemoteRoutes?.length > 0 ? (
 						<span className="ml-1 app-bar-dropdown-icon">
 							{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 						</span>
 					) : (
-						STRINGS[stringId] !== 'Others' && (
+						STRINGS[stringId] !== STRINGS['DESKTOP_NAVIGATION.OTHERS'] && (
 							<span className="ml-1 app-bar-dropdown-icon">
 								{!isIconActive ? <CaretDownFilled /> : <CaretUpFilled />}
 							</span>
@@ -314,11 +346,12 @@ const DesktopDropdown = ({
 	return (
 		<div className="navigation-dropdown-container">
 			{getTabOptions()?.map((options, index) => {
-				const isActivePath =
-					options?.title === 'STAKE.CEFI_STAKING' ||
-					options?.title === 'STAKE.DEFI_STAKING'
-						? isSelectedStake === options?.title && currPath === options?.path
-						: currPath === options?.path;
+				const isActivePath = options?.activePaths
+					? options?.activePaths?.includes(currPath)
+					: options?.title === 'STAKE.CEFI_STAKING' ||
+					  options?.title === 'STAKE.DEFI_STAKING'
+					? isSelectedStake === options?.title && currPath === options?.path
+					: currPath === options?.path;
 				return (
 					options?.isDisplay && (
 						<div
@@ -336,7 +369,7 @@ const DesktopDropdown = ({
 										options?.icon
 											? options?.icon
 											: options?.icon_id
-											? STRINGS[options?.string_id] === 'Onramper'
+											? options?.string_id === 'RC_ONRAMPER_MENU_ITEM'
 												? 'ONRAMPER_ICON'
 												: options?.icon_id
 											: 'NO_ICON'
@@ -372,12 +405,14 @@ const DesktopDropdown = ({
 											{STRINGS[options?.description_2]}
 										</span>
 									)}
-									{STRINGS[options?.string_id] === 'Buy crypto' ? (
+									{['RC_BANXA_ACCESS', 'RC_SOLFIN_ACCESS'].includes(
+										options?.string_id
+									) ? (
 										<span className="secondary-text">
 											{STRINGS['DESKTOP_NAVIGATION.BUY_CRYPTO_DESC']}
 										</span>
 									) : (
-										STRINGS[options?.string_id] === 'Onramper' && (
+										options?.string_id === 'RC_ONRAMPER_MENU_ITEM' && (
 											<span className="secondary-text">
 												{STRINGS['DESKTOP_NAVIGATION.ONRAMPER_DESC']}
 											</span>
@@ -400,6 +435,9 @@ const mapStateToProps = (state) => ({
 	pair: state.app.pair,
 	getRemoteRoutes: state.app.remoteRoutes,
 	getStake: state.app.selectedStake,
+	pairs: state.app.pairs,
+	withdrawCurrency: state.app.withdrawFields.withdrawCurrency,
+	depositCurrency: state.app.depositFields.depositCurrency,
 });
 
 const mapDispatchToProps = (dispatch) => ({

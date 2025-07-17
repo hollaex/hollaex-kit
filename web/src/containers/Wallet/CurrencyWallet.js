@@ -181,9 +181,12 @@ class Wallet extends Component {
 						<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
 							{STRINGS.formatString(
 								STRINGS['CURRENCY_WALLET.WALLET_PAGE'],
-								<Link className="link-content" to="wallet">
+								<span
+									className="blue-link text-decoration-underline pointer view-price-link"
+									onClick={() => this.props.router.push('/wallet')}
+								>
 									{STRINGS['CURRENCY_WALLET.BACK']}
-								</Link>
+								</span>
 							)}
 						</EditWrapper>
 						{!isMobile && (
@@ -253,7 +256,7 @@ class Wallet extends Component {
 										)
 									)
 								) : null)}
-							<p className="available-balance-wrapper">
+							<div className="available-balance-wrapper">
 								<EditWrapper stringId="CURRENCY_WALLET.AVAILABLE_BALANCE">
 									{STRINGS.formatString(
 										STRINGS['CURRENCY_WALLET.AVAILABLE_BALANCE'],
@@ -262,7 +265,7 @@ class Wallet extends Component {
 										<Help tip={STRINGS['CURRENCY_WALLET.TOOLTIP']}></Help>
 									)}
 								</EditWrapper>
-							</p>
+							</div>
 						</div>
 						{!hasEarn && (
 							<div className="link-container mb-3">
@@ -392,7 +395,11 @@ class Wallet extends Component {
 					</div>
 				</div>
 				<div className="pt-4 pb-3 deposit-history-table-wrapper">
-					<TransactionsHistory isFromWallet={true} isDepositFromWallet={true} />
+					<TransactionsHistory
+						isFromWallet={true}
+						selectedAsset={fullname}
+						isDepositFromWallet={true}
+					/>
 				</div>
 			</div>
 		);

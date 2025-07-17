@@ -64,6 +64,21 @@
 	.expired-block {
 		opacity: 0.25;
 	}
+	.slippage-warning-content {
+		background-color: $colors-notification-pending;
+		padding: 2% 4%;
+		margin-top: 3%;
+		display: flex;
+		gap: 2%;
+		align-items: center;
+		color: #ffffff;
+		.slippage-warning-icon {
+			svg {
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+		}
+	}
 }
 
 .quote-countdown-wrapper {

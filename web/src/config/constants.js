@@ -26,7 +26,7 @@ export const DEFAULT_LANDING_SECTIONS = {
 		name: 'Title/heading',
 		is_active: true,
 		order: 0,
-		className: 'px-2',
+		className: '',
 	},
 	carousel_section: {
 		name: 'Moving ticker cards',
@@ -38,17 +38,29 @@ export const DEFAULT_LANDING_SECTIONS = {
 		is_active: true,
 		order: 3,
 	},
-	market_list: {
-		name: 'Market list',
-		is_active: true,
-		order: 4,
-		className: 'px-2',
-	},
 	quick_trade: {
 		name: 'Quick trade calculator',
 		is_active: true,
 		order: 2,
 		className: 'px-2',
+	},
+	question_section: {
+		name: 'Q&A Accordian',
+		is_active: true,
+		order: 2,
+		className: 'px-2 faq-container',
+	},
+	create_account_section: {
+		name: 'Call-to-action',
+		is_active: true,
+		order: 2,
+		className: 'px-2 create-account-section',
+	},
+	quick_trade_calculator: {
+		name: 'Mini-convert Tool',
+		is_active: true,
+		order: 2,
+		className: 'px-2 mini-quick-trade-section',
 	},
 };
 
@@ -196,6 +208,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 			break;
 		case 's':
 			endpoint = 'https://sonicscan.org/tx/';
+			break;
+		case 'sui':
+			endpoint = 'https://suiscan.xyz/mainnet/tx/';
 			break;
 		default:
 			endpoint = '';

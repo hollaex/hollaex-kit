@@ -591,6 +591,7 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
+			description: null,
 			address: null,
 			format: null,
 			additionalHeaders: null
@@ -624,6 +625,10 @@ class HollaExNetwork {
 
 		if (isString(opts.transactionId)) {
 			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isString(opts.description)) {
+			path += `&description=${opts.description}`;
 		}
 
 		if (isDatetime(opts.startDate)) {
@@ -711,6 +716,7 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
+			description: null,
 			address: null,
 			format: null,
 			additionalHeaders: null
@@ -749,6 +755,10 @@ class HollaExNetwork {
 
 		if (isString(opts.transactionId)) {
 			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isString(opts.description)) {
+			path += `&description=${opts.description}`;
 		}
 
 		if (isDatetime(opts.startDate)) {
@@ -834,6 +844,7 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
+			description: null,
 			address: null,
 			format: null,
 			additionalHeaders: null
@@ -867,6 +878,10 @@ class HollaExNetwork {
 
 		if (isString(opts.transactionId)) {
 			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isString(opts.description)) {
+			path += `&description=${opts.description}`;
 		}
 
 		if (isDatetime(opts.startDate)) {
@@ -954,6 +969,7 @@ class HollaExNetwork {
 			startDate: null,
 			endDate: null,
 			transactionId: null,
+			description: null,
 			address: null,
 			format: null,
 			additionalHeaders: null
@@ -992,6 +1008,10 @@ class HollaExNetwork {
 
 		if (isString(opts.transactionId)) {
 			path += `&transaction_id=${opts.transactionId}`;
+		}
+
+		if (isString(opts.description)) {
+			path += `&description=${opts.description}`;
 		}
 
 		if (isDatetime(opts.startDate)) {
@@ -1318,7 +1338,7 @@ class HollaExNetwork {
 			data.meta = opts.meta;
 		}
 
-		if (isNumber(opts.stop)) {
+		if (opts.stop) {
 			data.stop = opts.stop;
 		}
 

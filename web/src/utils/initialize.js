@@ -1,6 +1,11 @@
+import axios from 'axios';
+import store from 'store';
+
+import strings from 'config/localizedStrings';
 import { overwriteLocale } from './string';
 import { API_URL, LAST_BUILD } from 'config/constants';
 import { version } from '../../package.json';
+import { setError, setErrorCount } from 'actions/appActions';
 
 export const getLocalVersions = () => {
 	const versions = localStorage.getItem('versions') || '{}';
@@ -98,6 +103,10 @@ export const modifySections = (sections = {}) => {
 
 	const modifiedSections = { ...sections };
 	Object.entries(modifiedSections).forEach(([sectionKey, section = {}]) => {
+		if (sectionKey === 'market_list') {
+			delete modifiedSections[sectionKey];
+			return;
+		}
 		Object.keys(section).forEach((key) => {
 			if (!CUSTOMIZABLE_ATTRIBUTES.includes(key)) {
 				delete modifiedSections[sectionKey][key];
@@ -106,4 +115,54 @@ export const modifySections = (sections = {}) => {
 	});
 
 	return modifiedSections;
+};
+
+export const onHandleError = (error) => {
+	if (!navigator.onLine) {
+		store.dispatch(
+			setError({ message: strings['ERROR_TAB.NETWORK_ERROR_MESSAGE'] })
+		);
+		return;
+	}
+
+	const displayError = {
+		429: strings['ERROR_TAB.TOO_MANY_REQUEST_ERROR'],
+		503: strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR'],
+		504: strings['ERROR_TAB.SERVER_ERROR'],
+	};
+
+	const state = store.getState();
+	const getErrorCount = state?.app.errorCount || 0;
+	const errorMessage = displayError[error?.response?.status];
+	if (errorMessage) {
+		if (errorMessage === strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']) {
+			store.dispatch(setErrorCount(getErrorCount + 1));
+		}
+		if (
+			getErrorCount >= 3 ||
+			errorMessage !== strings['ERROR_TAB.SERVER_MAINTENANCE_ERROR']
+		) {
+			store.dispatch(setError({ message: errorMessage }));
+		}
+	}
+};
+
+export const setupAxiosInterceptors = () => {
+	axios.interceptors.request.use(
+		(config) => config,
+		(error) => {
+			console.error(error);
+			onHandleError(error);
+			return Promise.reject(error);
+		}
+	);
+
+	axios.interceptors.response.use(
+		(response) => response,
+		(error) => {
+			console.error(error);
+			onHandleError(error);
+			return Promise.reject(error);
+		}
+	);
 };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import {
 	IconTitle,
@@ -9,10 +10,14 @@ import {
 	CustomTabBar,
 	MobileTabBar,
 	NotLoggedIn,
+	ActionNotification,
+	Loader,
 } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
+import { getMe } from 'actions/userAction';
 
 const VerificationHome = ({
 	activeTab,
@@ -22,8 +27,24 @@ const VerificationHome = ({
 	setActiveTab,
 	renderContent,
 	icons: ICONS,
+	getMe,
+	setMe = () => {},
 }) => {
 	// if (activeTab < tabs.length) {
+	const [isLoading, setLoading] = useState(false);
+
+	const refreshHandler = async () => {
+		try {
+			setLoading(true);
+			const userDetail = await getMe();
+			const detail = userDetail?.value?.data;
+			setMe(detail);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<div className="presentation_container apply_rtl verification_container">
 			{!isMobile && (
@@ -32,10 +53,10 @@ const VerificationHome = ({
 					text={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
 					textType="title"
 					iconPath={ICONS['TAB_VERIFY']}
-					iconId={STRINGS['ACCOUNTS.TAB_VERIFICATION']}
+					iconId="TAB_VERIFY"
 				/>
 			)}
-			<HeaderSection openContactForm={openContactForm} />
+			{!isMobile && <HeaderSection openContactForm={openContactForm} />}
 			<div
 				className={classnames('header-content', {
 					'w-50': !isMobile,
@@ -55,6 +76,18 @@ const VerificationHome = ({
 			</div>
 			<NotLoggedIn>
 				<div className="inner-content">
+					{!isMobile && (
+						<span className="d-flex justify-content-end mb-3">
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['REFRESH']}
+								iconId="REFRESH"
+								iconPath={STATIC_ICONS['REFRESH']}
+								className="blue-icon refresh-link"
+								onClick={() => refreshHandler()}
+							/>
+						</span>
+					)}
 					{!isMobile ? (
 						<CustomTabBar
 							activeTab={activeTab}
@@ -71,7 +104,11 @@ const VerificationHome = ({
 					)}
 					{!isMobile ? (
 						<div className="inner_container">
-							{activeTab > -1 && renderContent(tabs, activeTab)}
+							{isLoading ? (
+								<Loader relative={true} background={false} />
+							) : (
+								activeTab > -1 && renderContent(tabs, activeTab)
+							)}
 						</div>
 					) : null}
 				</div>
@@ -88,4 +125,7 @@ const VerificationHome = ({
 	// }
 };
 
-export default connect(null)(withConfig(VerificationHome));
+const mapDispatchToProps = (dispatch) => ({
+	getMe: bindActionCreators(getMe, dispatch),
+});
+export default connect('', mapDispatchToProps)(withConfig(VerificationHome));

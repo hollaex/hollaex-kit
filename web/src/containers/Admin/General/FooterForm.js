@@ -99,6 +99,10 @@ class FormWrapper extends Component {
 
 	onChange = debounce(() => this.handleOnchange(), 500);
 
+	componentWillUnmount = () => {
+		this.onChange && this.onChange.cancel();
+	};
+
 	render() {
 		const {
 			fields,

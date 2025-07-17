@@ -23,7 +23,7 @@ import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { STAKING_INDEX_COIN } from 'config/contracts';
 import {
-	IconTitle,
+	// IconTitle,
 	HeaderSection,
 	EditWrapper,
 	Button,
@@ -226,7 +226,7 @@ class Stake extends Component {
 
 	render() {
 		const {
-			icons: ICONS,
+			// icons: ICONS,
 			coins,
 			connectWallet,
 			account,
@@ -245,7 +245,7 @@ class Stake extends Component {
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
-				<div className="d-flex align-end justify-content-between">
+				{/* <div className="d-flex align-end justify-content-between">
 					{this.state.selectedStaking === 'defi' && (
 						<IconTitle
 							stringId="STAKE.TITLE"
@@ -257,65 +257,65 @@ class Stake extends Component {
 					)}
 
 					{this.state.selectedStaking === 'defi' && <Account />}
-				</div>
+				</div> */}
 
 				<div className="d-flex flex-direction-column align-items-center justify-content-center">
-					{this.state.selectedStaking === 'cefi' && (
-						<div className="cefi-stake">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="59.482"
-								height="50.688"
-								viewBox="0 0 59.482 50.688"
-								class="w-100 h-100"
-							>
-								<g transform="translate(0 0)">
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M93.737,82.874l8.584-10.938-8.581-10.91L85.156,71.964Z"
-										transform="translate(-63.997 -45.863)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M84.424,0l8.763,11.141L101.931,0Z"
-										transform="translate(-63.448 0)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M126.056,16.8l8.613,10.95h19.548l-18.787-22.9Z"
-										transform="translate(-94.735 -3.649)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M0,27.794H19.569l8.592-10.949L18.776,4.913Z"
-										transform="translate(0 -3.692)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M135.814,107l-9.758,12.435,8.788,11.173L154.217,107Z"
-										transform="translate(-94.735 -80.415)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M89.21,174.8h15.17l-7.594-9.655Z"
-										transform="translate(-67.044 -124.11)"
-										fill="#fff"
-									/>
-									<path
-										class="fill_secondary-color stroke_none"
-										d="M0,107l19.383,23.622,8.777-11.185L18.38,107Z"
-										transform="translate(-0.001 -80.415)"
-										fill="#fff"
-									/>
-								</g>
-							</svg>
-						</div>
-					)}
+					{/* {this.state.selectedStaking === 'cefi' && ( */}
+					<div className="cefi-stake">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="59.482"
+							height="50.688"
+							viewBox="0 0 59.482 50.688"
+							className="w-100 h-100"
+						>
+							<g transform="translate(0 0)">
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M93.737,82.874l8.584-10.938-8.581-10.91L85.156,71.964Z"
+									transform="translate(-63.997 -45.863)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M84.424,0l8.763,11.141L101.931,0Z"
+									transform="translate(-63.448 0)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M126.056,16.8l8.613,10.95h19.548l-18.787-22.9Z"
+									transform="translate(-94.735 -3.649)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M0,27.794H19.569l8.592-10.949L18.776,4.913Z"
+									transform="translate(0 -3.692)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M135.814,107l-9.758,12.435,8.788,11.173L154.217,107Z"
+									transform="translate(-94.735 -80.415)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M89.21,174.8h15.17l-7.594-9.655Z"
+									transform="translate(-67.044 -124.11)"
+									fill="#fff"
+								/>
+								<path
+									className="fill_secondary-color stroke_none"
+									d="M0,107l19.383,23.622,8.777-11.185L18.38,107Z"
+									transform="translate(-0.001 -80.415)"
+									fill="#fff"
+								/>
+							</g>
+						</svg>
+					</div>
+					{/* )} */}
 
 					<h2 className="stake_header">
 						<EditWrapper stringId="STAKE.TITLE">
@@ -365,6 +365,9 @@ class Stake extends Component {
 								</span>
 							</div>
 						)}
+				</div>
+				<div className="defi-content-wrapper">
+					{this.state.selectedStaking === 'defi' && <Account />}
 				</div>
 
 				{this.state.selectedStaking === 'cefi' && (

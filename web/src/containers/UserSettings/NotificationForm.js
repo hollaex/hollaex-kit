@@ -30,6 +30,20 @@ export const generateNotificationFormValues = (DEFAULT_TOGGLE_OPTIONS) => ({
 		className: 'toggle-wrapper',
 		options: DEFAULT_TOGGLE_OPTIONS,
 	},
+	popup_order_new: {
+		type: 'toggle',
+		stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_NEW_ORDER_CREATED',
+		label: STRINGS['USER_SETTINGS.NOTIFICATION_FORM.POPUP_NEW_ORDER_CREATED'],
+		className: 'toggle-wrapper',
+		options: DEFAULT_TOGGLE_OPTIONS,
+	},
+	popup_order_canceled: {
+		type: 'toggle',
+		stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CANCELLED',
+		label: STRINGS['USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CANCELLED'],
+		className: 'toggle-wrapper',
+		options: DEFAULT_TOGGLE_OPTIONS,
+	},
 });
 
 const Form = ({
@@ -49,6 +63,7 @@ const Form = ({
 				text={STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
 				textType="title"
 				iconPath={ICONS['SETTING_NOTIFICATION_ICON']}
+				iconId="SETTING_NOTIFICATION_ICON"
 			/>
 			<div className="pr-3">
 				{renderFields(formFields)}

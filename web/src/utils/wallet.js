@@ -46,6 +46,8 @@ export const getNetworkNameByKey = (network) => {
 				return 'Sonic';
 			case 'arb':
 				return 'Arbitrum';
+			case 'sui':
+				return 'Sui';
 			default:
 				return network.toUpperCase();
 		}

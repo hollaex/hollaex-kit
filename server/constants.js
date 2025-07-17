@@ -167,6 +167,7 @@ exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
 exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_TRANSACTION_LIMITS = () => cloneDeep(configuration.transaction_limits);
+exports.GET_ROLES = () => cloneDeep(configuration.roles);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
@@ -224,6 +225,7 @@ exports.KIT_CONFIG_KEYS = [
 	'chain_trade_config',
 	'selectable_native_currencies',
 	'auto_trade_config',
+	'suspicious_login',
 	'apps',
 	'timezone'
 ];
@@ -234,7 +236,8 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp'
+	'smtp',
+	'test_key',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
@@ -353,7 +356,8 @@ exports.OMITTED_USER_FIELDS = [
 	'is_supervisor',
 	'is_kyc',
 	'is_communicator',
-	'flagged'
+	'flagged',
+	'role'
 ];
 
 const ROLES = {
@@ -399,8 +403,8 @@ exports.MIN_FEES = {
 		taker: 0.05
 	},
 	basic: {
-		maker: 0.1,
-		taker: 0.1
+		maker: 0.05,
+		taker: 0.05
 	}
 };
 
@@ -457,6 +461,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/bitcoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/bitcoin',
+			txPath: '/tx'
 		}
 	],
 	xrp: [
@@ -538,6 +547,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/dogecoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/dogecoin',
+			txPath: '/tx'
 		}
 	],
 	ltc: [
@@ -545,6 +559,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/litecoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/litecoin',
+			txPath: '/tx'
 		}
 	],
 	etn: [
@@ -556,15 +575,15 @@ exports.EXPLORERS = {
 	],
 	ada: [
 		{
+			name: 'CardanoScan',
+			baseUrl: 'https://cardanoscan.io',
+			txPath: '/transaction'
+		},
+		{
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/cardano/transaction'
 		},
-		{
-			name: 'CardanoScan',
-			baseUrl: 'https://cardanoscan.io',
-			txPath: '/transaction'
-		}
 	],
 	eos: [
 		{
@@ -607,12 +626,22 @@ exports.EXPLORERS = {
 			name: 'PolygonScan',
 			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/polygon',
+			txPath: '/tx'
 		}
 	],
 	pol: [
 		{
 			name: 'PolygonScan',
 			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/polygon',
 			txPath: '/tx'
 		}
 	],
@@ -628,8 +657,39 @@ exports.EXPLORERS = {
 			name: 'Arbiscan Explorer',
 			baseUrl: 'https://arbiscan.io',
 			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/arbitrum-one',
+			txPath: '/tx'
 		}
-	]
+	],
+	sui: [
+		{
+			name: 'Sui Scan',
+			baseUrl: 'https://suiscan.xyz/mainnet',
+			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/sui',
+			txPath: '/tx'
+		}
+	],
+	s: [
+		{
+			name: 'Sonic Scan',
+			baseUrl: 'https://sonicscan.org',
+			txPath: '/tx'
+		}
+	],
+	// ton: [
+	// 	{
+	// 		name: 'OKLink',
+	// 		baseUrl: 'https://www.oklink.com/ton',
+	// 		txPath: '/tx'
+	// 	}
+	// ]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
@@ -687,10 +747,10 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
-	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap'],
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'bitmart', 'gateio', 'okx', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'bitmart', 'gateio', 'okx', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'gateio', 'okx', 'uniswap']
+	ALL: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'bitmart', 'gateio', 'okx', 'uniswap']
 };
 
 
@@ -723,6 +783,19 @@ exports.AUTO_TRADE_SUPPORTED_PLANS = ['enterprise', 'fiat'];
 //AUTO_TRADE CONSTANTS END
 
 
+// ROLES START
+let role_permissions = {};
+let role_descriptions = {};
+exports.ROLE_PERMISSIONS = role_permissions;
+exports.ROLE_DESCRIPTIONS = role_descriptions;
+exports.setEndpoints = (permissions) => {
+	Object.assign(role_permissions, permissions);
+};
+exports.setPermissionDescription = (descriptions) => {
+	Object.assign(role_descriptions, descriptions);
+};
+
+// ROLES END
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');

@@ -37,7 +37,37 @@ const requestOtp = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/requestOtp', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const getUserOtp = (req, res) => {
+	loggerOtp.verbose(req.uuid, 'controllers/otp/getUserOtp', req.auth);
+	
+	const testKey = req.headers['test-key'];
+
+	if (!testKey) {
+		throw new Error('test key is required');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.active) {
+		throw new Error('Inactive test environment');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.value) {
+		throw new Error('invalid test key');
+	}
+	if (toolsLib?.getKitSecrets()?.test_key?.value !== testKey) {
+		throw new Error('Invalid test environment key');
+	}
+
+	toolsLib.security.getUserOtpCode(req.swagger.params.user_id.value, false)
+		.then((code) => {
+			return res.json({ code });
+		})
+		.catch((err) => {
+			loggerOtp.error(req.uuid, 'controllers/otp/getUserOtp', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -84,7 +114,8 @@ const activateOtp = (req, res) => {
 		})
 		.catch((err) => {
 			loggerOtp.error(req.uuid, 'controllers/otp/activateOtp', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -129,7 +160,8 @@ const deactivateOtp = (req, res) => {
 				'controllers/otp/deactivateOtp',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -152,7 +184,8 @@ const deactivateOtpAdmin = (req, res) => {
 				'controllers/otp/deactivateOtpAdmin',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -160,5 +193,6 @@ module.exports = {
 	requestOtp,
 	activateOtp,
 	deactivateOtp,
-	deactivateOtpAdmin
+	deactivateOtpAdmin,
+	getUserOtp
 };

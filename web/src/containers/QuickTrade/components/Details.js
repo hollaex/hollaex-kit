@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router';
 import { Radio } from 'antd';
@@ -13,6 +13,8 @@ import {
 } from 'utils/currency';
 import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
+import { flipPair } from './utils';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const Details = ({
 	pair,
@@ -24,7 +26,9 @@ const Details = ({
 	coinChartData,
 	showTradeFees,
 	showOnlyTitle,
-	constants,
+	isCoinPage = false,
+	pairs,
+	isLoading = false,
 }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
@@ -33,6 +37,9 @@ const Details = ({
 	const [sevenDayChartData, setSevenDayChartData] = useState([]);
 	const [chartData, setChartData] = useState([]);
 	const [showSevenDay, setShowSevenDay] = useState(true);
+
+	const oneDayRef = useRef(null);
+	const sevenDayRef = useRef(null);
 
 	const [pairBase, pair_2] = pair.split('-');
 
@@ -93,14 +100,14 @@ const Details = ({
 
 	useEffect(() => {
 		const renderSevenDays = () => {
-			setTimeout(() => {
+			sevenDayRef.current = setTimeout(() => {
 				setCoinStats(sevenDayData);
 				setChartData([...sevenDayChartData]);
 			}, 0);
 		};
 
 		const renderOneDay = () => {
-			setTimeout(() => {
+			oneDayRef.current = setTimeout(() => {
 				setCoinStats(oneDayData);
 				setChartData([...oneDayChartData]);
 			}, 0);
@@ -111,6 +118,17 @@ const Details = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showSevenDay, oneDayData, sevenDayData, pair]);
 
+	useEffect(() => {
+		return () => {
+			const timeoutRefs = [oneDayRef, sevenDayRef];
+			timeoutRefs.forEach((ref) => {
+				if (ref?.current) {
+					clearTimeout(ref?.current);
+				}
+			});
+		};
+	}, []);
+
 	const handleClick = () => {
 		if (!isNetwork && !brokerUsed) {
 			router.push(`/trade/${pair}`);
@@ -119,6 +137,19 @@ const Details = ({
 		} else {
 			router.push(`/prices/coin/${pair.split('-')[0]}`);
 		}
+	};
+
+	const onHandlenavigate = (pair) => {
+		if (!pair) return router.push('/wallet');
+
+		const isPro = pairs[pair] || pairs[flipPair(pair)];
+		const path = brokerUsed
+			? `/quick-trade/${pair}`
+			: isPro
+			? `/trade/${pair}`
+			: '/wallet';
+
+		router.push(path);
 	};
 
 	const handleDayChange = (e) => {
@@ -177,7 +208,9 @@ const Details = ({
 							className={classNames('pairs pointer', {
 								underline: !isNetwork && !brokerUsed,
 							})}
-							onClick={handleClick}
+							onClick={() =>
+								isCoinPage ? onHandlenavigate(pair) : handleClick()
+							}
 						>
 							{coins[pairBase] && coins[pairBase].display_name}
 						</div>
@@ -201,14 +234,16 @@ const Details = ({
 								<div className="sub-title caps">
 									{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 								</div>
-								<div className="d-flex">
-									<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
-									<div className="fullname white-txt">
-										{constants?.native_currency === pairBase
-											? coins[pair_2]?.display_name
-											: coins[pairBase]?.display_name}
+								{!isLoading ? (
+									<div className="d-flex">
+										<div className="f-size-22 pr-2">{coinStats.lastPrice}</div>
+										<div className="fullname white-txt">
+											{coins[pair_2] && coins[pair_2].display_name}
+										</div>
 									</div>
-								</div>
+								) : (
+									<Loading key={pair} index={0} />
+								)}
 							</div>
 							<div className="trade_tabs-container">
 								<div className="sub-title caps">
@@ -220,19 +255,34 @@ const Details = ({
 										]
 									}
 								</div>
-								<PriceChange
-									market={{
-										priceDifference: coinStats.priceDifference,
-										priceDifferencePercent: coinStats.priceDifferencePercent,
-									}}
-									key={pair}
-									large
-								/>
+								{!isLoading ? (
+									<PriceChange
+										market={{
+											priceDifference: coinStats.priceDifference,
+											priceDifferencePercent: coinStats.priceDifferencePercent,
+										}}
+										key={pair}
+										large
+									/>
+								) : (
+									<Loading key={pair} index={0} />
+								)}
 							</div>
 						</div>
 						<div className="chart w-100">
 							<div className="fade-area" />
-							<MiniSparkLine chartData={chartData} isArea />
+							{!isLoading ? (
+								<MiniSparkLine
+									chartData={chartData}
+									isArea
+									isActiveTooltip={true}
+									displayCoin={pair_2}
+								/>
+							) : (
+								<div className="d-flex h-100 w-100 align-items-center justify-content-center">
+									<Loading key={pair} index={0} />
+								</div>
+							)}
 						</div>
 						<div className="d-flex justify-content-between pb-24">
 							<div>
@@ -245,12 +295,16 @@ const Details = ({
 										]
 									}
 								</div>
-								<div className="d-flex">
-									<div className="f-size-16 pr-2">{coinStats.high}</div>
-									<div className="fullname">
-										{coins[pair_2] && coins[pair_2].display_name}
+								{!isLoading ? (
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{coinStats.high}</div>
+										<div className="fullname">
+											{coins[pair_2] && coins[pair_2].display_name}
+										</div>
 									</div>
-								</div>
+								) : (
+									<Loading key={pair} index={0} />
+								)}
 							</div>
 							<div className="trade_tabs-container">
 								<div className="sub-title">
@@ -262,12 +316,16 @@ const Details = ({
 										]
 									}
 								</div>
-								<div className="d-flex">
-									<div className="f-size-16 pr-2">{coinStats.low}</div>
-									<div className="fullname">
-										{coins[pair_2] && coins[pair_2].display_name}
+								{!isLoading ? (
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{coinStats.low}</div>
+										<div className="fullname">
+											{coins[pair_2] && coins[pair_2].display_name}
+										</div>
 									</div>
-								</div>
+								) : (
+									<Loading key={pair} index={0} />
+								)}
 							</div>
 						</div>
 						<div className="d-flex pb-40">

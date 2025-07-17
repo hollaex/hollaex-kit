@@ -28,9 +28,40 @@ const getWithdrawalFee = (req, res) => {
 			'controller/withdrawal/getWithdrawalFee err',
 			err.message
 		);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 	}
 };
+
+const getUserWithdrawalCode = (req, res) => {
+	loggerWithdrawals.verbose(req.uuid, 'controllers/user/getUserWithdrawalCode', req.auth);
+
+	const testKey = req.headers['test-key'];
+
+	if (!testKey) {
+		throw new Error('test key is required');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.value) {
+		throw new Error('invalid test key');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.active) {
+		throw new Error('Inactive test environment');
+	}
+	if (toolsLib?.getKitSecrets()?.test_key?.value !== testKey) {
+		throw new Error('Invalid test environment key');
+	}
+
+	toolsLib.wallet.getUserWithdrawalCode()
+		.then((token) => {
+			return res.json({ token });
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(req.uuid, 'controllers/user/getUserWithdrawalCode', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 
 const requestWithdrawal = (req, res) => {
 	loggerWithdrawals.verbose(
@@ -78,7 +109,8 @@ const requestWithdrawal = (req, res) => {
 				'controller/withdrawal/requestWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -178,7 +210,8 @@ const performWithdrawal = (req, res) => {
 				'controller/withdrawals/performWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -245,7 +278,8 @@ const performDirectWithdrawal = (req, res) => {
 				'controller/withdrawals/performWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -277,7 +311,8 @@ const getWithdrawalMax = (req, res) => {
 				'controllers/withdrawal/getWithdrawalMax',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -302,14 +337,12 @@ const getAdminWithdrawals = (req, res) => {
 		rejected,
 		processing,
 		waiting,
-		format,
 		transaction_id,
-		address
+		address,
+		description
 	} = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
+
 
 	toolsLib.wallet.getUserWithdrawalsByKitId(
 		user_id.value,
@@ -327,7 +360,8 @@ const getAdminWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value,
+		description.value,
+		null,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
@@ -336,13 +370,7 @@ const getAdminWithdrawals = (req, res) => {
 	)
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-			if (format.value === 'csv') {
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerWithdrawals.error(
@@ -350,7 +378,8 @@ const getAdminWithdrawals = (req, res) => {
 				'controllers/withdrawal/getWithdrawals',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -395,6 +424,7 @@ const getUserWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
+		null,
 		format.value,
 		{
 			additionalHeaders: {
@@ -413,7 +443,8 @@ const getUserWithdrawals = (req, res) => {
 		})
 		.catch((err) => {
 			loggerWithdrawals.error('controllers/withdrawal/getUserWithdrawals', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -441,7 +472,75 @@ const cancelWithdrawal = (req, res) => {
 				'controllers/withdrawal/cancelWithdrawal',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const downloadWithdrawalsCsv = (req, res) => {
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controllers/withdrawal/downloadWithdrawalsCsv/auth',
+		req.auth
+	);
+
+	const {
+		user_id,
+		currency,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		status,
+		dismissed,
+		rejected,
+		processing,
+		waiting,
+		transaction_id,
+		address,
+		description
+	} = req.swagger.params;
+
+	toolsLib.wallet.getUserWithdrawalsByKitId(
+		user_id.value,
+		currency.value,
+		status.value,
+		dismissed.value,
+		rejected.value,
+		processing.value,
+		waiting.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		start_date.value,
+		end_date.value,
+		transaction_id.value,
+		address.value,
+		description.value,
+		'csv',
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controllers/withdrawal/downloadWithdrawalsCsv',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -453,5 +552,7 @@ module.exports = {
 	getUserWithdrawals,
 	cancelWithdrawal,
 	performDirectWithdrawal,
-	getWithdrawalMax
+	getWithdrawalMax,
+	downloadWithdrawalsCsv,
+	getUserWithdrawalCode
 };

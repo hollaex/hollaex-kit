@@ -27,6 +27,12 @@ class OrdersWrapper extends Component {
 			cancelDelayData: [],
 			showCancelAllModal: false,
 		};
+		this.cancelTimeouts = [];
+	}
+
+	componentWillUnmount() {
+		(this.cancelTimeouts || []).forEach((timeoutId) => clearTimeout(timeoutId));
+		this.cancelTimeouts = [];
 	}
 
 	openConfirm = () => {
@@ -47,11 +53,13 @@ class OrdersWrapper extends Component {
 			cancelDelayData = [...cancelDelayData, id];
 		});
 		this.setState({ cancelDelayData });
-		setTimeout(() => {
+		const timeoutId = setTimeout(() => {
 			cancelAllOrders(activeOrdersMarket, settings);
 			this.onCloseDialog();
-			this.props.allOrderCancelNotification(activeOrders);
+			settings.notification.popup_order_canceled &&
+				this.props.allOrderCancelNotification(activeOrders);
 		}, 700);
+		this.cancelTimeouts.push(timeoutId);
 	};
 
 	handleCancelOrders = (id) => {
@@ -63,10 +71,12 @@ class OrdersWrapper extends Component {
 			orderCancelNotification,
 		} = this.props;
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
-		setTimeout(() => {
+		const timeoutId = setTimeout(() => {
 			cancelOrder(id, settings);
-			orderCancelNotification(activeOrders, id, coins);
+			settings.notification.popup_order_canceled &&
+				orderCancelNotification(activeOrders, id, coins);
 		}, 700);
+		this.cancelTimeouts.push(timeoutId);
 	};
 
 	onCloseDialog = () => {
@@ -82,12 +92,15 @@ class OrdersWrapper extends Component {
 			activeOrdersMarket,
 			setActiveOrdersMarket,
 			goToTransactionsHistory,
+			onHandleRefresh,
+			key,
 		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
 		return (
 			<Fragment>
 				<TradeBlock
+					key={key}
 					title={`${STRINGS['TOOLS.OPEN_ORDERS']} (${activeOrders.length})`}
 					action={
 						isLoggedIn() ? (
@@ -107,6 +120,7 @@ class OrdersWrapper extends Component {
 					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
 					titleClassName="mb-4"
+					onHandleRefresh={onHandleRefresh}
 				>
 					<NotLoggedIn
 						placeholderKey="NOT_LOGGEDIN.TXT_1"
@@ -118,6 +132,7 @@ class OrdersWrapper extends Component {
 								onChange={setActiveOrdersMarket}
 							/>
 							<ActiveOrders
+								key={key}
 								pageSize={activeOrders.length}
 								activeOrdersMarket={activeOrdersMarket}
 								pairs={pairs}

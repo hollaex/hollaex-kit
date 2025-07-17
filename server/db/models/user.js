@@ -18,12 +18,14 @@ const SETTINGS_DATA_DEFAULT = {
 	notification: {
 		popup_order_confirmation: true,
 		popup_order_completed: true,
-		popup_order_partially_filled: true
+		popup_order_partially_filled: true,
+		popup_order_new: true,
+		popup_order_canceled: true
 	},
 	interface: {
 		order_book_levels: 10,
 		theme: process.env.DEFAULT_THEME || 'white',
-		display_currency: process.env.NATIVE_CURRENCY || 'usdt', 
+		display_currency: process.env.NATIVE_CURRENCY || 'usdt',
 	},
 	language: process.env.DEFAULT_LANGUAGE || 'en',
 	audio: {
@@ -173,7 +175,11 @@ module.exports = function (sequelize, DataTypes) {
 			meta: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
-			}
+			},
+			role: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 		},
 		{
 			underscored: true,

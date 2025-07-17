@@ -1,25 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import withConfig from 'components/ConfigProvider/withConfig';
+import { Link, withRouter } from 'react-router';
+import { isMobile } from 'react-device-detect';
+import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-// eslint-disable-next-line
-import { Coin, DonutChart, EditWrapper, MobileBarBack } from 'components';
-import { Link } from 'react-router';
-import { Button, Spin, DatePicker, message, Modal, Tabs } from 'antd';
-import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
+import debounce from 'lodash.debounce';
+// eslint-disable-next-line
 import STRINGS from 'config/localizedStrings';
-import { CloseOutlined } from '@ant-design/icons';
+import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	ActionNotification,
+	Coin,
+	DonutChart,
+	EditWrapper,
+	// MobileBarBack,
+} from 'components';
+import { fetchBalanceHistory, fetchPlHistory } from './actions';
 import './_ProfitLoss.scss';
-import { isMobile } from 'react-device-detect';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { sortedAssetsSelector } from './utils';
 import {
 	calculateOraclePrice,
 	formatCurrencyByIncrementalUnit,
 } from 'utils/currency';
+import { STATIC_ICONS } from 'config/icons';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 const TabPane = Tabs.TabPane;
 const ProfitLossSection = ({
 	coins,
@@ -29,7 +38,9 @@ const ProfitLossSection = ({
 	pricesInNative,
 	chartData,
 	assets,
-	loading,
+	loading = false,
+	onHandleRefresh = () => {},
+	router,
 }) => {
 	const month = Array.apply(0, Array(12)).map(function (_, i) {
 		return moment().month(i).format('MMM');
@@ -61,28 +72,123 @@ const ProfitLossSection = ({
 	const [customDateValues, setCustomDateValues] = useState();
 	const [loadingPnl, setLoadingPnl] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
+	const [selectedDateIndexes, setSelectedDateIndexes] = useState([]);
 
 	const options = {
 		chart: {
 			type: 'area',
+			events: {
+				render: function () {
+					const chart = this;
+
+					if (chart.xAxis[0].labelClicked) return;
+					chart.xAxis[0].labelClicked = true;
+
+					Object.values(chart.xAxis[0]?.ticks).forEach((tick, idx) => {
+						const label = tick.label && tick.label.element;
+						if (label) {
+							label.style.cursor = 'pointer';
+							label.onclick = () => {
+								const clickedLabel = label.textContent;
+								const matchIndex = graphData.findIndex(
+									(item) => item[0] === clickedLabel
+								);
+
+								if (matchIndex !== -1) {
+									setCurrent(matchIndex);
+									const balance = balanceHistory?.find(
+										(history) =>
+											`${moment(history?.created_at)?.date()} ${
+												month[moment(history?.created_at)?.month()]
+											}` === graphData[matchIndex][0]
+									);
+									if (balance) {
+										setCurrentBalance(balance);
+										setSelectedCustomDate(moment(balance.created_at));
+									}
+									setSelectedDateIndexes((prev) => {
+										let newIndexes;
+										if (prev?.includes(matchIndex)) {
+											newIndexes = prev?.filter((i) => i !== matchIndex);
+										} else if (prev?.length < 5) {
+											newIndexes = [...prev, matchIndex];
+										} else {
+											newIndexes = [...prev.slice(1), matchIndex];
+										}
+										return newIndexes?.sort((a, b) => a - b);
+									});
+									const point = chart.series[0].points[matchIndex];
+									chart.tooltip.refresh(point);
+								}
+							};
+						}
+					});
+				},
+			},
 		},
 		title: {
 			text: '',
 		},
 		tooltip: {
-			enabled: false,
+			className: 'profit-loss-balance-tooltip',
+			enabled: true,
+			useHTML: true,
+			formatter: function () {
+				if (selectedDateIndexes.length > 0) {
+					let compareTooltips = `<div><b>${STRINGS['PROFIT_LOSS.COMPARE_DATES']}:</b></div>`;
+					selectedDateIndexes.forEach((idx) => {
+						const point = graphData[idx];
+						if (point) {
+							compareTooltips += `
+ <div style="margin-bottom:4px;">
+ <span class="selected-date">${point[0]}</span>:
+ ${getSourceDecimals(balance_history_config?.currency || 'usdt', point[1])}
+ </div>
+ `;
+						}
+					});
+					compareTooltips += `<hr style="margin:4px 0"/>`;
+					return (
+						compareTooltips +
+						`<div>
+							${getSourceDecimals(balance_history_config?.currency || 'usdt', this.y)}
+						</div>`
+					);
+				} else {
+					return `<div>
+						${getSourceDecimals(balance_history_config?.currency || 'usdt', this.y)}
+					</div>`;
+				}
+			},
+			positioner: function (labelWidth, labelHeight, point) {
+				if (selectedDateIndexes?.length > 0) {
+					const chart = this.chart || (this.series && this.series.chart);
+					let chartWidth = chart && chart.chartWidth ? chart.chartWidth : 800;
+					let y = 20;
+					let x = Math.round((chartWidth - labelWidth) / 2);
+					return { x, y };
+				} else {
+					return { x: point.plotX, y: point.plotY - labelHeight };
+				}
+			},
 		},
 		xAxis: {
 			type: 'category',
 			labels: {
+				useHTML: true,
 				formatter: (item) => {
-					const color =
-						graphData?.[current || 0]?.[0] === item.value
-							? '#5D63FF'
-							: 'date-text';
+					const idx = graphData?.findIndex((g) => g[0] === item?.value);
+					const isSelected = selectedDateIndexes?.includes(idx);
+					const color = isSelected
+						? '#5D63FF'
+						: graphData?.[current || 0]?.[0] === item?.value
+						? '#5D63FF'
+						: 'date-text';
 					const fontWeight =
-						graphData?.[current || 0]?.[0] === item.value ? 'bold' : 'normal';
-					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item.value}</span>`;
+						isSelected || graphData?.[current || 0]?.[0] === item?.value
+							? 'bold'
+							: 'normal';
+					return `<span style="color: ${color}; font-weight: ${fontWeight}">${item?.value}</span>`;
 				},
 			},
 		},
@@ -109,7 +215,8 @@ const ProfitLossSection = ({
 				point: {
 					events: {
 						click: (e, x, y) => {
-							setCurrent(e.point.x);
+							const idx = e.point.x;
+							setCurrent(idx);
 							const balance = balanceHistory.find(
 								(history) =>
 									`${moment(history.created_at).date()} ${
@@ -121,6 +228,22 @@ const ProfitLossSection = ({
 								setCurrentBalance(balance);
 								setSelectedCustomDate(moment(balance.created_at));
 							}
+							if (!isMobile) {
+								setSelectedDateIndexes((prev) => {
+									let newIndexes;
+									if (prev.includes(idx)) {
+										newIndexes = prev?.filter((i) => i !== idx);
+									} else if (prev.length < 5) {
+										newIndexes = [...prev, idx];
+									} else {
+										newIndexes = [...prev.slice(1), idx];
+									}
+									return newIndexes?.sort((a, b) => a - b);
+								});
+							}
+						},
+						mouseOver: function () {
+							setCurrent(this.x);
 						},
 					},
 				},
@@ -128,6 +251,11 @@ const ProfitLossSection = ({
 		],
 	};
 	const firstRender = useRef(true);
+
+	const tabList = ['performance', 'balance-history'];
+	const mobileTabList = ['performance', 'percentage', 'balance-history'];
+
+	const selectedTabList = isMobile ? mobileTabList : tabList;
 
 	useEffect(() => {
 		if (firstRender.current) {
@@ -141,6 +269,9 @@ const ProfitLossSection = ({
 			});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
+		return () => {
+			onHandleFetchBalance && onHandleFetchBalance.cancel();
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -149,116 +280,159 @@ const ProfitLossSection = ({
 			firstRender.current = false;
 		} else {
 			setLoadingPnl(true);
-			fetchPlHistory({ period: currentDay }).then((res) => {
-				setUserPL(res);
-				setLoadingPnl(false);
-			});
+			fetchPlHistory({ period: currentDay })
+				.then((res) => {
+					setUserPL(res);
+					setLoadingPnl(false);
+				})
+				.catch((error) => {
+					console.error('error', error);
+					setLoadingPnl(false);
+				});
 			requestHistory(queryFilters.page, queryFilters.limit);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const tab = selectedTabList?.find((data) => params.has(data));
+		const tabIndex = selectedTabList?.indexOf(tab);
+
+		if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
+			setActiveTab(String(tabIndex));
+		} else if (!tab) {
+			setActiveTab('0');
+			const url = new URL(window.location.href);
+			url.search = selectedTabList[0] ? `?${selectedTabList[0]}` : '';
+			router.replace(`${url?.pathname}${url?.search}`);
+		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const onHandleFetchBalance = debounce(
+		(page = 1, limit) => {
+			fetchBalanceHistory({ ...queryValues })
+				.then((response) => {
+					setBalanceHistory(
+						page === 1 ? response.data : [...balanceHistory, ...response.data]
+					);
+
+					const length =
+						response.data.length > currentDay
+							? currentDay - 1
+							: response.data.length > 6
+							? response.data.length
+							: 6;
+					const balanceData = response.data.find(
+						(history) =>
+							moment(history.created_at).format('YYYY-MM-DD') ===
+							moment(queryValues.end_date)
+								.subtract(length === 6 ? 0 : length, 'days')
+								.format('YYYY-MM-DD')
+					);
+					let balance =
+						balanceData ||
+						response.data[length] ||
+						response.data[response.data.length - 1];
+
+					let newGraphData = [];
+					for (let i = 0; i < length + 1; i++) {
+						if (currentDay === 7) {
+							const balanceData = response.data.find(
+								(history) =>
+									moment(history.created_at).format('YYYY-MM-DD') ===
+									moment(queryValues.end_date)
+										.subtract(i, 'days')
+										.format('YYYY-MM-DD')
+							);
+							// if (!balanceData) continue;
+							newGraphData.push([
+								`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+									month[
+										moment(queryValues.end_date).subtract(i, 'days').month()
+									]
+								}`,
+								balanceData
+									? balanceData.total
+									: response?.data?.[response.data.length - 1]?.total,
+							]);
+						} else if (currentDay === 30) {
+							// if (currentDay === 30) {
+							const balanceData = response.data.find(
+								(history) =>
+									moment(history.created_at).format('YYYY-MM-DD') ===
+									moment(queryValues.end_date)
+										.subtract(i, 'days')
+										.format('YYYY-MM-DD')
+							);
+							if (!balanceData) continue;
+							newGraphData.push([
+								`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+									month[
+										moment(queryValues.end_date).subtract(i, 'days').month()
+									]
+								}`,
+								balanceData ? balanceData.total : 0,
+							]);
+
+							// }
+						} else if (currentDay === 90) {
+							const balanceData = response.data.find(
+								(history) =>
+									moment(history.created_at).format('YYYY-MM-DD') ===
+									moment(queryValues.end_date)
+										.subtract(i, 'days')
+										.format('YYYY-MM-DD')
+							);
+							if (!balanceData) continue;
+							newGraphData.push([
+								`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
+									month[
+										moment(queryValues.end_date).subtract(i, 'days').month()
+									]
+								}`,
+								balanceData ? balanceData.total : 0,
+							]);
+						}
+					}
+
+					newGraphData.reverse();
+
+					setGraphData(newGraphData);
+					setCurrentBalance(balance);
+					setLatestBalance(response?.data?.[0]);
+					setSelectedDate(balance.created_at);
+					setQueryFilters({
+						total: response.count,
+						fetched: true,
+						page,
+						currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
+						isRemaining: response.count > page * limit,
+					});
+
+					setIsLoading(false);
+				})
+				.catch((error) => {
+					// const message = error.message;
+					setIsLoading(false);
+				});
+		},
+		firstRender.current ? 800 : 0
+	);
+
 	const requestHistory = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		fetchBalanceHistory({ ...queryValues })
-			.then((response) => {
-				setBalanceHistory(
-					page === 1 ? response.data : [...balanceHistory, ...response.data]
-				);
+		onHandleFetchBalance(page, limit);
+	};
 
-				const length =
-					response.data.length > currentDay
-						? currentDay - 1
-						: response.data.length > 6
-						? response.data.length
-						: 6;
-				const balanceData = response.data.find(
-					(history) =>
-						moment(history.created_at).format('YYYY-MM-DD') ===
-						moment(queryValues.end_date)
-							.subtract(length === 6 ? 0 : length, 'days')
-							.format('YYYY-MM-DD')
-				);
-				let balance =
-					balanceData ||
-					response.data[length] ||
-					response.data[response.data.length - 1];
-
-				let newGraphData = [];
-				for (let i = 0; i < length + 1; i++) {
-					if (currentDay === 7) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-						// if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData
-								? balanceData.total
-								: response?.data?.[response.data.length - 1]?.total,
-						]);
-					} else if (currentDay === 30) {
-						// if (currentDay === 30) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData ? balanceData.total : 0,
-						]);
-
-						// }
-					} else if (currentDay === 90) {
-						const balanceData = response.data.find(
-							(history) =>
-								moment(history.created_at).format('YYYY-MM-DD') ===
-								moment(queryValues.end_date)
-									.subtract(i, 'days')
-									.format('YYYY-MM-DD')
-						);
-						if (!balanceData) continue;
-						newGraphData.push([
-							`${moment(queryValues.end_date).subtract(i, 'days').date()} ${
-								month[moment(queryValues.end_date).subtract(i, 'days').month()]
-							}`,
-							balanceData ? balanceData.total : 0,
-						]);
-					}
-				}
-
-				newGraphData.reverse();
-
-				setGraphData(newGraphData);
-				setCurrentBalance(balance);
-				setLatestBalance(response?.data?.[0]);
-				setSelectedDate(balance.created_at);
-				setQueryFilters({
-					total: response.count,
-					fetched: true,
-					page,
-					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
-					isRemaining: response.count > page * limit,
-				});
-
-				setIsLoading(false);
-			})
-			.catch((error) => {
-				// const message = error.message;
-				setIsLoading(false);
-			});
+	const refreshLinkHandle = () => {
+		if (activeTab === '0') {
+			setGraphData([]);
+			requestHistory();
+		} else if (activeTab === '1') {
+			onHandleRefresh();
+		}
 	};
 
 	const getRows = (coins) => {
@@ -324,46 +498,58 @@ const ProfitLossSection = ({
 									}}
 									className="table-icon td-fit"
 								>
-									<Link
-										to={`/prices/coin/${coin.symbol}`}
-										className="underline"
-									>
-										{isMobile ? (
-											<div
-												className="d-flex align-items-center wallet-hover cursor-pointer"
-												style={{ cursor: 'pointer' }}
-											>
-												<Coin iconId={coin.icon_id} type="CS11" />
-												<div className="ml-3">
-													<div className="px-2 fill-active-color">
-														{coin.display_name}
+									{!loading ? (
+										<Link
+											to={`/prices/coin/${coin.symbol}`}
+											className="underline"
+										>
+											{isMobile ? (
+												<div
+													className="d-flex align-items-center wallet-hover cursor-pointer"
+													style={{ cursor: 'pointer' }}
+												>
+													<Coin iconId={coin.icon_id} type="CS11" />
+													<div className="ml-3">
+														<div className="px-2 fill-active-color">
+															{coin.display_name}
+														</div>
+														<div className="h4">{coin?.fullname}</div>
 													</div>
-													<div className="h4">{coin?.fullname}</div>
 												</div>
-											</div>
-										) : (
-											<div
-												className="d-flex align-items-center wallet-hover cursor-pointer"
-												style={{ cursor: 'pointer' }}
-											>
-												<Coin iconId={coin.icon_id} />
-												<div className="px-2">{coin.display_name}</div>
-											</div>
-										)}
-									</Link>
+											) : (
+												<div
+													className="d-flex align-items-center wallet-hover cursor-pointer"
+													style={{ cursor: 'pointer' }}
+												>
+													<Coin iconId={coin.icon_id} />
+													<div className="px-2">{coin.display_name}</div>
+												</div>
+											)}
+										</Link>
+									) : (
+										<Loading index={index} />
+									)}
 								</td>
 								<td
 									style={{ borderBottom: '1px solid grey', minWidth: '15.5em' }}
 									className="td-fit"
 								>
-									<div className={isMobile && 'text-end fill-active-color'}>
-										{sourceAmount}
-									</div>
-									{isMobile &&
-										selectedCoin[0] !== BASE_CURRENCY &&
-										parseFloat(balanceText || 0) > 0 && (
-											<div className="text-end">{`(≈ $${balanceText})`}</div>
-										)}
+									{!loading ? (
+										<span>
+											<div
+												className={isMobile ? 'text-end fill-active-color' : ''}
+											>
+												{sourceAmount}
+											</div>
+											{isMobile &&
+												selectedCoin[0] !== BASE_CURRENCY &&
+												parseFloat(balanceText || 0) > 0 && (
+													<div className="text-end">{`(≈ $${balanceText})`}</div>
+												)}
+										</span>
+									) : (
+										<Loading index={index} />
+									)}
 								</td>
 
 								{!isMobile && (
@@ -374,8 +560,15 @@ const ProfitLossSection = ({
 										}}
 										className="td-fit"
 									>
-										= {sourceAmountNative}{' '}
-										{balance_history_config?.currency?.toUpperCase() || 'USDT'}
+										{!loading ? (
+											<>
+												= {sourceAmountNative}{' '}
+												{balance_history_config?.currency?.toUpperCase() ||
+													'USDT'}
+											</>
+										) : (
+											<Loading index={index} />
+										)}
 									</td>
 								)}
 								{!isMobile && (
@@ -386,15 +579,21 @@ const ProfitLossSection = ({
 										}}
 										className="td-fit"
 									>
-										<div>{`${calculatePercentages(
-											totalValue,
-											assetValue
-										)}%`}</div>
-										{isMobile &&
-											selectedCoin[0] !== BASE_CURRENCY &&
-											parseFloat(balanceText || 0) > 0 && (
-												<div className="text-end">{`(≈ $${balanceText})`}</div>
-											)}
+										{!loading ? (
+											<>
+												<div>{`${calculatePercentages(
+													totalValue,
+													assetValue
+												)}%`}</div>
+												{isMobile &&
+													selectedCoin[0] !== BASE_CURRENCY &&
+													parseFloat(balanceText || 0) > 0 && (
+														<div className="text-end">{`(≈ $${balanceText})`}</div>
+													)}
+											</>
+										) : (
+											<Loading index={index} />
+										)}
 									</td>
 								)}
 							</tr>
@@ -610,6 +809,11 @@ const ProfitLossSection = ({
 
 	const onHandleTab = (activeKey) => {
 		setActiveTab(activeKey);
+		const url = new URL(window.location.href);
+		url.search = selectedTabList[activeKey]
+			? `?${selectedTabList[activeKey]}`
+			: '';
+		router.replace(`${url?.pathname}${url?.search}`);
 	};
 
 	function calculatePercentages(totalValue, value) {
@@ -619,7 +823,7 @@ const ProfitLossSection = ({
 
 	return (
 		<Spin spinning={isLoading}>
-			<div className={`${!isMobile && 'mt-4'}`}>
+			<div className={`${!isMobile ? 'mt-4' : ''}`}>
 				{customDateModal()}
 				{!isMobile && (
 					<div style={{ position: 'absolute', top: -25, left: -5 }}>
@@ -648,7 +852,7 @@ const ProfitLossSection = ({
 							style={{ marginTop: -10, padding: 15, paddingTop: 20 }}
 						>
 							<div
-								className={`${isMobile && `mb-0`}`}
+								className={`${isMobile ? `mb-0` : ''}`}
 								style={{
 									display: 'flex',
 									justifyContent: 'space-between',
@@ -657,7 +861,9 @@ const ProfitLossSection = ({
 								}}
 							>
 								<div>
-									<div className={`${isMobile && 'profit-loss-preformance'}`}>
+									<div
+										className={`${isMobile ? 'profit-loss-preformance' : ''}`}
+									>
 										<EditWrapper stringId="PROFIT_LOSS.WALLET_PERFORMANCE_TITLE">
 											{STRINGS['PROFIT_LOSS.WALLET_PERFORMANCE_TITLE']}
 										</EditWrapper>
@@ -836,20 +1042,20 @@ const ProfitLossSection = ({
 									</div>
 								)}
 								{/* <Button
-                                    style={{
-                                        fontWeight: currentDay === 'custom' ? 'bold' : '400',
-                                        fontSize: '1em',
-                                    }}
-                                    className="plButton"
-                                    ghost
-                                    onClick={() => {
-                                        setCustomDate(true);
-                                    }}
-                                >
-                                    <EditWrapper stringId="PROFIT_LOSS.CUSTOM">
-                                        {STRINGS['PROFIT_LOSS.CUSTOM']}
-                                    </EditWrapper>
-                                </Button> */}
+ style={{
+ fontWeight: currentDay === 'custom' ? 'bold' : '400',
+ fontSize: '1em',
+ }}
+ className="plButton"
+ ghost
+ onClick={() => {
+ setCustomDate(true);
+ }}
+ >
+ <EditWrapper stringId="PROFIT_LOSS.CUSTOM">
+ {STRINGS['PROFIT_LOSS.CUSTOM']}
+ </EditWrapper>
+ </Button> */}
 							</div>
 
 							<div className="highChartColor">
@@ -882,7 +1088,7 @@ const ProfitLossSection = ({
 												.replace(/\B(?=(\d{3})+(?!\d))/g, ',') || '0'}
 										</div>
 									</div>
-									<div onClick={() => setActiveTab('2')}>
+									<div onClick={() => onHandleTab('2')}>
 										<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
 											<span className="profit-loss-tab-label">
 												{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
@@ -890,7 +1096,7 @@ const ProfitLossSection = ({
 										</EditWrapper>
 									</div>
 
-									<div onClick={() => setActiveTab('1')}>
+									<div onClick={() => onHandleTab('1')}>
 										<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
 											<span className="profit-loss-tab-label">
 												{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
@@ -1044,14 +1250,14 @@ const ProfitLossSection = ({
 								</div>
 								{isMobile && (
 									<div className="profit-loss-link mb-5">
-										<div onClick={() => setActiveTab('2')}>
+										<div onClick={() => onHandleTab('2')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_BALANCE_HISTORY">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_BALANCE_HISTORY']}
 												</span>
 											</EditWrapper>
 										</div>
-										<div onClick={() => setActiveTab('0')}>
+										<div onClick={() => onHandleTab('0')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
@@ -1094,14 +1300,11 @@ const ProfitLossSection = ({
 													'DD/MMM/YYYY'
 												)}
 												.
-												<EditWrapper stringId="PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2">
-													{STRINGS['PROFIT_LOSS.WALLET_BALANCE_DESCRIPTION_2']}
-												</EditWrapper>
 											</div>
 										</div>
 									)}
-									<div className={`${isMobile && `balance-history`}`}>
-										<div className={`${isMobile && `total-balance`}`}>
+									<div className={`${isMobile ? `balance-history` : ''}`}>
+										<div className={`${isMobile ? `total-balance` : ''}`}>
 											<div>
 												<EditWrapper stringId="PROFIT_LOSS.EST_TOTAL_BALANCE">
 													{STRINGS['PROFIT_LOSS.EST_TOTAL_BALANCE']}
@@ -1122,7 +1325,9 @@ const ProfitLossSection = ({
 											</div>
 										</div>
 										<div
-											className={`${isMobile && `balance-history-date_select`}`}
+											className={`${
+												isMobile ? `balance-history-date_select` : ''
+											}`}
 										>
 											<div>
 												<EditWrapper stringId="PROFIT_LOSS.DATE_SELECT">
@@ -1228,7 +1433,7 @@ const ProfitLossSection = ({
 								</div>
 								{isMobile && (
 									<div className="profit-loss-link mb-5">
-										<div onClick={() => setActiveTab('0')}>
+										<div onClick={() => onHandleTab('0')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_WALLET_P&L">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_WALLET_P&L']}
@@ -1236,7 +1441,7 @@ const ProfitLossSection = ({
 											</EditWrapper>
 										</div>
 
-										<div onClick={() => setActiveTab('1')}>
+										<div onClick={() => onHandleTab('1')}>
 											<EditWrapper stringId="PROFIT_LOSS.VIEW_PERCENTAGE_SHARE">
 												<span className="profit-loss-tab-label">
 													{STRINGS['PROFIT_LOSS.VIEW_PERCENTAGE_SHARE']}
@@ -1247,6 +1452,18 @@ const ProfitLossSection = ({
 								)}
 							</div>
 						</TabPane>
+					)}
+					{!isLoading && !isMobile && (
+						<div className="refresh-link">
+							<ActionNotification
+								stringId="REFRESH"
+								text={STRINGS['REFRESH']}
+								iconId="REFRESH"
+								iconPath={STATIC_ICONS['REFRESH']}
+								className="blue-icon"
+								onClick={() => refreshLinkHandle()}
+							/>
+						</div>
 					)}
 				</Tabs>
 			</div>
@@ -1270,4 +1487,4 @@ const mapDispatchToProps = (dispatch) => ({});
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(ProfitLossSection));
+)(withRouter(withConfig(ProfitLossSection)));

@@ -10,8 +10,8 @@ import {
 	PlayCircleFilled,
 } from '@ant-design/icons';
 
-import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import './AutoTrader.scss';
 import { Button, Coin, Dialog, EditWrapper, Image, Table } from 'components';
 import { AutoTraderEmptydata, ConfirmAutoTrade } from './Utils';
@@ -144,7 +144,7 @@ const autoTraderData = (
 									{data?.frequency === 'weekly'
 										? data?.week_days?.map((day) => {
 												return (
-													<span className="ml-1" kay={day}>
+													<span className="ml-1" key={day}>
 														<span className="trade-days">
 															{day === 0
 																? STRINGS['AUTO_TRADER.SUNDAY']
@@ -222,7 +222,7 @@ const autoTraderData = (
 							</div>
 						) : (
 							<div className="active-link">
-								<PauseCircleFilled className="active-play-icon" />
+								<PauseCircleFilled className="active-play-icon inactive-pause-icon" />
 								<EditWrapper>
 									<span>{STRINGS['AUTO_TRADER.PAUSED_TEXT']}</span>
 								</EditWrapper>
@@ -271,6 +271,7 @@ const Autotrader = ({
 	features,
 	exchangeTimeZone,
 	quicktradePairs,
+	icons,
 }) => {
 	const [isRenderPopup, setIsRenderPopup] = useState({
 		isDisplayAutoTrader: false,
@@ -605,8 +606,10 @@ const Autotrader = ({
 			? getTargetOptions(autoTradeDetails?.spend_coin).includes(coin)
 			: coin
 	);
-	const filteredBuyOptions = sourceOptions?.filter(
-		(coin) => coin !== autoTradeDetails?.buy_coin
+	const filteredBuyOptions = sourceOptions?.filter((coin) =>
+		autoTradeDetails?.buy_coin
+			? getTargetOptions(autoTradeDetails?.buy_coin).includes(coin)
+			: coin !== autoTradeDetails?.buy_coin
 	);
 	const getSpendAssetAval =
 		user?.balance[`${autoTradeDetails?.spend_coin?.toLowerCase()}_available`];
@@ -631,7 +634,7 @@ const Autotrader = ({
 		STRINGS['AUTO_TRADER.WEEKLY'],
 		STRINGS['AUTO_TRADER.MONTHLY'],
 	];
-	const week_days = [1, 2, 3, 4, 5, 6, 0];
+	const totalWeekDays = [1, 2, 3, 4, 5, 6, 0];
 
 	const selectedFrequency =
 		selectedTrade?.frequency === 'daily'
@@ -644,11 +647,16 @@ const Autotrader = ({
 	const onHandleAsset = (text, asset) => {
 		if (text === 'spend') {
 			getTargetOptions(asset);
-			setAutoTradeDetails((prev) => ({
-				...prev,
-				spend_coin: asset,
-				buy_coin: getTargetOptions(asset) && getTargetOptions(asset)[0],
-			}));
+			autoTradeDetails?.buy_coin
+				? setAutoTradeDetails((prev) => ({
+						...prev,
+						spend_coin: asset,
+				  }))
+				: setAutoTradeDetails((prev) => ({
+						...prev,
+						spend_coin: asset,
+						buy_coin: getTargetOptions(asset) && getTargetOptions(asset)[0],
+				  }));
 		} else if (text === 'buy') {
 			setAutoTradeDetails((prev) => ({
 				...prev,
@@ -662,11 +670,14 @@ const Autotrader = ({
 			setAutoTradeDetails((prev) => ({
 				...prev,
 				spend_coin: null,
+				buy_coin: null,
+				spend_amount: null,
 			}));
 		} else if (text === 'buy') {
 			setAutoTradeDetails((prev) => ({
 				...prev,
 				buy_coin: null,
+				spend_amount: null,
 			}));
 		}
 	};
@@ -723,6 +734,21 @@ const Autotrader = ({
 		isMaxSpendAmount ||
 		(getSpendAssetAval && !queryPair);
 
+	const { frequency, trade_hour, day_of_month, week_days } =
+		autoTradeDetails || {};
+
+	const isDisabledFrequencyTrade =
+		!frequency ||
+		(frequency === STRINGS['AUTO_TRADER.DAILY'] &&
+			(trade_hour === null || trade_hour === '')) ||
+		(frequency === STRINGS['AUTO_TRADER.MONTHLY'] &&
+			(!day_of_month || trade_hour === null || trade_hour === '')) ||
+		(frequency === STRINGS['AUTO_TRADER.WEEKLY'] &&
+			(!week_days ||
+				week_days.length === 0 ||
+				trade_hour === null ||
+				trade_hour === ''));
+
 	return (
 		<div className="auto-trader-container">
 			<Dialog
@@ -735,6 +761,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper"
+				label="auto-trader-popup"
 			>
 				<div className="auto-trader-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -782,6 +809,7 @@ const Autotrader = ({
 										</div>
 									) : null
 								}
+								listHeight={165}
 								className="auto-trader-select-dropdown mt-2"
 								placeholder={STRINGS['AUTO_TRADER.SELECT_SPEND_ASSET']}
 								showSearch
@@ -792,7 +820,8 @@ const Autotrader = ({
 										: 'custom-select-style auto-trader-select-option-dropdown'
 								}
 								onChange={(value) => onHandleAsset('spend', value)}
-								allowClear={() => onHandleClear('spend')}
+								allowClear
+								onClear={() => onHandleClear('spend')}
 								getPopupContainer={handlePopupContainer}
 								virtual={false}
 							>
@@ -845,6 +874,7 @@ const Autotrader = ({
 								</Tooltip>
 							</EditWrapper>
 							<Select
+								listHeight={115}
 								placeholder={STRINGS['AUTO_TRADER.SELECT_BUY_ASSET']}
 								value={
 									autoTradeDetails?.buy_coin ? (
@@ -864,7 +894,8 @@ const Autotrader = ({
 								}
 								className="auto-trader-select-dropdown mt-2"
 								showSearch
-								allowClear={() => onHandleClear('buy')}
+								allowClear
+								onClear={() => onHandleClear('buy')}
 								size="medium"
 								dropdownClassName={
 									isMobile
@@ -991,7 +1022,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper auto-trader-frequency-trade-popup-wrapper"
-				s
+				label="auto-trader-frequency-trade-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-frequency-trade-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1098,7 +1129,7 @@ const Autotrader = ({
 										</Tooltip>
 									</span>
 									<div className="weekly-trade-options">
-										{week_days?.map((days) => {
+										{totalWeekDays?.map((days) => {
 											return (
 												<span
 													className={
@@ -1126,9 +1157,10 @@ const Autotrader = ({
 												</span>
 											</EditWrapper>
 											<Tooltip
-												title={
-													STRINGS['AUTO_TRADER.MONTHLY_TRADE_TOOLTIP_DESC']
-												}
+												title={STRINGS.formatString(
+													STRINGS['AUTO_TRADER.MONTHLY_TRADE_TOOLTIP_DESC'],
+													daysInMonth
+												)}
 												placement="right"
 												overlayClassName="auto-trade-tool-tip"
 											>
@@ -1147,7 +1179,7 @@ const Autotrader = ({
 												}))
 											}
 											controls={true}
-											placeholder={STRINGS['PROFIT_LOSS.DATE_SELECT']}
+											placeholder={`${STRINGS['AUTO_TRADER.SELECT_DAY']} (1-${daysInMonth})`}
 										/>
 									</div>
 								)
@@ -1197,7 +1229,6 @@ const Autotrader = ({
 										placeholder={STRINGS['AUTO_TRADER.SELECT_HOUR']}
 										suffix={STRINGS['AUTO_TRADER.HOUR']}
 										step={1}
-										formatter={(value) => onHandleChange(value)}
 										parser={(value) => onHandleChange(value)}
 									/>
 								</div>
@@ -1219,6 +1250,7 @@ const Autotrader = ({
 								label={STRINGS['STAKE.NEXT']}
 								className="next-btn"
 								onClick={() => onHandleNext('step2')}
+								disabled={isDisabledFrequencyTrade}
 							/>
 						</div>
 					</div>
@@ -1234,6 +1266,7 @@ const Autotrader = ({
 					onHandleClose();
 				}}
 				className="auto-trader-popup-wrapper auto-trader-description-popup-wrapper"
+				label="auto-trader-description-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-description-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1359,6 +1392,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-pause-popup-wrapper"
+				label="auto-trader-pause-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-pause-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.PAUSE">
@@ -1423,6 +1457,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-remove-popup-wrapper"
+				label="auto-trader-remove-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-remove-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.DELETE_TEXT">
@@ -1493,6 +1528,7 @@ const Autotrader = ({
 					}));
 				}}
 				className="auto-trader-popup-wrapper auto-trader-maximum-limit-popup-wrapper"
+				label="auto-trader-maximum-limit-popup"
 			>
 				<div className="auto-trader-popup-container auto-trader-maximum-limit-popup-container">
 					<EditWrapper stringId="AUTO_TRADER.MAXIMUM_TRADE_LIMIT">
@@ -1517,6 +1553,7 @@ const Autotrader = ({
 				<Image
 					icon={icons['AUTO_TRADER_ICON']}
 					wrapperClassName="auto-trader-icon"
+					iconId="AUTO_TRADER_ICON"
 				/>
 				<span className="ml-3">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1571,28 +1608,36 @@ const Autotrader = ({
 			</div>
 			<div className="auto-trader-content-wrapper">
 				<span className="auto-trader-content-description">
-					<EditWrapper stringId="AUTO_TRADER.RECURRING_TRANSACTION">
-						<span>{STRINGS['AUTO_TRADER.RECURRING_TRANSACTION']}</span>
-					</EditWrapper>
-					<EditWrapper stringId="AUTO_TRADER.SETUP_TRANSACTION">
-						<span
-							className="blue-link text-decoration-underline"
-							onClick={() => {
-								if (tradeDetails?.length <= 19) {
-									setIsRenderPopup((prev) => ({
-										...prev,
-										isDisplayAutoTrader: true,
-									}));
-								} else {
-									setIsRenderPopup((prev) => ({
-										...prev,
-										isDisplayMaximumTrade: true,
-									}));
-								}
-							}}
-						>
-							{STRINGS['AUTO_TRADER.SETUP_TRANSACTION']?.toUpperCase()}
+					<div className="d-flex flex-column align-items-start">
+						<EditWrapper stringId="AUTO_TRADER.RECURRING_TRANSACTION">
+							<span>{STRINGS['AUTO_TRADER.RECURRING_TRANSACTION']}</span>
+						</EditWrapper>
+						<EditWrapper stringId="AUTO_TRADER.SETUP_TRANSACTION">
+							<span
+								className="blue-link text-decoration-underline"
+								onClick={() => {
+									if (tradeDetails?.length <= 19) {
+										setIsRenderPopup((prev) => ({
+											...prev,
+											isDisplayAutoTrader: true,
+										}));
+									} else {
+										setIsRenderPopup((prev) => ({
+											...prev,
+											isDisplayMaximumTrade: true,
+										}));
+									}
+								}}
+							>
+								{STRINGS['AUTO_TRADER.SETUP_TRANSACTION']?.toUpperCase()}
+							</span>
+						</EditWrapper>
+					</div>
+					<EditWrapper stringId="AUTO_TRADER.TIME_ZONE">
+						<span className="time-zone-text">
+							{STRINGS['AUTO_TRADER.TIME_ZONE']}
 						</span>
+						<span className="ml-2 time-zone-text">{exchangeTimeZone}</span>
 					</EditWrapper>
 				</span>
 				<div>
@@ -1611,8 +1656,14 @@ const Autotrader = ({
 						}}
 						data={tradeDetails}
 						count={tradeDetails?.length}
+						isAutoTrader={true}
 						pageSize={10}
-						noData={<AutoTraderEmptydata setIsRenderPopup={setIsRenderPopup} />}
+						noData={
+							<AutoTraderEmptydata
+								setIsRenderPopup={setIsRenderPopup}
+								icons={icons}
+							/>
+						}
 					/>
 				</div>
 			</div>
@@ -1629,4 +1680,4 @@ const mapStateToProps = (state) => ({
 	quicktradePairs: quicktradePairSelector(state),
 });
 
-export default connect(mapStateToProps)(Autotrader);
+export default connect(mapStateToProps)(withConfig(Autotrader));

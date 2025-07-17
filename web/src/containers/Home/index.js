@@ -2,19 +2,50 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Spin } from 'antd';
+import { Input } from 'antd';
+import {
+	LoadingOutlined,
+	MinusCircleFilled,
+	PlusCircleFilled,
+} from '@ant-design/icons';
 
 import STRINGS from 'config/localizedStrings';
-import { changePair, getExchangeInfo, getTickers } from 'actions/appActions';
-import Markets from 'containers/Summary/components/Markets';
-import { Image, QuickTrade, EditWrapper } from 'components';
+import {
+	changePair,
+	getExchangeInfo,
+	getTickers,
+	setCoinsData,
+	setEmailDetail,
+	setSignupEmail,
+} from 'actions/appActions';
+import {
+	Image,
+	QuickTrade,
+	EditWrapper,
+	Button,
+	Coin,
+	PriceChange,
+} from 'components';
 
 import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { STATIC_ICONS } from 'config/icons';
+import MiniQuickTrade from 'components/MiniQuickTrade';
+import icons from 'config/icons/dark';
 import { generateDynamicIconKey } from 'utils/id';
 import { MarketsSelector } from 'containers/Trade/utils';
-import MarketCard from './MarketCard';
+import { isLoggedIn } from 'utils/token';
+import { getMiniCharts } from 'actions/chartAction';
+import {
+	countDecimals,
+	formatCurrencyByIncrementalUnit,
+	formatPercentage,
+	formatToCurrency,
+} from 'utils/currency';
+import {
+	flipPair,
+	quicktradePairSelector,
+} from 'containers/QuickTrade/components/utils';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
@@ -22,25 +53,24 @@ const DEFAULT_BG_SECTIONS = ['heading', 'market_list'];
 
 const data = [
 	{
-		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_1'],
-		headerContent: 'Fast deposits',
-		mainContent: 'Make a deposit and begin buying and selling crypto',
+		imageSrc: icons['ACCOUNT_FUNDING'],
+		headerContent: STRINGS['HOME.ACCOUNT_FUNDING_TITLE'],
+		mainContent: STRINGS['HOME.ACCOUNT_FUNDING_DESC'],
 	},
 	{
-		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_2'],
-		headerContent: 'Trade globally 24/7',
-		mainContent: 'Trade the biggest global crypto assets 24/7 365 days a year.',
+		imageSrc: icons['WORLD_TRADE'],
+		headerContent: STRINGS['HOME.TRADE_TITLE'],
+		mainContent: STRINGS['HOME.TRADE_DESC'],
 	},
 	{
-		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_3'],
-		headerContent: 'APIs',
-		mainContent:
-			'Publicly accessible endpoints for market data, exchange status and more',
+		imageSrc: icons['API_BUILDER'],
+		headerContent: STRINGS['HOME.API_TITLE'],
+		mainContent: STRINGS['HOME.API_DESC'],
 	},
 	{
-		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_4'],
-		headerContent: 'Best prices',
-		mainContent: 'Get the best prices and live price data all in one place',
+		imageSrc: icons['LIVE_TRADE_ICON'],
+		headerContent: STRINGS['HOME.LIVE_TRADE_TITLE'],
+		mainContent: STRINGS['HOME.LIVE_TRADE_DESC'],
 	},
 ];
 class Home extends Component {
@@ -55,7 +85,10 @@ class Home extends Component {
 		isHover: false,
 		hoveredIndex: 0,
 		carouselLoading: true,
+		expandedQuestion: null,
 	};
+
+	carouselRef = null;
 
 	UNSAFE_componentWillMount() {
 		const { isReady, router } = this.props;
@@ -66,17 +99,31 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		const { sections, getExchangeInfo, getTickers } = this.props;
+		const {
+			sections,
+			getExchangeInfo,
+			getTickers,
+			setSignupEmail,
+			setEmailDetail,
+		} = this.props;
 		getExchangeInfo();
 		getTickers();
 		// getSparklines(Object.keys(pairs)).then((chartData) =>
 		//  this.props.changeSparkLineData(chartData)
 		// );
+		this.getMinicharData();
 		this.generateSections(sections);
-
-		setTimeout(() => {
+		setSignupEmail(null);
+		setEmailDetail(null);
+		this.carouselRef = setTimeout(() => {
 			this.setState({ carouselLoading: false });
 		}, 3000);
+	}
+
+	componentWillUnmount() {
+		if (this.carouselRef) {
+			clearTimeout(this.carouselRef);
+		}
 	}
 
 	goTo = (path) => () => {
@@ -84,11 +131,135 @@ class Home extends Component {
 		router.push(path);
 	};
 
+	getIndexofOneDay = (dates) => {
+		const currentTime = new Date().getTime();
+		const oneDayAgoTime = currentTime - 24 * 60 * 60 * 1000;
+
+		const index = dates.findIndex((dateString) => {
+			const date = new Date(dateString).getTime();
+			return date > oneDayAgoTime;
+		});
+
+		return index;
+	};
+
+	getPriceDetails = (price) => {
+		const firstPrice = price[0];
+		const lastPrice = price[price.length - 1];
+		const priceDifference = lastPrice - firstPrice;
+		const priceDifferencePercent = formatPercentage(
+			(priceDifference / firstPrice) * 100
+		);
+		const formattedNumber = (val) =>
+			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
+
+		const priceDifferencePercentVal = Number(
+			priceDifferencePercent.replace('%', '')
+		);
+
+		return {
+			priceDifference,
+			priceDifferencePercent,
+			priceDifferencePercentVal,
+			lastPrice: formattedNumber(lastPrice),
+		};
+	};
+
+	getPricingData = (chartData) => {
+		const { price = [], time } = chartData || {};
+
+		if (time?.length > 0 && price?.length > 0) {
+			const {
+				priceDifference,
+				priceDifferencePercent,
+				priceDifferencePercentVal,
+				lastPrice,
+			} = this.getPriceDetails(price);
+
+			const indexOneDay = this.getIndexofOneDay(time);
+			const oneDayChartPrices = price.slice(indexOneDay, price?.length);
+
+			const {
+				priceDifference: oneDayPriceDifference,
+				priceDifferencePercent: oneDayPriceDifferencePercent,
+				priceDifferencePercentVal: oneDayPriceDifferencePercenVal,
+			} = this.getPriceDetails(oneDayChartPrices);
+
+			return {
+				oneDayPriceDifference,
+				oneDayPriceDifferencePercent,
+				oneDayPriceDifferencePercenVal,
+				priceDifference,
+				priceDifferencePercent,
+				priceDifferencePercentVal,
+				lastPrice,
+			};
+		}
+		return {};
+	};
+
+	getCoinsData = (coinsList, chartValues) => {
+		const { coins, quicktradePairs, setCoinsData } = this.props;
+		const coinsData = coinsList
+			.map((name) => {
+				const {
+					code,
+					icon_id,
+					symbol,
+					fullname,
+					type,
+					created_at,
+					increment_unit,
+				} = coins[name];
+
+				const key = `${code}-usdt`;
+				const pricingData = this.getPricingData(chartValues[key]);
+
+				return {
+					...pricingData,
+					chartData: chartValues[key],
+					code,
+					icon_id,
+					symbol,
+					fullname,
+					type,
+					key,
+					increment_unit,
+					networkType: quicktradePairs[key]?.type,
+					created_at,
+				};
+			})
+			?.filter(({ type }) => type === 'blockchain')
+			?.sort(
+				(a, b) =>
+					(coins[b?.symbol]?.market_cap || 0) -
+					(coins[a?.symbol]?.market_cap || 0)
+			);
+
+		this.setState({ coinsData: coinsData });
+		setCoinsData(coinsData);
+	};
+
+	getMinicharData = async () => {
+		const { coins } = this.props;
+		const coinsList = Object.keys(coins)?.map((val) => coins[val]?.code);
+		try {
+			this.setState({ isLoading: true });
+			await getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
+				this.setState({ chartData: chartValues });
+				this.getCoinsData(coinsList, chartValues);
+			});
+			this.setState({ isLoading: false });
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	generateSections = (sections) => {
 		const { icons: ICONS } = this.props;
 		const generateId = generateDynamicIconKey('LANDING_PAGE_SECTION');
 		const sectionComponents = Object.entries(sections)
-			.filter(([_, { is_active }]) => is_active)
+			.filter(([key, { is_active }]) => is_active && key !== 'market_list')
 			.sort(
 				([_, { order: order_a }], [__, { order: order_b }]) => order_a - order_b
 			)
@@ -160,15 +331,128 @@ class Home extends Component {
 	};
 
 	sectionToNav = (sec) => {
-		const { router } = this.props;
-		router.push(`/trade/${sec?.pair?.code}`);
+		const {
+			router,
+			pairs,
+			quicktradePairs,
+			constants: { features },
+		} = this.props;
+
+		if (this.state.carouselLoading) return;
+
+		const getFilteredPairs = (pairsList) =>
+			Object.keys(pairsList).find(
+				(data) => data === sec?.key || data === flipPair(sec?.key)
+			);
+
+		const filteredPair = getFilteredPairs(pairs);
+		const filteredQuickTradePair = getFilteredPairs(quicktradePairs);
+
+		if (features?.pro_trade && filteredPair) {
+			router.push(`/trade/${filteredPair}`);
+		} else if (features.quick_trade && filteredQuickTradePair) {
+			router.push(`/quick-trade/${filteredQuickTradePair}`);
+		} else {
+			router.push(`/prices/coin/${sec?.symbol}`);
+		}
 	};
 
 	onMouseOver = (val, hoveredIndex) => {
 		this.setState({ isHover: val, hoveredIndex });
 	};
 
+	onHandleNavigate = () => {
+		const { router } = this.props;
+		const path = isLoggedIn() ? '/summary' : '/signup';
+		router.push(path);
+	};
+
+	renderPriceCard = (data, index, carouselLoading) => {
+		const roundPrice = data?.lastPrice?.split(',')?.join('');
+		const isPriceAvailable =
+			data?.oneDayPriceDifferencePercent !== undefined &&
+			data?.oneDayPriceDifference !== undefined;
+		const formattedPrice = data?.lastPrice
+			? formatCurrencyByIncrementalUnit(roundPrice, data?.increment_unit)
+			: '-';
+
+		return (
+			<div className="price-card-wrapper">
+				<div className="price-card-header">
+					{carouselLoading ? (
+						<LoadingOutlined />
+					) : (
+						<Coin type="CS9" iconId={data?.icon_id} />
+					)}
+					<span className="font-weight-bold asset-name">
+						{carouselLoading ? <Loading index={index} /> : data?.fullname}
+					</span>
+					<span className="asset-symbol">
+						{carouselLoading ? (
+							<Loading index={index} />
+						) : (
+							data?.symbol?.toUpperCase()
+						)}
+					</span>
+				</div>
+				<div className="price-card-content">
+					{isPriceAvailable ? (
+						carouselLoading ? (
+							<Loading index={index} />
+						) : (
+							<PriceChange
+								market={{
+									priceDifference: data?.oneDayPriceDifference,
+									priceDifferencePercent: data?.oneDayPriceDifferencePercent,
+								}}
+								key={index}
+							/>
+						)
+					) : (
+						<span className="d-flex justify-content-end font-raleway asset-symbol">
+							{carouselLoading ? <Loading index={index} /> : '0%'}
+						</span>
+					)}
+					{carouselLoading ? (
+						<Loading index={index} />
+					) : (
+						<span className="last-price-label">
+							{data?.lastPrice && '$'}
+							{formattedPrice}
+						</span>
+					)}
+				</div>
+			</div>
+		);
+	};
+
 	getSectionByKey = (key) => {
+		const {
+			constants: {
+				features: { quick_trade = false, pro_trade = false } = {},
+			} = {},
+			pairs,
+			setSignupEmail,
+			signupEmail,
+			emailDetail,
+			setEmailDetail,
+		} = this.props;
+		const filteredPair = Object.keys(pairs);
+		const navigateToTrade = !isLoggedIn()
+			? '/signup'
+			: pro_trade && filteredPair?.length
+			? `/trade/${filteredPair[0]}`
+			: quick_trade && filteredPair?.length
+			? `/quick-trade/${filteredPair[0]}`
+			: '/accounts';
+
+		const onHandlenavigate = () => {
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			this.goTo(navigateToTrade)();
+			if (!emailRegex.test(emailDetail)) {
+				setEmailDetail(null);
+			}
+		};
 		switch (key) {
 			case 'heading': {
 				const {
@@ -187,39 +471,11 @@ class Home extends Component {
 							style={{
 								minHeight: this.calculateMinHeight(sectionsNumber),
 							}}
-							onClickDemo={this.goTo('accounts')}
-							onClickTrade={this.goTo('signup')}
+							onClickDemo={this.goTo('/signup')}
+							onClickTrade={this.goTo(navigateToTrade)}
+							setSignupEmail={setSignupEmail}
+							signupEmail={signupEmail}
 						/>
-					</div>
-				);
-			}
-			case 'market_list': {
-				const { router, coins, pairs, sparkLineChartData } = this.props;
-				return (
-					<div className="home-page_section-wrapper">
-						<div className="d-flex justify-content-center">
-							<EditWrapper
-								stringId="MARKETS_TABLE.TITLE"
-								render={(string) => (
-									<div className="live-markets_header">{string}</div>
-								)}
-							>
-								{STRINGS['MARKETS_TABLE.TITLE']}
-							</EditWrapper>
-						</div>
-						<div className="home-page__market-wrapper">
-							<div id="injected_code_section"></div>
-							<Markets
-								coins={coins}
-								pairs={pairs}
-								router={router}
-								showSearch={false}
-								showMarkets={true}
-								isHome={true}
-								renderContent={this.renderContent}
-								chartData={sparkLineChartData}
-							/>
-						</div>
 					</div>
 				);
 			}
@@ -241,50 +497,173 @@ class Home extends Component {
 					)
 				);
 			}
+			case 'quick_trade_calculator': {
+				return (
+					<div className="home-page_section-wrapper mini-quick-trade-calculator-wrapper">
+						<div
+							className={`home-title text-center ${
+								isMobile ? '' : 'mini-quicktrade-description-text'
+							}`}
+						>
+							<EditWrapper stringId="HOME.MINI_QUICKTRADE">
+								{STRINGS['HOME.MINI_QUICKTRADE']}
+							</EditWrapper>
+						</div>
+						<div
+							className={`text-center text-section ${
+								isMobile ? 'mb-5' : 'w-50 mt-3 mb-5'
+							}`}
+						>
+							<EditWrapper stringId="HOME.MINI_QUICKTRADE_DESC">
+								{STRINGS['HOME.MINI_QUICKTRADE_DESC']}
+							</EditWrapper>
+						</div>
+						<MiniQuickTrade />
+					</div>
+				);
+			}
 			case 'card_section': {
 				const { icons: ICONS } = this.props;
 				return (
 					<div className="html_card_section">
-						{data.map((item, index) => {
-							const { imageSrc, headerContent, mainContent } = item;
-							return (
-								<div className="card-section-wrapper" key={index}>
-									<div className="card-section">
-										<div>
-											<Image
-												iconId={`CARD_SECTION_LOGO_${index}`}
-												icon={
-													ICONS[`CARD_SECTION_LOGO_${index}`]
-														? ICONS[`CARD_SECTION_LOGO_${index}`]
-														: imageSrc
-												}
-												wrapperClassName={
-													index === 0 && imageSrc.includes('Group_93')
-														? 'fill-none'
-														: 'card_section_logo'
-												}
-											/>
-										</div>
-										<EditWrapper
-											stringId={`CARD_SECTION_HEADER_${index}`}
-											render={(string) => (
-												<div className="header_txt">{string}</div>
-											)}
-										>
-											{STRINGS[`CARD_SECTION_HEADER_${index}`]
-												? STRINGS[`CARD_SECTION_HEADER_${index}`]
-												: headerContent}
-										</EditWrapper>
-										<div className="card_section_main">
+						<EditWrapper stringId="HOME.WHY_US">
+							<span className="home-title">{STRINGS['HOME.WHY_US']}</span>
+						</EditWrapper>
+						<div className="card-description-text">
+							<EditWrapper stringId="HOME.CARD_DESC">
+								<span className="text-section text-center w-100 d-block">
+									{STRINGS['HOME.CARD_DESC']}
+								</span>
+							</EditWrapper>
+						</div>
+						<div className="cards-wrapper">
+							{data.map((item, index) => {
+								const { imageSrc, headerContent, mainContent } = item;
+								return (
+									<div
+										className="card-section-wrapper"
+										key={index}
+										onClick={() => this.onHandleNavigate()}
+									>
+										<div className="card-section">
+											<div className="card_section_logo_wrapper">
+												<Image
+													iconId={`CARD_SECTION_LOGO_${index}`}
+													icon={
+														ICONS[`CARD_SECTION_LOGO_${index}`]
+															? ICONS[`CARD_SECTION_LOGO_${index}`]
+															: imageSrc
+													}
+													wrapperClassName={
+														index === 0 && imageSrc.includes('Group_93')
+															? 'fill-none'
+															: 'card_section_logo'
+													}
+												/>
+											</div>
 											<EditWrapper
-												stringId={`CARD_SECTION_MAIN_${index}`}
-												render={(string) => <div>{string}</div>}
+												stringId={`CARD_SECTION_HEADER_${index}`}
+												render={(string) => (
+													<div className="header_txt">{string}</div>
+												)}
 											>
-												{STRINGS[`CARD_SECTION_MAIN_${index}`]
-													? STRINGS[`CARD_SECTION_MAIN_${index}`]
-													: mainContent}
+												{STRINGS[`CARD_SECTION_HEADER_${index}`]
+													? STRINGS[`CARD_SECTION_HEADER_${index}`]
+													: headerContent}
 											</EditWrapper>
+											<div className="card_section_main">
+												<EditWrapper
+													stringId={`CARD_SECTION_MAIN_${index}`}
+													render={(string) => <div>{string}</div>}
+												>
+													{STRINGS[`CARD_SECTION_MAIN_${index}`]
+														? STRINGS[`CARD_SECTION_MAIN_${index}`]
+														: mainContent}
+												</EditWrapper>
+											</div>
 										</div>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				);
+			}
+			case 'carousel_section': {
+				const { coinsData } = this.props;
+				const { carouselLoading } = this.state;
+				let loopCnt = 0;
+
+				const splitData = [[], [], []];
+				if (coinsData) {
+					coinsData.forEach((coin, index) => {
+						splitData[index % 3].push(coin);
+					});
+				}
+
+				const duplicatedCoins = splitData?.map((data) => {
+					let testCoinData = [];
+					if (data?.length < 12) {
+						if (data?.length === 1) {
+							loopCnt = 12;
+						} else if (data?.length === 2) {
+							loopCnt = 6;
+						} else if (data?.length === 3) {
+							loopCnt = 4;
+						} else if (data?.length === 4 || data?.length === 5) {
+							loopCnt = 3;
+						} else if (data?.length > 5 && data?.length < 12) {
+							loopCnt = 2;
+						}
+						for (let i = 0; i < loopCnt; i++) {
+							testCoinData = [...testCoinData, ...data];
+						}
+					} else {
+						testCoinData = [...data];
+					}
+					return [...testCoinData, ...testCoinData, ...testCoinData];
+				});
+
+				const maxLength = Math.max(
+					...duplicatedCoins?.map((data) => data?.length)
+				);
+				const normalizedCoins = duplicatedCoins?.map((data) => {
+					const diff = maxLength - data?.length;
+					if (diff > 0) {
+						return [...data, ...Array(diff).fill(null)];
+					}
+					return data;
+				});
+
+				const speeds = [20, 12, 15];
+				return (
+					<div
+						className={
+							carouselLoading
+								? 'home_carousel_section '
+								: 'home_carousel_section  price-carousel'
+						}
+					>
+						{normalizedCoins?.map((coin, index) => {
+							const duration = (speed = 10) =>
+								parseInt((speed / 12) * coin?.length);
+							return (
+								<div className="slideshow-wrapper" key={index}>
+									<div
+										className="parent-slider d-flex"
+										style={{ animationDuration: `${duration(speeds[index])}s` }}
+									>
+										{coin?.map((data, ind) => (
+											<div
+												className="section"
+												key={ind}
+												onClick={() => this.sectionToNav(data)}
+											>
+												{data
+													? this.renderPriceCard(data, ind, carouselLoading)
+													: null}
+											</div>
+										))}
 									</div>
 								</div>
 							);
@@ -292,68 +671,115 @@ class Home extends Component {
 					</div>
 				);
 			}
-			case 'carousel_section': {
-				const { markets, sparkLineChartData } = this.props;
-				const { carouselLoading } = this.state;
-				let testMarket = [];
-				let loopCnt = 0;
-				if (markets.length < 12) {
-					if (markets.length === 1) {
-						loopCnt = 12;
-					} else if (markets.length === 2) {
-						loopCnt = 6;
-					} else if (markets.length === 3) {
-						loopCnt = 4;
-					} else if (markets.length === 4 || markets.length === 5) {
-						loopCnt = 3;
-					} else if (markets.length > 5 || markets.length < 12) {
-						loopCnt = 2;
-					}
+			case 'question_section': {
+				const { expandedQuestion } = this.state;
 
-					for (let i = 0; i < loopCnt; i++) {
-						testMarket = [...testMarket, ...markets];
-					}
-				} else {
-					testMarket = [...markets];
-				}
+				const faq = [
+					{ id: 1, question: 'HOME.QUESTION_1', answer: 'HOME.ANSWER_1' },
+					{ id: 2, question: 'HOME.QUESTION_2', answer: 'HOME.ANSWER_2' },
+					{ id: 3, question: 'HOME.QUESTION_3', answer: 'HOME.ANSWER_3' },
+				];
 
-				const duration = parseInt((50 / 12) * testMarket.length);
-				const marketsData = [...testMarket, ...testMarket, ...testMarket];
+				const toggleExpand = (id) => {
+					this.setState({
+						expandedQuestion: expandedQuestion === id ? null : id,
+					});
+				};
 
 				return (
-					<div className="home_carousel_section ">
-						<Spin spinning={carouselLoading}>
-							<div className="slideshow-wrapper">
-								<div
-									className="parent-slider d-flex"
-									style={{ animationDuration: `${duration}s` }}
-								>
-									{marketsData.map((sec, index) => {
-										return (
-											<div
-												className="section"
-												style={{
-													borderRight: `${
-														!carouselLoading ? '1px solid #60605d' : 'none'
-													}`,
-												}}
-												key={index}
-												onClick={() => this.sectionToNav(sec)}
-											>
-												{!carouselLoading && (
-													<MarketCard
-														market={sec}
-														onDragStart={this.handleDragStart}
-														role="presentation"
-														chartData={sparkLineChartData}
-													/>
-												)}
-											</div>
-										);
-									})}
+					<div className="home-page_section-wrapper question-answer-wrapper">
+						<div className={`home-title text-center ${isMobile ? '' : 'w-50'}`}>
+							<EditWrapper stringId="HOME.GOT_QUESTION_TEXT">
+								{STRINGS['HOME.GOT_QUESTION_TEXT']}
+							</EditWrapper>
+						</div>
+						<div
+							className={`home-title text-center ${
+								isMobile ? '' : 'faq-description-text'
+							}`}
+						>
+							<EditWrapper stringId="HOME.GOT_ANSWER_TEXT">
+								{STRINGS['HOME.GOT_ANSWER_TEXT']}
+							</EditWrapper>
+						</div>
+
+						<div className="faq-details mt-5">
+							{faq?.map(({ id, question, answer }) => (
+								<div key={id} className="text-section">
+									<div className="questions-container">
+										<div
+											className="question-row"
+											onClick={() => toggleExpand(id)}
+										>
+											<EditWrapper stringId={question}>
+												<span className="font-weight-bold">
+													{STRINGS[question]}
+												</span>
+											</EditWrapper>
+											{expandedQuestion === id ? (
+												<MinusCircleFilled />
+											) : (
+												<PlusCircleFilled />
+											)}
+										</div>
+									</div>
+									{expandedQuestion === id && (
+										<div className="answer-section">
+											<EditWrapper stringId={answer}>
+												{STRINGS[answer]}
+											</EditWrapper>
+										</div>
+									)}
 								</div>
+							))}
+						</div>
+
+						<div className="more-btn main-section_button pointer">
+							<EditWrapper stringId="HOME.MORE">
+								{STRINGS['HOME.MORE']}
+							</EditWrapper>
+						</div>
+					</div>
+				);
+			}
+			case 'create_account_section': {
+				return (
+					<div className="home-page_section-wrapper question-answer-wrapper create-account-wrapper">
+						<div className={`home-title text-center ${isMobile ? '' : 'w-50'}`}>
+							<EditWrapper stringId="HOME.CREATE_ACCOUNT_DESC">
+								{STRINGS['HOME.CREATE_ACCOUNT_DESC']}
+							</EditWrapper>
+						</div>
+						{!isLoggedIn() ? (
+							<div className="input-wrapper">
+								<Input
+									className="create-account-field"
+									placeholder={STRINGS['HOME.EMAIL_TEXT']}
+									onChange={(e) => setEmailDetail(e.target.value)}
+									value={emailDetail}
+								/>
+								<Button
+									label={STRINGS['SIGNUP_TEXT']}
+									className="signup-btn"
+									onClick={onHandlenavigate}
+								/>
 							</div>
-						</Spin>
+						) : (
+							<div
+								className={`text-section text-center mt-5 ${
+									isMobile ? '' : 'w-50'
+								}`}
+							>
+								<EditWrapper stringId="HOME.TRADE_CRYPTO">
+									<span
+										onClick={this.goTo(navigateToTrade)}
+										className="start-trade-btn pointer main-section_button no-border"
+									>
+										{STRINGS['HOME.TRADE_CRYPTO']}
+									</span>
+								</EditWrapper>
+							</div>
+						)}
 					</div>
 				);
 			}
@@ -379,7 +805,7 @@ class Home extends Component {
 							right: '5px',
 							top: 'calc((100vh - 160px)/2)',
 							display: 'flex !important',
-							zIndex: 1,
+							zIndex: 5,
 						}}
 					/>
 					<div className="home-page_content">
@@ -402,6 +828,10 @@ const mapStateToProps = (store) => {
 		isReady: store.app.isReady,
 		markets: MarketsSelector(store),
 		sparkLineChartData: store.app.sparkLineChartData,
+		signupEmail: store.app.signupEmail,
+		emailDetail: store.app.emailDetail,
+		coinsData: store.app.coinsData,
+		quicktradePairs: quicktradePairSelector(store),
 	};
 };
 
@@ -410,6 +840,9 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	getTickers: bindActionCreators(getTickers, dispatch),
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
+	setSignupEmail: bindActionCreators(setSignupEmail, dispatch),
+	setEmailDetail: bindActionCreators(setEmailDetail, dispatch),
+	setCoinsData: bindActionCreators(setCoinsData, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Home));

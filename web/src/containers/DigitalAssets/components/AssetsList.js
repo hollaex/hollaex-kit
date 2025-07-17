@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import {
+	CaretUpOutlined,
+	CaretDownOutlined,
+	ArrowUpOutlined,
+} from '@ant-design/icons';
 
 import {
 	DIGITAL_ASSETS_SORT as SORT,
@@ -126,6 +130,17 @@ const AssetsList = ({
 	const totalPages = Math.ceil(count / pageSize);
 	const hideViewMore = page + 1 >= totalPages;
 
+	const onHandleScrollToTop = () => {
+		const scrollOptions = { top: 0, behavior: 'smooth' };
+		if (isMobile) {
+			return document
+				.querySelector('.app_container-content')
+				?.scrollTo(scrollOptions);
+		} else {
+			return window.scrollTo(scrollOptions);
+		}
+	};
+
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
@@ -139,7 +154,7 @@ const AssetsList = ({
 					<thead>
 						<tr className="table-bottom-border">
 							<th className="sticky-col">
-								<div className={isMobile && 'ml-2'}>
+								<div className={isMobile ? 'ml-2' : ''}>
 									<EditWrapper stringId="MARKETS_TABLE.ASSET">
 										{STRINGS['MARKETS_TABLE.ASSET']}
 									</EditWrapper>
@@ -160,7 +175,7 @@ const AssetsList = ({
 										onClick={handleOneDaySort}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper stringId={STRINGS['MARKETS_TABLE.24H']}>
+										<EditWrapper stringId="MARKETS_TABLE.24H">
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['MARKETS_TABLE.24H']
@@ -176,7 +191,7 @@ const AssetsList = ({
 										onClick={handleClickChange}
 										className="d-flex justify-content-end pointer"
 									>
-										<EditWrapper stringId={STRINGS['QUICK_TRADE_COMPONENT.7D']}>
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.7D">
 											{STRINGS.formatString(
 												STRINGS['MARKETS_TABLE.PERCENTAGE'],
 												STRINGS['QUICK_TRADE_COMPONENT.7D']
@@ -275,7 +290,7 @@ const AssetsList = ({
 				</table>
 			</div>
 			{!hideViewMore && coinsListData?.length >= pageSize && (
-				<div className="d-flex content-center view-more-btn">
+				<div className="d-flex content-center view-more-btn mb-2">
 					<div
 						className="blue-link underline-text pointer"
 						onClick={goToNextPage}
@@ -284,6 +299,16 @@ const AssetsList = ({
 					</div>
 				</div>
 			)}
+			<div className="d-flex content-center view-more-btn mb-4">
+				<div className="blue-link pointer caps" onClick={onHandleScrollToTop}>
+					<EditWrapper stringId="DIGITAL_ASSETS.BACK_TO_TOP">
+						<span className="underline-text">
+							{STRINGS['DIGITAL_ASSETS.BACK_TO_TOP']}
+							<ArrowUpOutlined />
+						</span>
+					</EditWrapper>
+				</div>
+			</div>
 		</div>
 	);
 };

@@ -52,8 +52,7 @@ const P2POrders = ({
 	const [isFilter, setIsFilter] = useState(false);
 
 	const orderStatus = ['P2P.PROCESSING', 'P2P.ALL_ORDERS'];
-	const digitalCurrencies = localStorage?.getItem('digitalCurrencies');
-	const selectedCurrencies = JSON.parse(digitalCurrencies);
+	const selectedCurrencies = constants?.p2p_config?.digital_currencies;
 
 	useEffect(() => {
 		fetchTransactions()
@@ -71,7 +70,7 @@ const P2POrders = ({
 	}, [tab]);
 
 	const formatAmount = (currency, amount) => {
-		const min = coins[currency].min;
+		const min = coins[currency]?.min;
 		const formattedAmount = formatToCurrency(amount, min);
 		return formattedAmount;
 	};
@@ -132,9 +131,10 @@ const P2POrders = ({
 					userFeedback
 				)}
 			<div className="order-status-button-container">
-				{orderStatus?.map((status) => {
+				{orderStatus?.map((status, index) => {
 					return (
 						<div
+							key={index}
 							className={
 								transactionStatus === status
 									? 'transaction-button-active important-text transaction-button'
@@ -230,7 +230,7 @@ const P2POrders = ({
 											? ['active', 'appealed']?.includes(x?.transaction_status)
 											: true
 									)
-									?.map((transaction) => {
+									?.map((transaction, index) => {
 										const statusClassMap = {
 											complete: 'active-green',
 											appealed: 'active-orange',
@@ -247,6 +247,7 @@ const P2POrders = ({
 										].includes(transaction?.transaction_status);
 										return (
 											<tr
+												key={index}
 												className={
 													isDisabled
 														? 'table-row table-row-inactive fs-12'
@@ -384,7 +385,7 @@ const P2POrders = ({
 										? ['active', 'appealed']?.includes(x?.transaction_status)
 										: true
 								)
-								?.map((transaction) => {
+								?.map((transaction, index) => {
 									const statusClassMap = {
 										complete: 'active-green',
 										appealed: 'active-orange',
@@ -400,7 +401,7 @@ const P2POrders = ({
 										'closed',
 									]?.includes(transaction?.transaction_status);
 									return (
-										<Card className="p2p-orders-card-details">
+										<Card className="p2p-orders-card-details" key={index}>
 											<div
 												className={
 													isDisabled
@@ -554,7 +555,7 @@ const P2POrders = ({
 						</div>
 					)
 				) : (
-					<NoDealsData />
+					<NoDealsData icons={ICONS} />
 				)}
 			</div>
 		</div>

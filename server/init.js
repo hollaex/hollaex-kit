@@ -6,7 +6,7 @@ const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { Op } = require('sequelize');
-const { User, Status, Tier, Broker, QuickTrade, TransactionLimit } = require('./db/models');
+const { User, Status, Tier, Broker, QuickTrade, TransactionLimit, Role } = require('./db/models');
 const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
@@ -17,24 +17,36 @@ const {
 	WS_HUB_CHANNEL,
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
-	HOLLAEX_NETWORK_PATH_ACTIVATE
+	HOLLAEX_NETWORK_PATH_ACTIVATE,
+	setEndpoints,
+	setPermissionDescription
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 let nodeLib;
 
 const getNodeLib = () => nodeLib;
 
-subscriber.on('message', (channel, message) => {
+subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
+		const delay = (ms) => {
+			return new Promise((resolve) => setTimeout(resolve, ms));
+		};
 		switch (type) {
 			case 'refreshInit':
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
 				checkStatus();
 				publisher.publish(
 					WS_HUB_CHANNEL,
 					JSON.stringify({ action: 'restart' })
 				);
+				break;
+			case 'refreshApi':
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
+				checkStatus();
 				break;
 			default:
 				break;
@@ -116,6 +128,7 @@ const checkStatus = () => {
 				configuration.kit = status.kit;
 				configuration.email = status.email;
 
+				status.constants.fee_markups = status.kit.coin_customizations;
 				return all([
 					checkActivation(
 						status.name,
@@ -125,14 +138,15 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size', 'type', 'formula' ]}),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size', 'type', 'formula'] }),
 					QuickTrade.findAll(),
 					TransactionLimit.findAll(),
+					Role.findAll(),
 					status.dataValues
 				]);
 			}
 		})
-		.then(async ([exchange, tiers, deals, quickTrades, transactionLimits, status]) => {
+		.then(async ([exchange, tiers, deals, quickTrades, transactionLimits, roles, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 
 			const exchangePairs = [];
@@ -148,19 +162,57 @@ const checkStatus = () => {
 				}
 			}
 
+			let hasUpdate = false;
+			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+				if (customization?.fee_markup == null) continue;
+
+				const coin = exchange?.coins?.find((c) => c.symbol === symbol);
+				if (!coin || !coin?.network) continue;
+
+				const networks = coin?.network?.split(',')?.map((n) => n?.trim()?.toLowerCase()) || [];
+
+				for(const network of networks) {
+					if (!customization?.fee_markups?.[network]?.withdrawal?.symbol) continue;
+					if (!coin?.withdrawal_fees?.[network]?.symbol) continue;
+
+					
+					if (customization?.fee_markups?.[network]?.withdrawal?.symbol != coin?.withdrawal_fees?.[network]?.symbol) {
+						hasUpdate = true;
+						customization.fee_markups[network].withdrawal.symbol = coin?.withdrawal_fees?.[network]?.symbol;
+						customization.fee_markups[network].withdrawal.value = 0;
+					}
+				}
+			}
+
+			if (hasUpdate) {
+				Status.update(
+					{ kit: status.kit },
+					{ where: { id: status.id } }
+				);
+			}
+
 			for (let pair of exchange.pairs) {
 				exchangePairs.push(pair.name);
 				configuration.pairs[pair.name] = pair;
 			}
 
+			const swaggerYaml = fs.readFileSync('./api/swagger/admin.yaml', 'utf8');
+			const swaggerObj = yaml.load(swaggerYaml);
+
+			const endpoints = extractEndpoints(swaggerObj);
+			const endpointDescriptions = extractEndpointDescriptions(swaggerObj);
+			setEndpoints(endpoints);
+			setPermissionDescription(endpointDescriptions);
+
 			configuration.transaction_limits = transactionLimits;
+			configuration.roles = roles;
 			configuration.broker = deals;
 			configuration.networkQuickTrades = [];
 
 			const brokerPairs = deals.map((d) => d.symbol);
 			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange
-				const [ base, quote ] = e.split('-');
+				const [base, quote] = e.split('-');
 				if (configuration.coins[base] && configuration.coins[quote]) {
 					configuration.networkQuickTrades.push(exchange.brokers[e]);
 					return e;
@@ -224,7 +276,7 @@ const checkStatus = () => {
 			});
 
 			configuration.tradePaths = {};
-			
+
 			for (let tier of tiers) {
 				if (!('maker' in tier.fees)) {
 					tier.fees.maker = {};
@@ -362,6 +414,55 @@ const checkActivation = (name, url, activation_code, version, constants = {}) =>
 	};
 	return rp(options);
 };
+
+function extractEndpoints(swaggerObj) {
+	const result = {};
+
+	if (!swaggerObj.paths) {
+		return result;
+	}
+
+	for (const [path, methods] of Object.entries(swaggerObj.paths)) {
+		const parts = path.replace(/^\/|\/$/g, '').split('/');
+
+		let currentLevel = result;
+
+		for (const part of parts) {
+			if (!currentLevel[part]) {
+				currentLevel[part] = {};
+			}
+			currentLevel = currentLevel[part];
+		}
+
+		for (const [method, _] of Object.entries(methods)) {
+			if (!method.startsWith('x-')) {  // Skip x-* properties
+				currentLevel[method.toLowerCase()] = `${path}:${method.toLowerCase()}`;
+			}
+		}
+	}
+
+	return result;
+}
+
+const extractEndpointDescriptions = (swaggerObj) => {
+	const descriptions = {};
+
+	if (!swaggerObj.paths) {
+		return descriptions;
+	}
+
+	for (const [path, methods] of Object.entries(swaggerObj.paths)) {
+		for (const [method, details] of Object.entries(methods)) {
+			if (!method.startsWith('x-') && details.description) {
+				const endpoint = `${path}:${method.toLowerCase()}`;
+				descriptions[endpoint] = details.description;
+			}
+		}
+	}
+
+	return descriptions;
+}
+
 
 module.exports = {
 	checkStatus,

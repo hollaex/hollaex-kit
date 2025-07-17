@@ -222,6 +222,10 @@ definitions:
             type: boolean
           popup_order_partially_filled:
             type: boolean
+          popup_order_new:
+            type: boolean
+          popup_order_canceled:
+            type: boolean
   ChangePassword:
     type: object
     required:
@@ -298,7 +302,7 @@ definitions:
       network:
         type: string
         description: Blockchain network
-        minLength: 2
+        minLength: 1
         maxLength: 10
   OtpRequest:
     type: object
@@ -656,16 +660,13 @@ definitions:
     type: object
     required:
       - role
+      - otp_code
     properties:
       role:
         type: string
-        enum:
-          - admin
-          - supervisor
-          - support
-          - kyc
-          - communicator
-          - user
+      otp_code:
+        type: string
+        maxLength: 6
   UserMetaPut:
     type: object
     required:
@@ -1120,25 +1121,12 @@ definitions:
   PairFeesPut:
     type: object
     required:
-      - pair
       - fees
     properties:
       pair:
-        type: string
-        maxLength: 256
+        description: pair
       fees:
         type: object
-        minProperties: 1
-        additionalProperties:
-          type: object
-          minProperties: 1
-          properties:
-            maker:
-              type: number
-              format: double
-            taker:
-              type: number
-              format: double
   OraclePriceResponse:
     type: object
     additionalProperties:

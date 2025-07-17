@@ -130,6 +130,16 @@ export const SET_ACTIVE_SELECTED_ANNOUNCEMENT =
 export const SET_EXCHANGE_TIMEZONE = 'SET_EXCHANGE_TIMEZONE';
 export const SET_IS_ADMIN_ANNOUNCEMENT_FEATURE =
 	'SET_IS_ADMIN_ANNOUNCEMENT_FEATURE';
+export const SET_IS_REFRESH_ASSETS = 'SET_IS_REFRESH_ASSETS';
+export const SET_MARKET_REFRESH = 'SET_MARKET_REFRESH';
+export const SET_ERROR = 'SET_ERROR';
+export const SET_ERROR_COUNT = 'SET_ERROR_COUNT';
+export const SET_SIGNUP_EMAIL = 'SET_SIGNUP_EMAIL';
+export const SET_EMAIL_DETAIL = 'SET_EMAIL_DETAIL';
+export const SET_IS_ACTIVE_FAV_QUICK_TRADE = 'SET_IS_ACTIVE_FAV_QUICK_TRADE';
+export const SET_ROLES = 'SET_ROLES';
+export const SET_EDIT_MODE = 'SET_EDIT_MODE';
+export const SET_TRANSACTION_PAIR = 'SET_TRANSACTION_PAIR';
 
 export const SORT = {
 	VOL: 'volume',
@@ -891,5 +901,83 @@ export const setIsAdminAnnouncementFeature = (isAdminAnnouncementFeature) => {
 		payload: {
 			isAdminAnnouncementFeature,
 		},
+	};
+};
+
+export const setIsRefreshAssets = (isRefreshAssets) => {
+	return {
+		type: SET_IS_REFRESH_ASSETS,
+		payload: {
+			isRefreshAssets,
+		},
+	};
+};
+
+export const setMarketRefresh = (isMarketRefresh) => {
+	return {
+		type: SET_MARKET_REFRESH,
+		payload: {
+			isMarketRefresh,
+		},
+	};
+};
+
+export const setError = (errorMessage) => {
+	return {
+		type: SET_ERROR,
+		payload: {
+			errorMessage,
+		},
+	};
+};
+
+export const setErrorCount = (errorCount) => {
+	return {
+		type: SET_ERROR_COUNT,
+		payload: {
+			errorCount,
+		},
+	};
+};
+
+export const setSignupEmail = (signupEmail) => {
+	return {
+		type: SET_SIGNUP_EMAIL,
+		payload: { signupEmail },
+	};
+};
+
+export const setEmailDetail = (emailDetail) => {
+	return {
+		type: SET_EMAIL_DETAIL,
+		payload: { emailDetail },
+	};
+};
+
+export const setIsActiveFavQuickTrade = (isActiveFavQuickTrade) => {
+	return {
+		type: SET_IS_ACTIVE_FAV_QUICK_TRADE,
+		payload: { isActiveFavQuickTrade },
+	};
+};
+
+export const setRolesList = (rolesList) => {
+	return {
+		type: SET_ROLES,
+		payload: { rolesList },
+	};
+};
+
+export const setEditMode = (isOperatorEdit) => {
+	return {
+		type: SET_EDIT_MODE,
+		payload: { isOperatorEdit },
+	};
+};
+
+export const setTransactionPair = (transactionPair) => {
+	return {
+		type: SET_TRANSACTION_PAIR,
+		payload: { transactionPair },
 	};
 };

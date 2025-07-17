@@ -33,6 +33,7 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
+	calculateFeeMarkup,
 	networkList,
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
@@ -45,7 +46,7 @@ import { email, validAddress } from 'components/Form/validations';
 import { getAddressBookDetails } from 'containers/Wallet/actions';
 import { getDecimals, handlePopupContainer } from 'utils/utils';
 import { roundNumber, toFixed } from 'utils/currency';
-import { BASE_CURRENCY } from 'config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setScannedAddress } from 'actions/walletActions';
 
 const RenderWithdraw = ({
@@ -149,10 +150,24 @@ const RenderWithdraw = ({
 
 	const feeMarkup =
 		selectedAsset?.selectedCurrency &&
-		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markup;
-	if (feeMarkup) {
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			getWithdrawNetworkOptions || network
+		]?.withdrawal?.value;
+	if (
+		feeMarkup &&
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			getWithdrawNetworkOptions || network
+		]?.withdrawal?.symbol ===
+			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+				getWithdrawNetworkOptions || network
+			]?.symbol
+	) {
 		const incrementUnit =
-			coins?.[selectedAsset?.selectedCurrency]?.increment_unit;
+			coins?.[
+				coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+					getWithdrawNetworkOptions || network
+				]?.symbol
+			]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
@@ -477,8 +492,8 @@ const RenderWithdraw = ({
 			const curr = defaultCurrency
 				? defaultCurrency
 				: selectedAsset?.selectedCurrency;
-			const { increment_unit, min } = coins[curr];
-			let decimal = getDecimals(increment_unit);
+			const { increment_unit = 0.0001, min } = coins[curr] || DEFAULT_COIN_DATA;
+			let decimal = increment_unit && getDecimals(increment_unit);
 			let decValue = toFixed(val);
 			let valueDecimal = getDecimals(decValue);
 			let result = val;
@@ -589,6 +604,7 @@ const RenderWithdraw = ({
 				selectedCurrency: null,
 				addressField: null,
 			}));
+			router.replace('/wallet/withdraw');
 		}
 		if (type === 'network') {
 			setWithdrawAddress(null);
@@ -672,7 +688,7 @@ const RenderWithdraw = ({
 					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
 			  }`;
 
-	const incrementUnit = coins[BASE_CURRENCY].increment_unit;
+	const incrementUnit = coins[BASE_CURRENCY]?.increment_unit || 0.0001;
 	const decimalPoint = new BigNumber(incrementUnit).dp();
 	const estimatedFormat = `≈ ${new BigNumber(estimatedWithdrawValue)
 		.decimalPlaces(decimalPoint)
@@ -784,6 +800,13 @@ const RenderWithdraw = ({
 			? renderNetworkField(selectedAsset?.networkData)
 			: network;
 	const isActiveWithdrawNetwork = currencyNetwork(selectedAssetNetwork);
+
+	const getActiveWithdraw =
+		selectedMethod === STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+		(selectedMethod && selectedMethod === 'Address')
+			? isActiveWithdrawNetwork && isActiveWithdrawNetwork?.active !== false
+			: true;
+
 	return (
 		<div
 			className={
@@ -1074,10 +1097,11 @@ const RenderWithdraw = ({
 																<span className="ml-1 secondary-text">
 																	(
 																	<span>
-																		{calculateFee(
+																		{calculateFeeMarkup(
 																			selectedAsset?.selectedCurrency,
 																			network,
-																			coins
+																			coins,
+																			coin_customizations
 																		)}
 																	</span>
 																	<span className="ml-1">
@@ -1205,10 +1229,11 @@ const RenderWithdraw = ({
 																		</div>
 																		{isActiveNetwork ? (
 																			<span className="secondary-text">
-																				{calculateFee(
+																				{calculateFeeMarkup(
 																					selectedAsset?.selectedCurrency,
 																					getSelectedSymbol,
-																					coins
+																					coins,
+																					coin_customizations
 																				)}
 																				<span className="ml-1">
 																					{calculateFeeCoin(
@@ -1304,8 +1329,8 @@ const RenderWithdraw = ({
 						<div className="destination-field-wrapper">
 							{isEmailAndAddress &&
 								renderNetwork &&
-								isActiveWithdrawNetwork &&
-								isActiveWithdrawNetwork?.active !== false && (
+								getActiveWithdraw &&
+								getActiveWithdraw && (
 									<div
 										className={
 											isMobile

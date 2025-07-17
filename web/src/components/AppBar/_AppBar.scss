@@ -13,14 +13,15 @@ $app-menu-width: calc(100vw - 40rem);
 	align-items: center;
 	justify-content: center;
 	gap: 0.5%;
+	min-height: 3.5rem !important;
+	height: 3.5rem !important;
 	color: $base_top-bar-navigation_text_inactive;
 	.announcement-title {
 		color: $base_top-bar-navigation_text;
 	}
 	.announcement-message-wrapper {
-		width: auto;
+		max-width: max-content;
 		text-wrap: nowrap;
-		text-overflow: ellipsis;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -28,6 +29,7 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.announcement-message-wrapper * {
+		font-size: $navigation_bar-font_size;
 		max-width: 100%;
 		margin: unset;
 	}
@@ -113,6 +115,7 @@ $app-menu-width: calc(100vw - 40rem);
 		justify-content: center;
 		position: relative;
 		top: 1.5px;
+		pointer-events: none;
 		.anticon {
 			svg {
 				position: relative;
@@ -130,12 +133,12 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 			}
 		}
-		.active-menu {
-			color: $base_top-bar-navigation_text;
-			border-top: 4px solid $link;
-			height: 100%;
-			opacity: 1;
-		}
+	}
+	.active-menu {
+		color: $base_top-bar-navigation_text;
+		border-top: 4px solid $link;
+		height: 100%;
+		opacity: 1;
 	}
 
 	.language-content {
@@ -161,6 +164,8 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.language_option {
+		display: flex;
+		color: $base_top-bar-navigation_text-inactive;
 		.flag-icon {
 			width: 1.5rem;
 			height: 1rem;
@@ -169,6 +174,7 @@ $app-menu-width: calc(100vw - 40rem);
 
 	.language_option:hover {
 		cursor: pointer;
+		color: $base_top-bar-navigation_text;
 	}
 
 	.app_bar-quicktrade {
@@ -238,6 +244,7 @@ $app-menu-width: calc(100vw - 40rem);
 			border-radius: 3px;
 			cursor: pointer;
 			font-size: 11px;
+			text-wrap: nowrap;
 			.margin-aligner {
 				margin-bottom: unset;
 				margin-right: unset;
@@ -408,6 +415,9 @@ $app-menu-width: calc(100vw - 40rem);
 		justify-content: center;
 		position: relative;
 		color: $app-bar-icon-inactive;
+		.account-title {
+			text-wrap: nowrap;
+		}
 		.announcement-tab {
 			.app-bar-account-notification {
 				left: 100%;
@@ -589,6 +599,7 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 	.login-container {
 		background-color: $link;
+		color: #ffffff;
 		padding: 2px 20px;
 		border-radius: 3px;
 		cursor: pointer;
@@ -598,15 +609,25 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-search-icon {
 		padding: 2%;
 		font-size: 16px;
-		opacity: 0.6;
 		svg {
 			transform: scale(1.3);
+			path {
+				fill: $base_top-bar-navigation_text-inactive;
+			}
 		}
 	}
-
+	.active-menu.app-bar-search-icon {
+		svg {
+			path {
+				fill: $base_top-bar-navigation_text !important;
+			}
+		}
+	}
 	.app-bar-search-icon:hover {
 		cursor: pointer;
-		opacity: 1;
+		path {
+			fill: $base_top-bar-navigation_text !important;
+		}
 	}
 }
 .capitalize {
@@ -652,15 +673,18 @@ $app-menu-width: calc(100vw - 40rem);
 	.ant-select-arrow {
 		z-index: unset !important;
 	}
+	.ant-select-selection-placeholder {
+		color: $colors-main-black;
+	}
+	.language_option {
+		display: flex;
+		gap: 5px;
+	}
 }
 .language-select-dropdown-wrapper {
 	height: 14rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
-	.rc-virtual-list-holder {
-		overflow-y: unset !important;
-	}
 }
 .select-option-wrapper {
 	.ant-select-item,
@@ -874,6 +898,13 @@ $app-menu-width: calc(100vw - 40rem);
 	&.border-left {
 		border-left: 1px solid $dark-app-line-divider;
 	}
+	.loading-anime {
+		height: 20px;
+		width: 10rem;
+		margin: 2%;
+		border-radius: 7px;
+		animation: mymove 3s infinite;
+	}
 }
 
 .tools-button {
@@ -900,6 +931,9 @@ $app-menu-width: calc(100vw - 40rem);
 
 	.market-dropdown-selector {
 		border-top: 1px solid $base_top-bar-navigation_text !important;
+		.app_bar-currency-txt {
+			text-wrap: nowrap !important;
+		}
 	}
 
 	.market-dropdown-selector-inactive {
@@ -1005,6 +1039,13 @@ $app-menu-width: calc(100vw - 40rem);
 
 	.app_bar-pair-font {
 		font-size: 0.9rem;
+		.loading-anime {
+			height: 20px;
+			width: 100%;
+			margin: 2%;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
 	}
 
 	.app-bar-tab-close {
@@ -1204,22 +1245,22 @@ $app-menu-width: calc(100vw - 40rem);
 			height: 30rem;
 			position: relative;
 			overflow-x: hidden;
-			.blue-link:hover {
-				cursor: pointer;
-			}
-			.view-market-btn {
-				position: sticky;
-				bottom: 0;
-				z-index: 10;
-				padding: 5px;
-				text-align: center;
-				background-color: $app-background-color;
-			}
-			.view-market-btn:hover {
-				opacity: 1;
-				.edit-wrapper__container {
-					opacity: 0.6;
-				}
+		}
+		.blue-link:hover {
+			cursor: pointer;
+		}
+		.view-market-btn {
+			position: sticky;
+			bottom: 0;
+			z-index: 10;
+			padding: 5px;
+			text-align: center;
+			background-color: $app-background-color;
+		}
+		.view-market-btn:hover {
+			opacity: 1;
+			.edit-wrapper__container {
+				opacity: 0.6;
 			}
 		}
 	}
@@ -1293,6 +1334,7 @@ $app-menu-width: calc(100vw - 40rem);
 
 .app-bar_add-tab-price {
 	color: $colors-main-black;
+	margin-right: 5rem;
 }
 
 .account-tab-options-tooltip {
@@ -1342,6 +1384,9 @@ $app-menu-width: calc(100vw - 40rem);
 			display: flex;
 			gap: 15px;
 			align-items: center;
+			img {
+				width: 1.8rem;
+			}
 			.option-details {
 				font-size: 12px;
 				display: flex;
@@ -1442,6 +1487,11 @@ $app-menu-width: calc(100vw - 40rem);
 			.options-container {
 				margin: 0% 4%;
 				padding: 2% 4%;
+				.options-icon {
+					svg {
+						width: 2rem;
+					}
+				}
 			}
 		}
 	}
@@ -1552,6 +1602,29 @@ $app-menu-width: calc(100vw - 40rem);
 		fill: #ffffff;
 		stroke-miterlimit: 10;
 	}
+	.mobile-bar {
+		.app-navbar-wrapper {
+			display: flex;
+			align-items: center;
+			font-size: 11px;
+			gap: 1%;
+			.language_option {
+				display: flex;
+				color: $base_top-bar-navigation_text;
+				align-items: center;
+				img {
+					width: 2.5rem;
+				}
+			}
+			.login-container {
+				background-color: $link;
+				color: #ffffff;
+				padding: 2px 20px;
+				border-radius: 3px;
+				cursor: pointer;
+			}
+		}
+	}
 	.app-bar-add-tab-menu {
 		width: 36rem;
 		position: absolute;
@@ -1573,6 +1646,28 @@ $app-menu-width: calc(100vw - 40rem);
 
 		.app-bar-add-tab-content-list {
 			height: 4rem;
+		}
+	}
+	.app-mobile-bar-wrapper {
+		.announcement-top-bar {
+			font-size: 1.2rem;
+			gap: 2%;
+			.announcement-message-wrapper * {
+				font-size: 1.2rem;
+			}
+			.announcement-icon {
+				svg {
+					width: 2.5rem;
+					height: 2.5rem;
+				}
+			}
+			.close-icon {
+				right: 2%;
+				svg {
+					width: 2.5rem;
+					height: 2rem;
+				}
+			}
 		}
 	}
 }
@@ -1600,6 +1695,23 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 }
 
+.modal-market-menu,
+.market-selector-dropdown-wrapper {
+	.app-bar-add-tab-content {
+		.market-selector-search-wrapper {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.blue-link {
+				text-wrap: nowrap;
+			}
+			.blue-link:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}
+
 .market-selector-dropdown-wrapper {
 	.app-bar-add-tab-menu {
 		min-width: max-content;
@@ -1618,16 +1730,9 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 	.app-bar-add-tab-content {
-		.market-selector-search-wrapper {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			.blue-link {
-				text-wrap: nowrap;
-			}
-			.blue-link:hover {
-				cursor: pointer;
-			}
+		.app_bar-pair-font,
+		.price-diff {
+			text-wrap: nowrap !important;
 		}
 		.app-bar-add-tab-search {
 			width: 90%;
@@ -1724,7 +1829,7 @@ $app-menu-width: calc(100vw - 40rem);
 	.select-option-wrapper {
 		.ant-select-item,
 		.ant-select-item-option {
-			font-size: 0.9rem !important;
+			font-size: 1.2rem !important;
 		}
 	}
 }
@@ -1807,22 +1912,57 @@ $app-menu-width: calc(100vw - 40rem);
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					.ant-input-affix-wrapper {
+					.ant-input-affix-wrapper,
+					.search-field-container {
 						width: 80%;
 						height: 4rem;
 						background-color: transparent;
 						border: 1px solid $colors-notifications-blue;
+						border-radius: 5px;
+						box-shadow: none;
+						.open-icon {
+							position: relative;
+							display: inline-block;
+							width: 1px;
+							height: 2rem;
+							background-color: transparent;
+						}
+
+						.open-icon::before {
+							content: '';
+							position: absolute;
+							width: 2px;
+							height: 2rem;
+							background-color: $colors-black;
+							transform: rotate(20deg);
+							transform-origin: center;
+						}
+						.close-icon {
+							position: relative;
+							top: 3px;
+							svg {
+								width: 1.5rem;
+								height: 1.5rem;
+							}
+						}
+					}
+					.ant-input-affix-wrapper {
+						width: 95%;
+						border: none;
 					}
 					.ant-input {
+						width: 95%;
 						border: none;
 						color: $colors-main-black;
 						background-color: transparent;
-						padding: 3%;
+						height: 100%;
+						box-shadow: none;
 					}
 					.ant-input:hover {
 						border: none;
+						box-shadow: none;
 					}
-					.ant-input-affix-wrapper:hover {
+					.search-field-container:hover {
 						border: 2px solid $colors-notifications-blue;
 						box-shadow: none;
 					}
@@ -1837,7 +1977,7 @@ $app-menu-width: calc(100vw - 40rem);
 					.search-icon-container {
 						margin-left: 1%;
 						background-color: $colors-notifications-blue;
-						padding: 1.5%;
+						padding: 1%;
 						border-radius: 5px;
 						.search-icon {
 							font-size: 30px;
@@ -1897,6 +2037,9 @@ $app-menu-width: calc(100vw - 40rem);
 							svg {
 								width: 80%;
 								height: 100%;
+								.interface-setting {
+									fill: $colors-main-black !important;
+								}
 							}
 							.hot-icon {
 								position: relative;
@@ -1947,6 +2090,31 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 }
 
+.layout-mobile.language-popup-wrapper {
+	.ReactModal__Content {
+		min-height: unset;
+		max-height: unset;
+		.language-popup-container {
+			min-height: $language-option-dialog-height-mobile;
+			max-height: $language-option-dialog-height-mobile;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			.custom-select-input-style {
+				.ant-select-selection-item,
+				.ant-select-selector,
+				.ant-select-selection-placeholder {
+					font-size: 10px;
+				}
+			}
+			.language-select-dropdown-wrapper-mobile,
+			.select-currency-wrapper-mobile {
+				height: unset !important;
+			}
+		}
+	}
+}
+
 .language-popup-wrapper {
 	.ReactModal__Content {
 		width: 35rem;
@@ -1954,55 +2122,59 @@ $app-menu-width: calc(100vw - 40rem);
 	}
 
 	.language-popup-container {
-		.title-container {
-			display: flex;
-			align-items: center;
-			gap: 2%;
-			font-size: 16px;
-
-			.icon-logo {
-				svg {
-					position: relative;
-					top: 2px;
-				}
-			}
-		}
-
-		.language-field {
-			margin-top: 7%;
+		.language-popup-details-wrapper {
 			display: flex;
 			flex-direction: column;
-			align-items: flex-start;
-			gap: 5px;
+			.title-container {
+				display: flex;
+				align-items: center;
+				gap: 2%;
+				font-size: 16px;
 
-			.custom-select-input-style {
-				margin: unset !important;
-				max-width: 100% !important;
-				width: 100% !important;
-
-				.ant-select-selector {
-					border-color: $colors-main-black !important;
-					height: 25px !important;
-				}
-				.ant-select-selection-item {
-					color: $colors-main-black !important;
-					display: flex;
-					align-items: center;
-					gap: 1%;
-				}
-				.ant-select-selection-placeholder {
-					line-height: 22px;
-				}
-				.ant-select-arrow {
+				.icon-logo {
 					svg {
-						color: $colors-main-black !important;
+						position: relative;
+						top: 2px;
 					}
 				}
 			}
-		}
 
-		.blue-link:hover {
-			cursor: pointer;
+			.language-field {
+				margin-top: 7%;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 5px;
+
+				.custom-select-input-style {
+					margin: unset !important;
+					max-width: 100% !important;
+					width: 100% !important;
+
+					.ant-select-selector {
+						border-color: $colors-main-black !important;
+						height: 25px !important;
+					}
+					.ant-select-selection-item {
+						color: $colors-main-black !important;
+						display: flex;
+						align-items: center;
+						gap: 1%;
+					}
+					.ant-select-selection-placeholder {
+						line-height: 22px;
+					}
+					.ant-select-arrow {
+						svg {
+							color: $colors-main-black !important;
+						}
+					}
+				}
+			}
+
+			.blue-link:hover {
+				cursor: pointer;
+			}
 		}
 
 		.button-container {
@@ -2016,7 +2188,6 @@ $app-menu-width: calc(100vw - 40rem);
 .select-currency-wrapper {
 	height: 8rem;
 	scrollbar-width: auto;
-	overflow-y: scroll;
 	scrollbar-color: $colors-black $app-background-color;
 
 	.ant-select-item-option-content {
@@ -2049,6 +2220,9 @@ $app-menu-width: calc(100vw - 40rem);
 				display: flex;
 				align-items: center;
 				gap: 3%;
+				.exchange-update-title {
+					color: $colors-main-black !important;
+				}
 				.announcement-icon {
 					position: relative;
 					top: 3px;
@@ -2056,10 +2230,12 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 
 			.announcement-message-wrapper {
+				margin-top: 3%;
 				overflow: hidden;
 			}
 			.announcement-message-wrapper * {
 				width: 100%;
+				font-size: 14px;
 			}
 
 			.announcement-popup-buttons {

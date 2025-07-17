@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -159,16 +160,14 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 						suffixIcon={<CaretDownOutlined />}
 					>
 						<Option value={null}>{STRINGS['ALL']}</Option>
-						{Object.entries(pairs).map(
-							([_, { symbol, icon_id }]) => (
-								<Option key={symbol} value={symbol}>
-									<div className="d-flex gap-1">
-										<Coin iconId={icon_id} type="CS1" />
-										<div>{`${symbol.toUpperCase()}`}</div>
-									</div>
-								</Option>
-							)
-						)}
+						{Object.entries(pairs).map(([_, { symbol, icon_id }]) => (
+							<Option key={symbol} value={symbol}>
+								<div className="d-flex align-items-start gap-1">
+									<Coin iconId={icon_id} type={isMobile ? 'CS5' : 'CS1'} />
+									<div>{`${symbol.toUpperCase()}`}</div>
+								</div>
+							</Option>
+						))}
 					</Select>
 				</Form.Item>
 				<Form.Item name="size">

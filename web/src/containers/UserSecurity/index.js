@@ -95,6 +95,18 @@ class UserSecurity extends Component {
 			) {
 				this.setState({ activeTab: 2 });
 				this.props.setSecurityTab(2);
+			} else if (
+				window.location.search &&
+				window.location.search?.includes('sessions')
+			) {
+				this.setState({ activeTab: 3 });
+				this.props.setSecurityTab(3);
+			} else if (
+				window.location.search &&
+				window.location.search?.includes('login-history')
+			) {
+				this.setState({ activeTab: 4 });
+				this.props.setSecurityTab(4);
 			} else {
 				this.setState({ activeTab: 0 });
 				this.props.setSecurityTab(0);
@@ -168,6 +180,10 @@ class UserSecurity extends Component {
 			currentTab = 'password';
 		} else if (this.state.activeTab === 2) {
 			currentTab = 'apiKeys';
+		} else if (this.state.activeTab === 3) {
+			currentTab = 'sessions';
+		} else if (this.state.activeTab === 4) {
+			currentTab = 'login-history';
 		} else {
 			currentTab = '2fa';
 		}
@@ -223,7 +239,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'ACCOUNT_SECURITY.OTP.TITLE'}
 						title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
-						icon={ICONS.SETTING_NOTIFICATION_ICON}
+						icon={ICONS.OPTION_2FA_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					// <CustomTabs
@@ -384,6 +401,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'SESSIONS.TAB'}
 						title={STRINGS['SESSIONS.TAB']}
+						icon={ICONS.SESSION_OPTION_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					<EditWrapper stringId="SESSIONS.TAB">
@@ -397,6 +416,8 @@ class UserSecurity extends Component {
 					<CustomMobileTabs
 						stringId={'LOGINS_HISTORY.TAB'}
 						title={STRINGS['LOGINS_HISTORY.TAB']}
+						icon={ICONS.LOGIN_OPTION_ICON}
+						iconClassName="security-icon"
 					/>
 				) : (
 					<EditWrapper stringId="LOGINS_HISTORY.TAB">
@@ -733,18 +754,25 @@ class UserSecurity extends Component {
 						textType="title"
 					/>
 				)}
-				<HeaderSection
-					stringId="ACCOUNTS.TAB_SETTINGS"
-					title={STRINGS['ACCOUNTS.TAB_SETTINGS']}
-					openContactForm={openContactForm}
-				>
+				{!isMobile ? (
+					<HeaderSection
+						stringId="ACCOUNTS.TAB_SECURITY"
+						title={isMobile && STRINGS['ACCOUNTS.TAB_SECURITY']}
+						openContactForm={openContactForm}
+					>
+						<div className="header-content mt-3">
+							<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
+								{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
+							</EditWrapper>
+						</div>
+					</HeaderSection>
+				) : (
 					<div className="header-content">
 						<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
 							{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
 						</EditWrapper>
 					</div>
-				</HeaderSection>
-
+				)}
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"

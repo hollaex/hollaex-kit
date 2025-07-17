@@ -20,6 +20,7 @@ const CustomizeEmailForm = ({
 	defaultLanguage,
 	emailType,
 	defaultEmailData,
+	handleTabChange,
 }) => {
 	const [form] = Form.useForm();
 	const [isDisable, setIsDisable] = useState(false);
@@ -84,12 +85,12 @@ const CustomizeEmailForm = ({
 		constructedData();
 	}, [constructedData]);
 
-	const handleConfirmOpen = (type) => {
-		setModalVisible(!isModalVisible);
+	const handleConfirmOpen = useCallback((type) => {
+		setModalVisible((prev) => !prev);
 		if (type) {
 			setModalType(type);
 		}
-	};
+	}, []);
 
 	const handleSubmit = (formProps) => {
 		handleConfirmOpen('save');
@@ -146,6 +147,16 @@ const CustomizeEmailForm = ({
 		setIsDisable(false);
 		handleConfirmOpen();
 	};
+	const onHandleNavigate = useCallback(() => {
+		handleTabChange('0');
+		handleConfirmOpen();
+		const adminContentWrapper = document.querySelector(
+			'.admin-content-wrapper'
+		);
+		if (adminContentWrapper) {
+			adminContentWrapper.scrollTo(0, 0);
+		}
+	}, [handleTabChange, handleConfirmOpen]);
 
 	const handleConfirmation = (formProps) => {
 		const { language, mailType, format, title } = formProps;
@@ -194,6 +205,42 @@ const CustomizeEmailForm = ({
 						</Button>
 						<Button type="primary" onClick={handleReset}>
 							Confirm
+						</Button>
+					</div>
+				</div>
+			);
+		} else if (modalType === 'preview-email') {
+			return (
+				<div className="confirm_modal_wrapper">
+					<div>
+						<span className="preview-email-title">Email Preview</span>
+					</div>
+					<iframe
+						title={'test'}
+						srcDoc={emailInfo?.html}
+						height={500}
+						className="email-preview-content mt-3"
+					/>
+					<div className="note-text mb-2">
+						<span className="font-weight-bold">Note:</span>
+						<span className="">
+							Please update your{' '}
+							<span
+								className="text-decoration-underline pointer"
+								onClick={() => onHandleNavigate()}
+							>
+								exchange logo
+							</span>{' '}
+							to apply a custom logo in your email.
+						</span>
+					</div>
+					<div className="d-flex justify-content-center">
+						<Button
+							type="primary"
+							onClick={() => handleConfirmOpen()}
+							className="mt-3 w-75 no-border green-btn"
+						>
+							Close
 						</Button>
 					</div>
 				</div>
@@ -248,7 +295,22 @@ const CustomizeEmailForm = ({
 
 	useEffect(() => {
 		setButtonSubmitting(true);
+		return () => {
+			onChange.cancel();
+		};
+		// eslint-disable-next-line
 	}, []);
+
+	const onHandleChange = (e) => {
+		const updatedHtml = e.target?.value;
+		setFormData((prev) => ({
+			...prev,
+			format: updatedHtml,
+		}));
+		if (emailInfo) {
+			emailInfo.html = updatedHtml;
+		}
+	};
 
 	return (
 		<div className="custom-email-wrapper">
@@ -342,7 +404,12 @@ const CustomizeEmailForm = ({
 				<div className="sub-title">HTML content</div>
 				<div className="text-area">
 					<Form.Item name="format">
-						<TextArea placeholder="format" rows={20} disabled={!isDisable} />
+						<TextArea
+							placeholder="format"
+							rows={20}
+							disabled={!isDisable}
+							onChange={(e) => onHandleChange(e)}
+						/>
 					</Form.Item>
 				</div>
 				<div
@@ -383,6 +450,11 @@ const CustomizeEmailForm = ({
 								<div>RESET TO DEFAULT</div>
 							</div>
 						)}
+						<div className="small-text anchor">
+							<span onClick={() => handleConfirmOpen('preview-email')}>
+								PREVIEW
+							</span>
+						</div>
 					</div>
 				</div>
 				<FormButton
@@ -396,7 +468,9 @@ const CustomizeEmailForm = ({
 			<Modal
 				visible={isModalVisible}
 				footer={null}
-				onCancel={handleConfirmOpen}
+				onCancel={() => handleConfirmOpen()}
+				width={modalType === 'preview-email' && 650}
+				wrapClassName="customize-email-popup-wrapper"
 			>
 				{renderModalContent(formData, modalType)}
 			</Modal>

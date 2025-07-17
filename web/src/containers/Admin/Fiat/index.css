@@ -25,6 +25,15 @@
 	width: 150px;
 }
 
+.summary-content-wrapper
+	.body-container
+	.box-outerDesign
+	.ant-select
+	.ant-select-selector
+	.coin-ico {
+	color: #000000 !important;
+}
+
 .summary-content-wrapper .body-container .box-outerDesign .ramp-heading {
 	display: flex;
 	justify-content: space-between;
@@ -258,11 +267,6 @@
 .payment-acc-wrapper .preview-container .ant-breadcrumb-separator,
 .payment-modal-wrapper h3,
 .payment-modal-wrapper .radiobuttonstyle,
-.summary-content-wrapper
-	.body-container
-	.box-outerDesign
-	.coins-wrapper
-	.coin-ico,
 .payment-acc-wrapper .quesIcon,
 .payment-acc-wrapper .field-wrap .checkbox-title {
 	color: #ffffff !important;
@@ -764,4 +768,17 @@
 	pointer-events: none;
 	width: 5rem;
 	opacity: 0.5;
+}
+
+.onramp-payment-acc-wrapper {
+	margin-top: 3%;
+	padding: 0 2% 2% 2%;
+	border: 1px solid #c7c7c7;
+	width: max-content;
+}
+
+.edit-fiat-fees-popup-wrapper .ant-input-suffix .asset-icon,
+.edit-fiat-fees-popup-wrapper .edit-fiat-fees-title,
+.edit-fiat-fees-popup-wrapper .edit-fiat-fees-title .edit-fees-asset-symbol {
+	gap: 5px;
 }

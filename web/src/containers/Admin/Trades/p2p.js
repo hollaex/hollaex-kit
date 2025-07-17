@@ -11,6 +11,7 @@ import P2PSettings from './p2pSettings';
 import P2PActive from './p2pActive';
 import P2PUnverifiedPayments from './p2punverifiedPayments';
 import { setExchange } from 'actions/assetActions';
+import P2PFeedbacks from './p2pFeedbacks';
 
 const TabPane = Tabs.TabPane;
 
@@ -28,7 +29,7 @@ const P2P = () => {
 	};
 
 	return (
-		<div className="admin-earnings-container w-100">
+		<div className="admin-earnings-container blue-admin-tab-wrapper w-100">
 			<Tabs
 				defaultActiveKey="0"
 				activeKey={activeTab}
@@ -47,8 +48,11 @@ const P2P = () => {
 				<TabPane tab="Disputes" key="3">
 					<P2PDisputes />
 				</TabPane>
-				<TabPane tab="Unverified accounts" key="4">
+				<TabPane tab="Payment Accounts" key="4">
 					<P2PUnverifiedPayments />
+				</TabPane>
+				<TabPane tab="Feedbacks" key="5">
+					<P2PFeedbacks />
 				</TabPane>
 			</Tabs>
 		</div>

@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router';
+import { ArrowUpOutlined } from '@ant-design/icons';
 
 // import { CurrencyBall } from '../../../components';
 // import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
@@ -6,7 +8,6 @@ import STRINGS from 'config/localizedStrings';
 // import { formatToCurrency } from 'utils/currency';
 import { Coin, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { Link } from 'react-router';
 
 const getLimitValue = (
 	transactionLimit,
@@ -263,6 +264,7 @@ const LimitsBlock = ({
 	transaction_limits,
 	type,
 	search,
+	scrollToTop,
 }) => {
 	return type === 'individual' ? (
 		<div className="wallet-assets_block">
@@ -313,72 +315,85 @@ const LimitsBlock = ({
 			</table>
 		</div>
 	) : (
-		<div className="wallet-assets_block" style={{ display: 'flex' }}>
-			<table className="wallet-assets_block-table" style={{ width: 1 }}>
-				<thead>
-					<tr className="table-bottom-border">
-						<th />
-						<th>
-							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY">
-								{
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY'
-									]
-								}
-							</EditWrapper>
-						</th>
-					</tr>
-				</thead>
-				<tbody className="account-limits-content font-weight-bold">
-					{getRowsCollectiveIcon(
-						coins,
-						level,
-						tiers,
-						icons,
-						transaction_limits,
-						type
-					)}
-				</tbody>
-			</table>
-			<table
-				className="wallet-assets_block-table"
-				style={{ position: 'relative', left: -10 }}
-			>
-				<thead>
-					<tr className="table-bottom-border">
-						<th />
-						<th>
-							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT">
-								{
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT'
-									]
-								}
-							</EditWrapper>
-						</th>
-						<th>
-							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2">
-								{
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2'
-									]
-								}
-							</EditWrapper>
-						</th>
-					</tr>
-				</thead>
-				<tbody className="account-limits-content font-weight-bold">
-					{getRowsCollective(
-						coins,
-						level,
-						tiers,
-						icons,
-						transaction_limits,
-						type
-					)}
-				</tbody>
-			</table>
-		</div>
+		<>
+			<div className="wallet-assets_block" style={{ display: 'flex' }}>
+				<table className="wallet-assets_block-table" style={{ width: 1 }}>
+					<thead>
+						<tr className="table-bottom-border">
+							<th />
+							<th>
+								<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY">
+									{
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY'
+										]
+									}
+								</EditWrapper>
+							</th>
+						</tr>
+					</thead>
+					<tbody className="account-limits-content font-weight-bold">
+						{getRowsCollectiveIcon(
+							coins,
+							level,
+							tiers,
+							icons,
+							transaction_limits,
+							type
+						)}
+					</tbody>
+				</table>
+				<table
+					className="wallet-assets_block-table"
+					style={{ position: 'relative', left: -10 }}
+				>
+					<thead>
+						<tr className="table-bottom-border">
+							<th />
+							<th>
+								<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT">
+									{
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT'
+										]
+									}
+								</EditWrapper>
+							</th>
+							<th>
+								<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2">
+									{
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT_2'
+										]
+									}
+								</EditWrapper>
+							</th>
+						</tr>
+					</thead>
+					<tbody className="account-limits-content font-weight-bold">
+						{getRowsCollective(
+							coins,
+							level,
+							tiers,
+							icons,
+							transaction_limits,
+							type
+						)}
+					</tbody>
+				</table>
+			</div>
+			<div className="ml-4">
+				<EditWrapper stringId="FEES_AND_LIMITS.RETURN_TO_TOP">
+					<span
+						className="pointer blue-link underline-text"
+						onClick={() => scrollToTop()}
+					>
+						{STRINGS['FEES_AND_LIMITS.RETURN_TO_TOP']}
+						<ArrowUpOutlined />
+					</span>
+				</EditWrapper>
+			</div>
+		</>
 	);
 };
 

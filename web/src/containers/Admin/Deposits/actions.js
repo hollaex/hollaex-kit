@@ -28,9 +28,9 @@ export const requestDepositDownload = (query = { type: 'deposit' }) => {
 	const queryValues = Object.keys(formProps).length
 		? querystring.stringify(formProps)
 		: '';
-	let path = `/admin/deposits?${queryValues}`;
+	let path = `/admin/deposits/csv?${queryValues}`;
 	if (type === 'withdrawal') {
-		path = `/admin/withdrawals?${queryValues}`;
+		path = `/admin/withdrawals/csv?${queryValues}`;
 	}
 	return axios({
 		method: 'GET',
@@ -41,8 +41,14 @@ export const requestDepositDownload = (query = { type: 'deposit' }) => {
 			const link = document.createElement('a');
 			link.href = url;
 			type === 'deposit'
-				? link.setAttribute('download', `deposits_${moment().format('YYYY-MM-DD')}.csv`)
-				: link.setAttribute('download', `withdrawals_${moment().format('YYYY-MM-DD')}.csv`);
+				? link.setAttribute(
+						'download',
+						`deposits_${moment().format('YYYY-MM-DD')}.csv`
+				  )
+				: link.setAttribute(
+						'download',
+						`withdrawals_${moment().format('YYYY-MM-DD')}.csv`
+				  );
 			document.body.appendChild(link);
 			link.click();
 		})
@@ -83,10 +89,7 @@ export const requestBurn = (data) => {
 		method: 'PUT',
 		body: JSON.stringify({ ...data }),
 	};
-	return requestAuthenticated(
-		`/admin/burn`,
-		options
-	);
+	return requestAuthenticated(`/admin/burn`, options);
 };
 
 export const requestMint = (data) => {
@@ -94,8 +97,5 @@ export const requestMint = (data) => {
 		method: 'PUT',
 		body: JSON.stringify({ ...data }),
 	};
-	return requestAuthenticated(
-		`/admin/mint`,
-		options
-	);
+	return requestAuthenticated(`/admin/mint`, options);
 };

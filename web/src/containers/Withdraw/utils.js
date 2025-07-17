@@ -14,6 +14,8 @@ import STRINGS from 'config/localizedStrings';
 import { renderBankInformation } from '../Wallet/components';
 import { getNetworkName, getNetworkNameByKey } from 'utils/wallet';
 import { STATIC_ICONS } from 'config/icons';
+import BigNumber from 'bignumber.js';
+import isNumber from 'lodash.isnumber';
 
 export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
@@ -118,6 +120,62 @@ export const calculateFee = (
 		: selectedAsset && coins[selectedAsset].withdrawal_fee
 		? coins[selectedAsset]?.withdrawal_fee
 		: 0;
+};
+
+export const calculateFeeMarkup = (
+	selectedAsset,
+	getWithdrawNetworkOptions,
+	coins,
+	coin_customizations
+) => {
+	let fee =
+		selectedAsset &&
+		coins[selectedAsset].withdrawal_fees &&
+		Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+		coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+			? coins[selectedAsset].withdrawal_fees[getWithdrawNetworkOptions]?.value
+			: selectedAsset &&
+			  coins[selectedAsset].withdrawal_fees &&
+			  Object.keys(coins[selectedAsset]?.withdrawal_fees).length &&
+			  coins[selectedAsset].withdrawal_fees[
+					Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+			  ]?.value
+			? coins[selectedAsset].withdrawal_fees[
+					Object.keys(coins[selectedAsset]?.withdrawal_fees)[0]
+			  ]?.value
+			: selectedAsset && coins[selectedAsset].withdrawal_fee
+			? coins[selectedAsset]?.withdrawal_fee
+			: 0;
+
+	const feeMarkup =
+		selectedAsset &&
+		coin_customizations?.[selectedAsset]?.fee_markups?.[
+			getWithdrawNetworkOptions
+		]?.withdrawal?.value;
+
+	if (
+		feeMarkup &&
+		coin_customizations?.[selectedAsset]?.fee_markups?.[
+			getWithdrawNetworkOptions
+		]?.withdrawal?.symbol ===
+			coins?.[selectedAsset]?.withdrawal_fees?.[getWithdrawNetworkOptions]
+				?.symbol
+	) {
+		const incrementUnit =
+			coins?.[
+				coins?.[selectedAsset]?.withdrawal_fees?.[getWithdrawNetworkOptions]
+					?.symbol
+			]?.increment_unit || 0.0001;
+		if (isNumber(incrementUnit)) {
+			const decimalPoint = new BigNumber(incrementUnit).dp();
+			const roundedMarkup = new BigNumber(feeMarkup)
+				.decimalPlaces(decimalPoint)
+				.toNumber();
+			fee = new BigNumber(fee || 0).plus(roundedMarkup || 0).toNumber();
+		}
+	}
+
+	return fee;
 };
 
 export const calculateFeeCoin = (

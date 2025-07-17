@@ -11,13 +11,27 @@ import { subtract } from '../utils';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const rendercaret = (label, onHandleClick) => {
+const rendercaret = (label, onHandleClick, activeSort) => {
 	return (
 		<div className="d-flex mt-2">
 			{STRINGS[label]}
 			<div className="d-flex flex-column mx-2">
-				<CaretUpOutlined onClick={() => onHandleClick('caretUp', label)} />
-				<CaretDownFilled onClick={() => onHandleClick('caretDown', label)} />
+				<CaretUpOutlined
+					className={
+						activeSort?.label === label && activeSort?.type === 'caretUp'
+							? 'active-icon'
+							: 'inactive-icon'
+					}
+					onClick={() => onHandleClick('caretUp', label)}
+				/>
+				<CaretDownFilled
+					className={
+						activeSort?.label === label && activeSort?.type === 'caretDown'
+							? 'active-icon'
+							: 'inactive-icon'
+					}
+					onClick={() => onHandleClick('caretDown', label)}
+				/>
 			</div>
 		</div>
 	);
@@ -30,7 +44,8 @@ const generateHeaders = (
 	ICONS,
 	activeOrdersMarket,
 	orders,
-	onHandleClick
+	onHandleClick,
+	activeSort
 ) => [
 	{
 		stringId: 'PAIR',
@@ -79,14 +94,14 @@ const generateHeaders = (
 	//   },
 	// },
 	!isMobile && {
-		label: rendercaret('TIME', onHandleClick),
+		label: rendercaret('TIME', onHandleClick, activeSort),
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
 			return <td key={index}>{getFormatTimestamp(created_at)}</td>;
 		},
 	},
 	{
-		label: rendercaret('PRICE', onHandleClick),
+		label: rendercaret('PRICE', onHandleClick, activeSort),
 		key: 'price',
 		renderCell: ({ price = 0, symbol }, key, index) => {
 			let pairData = pairs[symbol] || {};
@@ -210,22 +225,27 @@ const ActiveOrders = ({
 	pageSize,
 }) => {
 	const [filteredOrders, setFilteredOrders] = useState([...orders]);
+	const [activeSort, setActiveSort] = useState({
+		label: 'TIME',
+		type: 'caretUp',
+	});
 
 	useEffect(() => {
 		setFilteredOrders(orders);
 	}, [orders]);
 
 	const onHandleClick = (type, label) => {
-		const filteredData = filteredOrders.sort((a, b) => {
+		setActiveSort({ label, type });
+		const filteredData = [...filteredOrders]?.sort((a, b) => {
 			if (label === 'TIME') {
 				return type === 'caretUp'
-					? new Date(a.created_at) - new Date(b.created_at)
-					: new Date(b.created_at) - new Date(a.created_at);
+					? new Date(b.created_at) - new Date(a.created_at)
+					: new Date(a.created_at) - new Date(b.created_at);
 			} else {
-				return type === 'caretUp' ? a.price - b.price : b.price - a.price;
+				return type === 'caretUp' ? b.price - a.price : a.price - b.price;
 			}
 		});
-		setFilteredOrders([...filteredData]);
+		setFilteredOrders(filteredData);
 	};
 
 	return (
@@ -244,7 +264,8 @@ const ActiveOrders = ({
 					ICONS,
 					activeOrdersMarket,
 					orders,
-					onHandleClick
+					onHandleClick,
+					activeSort
 				)}
 				cancelDelayData={cancelDelayData}
 				data={filteredOrders}

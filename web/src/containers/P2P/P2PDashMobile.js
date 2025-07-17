@@ -81,6 +81,7 @@ const P2PDashMobile = ({
 									isOpen={displayTrading}
 									onCloseDialog={() => handleCloseTrading()}
 									className="trading-popup-wrapper fs-16"
+									label="trading-popup"
 								>
 									<div className="trading-popup-container">
 										<div className="d-flex justify-content-between">

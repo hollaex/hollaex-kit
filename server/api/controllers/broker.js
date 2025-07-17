@@ -27,7 +27,8 @@ const getTrackedExchangeMarkets = (req, res) => {
 				'controllers/broker/getTrackedExchangeMarkets err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -91,7 +92,7 @@ const createBrokerPair = (req, res) => {
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -100,7 +101,8 @@ const createBrokerPair = (req, res) => {
 				'controllers/broker/createBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 const testBroker = (req, res) => {
@@ -128,7 +130,8 @@ const testBroker = (req, res) => {
 				'controllers/broker/testBroker err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -162,7 +165,8 @@ const testRebalance = (req, res) => {
 				'controllers/broker/testRebalance err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
@@ -210,7 +214,7 @@ function updateBrokerPair(req, res) {
 	toolsLib.broker.updateBrokerPair(id, req.swagger.params.data.value)
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -219,7 +223,8 @@ function updateBrokerPair(req, res) {
 				'controllers/broker/updateBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -233,7 +238,7 @@ function deleteBrokerPair(req, res) {
 	toolsLib.broker.deleteBrokerPair(req.swagger.params.data.value.id)
 		.then(() => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted broker pair.' });
 		})
 		.catch((err) => {
@@ -242,7 +247,8 @@ function deleteBrokerPair(req, res) {
 				'controllers/broker/updateBrokerPair err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -281,7 +287,8 @@ function getBrokerPairs(req, res) {
 				'controllers/broker/getBrokerDeals err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 
 }

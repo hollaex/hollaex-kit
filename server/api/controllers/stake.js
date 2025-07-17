@@ -1,20 +1,18 @@
 'use strict';
 
 const { loggerStake } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants');
+const { INIT_CHANNEL, ROLES } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
+
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const getExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
-	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -31,29 +29,22 @@ const getExchangeStakes = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakes', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 };
 
 const createExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/createExchangeStakes/auth', req.auth);
 
-	const {  
+	const {
 		name,
 		currency,
 		reward_currency,
@@ -69,7 +60,7 @@ const createExchangeStakes = (req, res) => {
 		onboarding,
 		disclaimer,
 		status
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -111,7 +102,7 @@ const createExchangeStakes = (req, res) => {
 	})
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -120,12 +111,13 @@ const createExchangeStakes = (req, res) => {
 				'controllers/stake/createExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
 const updateExchangeStakes = (req, res) => {
-loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
+	loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req.auth);
 
 	const {
 		id,
@@ -144,7 +136,7 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		onboarding,
 		disclaimer,
 		status
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -186,7 +178,7 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 		user_id: req.auth.sub.id
 	}, auditInfo)
 		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -195,7 +187,8 @@ loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStakes/auth', req
 				'controllers/stake/updateExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -209,7 +202,7 @@ const deleteExchangeStakes = (req, res) => {
 	toolsLib.stake.updateExchangeStakePool(req.swagger.params.data.value.id, { status: 'terminated' })
 		.then(() => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake pool.' });
 		})
 		.catch((err) => {
@@ -218,19 +211,17 @@ const deleteExchangeStakes = (req, res) => {
 				'controllers/broker/deleteExchangeStakes err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
 const getExchangeStakersForAdmin = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersAdmin/auth', req.auth);
 
-	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -249,34 +240,24 @@ const getExchangeStakersForAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
 	}
 	)
 		.then((data) => {
-			if (format.value === 'csv') {
-				toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
-				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
-				res.set('Content-Type', 'text/csv');
-				return res.status(202).send(data);
-			} else {
-				return res.json(data);
-			}
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
 const getExchangeStakersForUser = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakersForUser/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { currency, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
-		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
-	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
 			req.uuid,
@@ -288,6 +269,7 @@ const getExchangeStakersForUser = (req, res) => {
 
 	toolsLib.stake.getExchangeStakers({
 		user_id: req.auth.sub.id,
+		currency: currency.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -308,17 +290,18 @@ const getExchangeStakersForUser = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/getExchangeStakersForUser', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
 const createStaker = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/createStaker/auth', req.auth);
 
-	const {  
+	const {
 		stake_id,
 		amount
-	 } = req.swagger.params.data.value;
+	} = req.swagger.params.data.value;
 
 	loggerStake.verbose(
 		req.uuid,
@@ -331,9 +314,9 @@ const createStaker = (req, res) => {
 		stake_id,
 		amount,
 		req.auth.sub.id
-		)
+	)
 		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -342,7 +325,8 @@ const createStaker = (req, res) => {
 				'controllers/stake/createStaker err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -355,7 +339,7 @@ const deleteExchangeStaker = (req, res) => {
 
 	toolsLib.stake.deleteExchangeStaker(req.swagger.params.data.value.id, req.auth.sub.id)
 		.then(() => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake.' });
 		})
 		.catch((err) => {
@@ -364,7 +348,8 @@ const deleteExchangeStaker = (req, res) => {
 				'controllers/broker/stake err',
 				err.message
 			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -379,7 +364,8 @@ const unstakeEstimateSlash = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/unstakeEstimateSlash', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -394,7 +380,8 @@ const unstakeEstimateSlashAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/unstakeEstimateSlashAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
 
@@ -408,9 +395,88 @@ const fetchStakeAnalytics = (req, res) => {
 		})
 		.catch((err) => {
 			loggerStake.error(req.uuid, 'controllers/stake/fetchStakeAnalytics', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
 }
+
+
+const downloadStakesCsv = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/stake/downloadStakesCsv/auth', req.auth);
+
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/stake/downloadStakesCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakePools({
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv'
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/downloadStakesCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const downloadStakersCsv = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/stake/downloadStakersCsv/auth', req.auth);
+
+	const { user_id, stake_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerStake.error(
+			req.uuid,
+			'controllers/stake/downloadStakersCsv invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.stake.getExchangeStakers({
+		user_id: user_id.value,
+		stake_id: stake_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: 'csv'
+	}
+	)
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
+			res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+			res.set('Content-Type', 'text/csv');
+			return res.status(202).send(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/downloadStakersCsv', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+}
+
 
 module.exports = {
 	getExchangeStakes,
@@ -423,5 +489,7 @@ module.exports = {
 	deleteExchangeStaker,
 	unstakeEstimateSlash,
 	unstakeEstimateSlashAdmin,
-	fetchStakeAnalytics
+	fetchStakeAnalytics,
+	downloadStakesCsv,
+	downloadStakersCsv
 };

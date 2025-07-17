@@ -25,9 +25,11 @@ import {
 } from 'actions/appActions';
 import { updateUserSettings, setUserData } from 'actions/userAction';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
-import { LanguageDisplayPopup, renderAnnouncementMessage } from './Utils';
-import { formatToFixed } from 'utils/currency';
-import { marketPriceSelector } from 'containers/Trade/utils';
+import {
+	LanguageDisplayPopup,
+	renderAnnouncementMessage,
+	renderRemoveEmptyTag,
+} from './Utils';
 import { getFormattedDate } from 'utils/string';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
@@ -46,8 +48,8 @@ class AppBar extends Component {
 		isDisplayLanguagePopup: false,
 		isTopbarAnnouncement: false,
 		isPopupAnnouncement: false,
-		isDropdownAnnouncement: false,
-		selectedAnnouncement: [],
+		selectedPopupAnnouncement: {},
+		selectedTopbarAnnouncement: {},
 	};
 
 	componentDidMount() {
@@ -60,42 +62,59 @@ class AppBar extends Component {
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
-		this.setState({
-			title: document?.title ? document?.title : '',
-		});
 
-		const filteredAnnouncementDetails = getAnnouncementDetails
+		const getPopupId = JSON.parse(localStorage.getItem('announcementPopup'));
+		if (!getPopupId) {
+			localStorage.setItem('announcementPopup', JSON.stringify([]));
+		}
+		const isPopup = getPopupId || [];
+
+		const filteredPopupAnnouncementDetails = getAnnouncementDetails
 			?.filter((data) => data?.is_popup)
 			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-		const announcementDetail =
-			filteredAnnouncementDetails && filteredAnnouncementDetails[0];
+		const filteredTopbarAnnouncementDetails = getAnnouncementDetails
+			?.filter((data) => data?.is_navbar)
+			?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-		const topAnnouncementDetail =
-			announcementDetail && announcementDetail?.is_navbar;
+		const filteredAnnouncements = filteredPopupAnnouncementDetails?.filter(
+			(data) => !isPopup?.includes(data?.id)
+		);
+
+		const popupAnnouncementDetail =
+			filteredPopupAnnouncementDetails && filteredAnnouncements[0];
+
+		const topbarAnnouncementDetail =
+			filteredTopbarAnnouncementDetails && filteredTopbarAnnouncementDetails[0];
 
 		const isDisplayPopup =
-			!announcementDetail?.start_date && !announcementDetail?.end_date
-				? announcementDetail?.is_popup
-				: announcementDetail?.is_popup &&
-				  this.isTodayBetweenDates(
-						announcementDetail?.start_date,
-						announcementDetail?.end_date
-				  );
+			popupAnnouncementDetail?.is_popup &&
+			((!popupAnnouncementDetail.start_date &&
+				!popupAnnouncementDetail.end_date) ||
+				this.isTodayBetweenDates(
+					popupAnnouncementDetail.start_date,
+					popupAnnouncementDetail.end_date
+				));
 
-		const dropdownAnnouncementDetail =
-			filteredAnnouncementDetails &&
-			filteredAnnouncementDetails[0]?.is_dropdown;
+		const isDisplayTopbar =
+			topbarAnnouncementDetail?.is_navbar &&
+			((!topbarAnnouncementDetail.start_date &&
+				!topbarAnnouncementDetail.end_date) ||
+				this.isTodayBetweenDates(
+					topbarAnnouncementDetail.start_date,
+					topbarAnnouncementDetail.end_date
+				));
 
 		this.setState({
-			selectedAnnouncement: filteredAnnouncementDetails[0],
+			selectedPopupAnnouncement: filteredAnnouncements[0],
+			selectedTopbarAnnouncement: filteredTopbarAnnouncementDetails[0],
 		});
 
 		if (isLoggedIn()) {
 			this.setState({
-				isTopbarAnnouncement: topAnnouncementDetail,
-				isDropdownAnnouncement: dropdownAnnouncementDetail,
-				isPopupAnnouncement: isDisplayPopup,
+				isTopbarAnnouncement: isDisplayTopbar,
+				isPopupAnnouncement:
+					!isPopup.includes(filteredAnnouncements[0]?.id) && isDisplayPopup,
 			});
 		}
 	}
@@ -115,25 +134,8 @@ class AppBar extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const { pair, pairs, lastPrice, isProTrade, isQuickTrade } = this.props;
-		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
-		const price = formatToFixed(lastPrice, increment_price);
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
-		}
-		if (isProTrade) {
-			document.title = `${price} | ${pair?.toUpperCase()} | HollaEx Pro`;
-		} else if (isQuickTrade) {
-			const pairData = pair.split('-');
-			const firstAsset = pairData[0];
-			const secondAsset = pairData[1];
-			document.title = `${
-				STRINGS['CONVERT']
-			} ${firstAsset?.toUpperCase()} ${STRINGS[
-				'TO'
-			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | HollaEx Pro`;
-		} else {
-			document.title = this.state.title;
 		}
 	}
 
@@ -191,12 +193,21 @@ class AppBar extends Component {
 		this.setState({ walletPending: walletPending ? 1 : 0 });
 	};
 
+	updateUrlAndTheme = (theme) => {
+		const { router, changeTheme } = this.props;
+		const params = new URLSearchParams(window.location.search);
+		params.set('theme', theme);
+		const currentUrl = window.location.href.split('?')[0];
+		const newUrl = `${currentUrl}?${params.toString()}`;
+		router.replace(newUrl);
+		changeTheme(theme);
+		localStorage.setItem('theme', theme);
+	};
+
 	handleTheme = (selected) => {
 		const { isEditMode, themeOptions } = this.props;
-		const params = new URLSearchParams(window.location.search);
 		if (!isLoggedIn() || isEditMode) {
-			this.props.changeTheme(selected);
-			localStorage.setItem('theme', selected);
+			this.updateUrlAndTheme(selected);
 		} else {
 			const { settings = { interface: {} } } = this.props.user;
 			const settingsObj = { interface: { ...settings.interface } };
@@ -208,12 +219,7 @@ class AppBar extends Component {
 				.then(({ data }) => {
 					this.props.setUserData(data);
 					if (data.settings && data.settings.interface) {
-						params.set('theme', data.settings.interface.theme);
-						const currentUrl = window.location.href.split('?')[0];
-						const newUrl = `${currentUrl}?${params.toString()}`;
-						this.props.router.replace(newUrl);
-						this.props.changeTheme(data.settings.interface.theme);
-						localStorage.setItem('theme', data.settings.interface.theme);
+						this.updateUrlAndTheme(data.settings.interface.theme);
 					}
 				})
 				.catch((err) => {
@@ -331,16 +337,35 @@ class AppBar extends Component {
 			setIsActiveSelectedAnnouncement,
 			router,
 		} = this.props;
-		const { selectedAnnouncement } = this.state;
+		const {
+			selectedPopupAnnouncement,
+			selectedTopbarAnnouncement,
+		} = this.state;
 
-		if (text === 'topbar view more' || text === 'popup') {
-			setSelectedAnnouncement(selectedAnnouncement);
+		const storedAnnouncements =
+			JSON.parse(localStorage.getItem('announcementPopup')) || [];
+
+		if (text === 'topbar view more') {
+			setSelectedAnnouncement(selectedTopbarAnnouncement);
 			setIsActiveSelectedAnnouncement(true);
+			this.setState({
+				isTopbarAnnouncement: false,
+			});
 		}
 		if (text === 'popup') {
+			setSelectedAnnouncement(selectedPopupAnnouncement);
+			setIsActiveSelectedAnnouncement(true);
 			this.setState({
 				isPopupAnnouncement: false,
 			});
+
+			if (!storedAnnouncements?.includes(selectedPopupAnnouncement?.id)) {
+				storedAnnouncements.push(selectedPopupAnnouncement?.id);
+				localStorage.setItem(
+					'announcementPopup',
+					JSON.stringify(storedAnnouncements)
+				);
+			}
 		}
 		if (text === 'topbar announcements') {
 			setIsActiveSelectedAnnouncement(false);
@@ -349,25 +374,29 @@ class AppBar extends Component {
 	};
 
 	renderAnnouncementPopup = () => {
-		const { icons, router, constants } = this.props;
-		const { selectedAnnouncement } = this.state;
+		const { icons, constants } = this.props;
+		const { selectedPopupAnnouncement } = this.state;
+
+		const onHandleClose = () => {
+			this.setState({
+				isPopupAnnouncement: false,
+			});
+		};
 
 		return (
 			<Dialog
 				isOpen={
-					this.state.isPopupAnnouncement && constants?.features?.announcement
+					!!this.state.isPopupAnnouncement &&
+					!!constants?.features?.announcement
 				}
-				onCloseDialog={() =>
-					this.setState({
-						isPopupAnnouncement: false,
-					})
-				}
+				onCloseDialog={() => onHandleClose()}
 				shouldCloseOnOverlayClick={false}
 				className={
 					isMobile
 						? 'announcement-popup-wrapper announcement-popup-mobile-wrapper'
 						: 'announcement-popup-wrapper'
 				}
+				label="announcement-popup"
 			>
 				<div className="announcement-popup-container">
 					<EditWrapper stringId="ANNOUNCEMENT_TAB.ANNOUNCEMENT_TITLE">
@@ -381,13 +410,13 @@ class AppBar extends Component {
 							wrapperClassName="announcement-icon"
 						/>
 						<span className="text-white font-weight-bold exchange-update-title">
-							{selectedAnnouncement?.title}
+							{selectedPopupAnnouncement?.title}
 						</span>
 						<span className="announcement-date secondary-text">
-							({getFormattedDate(selectedAnnouncement?.created_at)})
+							({getFormattedDate(selectedPopupAnnouncement?.created_at)})
 						</span>
 					</div>
-					{renderAnnouncementMessage(selectedAnnouncement?.message, 120)}
+					{renderAnnouncementMessage(selectedPopupAnnouncement?.message, 120)}
 					<span
 						className="blue-link text-decoration-underline pointer"
 						onClick={() => {
@@ -400,28 +429,58 @@ class AppBar extends Component {
 						<Button
 							label={STRINGS['CLOSE_TEXT']?.toUpperCase()}
 							className="back-btn mt-3"
-							onClick={() =>
-								this.setState({
-									isPopupAnnouncement: false,
-								})
-							}
+							onClick={() => onHandleClose()}
 						/>
 						<Button
-							label={STRINGS[
-								'ANNOUNCEMENT_TAB.VIEW_ALL_ANNOUNCEMENT'
-							]?.toUpperCase()}
+							label={STRINGS['VIEW']?.toUpperCase()}
 							className="back-btn mt-3"
-							onClick={() => {
-								router.push('/announcement');
-								this.setState({
-									isPopupAnnouncement: false,
-								});
-							}}
+							onClick={() => this.onHandleRouteAnnouncement('popup')}
 						/>
 					</div>
 				</div>
 			</Dialog>
 		);
+	};
+
+	renderAnnouncementTopbar = () => {
+		const { icons } = this.props;
+		const { selectedTopbarAnnouncement } = this.state;
+		return (
+			<div className="app_bar announcement-top-bar">
+				<Image
+					icon={icons['ANNOUNCEMENT_ICON']}
+					wrapperClassName="h-100 announcement-icon"
+				/>
+				<span className="announcement-title">
+					{selectedTopbarAnnouncement?.title}
+				</span>
+				{renderAnnouncementMessage(
+					renderRemoveEmptyTag(selectedTopbarAnnouncement?.message),
+					isMobile ? 35 : 70
+				)}
+				<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
+					<span
+						className="view-more-btn blue-link text-decoration-underline"
+						onClick={() => this.onHandleRouteAnnouncement('topbar view more')}
+					>
+						{STRINGS['REFERRAL_LINK.VIEW']?.toUpperCase()}
+					</span>
+				</EditWrapper>
+				<CloseCircleOutlined
+					className="close-icon"
+					onClick={() =>
+						this.setState({
+							isTopbarAnnouncement: false,
+						})
+					}
+				/>
+			</div>
+		);
+	};
+
+	onHandleNavigate = () => {
+		const { router } = this.props;
+		return isLoggedIn() ? router.push('/summary') : router.push('/login');
 	};
 
 	render() {
@@ -449,209 +508,222 @@ class AppBar extends Component {
 			// walletPending,
 			selected,
 			isTopbarAnnouncement,
-			isDropdownAnnouncement,
-			selectedAnnouncement,
 		} = this.state;
 		const languageFormValue = generateLanguageFormValues(valid_languages)
 			?.language?.options;
-		return isHome ? (
-			<div className="home_app_bar d-flex justify-content-between align-items-center">
-				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
-					{this.renderHomeIcon()}
-				</div>
-				<div className="mr-2">
-					{isLoggedIn()
-						? this.renderAccountButton()
-						: this.renderButtonSection()}
-				</div>
-			</div>
-		) : isMobile ? (
-			<MobileBarWrapper
-				className={classnames(
-					'd-flex',
-					'app_bar-mobile',
-					'align-items-center',
-					'justify-content-center'
-				)}
-			>
-				<Link to="/">
-					<div
-						style={{
-							backgroundImage: `url(${constants.logo_image})`,
-						}}
-						className="homeicon-svg"
+		return (
+			<>
+				{this.state?.isDisplayLanguagePopup && (
+					<LanguageDisplayPopup
+						selected={activeLanguage}
+						valid_languages={valid_languages}
+						changeLanguage={changeLanguage}
+						isVisible={this.state?.isDisplayLanguagePopup}
+						onHandleClose={this.onHandleClose}
+						selectable_native_currencies={selectable_native_currencies}
+						setUserData={setUserData}
+						user={user}
+						coins={coins}
 					/>
-				</Link>
-				{isLoggedIn() && this.renderAnnouncementPopup()}
-			</MobileBarWrapper>
-		) : (
-			<div>
-				{isTopbarAnnouncement &&
-					constants?.features?.announcement &&
-					isLoggedIn() && (
-						<div className="app_bar announcement-top-bar">
-							<Image
-								icon={icons['ANNOUNCEMENT_ICON']}
-								wrapperClassName="h-100"
-							/>
-							<span className="announcement-title">
-								{selectedAnnouncement?.title}
-							</span>
-							{renderAnnouncementMessage(selectedAnnouncement?.message, 75)}
-							<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
-								<span
-									className="view-more-btn blue-link text-decoration-underline"
-									onClick={() =>
-										this.onHandleRouteAnnouncement('topbar view more')
-									}
-								>
-									{STRINGS['REFERRAL_LINK.VIEW']}
-								</span>
-							</EditWrapper>
-							<CloseCircleOutlined
-								className="close-icon"
-								onClick={() =>
-									this.setState({
-										isTopbarAnnouncement: false,
-									})
-								}
-							/>
-						</div>
-					)}
-				<div
-					className={classnames('app_bar d-flex justify-content-between', {
-						'no-borders': false,
-					})}
-				>
-					<div className="d-flex align-items-center">
-						<div
-							id="home-nav-container"
-							className="d-flex align-items-center justify-content-center h-100"
+				)}
+				{isMobile ? (
+					<div className="d-flex flex-column app-mobile-bar-wrapper">
+						{isTopbarAnnouncement &&
+							constants?.features?.announcement &&
+							isLoggedIn() &&
+							this.renderAnnouncementTopbar()}
+						<MobileBarWrapper
+							className={classnames(
+								'd-flex',
+								'app_bar-mobile',
+								'align-items-center',
+								!isHome
+									? 'justify-content-center'
+									: 'justify-content-between px-4'
+							)}
 						>
-							{this.renderIcon()}
-						</div>
-
-						<Fragment>{children}</Fragment>
-					</div>
-					{!isLoggedIn() && (
-						<div id="trade-nav-container" className="mx-2">
-							{languageFormValue
-								?.filter(({ value }) => value === activeLanguage)
-								?.map(({ value, icon, label }) => (
+							<Link to="/">
+								<div
+									style={{
+										backgroundImage: `url(${constants.logo_image})`,
+									}}
+									className="homeicon-svg"
+								/>
+							</Link>
+							{isHome && (
+								<div className="app-navbar-wrapper">
+									{languageFormValue
+										?.filter(({ value }) => value === activeLanguage)
+										?.map(({ value, icon, label }, index) => (
+											<div
+												key={index}
+												className="language_option"
+												onClick={() => this.onHandleOpenPopup()}
+											>
+												<Image
+													icon={icon}
+													alt={label}
+													wrapperClassName="flag-icon mr-2"
+												/>
+												<span className="caps text-nowrap">
+													{value}
+													{user?.settings?.interface?.display_currency && (
+														<span>
+															/{user?.settings?.interface?.display_currency}
+														</span>
+													)}
+												</span>
+											</div>
+										))}
 									<div
-										className="language_option"
-										onClick={() => this.onHandleOpenPopup()}
+										className={
+											isHome ? 'login-container ml-3' : 'login-container'
+										}
+										onClick={() => this.onHandleNavigate()}
+									>
+										<EditWrapper
+											stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+										>
+											{!isLoggedIn()
+												? STRINGS['LOGIN_TEXT'].toUpperCase()
+												: STRINGS['ACCOUNT_TEXT']}
+										</EditWrapper>
+									</div>
+								</div>
+							)}
+						</MobileBarWrapper>
+						{isLoggedIn() && this.renderAnnouncementPopup()}
+					</div>
+				) : (
+					<div>
+						{isTopbarAnnouncement &&
+							constants?.features?.announcement &&
+							isLoggedIn() &&
+							this.renderAnnouncementTopbar()}
+						<div
+							className={classnames('app_bar d-flex justify-content-between', {
+								'no-borders': false,
+							})}
+						>
+							<div className="d-flex align-items-center">
+								<div
+									id="home-nav-container"
+									className="d-flex align-items-center justify-content-center h-100"
+								>
+									{this.renderIcon()}
+								</div>
+
+								<Fragment>{children}</Fragment>
+							</div>
+							{!isLoggedIn() && (
+								<div id="trade-nav-container" className="mx-2">
+									{languageFormValue
+										?.filter(({ value }) => value === activeLanguage)
+										?.map(({ value, icon, label }, index) => (
+											<div
+												key={index}
+												className="language_option"
+												onClick={() => this.onHandleOpenPopup()}
+											>
+												<Image
+													icon={icon}
+													alt={label}
+													wrapperClassName="flag-icon mr-2"
+												/>
+												<span className="caps text-nowrap">
+													{value}
+													{user?.settings?.interface?.display_currency && (
+														<span>
+															/{user?.settings?.interface?.display_currency}
+														</span>
+													)}
+												</span>
+											</div>
+										))}
+									{!isHome && (
+										<ThemeSwitcher
+											selected={selected}
+											options={themeOptions}
+											toggle={this.onToggle}
+										/>
+									)}
+									<div
+										className={
+											isHome ? 'login-container ml-3' : 'login-container'
+										}
+										onClick={() => router.push('/login')}
+									>
+										{STRINGS['LOGIN_TEXT'].toUpperCase()}
+									</div>
+									<div
+										className={
+											activePath === '/details'
+												? 'active-menu app-bar-search-icon mx-3'
+												: 'app-bar-search-icon mx-3'
+										}
+										onClick={() => onMenuChange('/details')}
+									>
+										<SearchOutlined />
+									</div>
+								</div>
+							)}
+							{isLoggedIn() && (
+								<div
+									id="trade-nav-container"
+									className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
+								>
+									{this.renderAnnouncementPopup()}
+									<div
+										className="app-bar-deposit-btn d-flex"
+										onClick={this.onHandleDeposit}
 									>
 										<Image
-											icon={icon}
-											alt={label}
-											wrapperClassName="flag-icon mr-2"
+											iconId={'DEPOSIT_TITLE'}
+											icon={icons['DEPOSIT_TITLE']}
+											wrapperClassName="form_currency-ball margin-aligner"
 										/>
-										<span className="caps">
-											{value}
-											{user?.settings?.interface?.display_currency && (
-												<span>
-													{' '}
-													/ {user?.settings?.interface?.display_currency}
-												</span>
-											)}
+										<span className="ml-2">
+											{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}
 										</span>
 									</div>
-								))}
-							{this.state?.isDisplayLanguagePopup && (
-								<LanguageDisplayPopup
-									selected={activeLanguage}
-									valid_languages={valid_languages}
-									changeLanguage={changeLanguage}
-									isVisible={this.state?.isDisplayLanguagePopup}
-									onHandleClose={this.onHandleClose}
-									selectable_native_currencies={selectable_native_currencies}
-									setUserData={setUserData}
-									user={user}
-									coins={coins}
-								/>
-							)}
-							<ThemeSwitcher
-								selected={selected}
-								options={themeOptions}
-								toggle={this.onToggle}
-							/>
-							<div
-								className="login-container"
-								onClick={() => router.push('/login')}
-							>
-								{STRINGS['LOGIN_TEXT'].toUpperCase()}
-							</div>
-						</div>
-					)}
-					{isLoggedIn() && (
-						<div
-							id="trade-nav-container"
-							className="d-flex app-bar-account justify-content-end trade-navbar-wrapper"
-						>
-							{this.renderAnnouncementPopup()}
-							<div
-								className="app-bar-deposit-btn d-flex"
-								onClick={this.onHandleDeposit}
-							>
-								<Image
-									iconId={'DEPOSIT_TITLE'}
-									icon={icons['DEPOSIT_TITLE']}
-									wrapperClassName="form_currency-ball margin-aligner"
-								/>
-								<span className="ml-2">
-									{STRINGS['ACCORDIAN.DEPOSIT_LABEL']}
-								</span>
-							</div>
-							<div className="d-flex app_bar-quicktrade-container language-content">
-								{languageFormValue
-									?.filter(({ value }) => value === activeLanguage)
-									?.map(({ value, icon, label }) => (
-										<div
-											key={value}
-											className="language_option"
-											onClick={() => this.onHandleOpenPopup()}
-										>
-											<Image
-												icon={icon}
-												alt={label}
-												wrapperClassName="flag-icon mr-2"
-											/>
-											<span className="caps">
-												{value}
-												{user?.settings?.interface?.display_currency && (
-													<span>
-														/{user?.settings?.interface?.display_currency}
+									<div className="d-flex app_bar-quicktrade-container language-content">
+										{languageFormValue
+											?.filter(({ value }) => value === activeLanguage)
+											?.map(({ value, icon, label }) => (
+												<div
+													key={value}
+													className="language_option"
+													onClick={() => this.onHandleOpenPopup()}
+												>
+													<Image
+														icon={icon}
+														alt={label}
+														wrapperClassName="flag-icon mr-2"
+													/>
+													<span className="caps text-nowrap">
+														{value}
+														{user?.settings?.interface?.display_currency && (
+															<span>
+																/{user?.settings?.interface?.display_currency}
+															</span>
+														)}
 													</span>
-												)}
-											</span>
+												</div>
+											))}
+									</div>
+									{!isHome && (
+										<div className="d-flex app_bar-quicktrade-container">
+											<ThemeSwitcher
+												selected={selected}
+												options={themeOptions}
+												toggle={this.onToggle}
+											/>
 										</div>
-									))}
-								{this.state.isDisplayLanguagePopup && (
-									<LanguageDisplayPopup
-										selected={activeLanguage}
-										valid_languages={valid_languages}
-										changeLanguage={changeLanguage}
-										isVisible={this.state.isDisplayLanguagePopup}
-										onHandleClose={this.onHandleClose}
-										selectable_native_currencies={selectable_native_currencies}
-										setUserData={setUserData}
-										user={user}
-										coins={coins}
-									/>
-								)}
-							</div>
-							<div className="d-flex app_bar-quicktrade-container">
-								<ThemeSwitcher
-									selected={selected}
-									options={themeOptions}
-									toggle={this.onToggle}
-								/>
-							</div>
-							{isDropdownAnnouncement && constants?.features?.announcement && (
-								<AnnouncementList user={user.email} />
-							)}
-							{/* <MenuList
+									)}
+									{constants?.features?.announcement && (
+										<AnnouncementList user={user.email} />
+									)}
+									{/* <MenuList
 							menuItems={menuItems}
 							securityPending={securityPending}
 							verificationPending={verificationPending}
@@ -660,26 +732,28 @@ class AppBar extends Component {
 							activePath={activePath}
 							onMenuChange={onMenuChange}
 						/> */}
-							<AccountTab
-								user={user}
-								securityPending={securityPending}
-								verificationPending={verificationPending}
-							/>
-							<Connections />
-							<div
-								className={
-									activePath === '/details'
-										? 'active-menu app-bar-search-icon'
-										: 'app-bar-search-icon'
-								}
-								onClick={() => onMenuChange('/details')}
-							>
-								<SearchOutlined />
-							</div>
+									<AccountTab
+										user={user}
+										securityPending={securityPending}
+										verificationPending={verificationPending}
+									/>
+									<Connections />
+									<div
+										className={
+											activePath === '/details'
+												? 'active-menu app-bar-search-icon'
+												: 'app-bar-search-icon'
+										}
+										onClick={() => onMenuChange('/details')}
+									>
+										<SearchOutlined />
+									</div>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
-			</div>
+					</div>
+				)}
+			</>
 		);
 	}
 }
@@ -689,16 +763,12 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		theme: state.app.theme,
 		pair: state.app.pair,
-		pairs: state.app.pairs,
 		coins: state.app.coins,
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
 		selectable_native_currencies:
 			state.app.constants.selectable_native_currencies,
-		lastPrice: marketPriceSelector(state),
-		isProTrade: state.app.isProTrade,
-		isQuickTrade: state.app.isQuickTrade,
 		getAnnouncementDetails: state.app.announcements,
 	};
 };

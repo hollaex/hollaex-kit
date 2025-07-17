@@ -108,6 +108,7 @@ const Form = ({
 				text={STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
 				textType="title"
 				iconPath={ICONS['SETTING_AUDIO_ICON']}
+				iconId="SETTING_AUDIO_ICON"
 			/>
 			<div className="pr-4">
 				{renderFields(formFields, callback)}
@@ -155,7 +156,7 @@ class AudioCueForm extends Component {
 	}
 
 	callback = (selected) => {
-		setTimeout(
+		this.formFieldData = setTimeout(
 			() =>
 				this.setState(({ formFields: prevFormFields }) => {
 					const formFields = { ...prevFormFields };
@@ -169,6 +170,12 @@ class AudioCueForm extends Component {
 			1
 		);
 	};
+
+	componentWillUnmount() {
+		if (this.formFieldData) {
+			clearTimeout(this.formFieldData);
+		}
+	}
 
 	render() {
 		return (

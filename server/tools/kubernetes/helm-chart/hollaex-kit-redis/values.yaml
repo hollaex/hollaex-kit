@@ -8,7 +8,7 @@ NodePort:
 nodeSelector: {}
 
 imageRegistry: redis
-dockerTag: 7.2.0-alpine
+dockerTag: 8.0.2-alpine
 
 setAuth:
   secretName: hollaex-kit-secret

@@ -1,7 +1,8 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
+	"LOGOUT_CONFIRM_TEXT": "You're about to sign out. Are you sure?",
+	"SIGN_OUT_TEXT": "Sign Out",
 	"ADD_TRADING_PAIR": "Select a market",
 	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0}",
@@ -41,7 +42,7 @@
 	"PROCEED": "PROCEED",
 	"EDIT_TEXT": "Edit",
 	"BACK_TEXT": "Back",
-	"NO_OPTIONS": "No options availables",
+	"NO_OPTIONS": "No options available",
 	"SECONDS": "seconds",
 	"SECOND": "second",
 	"VIEW_MARKET": "view markets",
@@ -58,10 +59,33 @@
 	"VIEW_PRICES": "View Prices",
 	"VIEW_MY_WALLET": "View my Wallet",
 	"HOME": {
-		"MAIN_TITLE": "Cryptocurrency trading exchange",
-		"MAIN_TEXT": "Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.",
-		"TRADE_CRYPTO": "Start trading",
-		"VIEW_EXCHANGE": "View exchange"
+		"MAIN_TITLE": "Cryptocurrency Trading, Simplified.",
+		"MAIN_TEXT": "Buy Bitcoin, Ethereum & other cryptocurrencies easily.",
+		"TRADE_CRYPTO": "START TRADING",
+		"VIEW_EXCHANGE": "View exchange",
+		"EMAIL_TEXT": "Your Email",
+		"GOT_QUESTION_TEXT": "Got a Question?",
+		"GOT_ANSWER_TEXT": "We’ve got the answer.",
+		"QUESTION_1": "What products are provided?",
+		"ANSWER_1": "Crypto trading tools, wallet coin storage, market price tracking and much more.",
+		"QUESTION_2": "How do I buy crypto?",
+		"ANSWER_2": "Simply input the coin's name to buy and the amount.",
+		"QUESTION_3": "What are cryptocurrencies?",
+		"ANSWER_3": "Cryptos are a type of currency that can be traded and even used for spending, or investing.",
+		"CREATE_ACCOUNT_DESC": "Your Global Crypto Journey Starts Here!",
+		"MINI_QUICKTRADE": "Convert over 200 cryptocurrencies easily",
+		"MINI_QUICKTRADE_DESC": "Try it below. Straightforward global crypto conversions.",
+		"MORE": "More",
+		"WHY_US": "Why Us?",
+		"CARD_DESC": "Built for accessibility, speed, and global reach — here’s why you should trade crypto with us.",
+		"ACCOUNT_FUNDING_TITLE": "Easy Account Funding",
+		"ACCOUNT_FUNDING_DESC": "Deposit in seconds & start investing in the fastest growing asset class.",
+		"TRADE_TITLE": "Trade Without Borders",
+		"TRADE_DESC": "Access the world’s top crypto market right from your browser or phone 24/7.",
+		"API_TITLE": "Open API for Builders",
+		"API_DESC": "Connect, automate trading, and grow with our developer-friendly API.",
+		"LIVE_TRADE_TITLE": "Clear, Live Pricing",
+		"LIVE_TRADE_DESC": "Get transparent, up-to-the-second pricing across all major trading pairs."
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -231,7 +255,13 @@
 		"COIN_NAME": "{0} ({1})",
 		"COIN_INFORMATION": "{0} information",
 		"PRICE_TREND": "Price Trend",
-		"VIEW_TREND": "View Trend"
+		"VIEW_TREND": "View Trend",
+		"HIGH_SLIPPAGE_DETECTED": " High Slippage Detected",
+		"HIGH_SLIPPAGE_DESC_1": "You may receive less than expected.",
+		"HIGH_SLIPPAGE_DESC_2": "Slippage occurs due to low liquidity, large order size or high volatility.",
+		"CONTINUE_TEXT": "Do you want to continue?",
+		"REVIEW_ORDER": "Review Order",
+		"SLIPPAGE_WARNING_TEXT": "This conversion has slippage price risk."
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -510,7 +540,9 @@
 		"NOTIFICATION_FORM": {
 			"POPUP_ORDER_CONFIRMATION": "Ask for confirmation before submitting orders",
 			"POPUP_ORDER_COMPLETED": "Show pop up when order has been completed",
-			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled"
+			"POPUP_ORDER_PARTIALLY_FILLED": "Show pop up when order has partially filled",
+			"POPUP_NEW_ORDER_CREATED": "Show pop up when a new order has been placed",
+			"POPUP_ORDER_CANCELLED": "Show pop up when canceling orders"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "All Audio cues",
@@ -734,8 +766,8 @@
 		"MODAL_TITLE": "Stake and earn {0}",
 		"REVIEW_MODAL_TITLE": "Check and confirm stake",
 		"AVAILABLE_TOKEN": "{0} ({1}) available to stake: {2}",
-		"DEFI_TITLE": "DeFi asset staking",
-		"DEFI_TEXT": "Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
+		"DEFI_TITLE": "Defi asset staking",
+		"DEFI_TEXT": "Staking Defi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.",
 		"GET_STAKES": "Get stakes",
 		"CURRENT_ETH_BLOCK": "Current ETH block: {0}",
 		"ON_EXCHANGE_XHT": "On exchange {0} balance: {1} {2}",
@@ -807,8 +839,8 @@
 		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"EARN_REWARD": "Earn rewards for staking your digital assets",
-		"DEFI_STAKING": "DeFi Staking",
-		"CEFI_STAKING": "CeFi Staking",
+		"DEFI_STAKING": "Defi Staking",
+		"CEFI_STAKING": "Cefi Staking",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
 			"1": {
@@ -905,7 +937,7 @@
 		}
 	},
 	"CEFI_STAKE": {
-		"STAKE_POOL_TITLE": "Local CeFi Staking Pools",
+		"STAKE_POOL_TITLE": "Local Cefi Staking Pools",
 		"INTRODUCTION_1": "Earn rewards on assets you have stored in your local exchange wallet. Simply, click 'STAKE', input the amount you'd like to stake and start earning.",
 		"CURRENT_STAKING_VALUE": "Current staking value",
 		"DURATION_LABEL": "Duration",
@@ -1079,6 +1111,7 @@
 	"WITHDRAWALS_FORM_NETWORK_LABEL": "Network",
 	"DEPOSIT_FORM_NETWORK_WARNING": "Make sure the network selected is compatible with the senders wallets network",
 	"DEPOSIT_FORM_MIN_WARNING": "Only deposits of {0} {1} or more will be accepted. Any deposits below this minimum threshold will result in a permanent loss of funds.",
+	"DEPOSIT_FORM_FEE_WARNING": " Deposit fee: {0} {1}. This fee is applied to your deposit automatically.",
 	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "Enter both Address and Tag, which are required to deposit into your account successfully.",
 	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "None",
 	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "Destination tag: {0}",
@@ -1150,6 +1183,29 @@
 		"MIN_AMOUNT_WARNING_INFO": "The minimum withdrawal amount is {0}",
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
+	},
+	"LOGIN_CONFIRMATION": {
+		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
+		"FREEZE_CONFIRM_FINAL": "Freeze your account",
+		"LOGIN_CONFIRM_WARNING": "To login to your account please click the confirmation button below so that we know it is you.",
+		"FREEZE_CONFIRM_WARNING": "When frozen, your account is completely locked and protected from all access, including your own. You can easily restore access later by reaching out to our support team.",
+		"LOGIN_CANCEL_BUTTON": "CLOSE",
+		"LOGIN_CONFIRM_BUTTON": "Confirm Login",
+		"FREEZE_CONFIRM_BUTTON": "YES, FREEZE MY ACCOUNT",
+		"LOGIN_INPUT_CODE": "please input the code",
+		"LOGIN_CONFIRM_SUCCESS_1": "Your email has been verified.",
+		"FREEZE_CONFIRM_SUCCESS_1": "Your account is now locked, and withdrawals are temporarily disabled.",
+		"FREEZE_CONFIRM_SUCCESS_2": "Contact us anytime to restore your access.",
+		"LOGIN_CONFIRM_SUCCESS_2": "Please log back in to access your account.",
+		"GO_LOGIN_HISTORY": "Go To Login Page",
+		"ACCOUNT_FROZEN": "Account Frozen",
+		"CONFIRM_FREEZE_TITLE": "Confirm Freeze",
+		"CONFIRM_WARNING_FREEZE_DESC": "Are you sure you want to freeze your account?",
+		"ACCOUNT_CONFIRMED": "Account Confirmed",
+		"EMAIL_CONFIRMATION": "Email Confirmation Required",
+		"EMAIL_CONFIRMATION_DESC_1": "We sent you an email with a confirmation button.",
+		"EMAIL_CONFIRMATION_DESC_2": "Please click it {0} to proceed.",
+		"EMAIL_TEXT": "in your email"
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
@@ -1491,7 +1547,9 @@
 		"INSUFFICIENT_INFO_1": "Your earnings are currently insufficient for settlement. Please invite more members using your referral link and wait until your unsettled earnings {0} {1}",
 		"INSUFFICIENT_INFO_2": "exceed 1",
 		"GO_TO_REFERRAL": "Go To Referral",
-		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading"
+		"REFER_DESC": "Share a link below with friends to Start earning commissions on their trading",
+		"SUCCESSFULLY_SETTLED": "Successfully Settled",
+		"SETTLE_AMOUNT": "You've successfully settled the amount of {0} {1}"
 	},
 	"NOT_LOGGEDIN": {
 		"TEXT_GENERAL": "To view you must login",
@@ -1614,7 +1672,7 @@
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {
 		"TITLE": "Connect via desktop",
-		"SUBTITLE": "DeFi staking through your mobile devices aren't supported at this time.",
+		"SUBTITLE": "Defi staking through your mobile devices aren't supported at this time.",
 		"TEXT": "To connect your wallet please use a desktop/laptop computer."
 	},
 	"ORDER_HISTORY_CLOSED": "Closed",
@@ -1748,7 +1806,8 @@
 		"VIEW_BALANCE_HISTORY": "VIEW BALANCE HISTORY",
 		"VIEW_PERCENTAGE_SHARE": "VIEW PERCENTAGE SHARE",
 		"VIEW_WALLET_P&L": "VIEW WALLET P&L",
-		"BALANCE_PERCENTAGE": "Balance Percentage"
+		"BALANCE_PERCENTAGE": "Balance Percentage",
+		"COMPARE_DATES": "Compare Dates"
 	},
 	"ADDRESS_BOOK": {
 		"ADDRESS_BOOK_LABEL": "Address book",
@@ -1806,7 +1865,8 @@
 			"LOSERS": "Losers",
 			"MARKET_CAP": "Market Cap",
 			"24H": "{0} 24H"
-		}
+		},
+		"BACK_TO_TOP": "Back to top"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
@@ -1863,6 +1923,7 @@
 		"TO_GET_ACCESS": "To get access reach out to"
 	},
 	"FEES_AND_LIMITS": {
+		"RETURN_TO_TOP": "Return to Top",
 		"LINK": "view my fees and limits",
 		"COIN_PAGE_LINK": "Trading fees & limits",
 		"BACK": {
@@ -2524,7 +2585,12 @@
 			"SET_BUY_ORDER": "Set Buy Order",
 			"SETUP_ORDER": "Setup Order",
 			"BUY_AUTOMATICALLY": "Buy Automatically",
-			"DCA": "DCA"
+			"DCA": "DCA",
+			"TIERS": "Tiers",
+			"UPGRADE": "Upgrade",
+			"DETAILS": "Details",
+			"FRIENDS": "Friends",
+			"TRADER": "Trader"
 		}
 	},
 	"CONNECTIONS": {
@@ -2546,6 +2612,7 @@
 		"RECHECK_PING": "RECHECK PING",
 		"FAST": "Fast",
 		"SLOW": "Slow",
+		"VERY_SLOW": "Very Slow",
 		"MS": "{0} ms",
 		"STATUS_NORMAL": "Connection Normal",
 		"CONNECTION_LABEL": "Connection",
@@ -2581,7 +2648,8 @@
 		"TRANSACTION_DESC": "Review all trades, deposits & withdrawals",
 		"ONRAMPER_DESC": "Use Onramper to buy and sell crypto",
 		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions",
-		"ANNOUNCEMENT_DESC": "Updates, listings and other news"
+		"ANNOUNCEMENT_DESC": "Updates, listings and other news",
+		"WALLET_DESCRIPTION": "View your wallet asset and balances"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Find Functions, Coins, and More",
@@ -2644,7 +2712,7 @@
 		"MONTHLY": "Monthly",
 		"TIME_ZONE": "Time zone:",
 		"DAILY_TRADE_TITLE": "Start time of trading",
-		"DAILY_TRADE_TOOLTIP_DESC": "Time that your recurring transaction will start repeating",
+		"DAILY_TRADE_TOOLTIP_DESC": "Time that your recurring transaction will start repeating (0-23 hours)",
 		"WEEKLY_TRADE_TITLE": "Trade Days",
 		"WEEKLY_TRADE_TOOLTIP_DESC": "Amount that will be spent",
 		"TRADE_TIME": "Trade Time",
@@ -2655,8 +2723,9 @@
 		"FRIDAY": "Fr.",
 		"SATURDAY": "Sa.",
 		"SUNDAY": "Su.",
+		"SELECT_DAY": "Select Day",
 		"MONTHLY_TRADE_TITLE": "Set Day-Date",
-		"MONTHLY_TRADE_TOOLTIP_DESC": "The day your trade will automatically execute each month",
+		"MONTHLY_TRADE_TOOLTIP_DESC": "The day your trade will automatically execute each month (Day 1-{0})",
 		"DESCTIPTION_TEXT": "Add a clear description for this scheduled transaction.",
 		"DESCRIPTION_PLACEHOLDER": "Describe this recurring order (strategy, source, etc.)",
 		"REVIEW_AND_CONFIRM": "Review your Auto Trade",
@@ -2695,5 +2764,51 @@
 		"EXCHANGE_UPDATE": "Exchange update",
 		"NO_DATA_TEXT": "It appears that no announcements have been made yet",
 		"UPGRADES": "Upgrades"
+	},
+	"ERROR_TAB": {
+		"NETWORK_ERROR": "Connection Issue",
+		"NETWORK_ERROR_DESC": "Please check your internet connection.",
+		"SERVER_ERROR": "Server Error",
+		"SERVER_ERROR_DESC": "We're experiencing a temporary network or server issue. Please try again later.",
+		"SERVER_MAINTENANCE_ERROR": "Server maintenance",
+		"SERVER_MAINTENANCE_ERROR_DESC": "System maintenance is currently underway. Please try again later.",
+		"TOO_MANY_REQUEST_ERROR": "Too many requests",
+		"TOO_MANY_REQUEST_ERROR_DESC": "Wow! Slow down, you are doing too much at once",
+		"NETWORK_ERROR_MESSAGE": "Network Error"
+	},
+	"BROWSER_TAB_TITLE": {
+		"TITLE_ACCOUNT_OVERVIEW": "Account Overview",
+		"TITLE_PRICE": "Coin Price & Trends",
+		"TITLE_VOLUME": "Trade Volume History",
+		"TITLE_WALLET": "Wallets",
+		"TITLE_WALLET_PERFORMANCE": "Wallet Performance",
+		"TITLE_TRADE_HISTORY": "Trade History",
+		"TITLE_ORDER_HISTORY": "Order History",
+		"TITLE_DEPOSIT_HISTORY": "Deposit History",
+		"TITLE_WITHDRAWAL_HISTORY": "Withdrawal History",
+		"TITLE_NOTIFICATION": "Notification Settings",
+		"TITLE_INTERFACE": "Interface Settings",
+		"TITLE_AUDIO_CUE": "Audio Cue Settings",
+		"TITLE_LANGUAGE": "Language Settings",
+		"TITLE_ACCOUNT": "Account Settings",
+		"TITLE_2FA_SECURITY": "2FA Security",
+		"TITLE_PASSWORD_SECURITY": "Password Security",
+		"TITLE_API_KEYS_SECURITY": "API Keys Security",
+		"TITLE_SESSIONS_SECURITY": "Sessions Security",
+		"TITLE_LOGIN_HISTORY_SECURITY": "Login History Security",
+		"TITLE_P2P": "Peer-to-Peer Trading",
+		"TITLE_P2P_ORDERS": "P2P Orders",
+		"TITLE_P2P_PROFILE": "P2P Profile",
+		"TITLE_POST_DEAL": "Post P2P Deal",
+		"TITLE_MY_DEALS": "My P2P Deals",
+		"TITLE_P2P_DEAL_EXPIRED": "Expired P2P Deal",
+		"TITLE_P2P_ACTIVE_DEAL": "P2P Active Deal & Chat",
+		"TITLE_P2P_COMPLETED_DEAL": "Completed P2P Deal",
+		"TITLE_P2P_APPEALED_DEAL": "Appealed P2P Deal",
+		"TITLE_WALLET_ASSET": "My",
+		"TITLE_WALLET_DETAILS": "Wallet Details",
+		"TITLE_ASSET_INFORMATION": "Asset Information",
+		"TITLE_REFERRAL_EARNINGS_HISTORY": "Referral Earnings History",
+		"TITLE_STAKE_DETAILS": "Stake Details"
 	}
 }

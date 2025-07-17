@@ -55,7 +55,9 @@ $content--margin: 2rem;
 	.review-crypto-mail {
 		font-size: $font-size-subhead2;
 		border: 1px solid $colors-deactivate-color2;
-		padding: 1.5rem 12rem;
+		padding: 1.5rem;
+		width: 100%;
+		text-align: center;
 		word-break: break-all;
 
 		.review-fee_message {
@@ -587,6 +589,25 @@ $content--margin: 2rem;
 		margin: auto;
 	}
 
+	.review-withdraw-details-wrapper {
+		.review-crypto-amount,
+		.review-crypto-mail {
+			font-size: 12px;
+
+			.review-fee_message {
+				font-size: 12px;
+			}
+		}
+
+		.review-crypto-address {
+			font-size: 14px;
+		}
+
+		.review-info_message {
+			font-size: 1.4rem;
+		}
+	}
+
 	.presentation_container {
 		.action_notification-svg {
 			svg {
@@ -649,6 +670,10 @@ $content--margin: 2rem;
 					.text {
 						font-size: $font-size-mobile-txt !important;
 					}
+				}
+				.tooltip_icon_wrapper {
+					height: 1.4rem;
+					width: 1.4rem;
 				}
 			}
 
@@ -796,6 +821,9 @@ $content--margin: 2rem;
 						}
 					}
 				}
+				.withdraw-btn-wrapper {
+					margin-top: 15%;
+				}
 			}
 		}
 	}
@@ -907,6 +935,14 @@ $content--margin: 2rem;
 	.review_email-content {
 		border-top: 1px solid;
 		padding: 1rem;
+	}
+}
+
+.review_email-wrapper-mobile {
+	margin: auto;
+
+	.review_email-content {
+		font-size: 12px;
 	}
 }
 

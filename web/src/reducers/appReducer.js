@@ -90,6 +90,16 @@ import {
 	SET_ACTIVE_SELECTED_ANNOUNCEMENT,
 	SET_EXCHANGE_TIMEZONE,
 	SET_IS_ADMIN_ANNOUNCEMENT_FEATURE,
+	SET_IS_REFRESH_ASSETS,
+	SET_MARKET_REFRESH,
+	SET_ERROR,
+	SET_ERROR_COUNT,
+	SET_SIGNUP_EMAIL,
+	SET_EMAIL_DETAIL,
+	SET_IS_ACTIVE_FAV_QUICK_TRADE,
+	SET_ROLES,
+	SET_EDIT_MODE,
+	SET_TRANSACTION_PAIR,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -233,6 +243,16 @@ const INITIAL_STATE = {
 	isActiveSelectedAnnouncement: false,
 	exchangeTimeZone: '',
 	isAdminAnnouncementFeature: false,
+	isRefreshAssets: false,
+	isMarketRefresh: false,
+	errorMessage: null,
+	errorCount: 0,
+	signupEmail: null,
+	emailDetail: null,
+	isActiveFavQuickTrade: true,
+	rolesList: [],
+	isOperatorEdit: false,
+	transactionPair: null,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -957,6 +977,66 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isAdminAnnouncementFeature: payload.isAdminAnnouncementFeature,
+			};
+		}
+		case SET_IS_REFRESH_ASSETS: {
+			return {
+				...state,
+				isRefreshAssets: payload.isRefreshAssets,
+			};
+		}
+		case SET_MARKET_REFRESH: {
+			return {
+				...state,
+				isMarketRefresh: payload.isMarketRefresh,
+			};
+		}
+		case SET_ERROR: {
+			return {
+				...state,
+				errorMessage: payload.errorMessage,
+			};
+		}
+		case SET_ERROR_COUNT: {
+			return {
+				...state,
+				errorCount: payload.errorCount,
+			};
+		}
+		case SET_SIGNUP_EMAIL: {
+			return {
+				...state,
+				signupEmail: payload.signupEmail,
+			};
+		}
+		case SET_EMAIL_DETAIL: {
+			return {
+				...state,
+				emailDetail: payload.emailDetail,
+			};
+		}
+		case SET_IS_ACTIVE_FAV_QUICK_TRADE: {
+			return {
+				...state,
+				isActiveFavQuickTrade: payload.isActiveFavQuickTrade,
+			};
+		}
+		case SET_ROLES: {
+			return {
+				...state,
+				rolesList: payload.rolesList,
+			};
+		}
+		case SET_EDIT_MODE: {
+			return {
+				...state,
+				isOperatorEdit: payload.isOperatorEdit,
+			};
+		}
+		case SET_TRANSACTION_PAIR: {
+			return {
+				...state,
+				transactionPair: payload.transactionPair,
 			};
 		}
 		default:
