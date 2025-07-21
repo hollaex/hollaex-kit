@@ -17524,6 +17524,8 @@ table th {
             .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field svg {
               width: 80%;
               height: 100%; }
+              .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field svg .interface-setting {
+                fill: var(--labels_important-active-labels-text-graphics) !important; }
             .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon {
               position: relative;
               bottom: 15px; }
