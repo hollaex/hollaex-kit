@@ -604,6 +604,7 @@ const RenderWithdraw = ({
 				selectedCurrency: null,
 				addressField: null,
 			}));
+			router.replace('/wallet/withdraw');
 		}
 		if (type === 'network') {
 			setWithdrawAddress(null);

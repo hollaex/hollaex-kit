@@ -74,6 +74,8 @@ const P2P = ({
 		}
 		if (arr?.[2] === 'mydeals') {
 			setTab('4');
+		} else if (!arr?.[2]) {
+			setTab('0');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [window.location.pathname]);

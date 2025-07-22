@@ -228,7 +228,7 @@ const CoinPage = ({
 										available_balance[`${currentCoin}_available`]
 									)}{' '}
 									{currentCoinUpper}{' '}
-									<Link className="link" to={`wallet/${currentCoin}/deposit`}>
+									<Link className="link" to={`/wallet/${currentCoin}/deposit`}>
 										<EditWrapper stringId="SUMMARY.DEPOSIT">
 											({STRINGS['SUMMARY.DEPOSIT']})
 										</EditWrapper>

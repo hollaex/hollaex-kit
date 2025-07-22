@@ -775,9 +775,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'min_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'min_size'
+										)
 									}
-									value={previewData && previewData.min_size}
+									value={previewData && previewData?.min_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -796,9 +799,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'max_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'max_size'
+										)
 									}
-									value={previewData && previewData.max_size}
+									value={previewData && previewData?.max_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -812,6 +818,9 @@ const Otcdeskpopup = ({
 								type="primary"
 								className="green-btn"
 								onClick={() => moveToStep('deal-params')}
+								disabled={
+									previewData?.min_size === '' || previewData?.max_size === ''
+								}
 							>
 								Next
 							</Button>
