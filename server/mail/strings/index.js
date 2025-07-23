@@ -74,6 +74,7 @@ const MAILTYPE = {
 
 	// SUSPICIOUS LOGIN
 	SUSPICIOUS_LOGIN: 'suspicious_login',
+	SUSPICIOUS_LOGIN_CODE: 'suspicious_login_code',
 };
 
 const languageFile = (lang) => {

@@ -175,6 +175,10 @@
 		"SUSPICIOUS_LOGIN": {
 			"html": "<div><p>Dear ${name},</p><p>We noticed a recent login attempt on your account from a new device or location. If this was you, please confirm the login to secure your account. If not, take immediate action to protect your account.</p><p><strong>Login Details:</strong><br />IP Address: ${ip}<br />Location: ${location}<br />Device: ${device}<br />Time: ${time}</p><p>Choose one of the following options to proceed:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm Login</Button></a></div><p>If this login attempt was not made by you, we recommend <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">freezing your account</a> immediately to prevent unauthorized access.</p><p>Regards,<br />${api_name} Team</p></div>",
 			"title": "Suspicious Login Alert"
+		},
+		"SUSPICIOUS_LOGIN_CODE": {
+			"title": "Suspicious Login Alert",
+			"html": "<div><p>Dear ${name},</p><p>We noticed a recent login attempt on your account from a new device or location. Please use the code below to confirm this login if it was you. If not, take immediate action to protect your account.</p><p><strong>Login Details:</strong><br />IP Address: ${ip}<br />Location: ${location}<br />Device: ${device}<br />Time: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>If this was <strong>not you</strong>, we recommend <a href=\"${freeze_account_link}\">freezing your account</a> immediately to prevent unauthorized access.</p><p>Regards,<br />${api_name} Team</p></div>"
 		}
 	}
 }

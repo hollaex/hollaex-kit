@@ -202,7 +202,8 @@ const loginPost = (req, res) => {
 		otp_code,
 		captcha,
 		service,
-		long_term
+		long_term,
+		version
 	} = req.swagger.params.authentication.value;
 	let {
 		email
@@ -352,7 +353,17 @@ const loginPost = (req, res) => {
 			const suspiciousLoginEnabled = toolsLib?.getKitConfig()?.suspicious_login?.active;
 
 			if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
-				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+				let verification_code;
+				if (version === "v3") {
+					const letters = Array.from({ length: 2 }, () =>
+						String.fromCharCode(65 + crypto.randomInt(0, 26))
+					).join('');
+					const numbers = Math.floor(10000 + Math.random() * 90000);
+					verification_code = `${letters}-${numbers}`;
+				} else {
+					verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+
+				};
 
 				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term);
 
@@ -369,7 +380,7 @@ const loginPost = (req, res) => {
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
 
-				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
+				sendEmail(version === "v3" ? MAILTYPE.SUSPICIOUS_LOGIN_CODE : MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
 			}
 
