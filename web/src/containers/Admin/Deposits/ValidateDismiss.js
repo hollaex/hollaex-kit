@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
 import { Button, Form, Input } from 'antd';
+import { Coin } from 'components';
 
 const { Item } = Form;
 
@@ -8,6 +10,7 @@ const ValidateDismiss = ({
 	statusType,
 	onCancel,
 	handleConfirm,
+	coins,
 }) => {
 	const [isAutoFocus, setAutoFocus] = useState(false);
 	const [type, setType] = useState('');
@@ -71,6 +74,19 @@ const ValidateDismiss = ({
 				<div className="mt-3">
 					<span className="bold">Amount:</span> {validateData.amount}
 				</div>
+				{Number(validateData?.fee) > 0 && (
+					<div className="mt-3 fees-wrapper">
+						<span className="bold">Fee:</span>
+						<span>{validateData?.fee}</span>
+						{coins[validateData?.currency]?.icon_id && (
+							<Coin
+								iconId={coins[validateData?.currency]?.icon_id}
+								type="CS4"
+							/>
+						)}
+						<span>{validateData?.currency?.toUpperCase()} </span>
+					</div>
+				)}
 			</div>
 			{statusType === 'validate' || statusType === 'dismiss' ? (
 				<div className="my-5">
@@ -114,4 +130,8 @@ const ValidateDismiss = ({
 	);
 };
 
-export default ValidateDismiss;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
+
+export default connect(mapStateToProps)(ValidateDismiss);
