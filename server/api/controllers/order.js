@@ -57,6 +57,92 @@ const createOrder = (req, res) => {
 		});
 };
 
+const createMarginTransfer = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createMarginTransfer auth',
+		req.auth
+	);
+
+	const user_id = req.auth.sub.id;
+	let data = req.swagger.params.data.value;
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.createMarginTransferByKitId(user_id, data.balance_symbol, data.balance_amount, data.margin_to_spot, opts)
+		.then((data) => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createMarginTransfer error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+const closeMarginPosition = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/closeMarginPosition auth',
+		req.auth
+	);
+
+	const user_id = req.auth.sub.id;
+	let data = req.swagger.params.data.value;
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.closeMarginPositionByKitId(user_id, data.target_asset, data.position_id, opts)
+		.then((data) => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/closeMarginPosition error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
+const getUserMarginPosition = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/getUserMarginPosition auth',
+		req.auth
+	);
+
+	const user_id = req.auth.sub.id;
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+	toolsLib.order.getUserMarginPositionByKitId(user_id, opts)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/getUserMarginPosition error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err, req?.auth?.sub?.lang) });
+		});
+};
+
+
 const createOrderByAdmin = (req, res) => {
 	loggerOrders.verbose(
 		req.uuid,
@@ -135,7 +221,7 @@ const getQuickTrade = (req, res) => {
 		});
 };
 
-const executeHedging = async ( symbol, side, size, price ) => {
+const executeHedging = async (symbol, side, size, price) => {
 	await toolsLib.sleep(1000);
 	toolsLib.broker.reverseTransaction({ symbol, side, size, price });
 }
@@ -578,5 +664,8 @@ module.exports = {
 	dustBalance,
 	orderExecute,
 	dustEstimatePrice,
+	createMarginTransfer,
+	closeMarginPosition,
+	getUserMarginPosition,
 	downloadOrdersCsv
 };
