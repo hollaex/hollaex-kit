@@ -366,7 +366,7 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permis
 		}
 	}
 
-	if (newKitConfig.p2p_config && user.permisison) {
+	if (newKitConfig.p2p_config) {
 
 		const exchangeInfo = getKitConfig().info;
 

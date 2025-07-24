@@ -41,6 +41,7 @@ const DepositComponent = ({
 	depositAddress,
 	router,
 	selectedNetwork,
+	coin_customizations,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -93,7 +94,7 @@ const DepositComponent = ({
 	const min = coins[currentCurrency];
 	const isDeposit = coins[getDepositCurrency]?.allow_deposit;
 	const networkHasTag = ['xrp', 'xlm', 'ton'];
-	const hasTag = ['xrp', 'xlm', 'ton', 'pmn'];
+	const hasTag = ['xrp', 'xlm', 'ton'];
 
 	useEffect(() => {
 		const topWallet = assets
@@ -285,6 +286,7 @@ const DepositComponent = ({
 				stepThree: false,
 				stepFour: false,
 			});
+			router.replace('/wallet/deposit');
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);
@@ -345,6 +347,19 @@ const DepositComponent = ({
 		? coins[selectedNetwork]?.icon_id
 		: coins[defaultNetwork]?.icon_id;
 	const networkOptionsIcon = coins[getDepositNetworkOptions]?.icon_id;
+
+	const renderMarkupFee = () => {
+		const feeMarkup =
+			defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[
+				renderNetworkField(networkData) || network
+			]?.deposit?.symbol === defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[
+				renderNetworkField(networkData) || network
+			]?.deposit?.value;
+
+		return feeMarkup || 0;
+	};
 
 	return (
 		<div
@@ -691,6 +706,22 @@ const DepositComponent = ({
 											readOnly
 										></Input>
 									</div>
+									{renderMarkupFee() ? (
+										<div className="warning-text d-flex mt-2">
+											<ExclamationCircleFilled className="mt-1 mr-2" />
+											<div className="address-warning-text">
+												<EditWrapper>
+													{STRINGS.formatString(
+														STRINGS['DEPOSIT_FORM_FEE_WARNING'],
+														renderMarkupFee(),
+														defaultCurrency?.toUpperCase()
+													)}
+												</EditWrapper>
+											</div>
+										</div>
+									) : (
+										<></>
+									)}
 									<div className="warning-text d-flex mt-2">
 										<ExclamationCircleFilled className="mt-1 mr-2" />
 										<div className="address-warning-text">
@@ -790,6 +821,7 @@ const DepositComponent = ({
 };
 
 const mapStateToProps = (state) => ({
+	coin_customizations: state.app.constants.coin_customizations,
 	getDepositCurrency: state.app.depositFields.depositCurrency,
 	getDepositNetworkOptions: state.app.depositFields.depositNetworkOptions,
 	pinnedAssets: state.app.pinned_assets,

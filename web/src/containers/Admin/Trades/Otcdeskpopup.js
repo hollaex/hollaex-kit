@@ -152,6 +152,8 @@ const Otcdeskpopup = ({
 		kitPlan !== 'crypto' && 'gateio',
 		kitPlan !== 'crypto' && 'okx',
 	];
+	const connectPopupRef = useRef(null);
+	const errorMsgRef = useRef(null);
 	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
@@ -251,6 +253,17 @@ const Otcdeskpopup = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen]);
 
+	useEffect(() => {
+		return () => {
+			if (connectPopupRef?.current) {
+				clearTimeout(connectPopupRef.current);
+			}
+			if (errorMsgRef?.current) {
+				clearTimeout(errorMsgRef.current);
+			}
+		};
+	}, []);
+
 	const isUpgrade = handleUpgrade(kit.info);
 	const noHedgeOption =
 		kit?.info?.plan == null ||
@@ -310,13 +323,13 @@ const Otcdeskpopup = ({
 			const markets = await getTrackedExchangeMarkets(selectedApiType);
 			setHedgeMarkets(markets);
 
-			setTimeout(() => {
+			connectPopupRef.current = setTimeout(() => {
 				setLoading(false);
 				setConnectpop(e);
 			}, 5000);
 		} catch (error) {
 			const errMsg = error.data ? error.data.message : error.message;
-			setTimeout(() => {
+			errorMsgRef.current = setTimeout(() => {
 				setLoading(false);
 				setErrorMsg(errMsg);
 			}, 5000);
@@ -467,28 +480,40 @@ const Otcdeskpopup = ({
 		<>
 			<Option value="hollaex">Hollaex Pro</Option>
 			<Option value="binance">Binance</Option>
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="coinbase">Coinbase</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="bitfinex">Bitfinex</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="kraken">Kraken</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="bybit">Bybit</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="gateio">Gate.io</Option>
-			)}
-			{_toLower(kit?.info?.plan) !== 'crypto' && (
-				<Option value="okx">OKX</Option>
-			)}
+			<Option value="coinbase">Coinbase</Option>
+			<Option value="bitfinex">Bitfinex</Option>
+			<Option value="kraken">Kraken</Option>
+			<Option value="bybit">Bybit</Option>
+			<Option value="bitmart">Bitmart</Option>
+			<Option value="gateio">Gate.io</Option>
+			<Option value="okx">OKX</Option>
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
 		</>
 	);
+
+	const handleFilterOptions = (input, option, coinsList) => {
+		const value = option?.value?.toLowerCase() || '';
+		const coin = coinsList?.find(
+			(coin) =>
+				(typeof coin === 'string' ? coin : coin?.symbol) === option?.value
+		);
+		const symbol = (typeof coin === 'string'
+			? coin
+			: coin?.symbol || ''
+		).toLowerCase();
+		const fullname = (typeof coin === 'string'
+			? coin
+			: coin?.fullname || ''
+		).toLowerCase();
+		const search = input?.toLowerCase() || '';
+		return (
+			symbol?.includes(search) ||
+			fullname?.includes(search) ||
+			value?.includes(search)
+		);
+	};
+
 	const renderModalContent = () => {
 		switch (type) {
 			case 'step1':
@@ -516,6 +541,10 @@ const Otcdeskpopup = ({
 									<div>What will be traded</div>
 									<div className="flex-container full-width">
 										<Select
+											showSearch
+											filterOption={(input, option) =>
+												handleFilterOptions(input, option, coins)
+											}
 											onChange={(value) => {
 												handlePreviewChange(value, 'pair_base');
 											}}
@@ -546,6 +575,10 @@ const Otcdeskpopup = ({
 									<div>What it will be priced in</div>
 									<div className="flex-container full-width">
 										<Select
+											showSearch
+											filterOption={(input, option) =>
+												handleFilterOptions(input, option, coinSecondary)
+											}
 											onChange={(value) => {
 												handlePreviewChange(value, 'pair_2');
 											}}
@@ -742,9 +775,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'min_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'min_size'
+										)
 									}
-									value={previewData && previewData.min_size}
+									value={previewData && previewData?.min_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -763,9 +799,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'max_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'max_size'
+										)
 									}
-									value={previewData && previewData.max_size}
+									value={previewData && previewData?.max_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -779,6 +818,9 @@ const Otcdeskpopup = ({
 								type="primary"
 								className="green-btn"
 								onClick={() => moveToStep('deal-params')}
+								disabled={
+									previewData?.min_size === '' || previewData?.max_size === ''
+								}
 							>
 								Next
 							</Button>

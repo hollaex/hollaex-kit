@@ -113,11 +113,6 @@ const getAdminTrades = (req, res) => {
 
 	);
 
-	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
-		loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', 'Invalid symbol');
-		return res.status(400).json({ message: 'Invalid symbol' });
-	}
-
 
 	toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params);
 	let promiseQuery;
@@ -132,6 +127,7 @@ const getAdminTrades = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			null,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -147,6 +143,7 @@ const getAdminTrades = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			null,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']

@@ -41,7 +41,7 @@ const HeaderSection = ({
 					className="link sub-header"
 					onClick={() => setDepositAndWithdraw(true)}
 				>
-					<Link to="wallet/deposit">
+					<Link to="/wallet/deposit">
 						<EditWrapper stringId="ACCORDIAN.DEPOSIT">
 							{STRINGS['ACCORDIAN.DEPOSIT']}
 						</EditWrapper>
@@ -51,21 +51,21 @@ const HeaderSection = ({
 					className="sub-header link"
 					onClick={() => setDepositAndWithdraw(true)}
 				>
-					<Link to="wallet/withdraw">
+					<Link to="/wallet/withdraw">
 						<EditWrapper stringId="ACCORDIAN.WITHDRAW">
 							{STRINGS['ACCORDIAN.WITHDRAW']}
 						</EditWrapper>
 					</Link>
 				</div>
 				<div className="sub-header link text-uppercase">
-					<Link to="wallet/address-book">
+					<Link to="/wallet/address-book">
 						<EditWrapper stringId="ADDRESS_BOOK.ADDRESSES">
 							{STRINGS['ADDRESS_BOOK.ADDRESSES']}
 						</EditWrapper>
 					</Link>
 				</div>
 				<div className="sub-header link text-uppercase">
-					<Link to="wallet/volume">
+					<Link to="/wallet/volume">
 						<EditWrapper stringId="VOLUME.VOLUME">
 							{STRINGS['VOLUME.VOLUME']}
 						</EditWrapper>

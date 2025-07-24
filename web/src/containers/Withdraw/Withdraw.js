@@ -33,6 +33,7 @@ import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
+	calculateFeeMarkup,
 	networkList,
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
@@ -149,10 +150,24 @@ const RenderWithdraw = ({
 
 	const feeMarkup =
 		selectedAsset?.selectedCurrency &&
-		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markup;
-	if (feeMarkup) {
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			getWithdrawNetworkOptions || network
+		]?.withdrawal?.value;
+	if (
+		feeMarkup &&
+		coin_customizations?.[selectedAsset?.selectedCurrency]?.fee_markups?.[
+			getWithdrawNetworkOptions || network
+		]?.withdrawal?.symbol ===
+			coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+				getWithdrawNetworkOptions || network
+			]?.symbol
+	) {
 		const incrementUnit =
-			coins?.[selectedAsset?.selectedCurrency]?.increment_unit || 0.0001;
+			coins?.[
+				coins?.[selectedAsset?.selectedCurrency]?.withdrawal_fees?.[
+					getWithdrawNetworkOptions || network
+				]?.symbol
+			]?.increment_unit || 0.0001;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const roundedMarkup = new BigNumber(feeMarkup)
 			.decimalPlaces(decimalPoint)
@@ -589,6 +604,7 @@ const RenderWithdraw = ({
 				selectedCurrency: null,
 				addressField: null,
 			}));
+			router.replace('/wallet/withdraw');
 		}
 		if (type === 'network') {
 			setWithdrawAddress(null);
@@ -1081,10 +1097,11 @@ const RenderWithdraw = ({
 																<span className="ml-1 secondary-text">
 																	(
 																	<span>
-																		{calculateFee(
+																		{calculateFeeMarkup(
 																			selectedAsset?.selectedCurrency,
 																			network,
-																			coins
+																			coins,
+																			coin_customizations
 																		)}
 																	</span>
 																	<span className="ml-1">
@@ -1212,10 +1229,11 @@ const RenderWithdraw = ({
 																		</div>
 																		{isActiveNetwork ? (
 																			<span className="secondary-text">
-																				{calculateFee(
+																				{calculateFeeMarkup(
 																					selectedAsset?.selectedCurrency,
 																					getSelectedSymbol,
-																					coins
+																					coins,
+																					coin_customizations
 																				)}
 																				<span className="ml-1">
 																					{calculateFeeCoin(

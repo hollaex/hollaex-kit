@@ -133,12 +133,12 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -150,16 +150,33 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{confirmation\}/g, confirmation || '');
 		html = html.replace(/\$\{status\}/g, data.status || '');
-		html = html.replace(/\$\{address\}/g, data.address || '');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
-		html = html.replace(/\$\{explorers\}/g, explorers || '');
+		if (explorers && explorers.length > 0) {
+			html = html.replace(/\$\{explorers\}/g, explorers || '');
+		} else {
+			html = html.replace(
+				/<div id='explorers'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
-			html = html.replace(/id="network"/g, 'style="display: none"');
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
 		}
 
 	}
@@ -173,12 +190,12 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -191,18 +208,34 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{amount\}/g, data.amount || ''); //
 		html = html.replace(/\$\{confirmation\}/g, confirmation || '');
 		html = html.replace(/\$\{status\}/g, data.status || '');
-		html = html.replace(/\$\{address\}/g, data.address || '');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
-		html = html.replace(/\$\{explorers\}/g, explorers || '');
+		if (explorers && explorers.length > 0) {
+			html = html.replace(/\$\{explorers\}/g, explorers || '');
+		} else {
+			html = html.replace(
+				/<div id='explorers'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
-			html = html.replace(/id="network"/g, 'style="display: none"');
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
 		}
-
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_PENDING) {
 
@@ -212,12 +245,12 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -232,14 +265,31 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
-		html = html.replace(/\$\{address\}/g, data.address || '');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{description\}/g, data.description || '');
-		html = html.replace(/\$\{explorers\}/g, explorers || '');
+		if (explorers && explorers.length > 0) {
+			html = html.replace(/\$\{explorers\}/g, explorers || '');
+		} else {
+			html = html.replace(
+				/<div id='explorers'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
-			html = html.replace(/id="network"/g, 'style="display: none"');
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
 		}
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_COMPLETED) {
@@ -250,12 +300,12 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 			if (EXPLORERS[data.currency]) {
 				EXPLORERS[data.currency].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			} else if (EXPLORERS[data.network]) {
 				EXPLORERS[data.network].forEach((explorer) => {
 					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${data.transaction_id
-						}>${explorer.name}</a></li>`;
+					}>${explorer.name}</a></li>`;
 				});
 			}
 		}
@@ -269,14 +319,31 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
-		html = html.replace(/\$\{address\}/g, data.address || '');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{description\}/g, data.description || '');
-		html = html.replace(/\$\{explorers\}/g, explorers || '');
+		if (explorers && explorers.length > 0) {
+			html = html.replace(/\$\{explorers\}/g, explorers || '');
+		} else {
+			html = html.replace(
+				/<div id='explorers'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
-			html = html.replace(/id="network"/g, 'style="display: none"');
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
 		}
 	}
 	else if (type === MAILTYPE.ACCOUNT_VERIFY) { //ok
@@ -320,13 +387,23 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
-		html = html.replace(/\$\{address\}/g, data.address || '');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}?currency=${data.currency}&amount=${data.amount}&address=${data.address}&fee=${data.fee}&fee_coin=${data.fee_coin}&network=${data.network}`);
 		if (data.network) {
 			html = html.replace(/\$\{network\}/g, data.network || '');
 		} else {
-			html = html.replace(/id="network"/g, 'style="display: none"');
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
 		}
 	}
 	else if (type === MAILTYPE.INVALID_ADDRESS) {
@@ -485,6 +562,17 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{confirmation_link\}/g, data.confirmation_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false`);
 		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false&freeze_account=true`);
 	}
+	else if (type === MAILTYPE.SUSPICIOUS_LOGIN_CODE) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{location\}/g, data.country || 'Unknown Location');
+		html = html.replace(/\$\{device\}/g, data.device || 'Unknown Device');
+		html = html.replace(/\$\{time\}/g, data.time || 'Unknown Time');
+		html = html.replace(/\$\{confirmation_code\}/g, data.verification_code);
+		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false&freeze_account=true`);
+	}
+
 
 	return html;
 };

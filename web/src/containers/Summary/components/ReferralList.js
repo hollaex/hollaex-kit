@@ -87,11 +87,24 @@ const ReferralList = ({
 	const [activeTab, setActiveTab] = useState('0');
 	const [realizedData, setRealizedData] = useState([]);
 
+	const tabList = ['summary', 'history'];
+
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+		router.replace(`/referral?${tabList[key]}`);
 	};
 	useEffect(() => {
 		if (features?.referral_history_config) {
+			const params = new URLSearchParams(window.location.search);
+			const tab = tabList?.find((data) => params.has(data));
+			const tabIndex = tabList?.indexOf(tab);
+			if (tabIndex !== -1 && tab) {
+				setActiveTab(tabIndex?.toString());
+				router.replace(`/referral?${tabList[tabIndex]}`);
+			} else {
+				router.replace(`/referral?${tabList[activeTab]}`);
+			}
+
 			fetchReferralCodes()
 				.then((res) => {
 					setReferralCodes(res.data);
@@ -127,6 +140,13 @@ const ReferralList = ({
 		}
 		// eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		if (router.location?.search === '') {
+			router.replace(`/referral?${tabList[activeTab]}`);
+		}
+		// eslint-disable-next-line
+	}, [router.location?.search]);
 
 	const HEADERS = [
 		{
@@ -841,7 +861,7 @@ const ReferralList = ({
 														if (
 															earningRate >= 0 &&
 															earningRate <=
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 														) {
 															let newDiscount = discount;
 															if (discount >= 10) {
@@ -850,14 +870,14 @@ const ReferralList = ({
 															}
 															if (
 																earningRate + newDiscount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setEarningRate(earningRate + 10);
 														}
 													} else {
 														if (
 															discount >= 0 &&
-															discount <= referral_history_config.earning_rate
+															discount <= referral_history_config?.earning_rate
 														) {
 															let newEarningRate = earningRate;
 															if (earningRate >= 10) {
@@ -867,7 +887,7 @@ const ReferralList = ({
 															}
 															if (
 																newEarningRate + discount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setDiscount(discount + 10);
 														}
@@ -888,7 +908,7 @@ const ReferralList = ({
 														if (
 															earningRate > 0 &&
 															earningRate <=
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 														) {
 															const newEarningRate = earningRate - 10;
 															if (newEarningRate === 0) return;
@@ -896,20 +916,20 @@ const ReferralList = ({
 																setEarningRate(newEarningRate);
 															if (
 																newEarningRate + discount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setDiscount(discount + 10);
 														}
 													} else {
 														if (
 															discount > 0 &&
-															discount <= referral_history_config.earning_rate
+															discount <= referral_history_config?.earning_rate
 														) {
 															const newDiscount = discount - 10;
 															if (discount >= 10) setDiscount(newDiscount);
 															if (
 																earningRate + newDiscount <
-																referral_history_config.earning_rate
+																referral_history_config?.earning_rate
 															)
 																setEarningRate(earningRate + 10);
 														}
@@ -1216,7 +1236,7 @@ const ReferralList = ({
 						<div className="mt-4">
 							<span className="font-weight-bold">Amount to settle:</span>{' '}
 							{unrealizedEarnings}{' '}
-							{(referral_history_config?.currency || 'usdt').toUpperCase()}
+							{(referral_history_config?.currency || 'usdt')?.toUpperCase()}
 						</div>
 
 						<div className="mt-5">
@@ -1280,7 +1300,7 @@ const ReferralList = ({
 								STRINGS['REFERRAL_LINK.SETTLE_AMOUNT'],
 								<span className="font-weight-bold">{unrealizedEarnings}</span>,
 								<span className="font-weight-bold">
-									{(referral_history_config?.currency || 'usdt').toUpperCase()}
+									{(referral_history_config?.currency || 'usdt')?.toUpperCase()}
 								</span>
 							)}
 						</div>
@@ -1439,7 +1459,7 @@ const ReferralList = ({
 														)}{' '}
 														{(
 															referral_history_config?.currency || 'usdt'
-														).toUpperCase()}{' '}
+														)?.toUpperCase()}{' '}
 													</div>
 												</div>
 												<div className="earn-info-border mt-3"></div>
@@ -1457,7 +1477,7 @@ const ReferralList = ({
 																STRINGS['REFERRAL_LINK.SETTLE_HERE']
 															} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
 																referral_history_config?.minimum_amount
-															} ${(referral_history_config?.currency).toUpperCase()})`}
+															} ${referral_history_config?.currency?.toUpperCase()})`}
 														>
 															<InfoCircleOutlined />
 														</Tooltip>
@@ -1509,7 +1529,7 @@ const ReferralList = ({
 												)}{' '}
 												{(
 													referral_history_config?.currency || 'usdt'
-												).toUpperCase()}{' '}
+												)?.toUpperCase()}{' '}
 											</div>
 										</div>
 										<div className="earn-info-border mt-3"></div>
@@ -1527,7 +1547,7 @@ const ReferralList = ({
 														STRINGS['REFERRAL_LINK.SETTLE_HERE']
 													} (${STRINGS['REFERRAL_LINK.MIN_TO_SETTLE']} ${
 														referral_history_config?.minimum_amount
-													} ${(referral_history_config?.currency).toUpperCase()})`}
+													} ${referral_history_config?.currency?.toUpperCase()})`}
 												>
 													<InfoCircleOutlined />
 												</Tooltip>
@@ -1782,7 +1802,7 @@ const ReferralList = ({
 													)}{' '}
 													{(
 														referral_history_config?.currency || 'usdt'
-													).toUpperCase()}{' '}
+													)?.toUpperCase()}{' '}
 												</span>
 											</div>
 										</div>

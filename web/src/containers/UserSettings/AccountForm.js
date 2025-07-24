@@ -157,6 +157,7 @@ class Form extends Component {
 							text={STRINGS['USER_SETTINGS.TITLE_CHAT']}
 							textType="title"
 							iconPath={ICONS['SETTING_CHAT_ICON']}
+							iconId="SETTING_CHAT_ICON"
 						/>
 						<div className="pr-4">
 							{renderFields(formFields)}

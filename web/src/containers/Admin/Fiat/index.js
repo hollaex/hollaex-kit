@@ -16,6 +16,14 @@ import '../Trades/index.css';
 import '../../Admin/General/index.css';
 const TabPane = Tabs.TabPane;
 
+const tabList = [
+	'summary',
+	'payment-accounts',
+	'onramp',
+	'offramp',
+	'fiat-fees',
+];
+
 const Fiatmarkets = ({
 	router,
 	exchange = {},
@@ -45,10 +53,23 @@ const Fiatmarkets = ({
 
 	const tabParams = getTabParams();
 	useEffect(() => {
-		if (tabParams && tabParams.tab) {
-			setActiveTab(tabParams.tab);
+		const params = new URLSearchParams(window.location.search);
+		const tab = Array.from(params.keys())[0];
+		const tabIndex = tabList?.indexOf(tab);
+
+		if (tabParams && tabParams?.tab) {
+			tabList?.length > tabParams?.tab
+				? setActiveTab(tabParams?.tab)
+				: setActiveTab('0');
+		} else if (tabIndex >= 0 && String(tabIndex) !== activeTab) {
+			setActiveTab(String(tabIndex));
+		} else if (tabIndex === -1) {
+			setActiveTab('0');
+			const url = new URL(window.location.href);
+			url.search = `?${tabList[0]}`;
+			window.history.replaceState(null, '', url.toString());
 		}
-	}, [tabParams]);
+	}, [tabParams, activeTab]);
 
 	useEffect(() => {
 		if (user_payments && Object.keys(user_payments).length) {
@@ -59,7 +80,9 @@ const Fiatmarkets = ({
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
-		router.replace('/admin/fiat');
+		const url = new URL(window.location.href);
+		url.search = tabList[key] ? `?${tabList[key]}` : '';
+		window.history.replaceState(null, '', url.toString());
 	};
 
 	const getUpdatedKitData = (kitData) => {

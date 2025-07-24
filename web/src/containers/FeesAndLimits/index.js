@@ -39,6 +39,17 @@ const Index = ({
 	const [activeTab, setActiveTab] = useState(isMobile ? null : 0);
 	const [search, setSearch] = useState();
 
+	const scrollToTop = () => {
+		const scrollOptions = { top: 0, behavior: 'smooth' };
+		if (isMobile) {
+			return document
+				.querySelector('.app_container-content')
+				?.scrollTo(scrollOptions);
+		} else {
+			return window.scrollTo(scrollOptions);
+		}
+	};
+
 	useEffect(() => {
 		setSelectedAccount(verification_level);
 		//eslint-disable-next-line
@@ -52,6 +63,7 @@ const Index = ({
 				setActiveTab,
 				search,
 				setSearch,
+				scrollToTop,
 			};
 
 			const tabs = [

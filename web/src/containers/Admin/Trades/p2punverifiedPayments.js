@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { Table, Button } from 'antd';
+import { Table, Button, Select } from 'antd';
 
 import { fetchP2PPaymentMethods } from '../User/actions';
 
@@ -50,18 +50,25 @@ const users = [
 		dataIndex: 'status',
 		key: 'status',
 		render: (user_id, data) => {
-			return <div className="d-flex">{data?.status === 0 && 'Unverified'}</div>;
+			return (
+				<div className="d-flex">
+					{data?.status === 0 && 'Unverified'}
+					{data?.status === 3 && 'Verified'}
+				</div>
+			);
 		},
 	},
 ];
 
 const P2PUnverifiedPayments = () => {
 	const [userList, setUserList] = useState([]);
+	const [selectedStatus, setSelectedStatus] = useState('Unverified Accounts');
+	const paymentMethods = ['Unverified Accounts', 'Verified Accounts'];
 
 	const fetchPayment = async () => {
 		try {
 			const payment = await fetchP2PPaymentMethods();
-			setUserList(payment);
+			setUserList(payment || []);
 		} catch (err) {
 			console.error('err', err);
 		}
@@ -71,13 +78,35 @@ const P2PUnverifiedPayments = () => {
 		fetchPayment();
 	}, []);
 
-	const filterByPayment = userList?.data?.filter((data) => data?.status === 0);
+	const getStatusCode = (label) => {
+		if (label?.toLowerCase() === 'unverified accounts') return 0;
+		if (label?.toLowerCase() === 'verified accounts') return 3;
+		return null;
+	};
+
+	const filteredData = userList?.data?.filter(
+		(user) => user?.status === getStatusCode(selectedStatus)
+	);
 
 	return (
-		<div>
+		<div className="p2p-payment-details">
+			<Select
+				value={selectedStatus}
+				onChange={setSelectedStatus}
+				dropdownClassName="blue-admin-select-dropdown"
+				getPopupContainer={(triggerNode) => triggerNode.parentNode}
+				className="p2p-payment-methods-filter mb-4 mt-3"
+			>
+				{paymentMethods?.map((method, index) => (
+					<Select.Option value={method} key={index}>
+						{method}
+					</Select.Option>
+				))}
+			</Select>
 			<Table
 				columns={users}
-				dataSource={filterByPayment}
+				dataSource={filteredData}
+				rowKey="id"
 				pagination={{ pageSize: 10 }}
 			/>
 		</div>

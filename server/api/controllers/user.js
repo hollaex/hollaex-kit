@@ -31,7 +31,7 @@ const {
 	OTP_CODE_NOT_FOUND,
 	INVALID_CAPTCHA
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
 const { each, isInteger, isArray } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -40,6 +40,7 @@ const moment = require('moment');
 const DeviceDetector = require('node-device-detector');
 const uuid = require('uuid/v4');
 const geoip = require('geoip-lite');
+const SMTP_SERVER = () => GET_KIT_SECRETS()?.smtp?.server;
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -201,7 +202,8 @@ const loginPost = (req, res) => {
 		otp_code,
 		captcha,
 		service,
-		long_term
+		long_term,
+		version
 	} = req.swagger.params.authentication.value;
 	let {
 		email
@@ -322,9 +324,9 @@ const loginPost = (req, res) => {
 
 			const successfulRecords = lastLogins.filter(login => login.status);
 
-			if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
-				suspiciousLogin = true;
-			}
+			// if (isArray(lastLogins) && lastLogins.length > 0 && !successfulRecords?.find(login => login.device === device)) {
+			// 	suspiciousLogin = true;
+			// }
 
 
 			const geo = geoip.lookup(ip);
@@ -347,8 +349,21 @@ const loginPost = (req, res) => {
 				suspiciousLogin = true;
 			}
 
-			if (suspiciousLogin) {
-				const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+
+			const suspiciousLoginEnabled = toolsLib?.getKitConfig()?.suspicious_login?.active;
+
+			if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
+				let verification_code;
+				if (version === "v3") {
+					const letters = Array.from({ length: 2 }, () =>
+						String.fromCharCode(65 + crypto.randomInt(0, 26))
+					).join('');
+					const numbers = Math.floor(10000 + Math.random() * 90000);
+					verification_code = `${letters}-${numbers}`;
+				} else {
+					verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+
+				};
 
 				const loginData = await toolsLib.user.createSuspiciousLogin(user, ip, device, country, domain, origin, referer, null, long_term);
 
@@ -365,7 +380,7 @@ const loginPost = (req, res) => {
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
 
-				sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
+				sendEmail(version === "v3" ? MAILTYPE.SUSPICIOUS_LOGIN_CODE : MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
 			}
 

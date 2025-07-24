@@ -10,8 +10,8 @@ import {
 	PlayCircleFilled,
 } from '@ant-design/icons';
 
-import icons from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 import './AutoTrader.scss';
 import { Button, Coin, Dialog, EditWrapper, Image, Table } from 'components';
 import { AutoTraderEmptydata, ConfirmAutoTrade } from './Utils';
@@ -222,7 +222,7 @@ const autoTraderData = (
 							</div>
 						) : (
 							<div className="active-link">
-								<PauseCircleFilled className="active-play-icon" />
+								<PauseCircleFilled className="active-play-icon inactive-pause-icon" />
 								<EditWrapper>
 									<span>{STRINGS['AUTO_TRADER.PAUSED_TEXT']}</span>
 								</EditWrapper>
@@ -271,6 +271,7 @@ const Autotrader = ({
 	features,
 	exchangeTimeZone,
 	quicktradePairs,
+	icons,
 }) => {
 	const [isRenderPopup, setIsRenderPopup] = useState({
 		isDisplayAutoTrader: false,
@@ -1552,6 +1553,7 @@ const Autotrader = ({
 				<Image
 					icon={icons['AUTO_TRADER_ICON']}
 					wrapperClassName="auto-trader-icon"
+					iconId="AUTO_TRADER_ICON"
 				/>
 				<span className="ml-3">
 					<EditWrapper stringId="AUTO_TRADER.AUTO_TRADER_TITLE">
@@ -1654,8 +1656,14 @@ const Autotrader = ({
 						}}
 						data={tradeDetails}
 						count={tradeDetails?.length}
+						isAutoTrader={true}
 						pageSize={10}
-						noData={<AutoTraderEmptydata setIsRenderPopup={setIsRenderPopup} />}
+						noData={
+							<AutoTraderEmptydata
+								setIsRenderPopup={setIsRenderPopup}
+								icons={icons}
+							/>
+						}
 					/>
 				</div>
 			</div>
@@ -1672,4 +1680,4 @@ const mapStateToProps = (state) => ({
 	quicktradePairs: quicktradePairSelector(state),
 });
 
-export default connect(mapStateToProps)(Autotrader);
+export default connect(mapStateToProps)(withConfig(Autotrader));

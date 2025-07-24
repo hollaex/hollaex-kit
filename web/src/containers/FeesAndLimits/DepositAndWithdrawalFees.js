@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import { ArrowUpOutlined } from '@ant-design/icons';
 import BigNumber from 'bignumber.js';
 
 import STRINGS from 'config/localizedStrings';
@@ -38,13 +39,14 @@ const renderRow = (
 	);
 };
 
-const getFeeText = (data, level, type, coin_customizations, coins) => {
+const getFeeText = (data, level, type, coin_customizations, coins, network) => {
 	const { symbol, value } = data;
 
 	let fee = value;
 
 	if (type === 'withdrawal') {
-		const feeMarkup = coin_customizations?.[symbol]?.fee_markup;
+		const feeMarkup =
+			coin_customizations?.[symbol]?.fee_markups?.[network]?.withdrawal?.value;
 		if (feeMarkup) {
 			const incrementUnit = coins?.[symbol]?.increment_unit;
 			const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -96,7 +98,8 @@ const getRows = (
 								level,
 								'withdrawal',
 								coin_customizations,
-								coins
+								coins,
+								network
 						  )
 						: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 					const deposit_text =
@@ -106,7 +109,8 @@ const getRows = (
 									level,
 									'deposit',
 									coin_customizations,
-									coins
+									coins,
+									network
 							  )
 							: 'N/A';
 					const index = `${c_index}_${n_index}`;
@@ -159,6 +163,7 @@ const DepositAndWithdrawalFees = ({
 	search,
 	coin_customizations,
 	fiat_fees,
+	scrollToTop,
 }) => {
 	return (
 		<div className="wallet-assets_block">
@@ -208,6 +213,15 @@ const DepositAndWithdrawalFees = ({
 					)}
 				</tbody>
 			</table>
+			<EditWrapper stringId="FEES_AND_LIMITS.RETURN_TO_TOP">
+				<span
+					className="pointer blue-link underline-text ml-2"
+					onClick={() => scrollToTop()}
+				>
+					{STRINGS['FEES_AND_LIMITS.RETURN_TO_TOP']}
+					<ArrowUpOutlined />
+				</span>
+			</EditWrapper>
 		</div>
 	);
 };

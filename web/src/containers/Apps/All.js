@@ -124,6 +124,13 @@ const All = ({
 		debounced.current(search, apps);
 	}, [search, apps]);
 
+	useEffect(() => {
+		const clearDebounced = debounced?.current;
+		return () => {
+			clearDebounced.cancel();
+		};
+	}, []);
+
 	return (
 		<div>
 			<div className="settings-form-wrapper">
@@ -133,6 +140,7 @@ const All = ({
 						text={STRINGS['USER_APPS.ALL_APPS.TITLE']}
 						textType="title"
 						iconPath={ICONS['APPS_ALL']}
+						iconId="APPS_ALL"
 					/>
 					<EditWrapper
 						stringId="USER_APPS.ALL_APPS.SUBTITLE"

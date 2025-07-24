@@ -4,7 +4,7 @@ const definition = {
 	swagger: '2.0',
 	info: {
 		title: 'HollaEx Kit',
-		version: '2.15.2'
+		version: '2.15.10'
 	},
 	host: 'api.hollaex.com',
 	basePath: '/v2',

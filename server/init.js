@@ -29,16 +29,24 @@ let nodeLib;
 
 const getNodeLib = () => nodeLib;
 
-subscriber.on('message', (channel, message) => {
+subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
+		const delay = (ms) => {
+			return new Promise((resolve) => setTimeout(resolve, ms));
+		};
 		switch (type) {
 			case 'refreshInit':
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
 				checkStatus();
 				publisher.publish(
 					WS_HUB_CHANNEL,
 					JSON.stringify({ action: 'restart' })
 				);
+				break;
+			case 'refreshApi':
+				await delay((Math.floor(Math.random() * 5) + 1) * 1000);
+				checkStatus();
 				break;
 			default:
 				break;
@@ -120,6 +128,7 @@ const checkStatus = () => {
 				configuration.kit = status.kit;
 				configuration.email = status.email;
 
+				status.constants.fee_markups = status.kit.coin_customizations;
 				return all([
 					checkActivation(
 						status.name,
@@ -151,6 +160,35 @@ const checkStatus = () => {
 				} else {
 					configuration.coins[coin.symbol] = coin;
 				}
+			}
+
+			let hasUpdate = false;
+			for (const [symbol, customization] of Object.entries(status?.kit?.coin_customizations || [])) {
+				if (customization?.fee_markup == null) continue;
+
+				const coin = exchange?.coins?.find((c) => c.symbol === symbol);
+				if (!coin || !coin?.network) continue;
+
+				const networks = coin?.network?.split(',')?.map((n) => n?.trim()?.toLowerCase()) || [];
+
+				for(const network of networks) {
+					if (!customization?.fee_markups?.[network]?.withdrawal?.symbol) continue;
+					if (!coin?.withdrawal_fees?.[network]?.symbol) continue;
+
+					
+					if (customization?.fee_markups?.[network]?.withdrawal?.symbol != coin?.withdrawal_fees?.[network]?.symbol) {
+						hasUpdate = true;
+						customization.fee_markups[network].withdrawal.symbol = coin?.withdrawal_fees?.[network]?.symbol;
+						customization.fee_markups[network].withdrawal.value = 0;
+					}
+				}
+			}
+
+			if (hasUpdate) {
+				Status.update(
+					{ kit: status.kit },
+					{ where: { id: status.id } }
+				);
 			}
 
 			for (let pair of exchange.pairs) {

@@ -409,6 +409,13 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	};
 	const handleSearch = _debounce(searchUser, 1000);
 
+	useEffect(() => {
+		return () => {
+			handleSearch.cancel();
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	const onHandleTabChange = (tab) => {
 		setActiveTab(tab);
 	};
@@ -476,7 +483,7 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 	};
 
 	return (
-		<div className="w-100">
+		<div className="admin-earnings-container w-100">
 			<Tabs
 				defaultActiveKey="0"
 				activeKey={activeTab}

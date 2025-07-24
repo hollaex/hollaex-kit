@@ -21,6 +21,7 @@ const WithdrawalFees = ({
 	setSearch,
 	coin_customizations,
 	fiat_fees,
+	scrollToTop,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -98,6 +99,7 @@ const WithdrawalFees = ({
 										textType="title bold text-align-left"
 										iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_FEES']}
 										className="fees-limits-title"
+										iconId="FEES_AND_LIMITS_WITHDRAWAL_FEES"
 									/>
 									<div className="py-4">
 										<div>
@@ -132,6 +134,7 @@ const WithdrawalFees = ({
 								search={search}
 								coin_customizations={coin_customizations}
 								fiat_fees={fiat_fees}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>

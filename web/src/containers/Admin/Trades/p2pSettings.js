@@ -141,6 +141,9 @@ const P2PSettings = ({
 		if (p2p_config?.bank_payment_methods?.length > 0) {
 			setPaymentMethods([...p2p_config?.bank_payment_methods, ...methods]);
 		}
+		return () => {
+			handleSearch.cancel();
+		};
 	}, []);
 
 	const handleEmailChange = (value) => {
@@ -1134,7 +1137,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Merchant fee: </div>
-										<div>{merchantFee}</div>
+										<div>{merchantFee}%</div>
 									</div>
 									<div
 										onClick={() => {
@@ -1160,7 +1163,7 @@ const P2PSettings = ({
 								>
 									<div>
 										<div>Buyer fee: </div>
-										<div>{userFee}</div>
+										<div>{userFee}%</div>
 									</div>
 									<div
 										onClick={() => {

@@ -1193,6 +1193,78 @@ h3,
 	width: 75%;
 	padding: 0.5% 0 1% 0;
 }
+.admin-earnings-container .ant-tabs-nav::before {
+	border-bottom: none;
+}
+
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	height: 6px;
+	background-color: #ffffff;
+}
+
+.admin-earnings-container .ant-tabs-nav .ant-tabs-ink-bar {
+	top: 0px;
+}
+
+.admin-earnings-container .ant-tabs-tab .ant-tabs-tab-btn {
+	opacity: 0.6;
+	font-weight: bold;
+}
+
+.admin-content-wrapper .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	opacity: 1;
+}
+
+.blue-admin-tab-wrapper .ant-tabs-nav .ant-tabs-nav-list {
+	border-top: 1px solid #ffffff;
+	width: 100%;
+}
+
+.tech-access-tooltip .ant-tooltip-inner {
+	min-width: 32rem;
+	background-color: var(--admin_panel_modal_background);
+	font-size: 12px;
+}
+
+.test-environment-popup-wrapper .test-environment-popup-content .title-text {
+	font-size: 16px;
+}
+
+.test-environment-popup-wrapper .test-environment-popup-content .test-key-icon {
+	width: 3rem;
+}
+
+.test-environment-popup-wrapper
+	.test-environment-popup-content
+	.button-container {
+	margin-top: 5%;
+	display: flex;
+	align-items: center;
+	gap: 2%;
+}
+
+.test-environment-popup-wrapper .ant-modal-close-x {
+	color: #ffffff;
+}
+
+.test-environment-popup-wrapper .ant-modal-close:focus {
+	outline: none;
+}
+
+.general-wrapper .description .divider-container {
+	padding: 2px;
+	background-color: #ffffff;
+	border-radius: 2px;
+}
+
+.general-wrapper .disabled-content,
+.test-environment-popup-wrapper .disabled-content {
+	opacity: 0.6;
+}
+
+.general-wrapper .description .toggle-container {
+	width: 40rem;
+}
 
 @media screen and (min-width: 2560px) {
 	.generate-api .right-container {

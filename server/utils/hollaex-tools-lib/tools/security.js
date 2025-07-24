@@ -68,7 +68,6 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
-const { user } = require('.');
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -302,6 +301,20 @@ const generateOtp = (secret, epoch = 0) => {
 const verifyOtp = (userSecret, userDigits) => {
 	const serverDigits = [generateOtp(userSecret, 30), generateOtp(userSecret), generateOtp(userSecret, -30)];
 	return serverDigits.includes(userDigits);
+};
+
+const getUserOtpCode = (user_id, usedParam = true) => {
+	return dbQuery.findOne('otp code', {
+		where: {
+			used: usedParam,
+			user_id
+		},
+		attributes: ['id', 'secret'],
+		order: [['updated_at', 'DESC']]
+	})
+		.then((otpCode) => {
+			return generateOtp(otpCode.secret, 30)
+		})
 };
 
 const hasUserOtpEnabled = (id) => {
@@ -1300,7 +1313,7 @@ const checkPermission = (req, user) => {
 	if (!apiPath) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-
+	apiPath = apiPath.replace(/\?.*$/, '');
 	apiPath = apiPath.replace(/^\/v[0-9]+\//, '/');
 
 	if (!apiPath.includes('admin')) return;
@@ -1356,6 +1369,7 @@ module.exports = {
 	checkOtp,
 	generateOtp,
 	generateOtpSecret,
+	getUserOtpCode,
 	findUserOtp,
 	setActiveUserOtp,
 	updateUserOtpEnabled,

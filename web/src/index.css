@@ -397,8 +397,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -416,8 +416,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 14rem);
-    max-height: calc( 100vh - 14rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -676,8 +676,8 @@ table th {
 
 .layout-mobile.signout-confirmation-popup-wrapper .signout-confirmation-popup-description .signout-confirmation-content {
   justify-content: center;
-  min-height: calc( 100vh - 15rem - 10rem);
-  max-height: calc( 100vh - 15rem - 10rem); }
+  min-height: calc( 100vh - 19rem - 8rem);
+  max-height: calc( 100vh - 19rem - 8rem); }
 
 .layout-mobile .footer-bar-more-options-container {
   display: flex;
@@ -3893,6 +3893,10 @@ table th {
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
+  .history_block-wrapper .transactions-history-table .sub-tr {
+    opacity: 0.6; }
+    .history_block-wrapper .transactions-history-table .sub-tr .view-market-link:hover {
+      opacity: 0.6; }
   .history_block-wrapper .transactions-history-table .table_body-wrapper .expandable-container .custom-row-line {
     width: 5px;
     height: 1px;
@@ -4257,10 +4261,6 @@ table th {
       color: var(--calculated_public-sale_selling-zeros); }
     .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell .public-sale_digits {
       color: var(--trading_selling-related-elements); }
-
-.layout-mobile .trade-container .content-with-bar {
-  min-height: calc( 100vh - 16rem) !important;
-  max-height: calc( 100vh - 16rem) !important; }
 
 .layout-mobile .trade-container .orderBook-wrapper {
   max-height: 100% !important;
@@ -5270,8 +5270,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 14rem);
-  max-height: calc( 100vh - 14rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     flex-direction: column;
@@ -5438,7 +5438,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 11rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -14776,6 +14776,8 @@ table th {
   .auto-trader-container .title-wrapper {
     padding: 1% 0;
     border-bottom: 1.5px solid var(--labels_important-active-labels-text-graphics); }
+    .auto-trader-container .title-wrapper img {
+      width: 2.5rem; }
     .auto-trader-container .title-wrapper .auto-trader-icon svg {
       width: 2.5rem;
       position: relative;
@@ -14828,6 +14830,8 @@ table th {
     .auto-trader-container .auto-trader-content-wrapper .no-data > .edit-wrapper__container {
       width: 50%;
       text-align: center; }
+    .auto-trader-container .auto-trader-content-wrapper .no-data img {
+      width: 3rem; }
     .auto-trader-container .auto-trader-content-wrapper .auto-trader-table {
       overflow-x: auto; }
       .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper th,
@@ -14847,6 +14851,8 @@ table th {
           font-size: 13px; }
           .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .active-play-icon svg path {
             fill: var(--labels_important-active-labels-text-graphics); }
+        .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .active-link .inactive-pause-icon {
+          opacity: 0.5; }
       .auto-trader-container .auto-trader-content-wrapper .auto-trader-table .table-wrapper .spend-asset-detail {
         gap: 3%;
         flex-direction: column; }
@@ -15421,9 +15427,16 @@ table th {
   border-bottom: none !important; }
 
 .announcement-tab-wrapper .announcement-tabs .ant-tabs-ink-bar {
-  height: 3px;
+  height: 6px;
   background-color: #ffffff;
   bottom: unset; }
+
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-tab .ant-tabs-tab-btn {
+  opacity: 0.6;
+  font-weight: bold; }
+
+.announcement-tab-wrapper .announcement-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  opacity: 1; }
 
 .announcement-wrapper .upgrade-section .button-wrapper .upgrade-btn {
   background-color: #f6921e !important;
@@ -15602,6 +15615,218 @@ table th {
 @media (min-width: 1820px) {
   .announcement-wrapper .blue-admin-table .message-content-wrapper {
     width: 45rem; } }
+
+.transfer-details-wrapper .transfer-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2%; }
+  .transfer-details-wrapper .transfer-title-wrapper .transfer-title {
+    font-size: 24px;
+    font-weight: 600; }
+  .transfer-details-wrapper .transfer-title-wrapper .description {
+    color: #ccc; }
+
+.transfer-details-wrapper .transfer-form-wrapper {
+  width: 45rem;
+  padding-top: 1%;
+  padding-left: 3%; }
+  .transfer-details-wrapper .transfer-form-wrapper .method-select-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1% auto 5% auto;
+    width: 100%; }
+    .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method {
+      padding: 1% 2%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      opacity: 0.6;
+      border-collapse: collapse;
+      gap: 5px;
+      min-height: 3rem; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method .transfer-icon svg {
+        width: 2rem;
+        height: 2rem;
+        position: relative;
+        top: 2px; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method .user-icon svg {
+        width: 1.5rem; }
+    .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method-active {
+      opacity: 1;
+      border: 1px solid #ffffff;
+      font-weight: 600; }
+      .transfer-details-wrapper .transfer-form-wrapper .method-select-container .transfer-method-active .transfer-icon svg path {
+        fill: #ffffff !important; }
+  .transfer-details-wrapper .transfer-form-wrapper .transfer-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 5%;
+    border-left: 1px solid #b0b0b0;
+    padding: 2% 5%; }
+  .transfer-details-wrapper .transfer-form-wrapper .error-wrapper {
+    display: flex;
+    gap: 1%;
+    color: var(--specials_notifications-alerts-warnings);
+    font-size: 1rem;
+    padding: 0 5%; }
+    .transfer-details-wrapper .transfer-form-wrapper .error-wrapper .anticon-exclamation-circle {
+      position: relative;
+      top: 3px; }
+
+.transfer-details-wrapper .blue-admin-select-dropdown,
+.transfer-details-wrapper .input-amount-wrapper,
+.transfer-details-wrapper .input-description-wrapper {
+  width: 100%;
+  min-width: 38rem; }
+
+.transfer-details-wrapper .input-amount-wrapper {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; }
+  .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child {
+    width: 100%; }
+    .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child .ant-input-number,
+    .transfer-details-wrapper .input-amount-wrapper .ant-space-item:first-child .ant-input-number :focus {
+      border: none;
+      box-shadow: none; }
+  .transfer-details-wrapper .input-amount-wrapper .ant-space-item:last-child {
+    margin-right: 3%; }
+
+.transfer-details-wrapper .transfer-form-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%; }
+  .transfer-details-wrapper .transfer-form-details .form-field {
+    width: 100%; }
+    .transfer-details-wrapper .transfer-form-details .form-field .anticon-arrow-down {
+      width: 15%;
+      position: relative;
+      left: 2%; }
+    .transfer-details-wrapper .transfer-form-details .form-field .currency-select-field .ant-select-selector .edit-wrapper__container {
+      position: relative;
+      bottom: 3px; }
+  .transfer-details-wrapper .transfer-form-details .green-btn {
+    width: 100%; }
+
+.transfer-details-wrapper .description-secondary-text {
+  font-size: 1rem;
+  color: #ffffff;
+  opacity: 0.8; }
+
+.transfer-details-wrapper .button-container {
+  padding: 2% 5%;
+  margin-top: 5%; }
+
+.confirm-transfer-details .confirm-transfer-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 5%; }
+
+.confirm-transfer-details .arrow-field {
+  margin-left: 6%;
+  gap: 3%;
+  min-height: 5rem; }
+  .confirm-transfer-details .arrow-field .arrow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .confirm-transfer-details .arrow-field .arrow-container .down-arrow svg {
+      width: 3.5rem;
+      height: 4rem; }
+  .confirm-transfer-details .arrow-field .decriptions {
+    font-size: 1rem;
+    gap: 5px;
+    padding: 3% 0; }
+
+.confirm-transfer-details .confirm-sender-transfer-details {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1% 4%; }
+  .confirm-transfer-details .confirm-sender-transfer-details .asset-field {
+    gap: 1.5%; }
+  .confirm-transfer-details .confirm-sender-transfer-details .sender-title {
+    position: relative;
+    bottom: 1.5rem;
+    padding: 1%;
+    background-color: var(--admin_panel_modal_background);
+    font-size: 1rem;
+    font-weight: bold; }
+  .confirm-transfer-details .confirm-sender-transfer-details .sender-transfer-details {
+    display: flex;
+    flex-direction: column; }
+    .confirm-transfer-details .confirm-sender-transfer-details .sender-transfer-details .transfer-amount {
+      font-size: 26px;
+      gap: 1%;
+      color: #ffee00; }
+
+.confirm-transfer-details .confirm-transfer-button-container {
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2%; }
+  .confirm-transfer-details .confirm-transfer-button-container .back-btn {
+    width: 70%; }
+  .confirm-transfer-details .confirm-transfer-button-container .confirm-btn {
+    width: 30%; }
+
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(1),
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(3) {
+  fill: #ffffff; }
+
+.transfer-completed-container .circle-icon .anticon-check-circle svg path:nth-child(2) {
+  fill: transparent; }
+
+.transfer-completed-container .repeat-transfer-select-wrapper .repeat-transfer-option {
+  color: #ffffff;
+  opacity: 0.6; }
+
+.transfer-completed-container .repeat-transfer-select-wrapper .repeat-transfer-option-active {
+  color: #ffffff;
+  opacity: 1; }
+
+.transfer-completed-container .next-btn-container {
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .transfer-completed-container .next-btn-container .next-btn {
+    width: 100%; }
+
+.confirm-transfer_modal .description-secondary-text {
+  font-size: 1rem;
+  color: #ffffff;
+  opacity: 0.8; }
+
+.confirm-transfer_modal .ant-modal-close-x {
+  color: #ffffff;
+  opacity: 1; }
+
+.confirm-transfer_modal .ant-modal-content .ant-modal-body {
+  padding: 8% !important; }
+
+.confirm-transfer_modal .ReactModal__Content {
+  width: 40rem; }
+
+.check-confirm-transfer_modal {
+  width: 50rem !important; }
+
+@media screen and (min-width: 1920px) {
+  .transfer-details-wrapper .blue-admin-select-dropdown,
+  .transfer-details-wrapper .input-amount-wrapper,
+  .transfer-details-wrapper .input-description-wrapper {
+    min-width: 37rem; }
+  .transfer-details-wrapper .transfer-form-wrapper .button-container .green-btn {
+    min-width: 37rem; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -15812,7 +16037,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 15rem - 10rem); }
+      height: calc( 100vh - 19rem - 8rem); }
       .modal-market-menu .app-bar-add-tab-content .scroll-view .app-bar-add-tab-content-list {
         font-size: 13px; }
   .modal-market-menu .app-bar-tab-overflow-content {
@@ -16864,6 +17089,8 @@ table th {
       display: flex;
       gap: 15px;
       align-items: center; }
+      .navigation-bar-wrapper .navigation-dropdown-container .options-container img {
+        width: 1.8rem; }
       .navigation-bar-wrapper .navigation-dropdown-container .options-container .option-details {
         font-size: 12px;
         display: flex;
@@ -17297,6 +17524,8 @@ table th {
             .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field svg {
               width: 80%;
               height: 100%; }
+              .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field svg .interface-setting {
+                fill: var(--labels_important-active-labels-text-graphics) !important; }
             .desktop-search-wrapper .search-description-container .dynamic-search-container .options-container .hot-options-container .options-field .icon-field .hot-icon {
               position: relative;
               bottom: 15px; }
@@ -17332,8 +17561,8 @@ table th {
   min-height: unset;
   max-height: unset; }
   .layout-mobile.language-popup-wrapper .ReactModal__Content .language-popup-container {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex;
     flex-direction: column;
     justify-content: space-between; }
@@ -18999,14 +19228,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 5rem);
-  max-height: calc( 100vh - 5rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 15rem);
-    max-height: calc( 100vh - 15rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -19442,6 +19671,14 @@ table th {
   font-size: 1.5rem !important;
   text-transform: capitalize;
   padding-top: 0.25rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-text {
+  font-size: 1.5rem !important; }
+
+.fees_limits .market-trading-fees-title .icon_title-svg {
+  width: 4rem !important; }
+  .fees_limits .market-trading-fees-title .icon_title-svg svg {
+    width: 2.5rem !important; }
 
 .fees_limits .fees-and-limit-title {
   font-size: 22px; }
@@ -20329,8 +20566,8 @@ table th {
   width: 100%;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: 5rem;
-  max-height: 5rem;
+  min-height: 4rem;
+  max-height: 4rem;
   background-color: var(--base_top-bar-navigation);
   color: var(--calculated_base_top-bar-navigation_text-inactive); }
 

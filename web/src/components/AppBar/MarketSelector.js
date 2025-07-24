@@ -60,6 +60,10 @@ class MarketSelector extends Component {
 		}
 	}
 
+	componentWillUnmount = () => {
+		this.debouncedSetLoadingFalse && this.debouncedSetLoadingFalse.cancel();
+	};
+
 	tabListMenuItems = () => {
 		const { symbols, selectedTabMenu, isLoading } = this.state;
 		const { coins } = this.props;
@@ -332,6 +336,7 @@ class MarketSelector extends Component {
 										<div
 											className="d-flex align-items-center justify-content-between w-100"
 											onClick={() =>
+												!isLoading &&
 												this.onMarketClick(
 													key || symbol,
 													type && type !== 'pro'

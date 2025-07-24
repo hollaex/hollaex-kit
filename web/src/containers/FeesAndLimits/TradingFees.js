@@ -24,6 +24,8 @@ const TradingFees = ({
 	setSearch,
 	user,
 	quicktradePairs,
+	scrollToTop,
+	constants,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -95,14 +97,16 @@ const TradingFees = ({
 											{STRINGS['FEE_REDUCTION']}: {user.discount}%
 										</div>
 									</div>
-									<div
-										className="blue-link pointer text-uppercase mt-2"
-										onClick={() => browserHistory.push('/referral')}
-									>
-										<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
-											{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
-										</EditWrapper>
-									</div>
+									{constants?.features?.referral_history_config && (
+										<div
+											className="blue-link pointer text-uppercase mt-2"
+											onClick={() => browserHistory.push('/referral')}
+										>
+											<EditWrapper stringId="REFERRAL_LINK.GO_TO_REFERRAL">
+												{STRINGS['REFERRAL_LINK.GO_TO_REFERRAL']}
+											</EditWrapper>
+										</div>
+									)}
 								</>
 							)}
 						</div>
@@ -120,8 +124,9 @@ const TradingFees = ({
 											STRINGS['FEES_AND_LIMITS.TABS.TRADING_FEES.TABLE.TITLE']
 										}
 										textType="title bold text-align-left"
-										iconPath={ICONS['FEES_AND_LIMITS_TRADING_FEES']}
-										className="fees-limits-title"
+										iconPath={ICONS['FEES_OPTION_ICON']}
+										className="fees-limits-title market-trading-fees-title"
+										iconId="FEES_OPTION_ICON"
 									/>
 									<div className="py-4">
 										<div>
@@ -158,6 +163,7 @@ const TradingFees = ({
 								tiers={config_level}
 								search={search}
 								quicktradePairs={quicktradePairs}
+								scrollToTop={scrollToTop}
 							/>
 						</div>
 					</div>
@@ -199,6 +205,7 @@ const mapStateToProps = (state) => {
 			label: name,
 		})),
 		user: state.user || {},
+		constants: state.app.constants,
 	};
 };
 
