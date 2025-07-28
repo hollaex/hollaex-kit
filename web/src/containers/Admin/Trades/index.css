@@ -467,7 +467,8 @@
 	width: 100%;
 } */
 
-.otc-Container .select-box .ant-select-selector {
+.otc-Container .select-box .ant-select-selector,
+.otc-Container .select-box .ant-input.track-market-select-input {
 	width: 412px;
 	height: 35px;
 }
@@ -742,7 +743,8 @@
 }
 .otc-Container .ant-input-affix-wrapper .ant-input,
 .otc-Container .ant-input-affix-wrapper,
-.otc-Container .expiry-time-field {
+.otc-Container .expiry-time-field,
+.otc-Container .ant-input-affix-wrapper .anticon {
 	background-color: var(--admin_panel_input);
 	color: #ffffff;
 }
@@ -769,7 +771,8 @@
 .otc-Container .email-option-wrapper .email-option .w-85 {
 	width: 85%;
 }
-.otc-Container .email-option-wrapper .email-option:hover {
+.otc-Container .email-option-wrapper .email-option:hover,
+.otc-Container .email-option-wrapper .email-option.highlighted-option {
 	background-color: #4b55ae;
 	cursor: pointer;
 }
@@ -906,4 +909,17 @@
 	.ant-select-arrow {
 	background: transparent;
 	color: #ffffff;
+}
+
+.otc-Container .email-option-wrapper .email-option .loading-anime {
+	height: 20px;
+	width: 12rem;
+	margin: 2%;
+	border-radius: 7px;
+	animation: mymove 3s infinite;
+	background-color: #4b55ae;
+}
+
+.otc-Container .clear-text:hover {
+	opacity: 0.6;
 }

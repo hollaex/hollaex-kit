@@ -29,6 +29,11 @@ definitions:
       service:
         type: string
         maxLength: 256
+      version:
+        type: string
+        enum:
+          - v2
+          - v3
       long_term:
         type: boolean
   ResetPassword:
@@ -421,12 +426,8 @@ definitions:
         type: string
         description: Currency symbol
       size:
-        type: number
-        format: double
         description: "Size of the order. Min: 0.0001, Max: 21000000"
       filled:
-        type: number
-        format: double
         description: "Size of the order filled. Min: 0.0001, Max: 21000000"
       type:
         type: string
