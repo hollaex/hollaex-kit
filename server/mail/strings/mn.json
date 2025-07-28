@@ -175,6 +175,10 @@
 		"SUSPICIOUS_LOGIN": {
 			"html": "<div><p>Эрхэм ${name},</p><p>Бид таны дансанд шинэ төхөөрөмж эсвэл байршлаас нэвтрэх оролдлогыг анзаалав. Хэрэв энэ та байсан бол нэвтрэлтийг баталгаажуулж дансаа аюулгүй болгоно уу. Хэрэв та биш бол дансаа хамгаалахын тулд нэн даруй арга хэмжээ аваарай.</p><p><strong>Нэвтрэх мэдээлэл:</strong><br />IP хаяг: ${ip}<br />Байршил: ${location}<br />Төхөөрөмж: ${device}<br />Цаг: ${time}</p><p>Үргэлжлүүлэхийн тулд дараах сонголтуудын аль нэгийг сонгоно уу:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Нэвтрэлтийг баталгаажуулах</Button></a></div><p>Хэрэв энэ нэвтрэх оролдлогыг та хийгээгүй бол зөвшөөрөлгүй нэвтрэлтээс сэргийлэхийн тулд <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">дансаа хөлдөөхийг</a> зөвлөж байна.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>",
 			"title": "Сэжигтэй нэвтрэх анхааруулга"
+		},
+		"SUSPICIOUS_LOGIN_CODE": {
+			"title": "Сэжигтэй нэвтрэлтийн анхааруулга",
+			"html": "<div><p>Сайн байна уу ${name},</p><p>Таны бүртгэлд шинэ төхөөрөмж эсвэл байршлаас нэвтрэх оролдлого илэрлээ. Хэрэв энэ та байсан бол доорх кодыг ашиглан баталгаажуулна уу. Хэрвээ үгүй бол, бүртгэлээ хамгаалахын тулд яаралтай арга хэмжээ авна уу.</p><p><strong>Нэвтрэлтийн дэлгэрэнгүй:</strong><br />IP хаяг: ${ip}<br />Байршил: ${location}<br />Төхөөрөмж: ${device}<br />Цаг: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>Хэрэв энэ та биш бол</strong>, <a href=\"${freeze_account_link}\">бүртгэлээ нэн даруй царцаахыг</a> зөвлөж байна.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>"
 		}
 	}
 }
