@@ -29,6 +29,11 @@ definitions:
       service:
         type: string
         maxLength: 256
+      version:
+        type: string
+        enum:
+          - v2
+          - v3
       long_term:
         type: boolean
   ResetPassword:
@@ -361,6 +366,22 @@ definitions:
         properties:
           post_only:
             type: boolean
+          note:
+            type: string
+          margin:
+            type: boolean
+          margin_close:
+            type: boolean
+          amount:
+            type: number
+            format: double
+          leverage:
+            type: number
+            format: double
+          borrowed_currency:
+            type: string
+          rate:
+            type: number
   OrderRequestByAdmin:
     type: object
     required:

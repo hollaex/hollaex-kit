@@ -15,7 +15,7 @@ const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials } = require('../../orderbook');
 const { getUserBalanceByKitId, transferAssetByKitIds } = require('./wallet');
-const { verifyBearerTokenPromise, verifyHmacTokenPromise} = require('./security');
+const { verifyBearerTokenPromise, verifyHmacTokenPromise } = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber, getTickers } = require('./common');
 const BigNumber = require('bignumber.js');
@@ -41,14 +41,14 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 
 	const convertScientificToDecimal = (input) => {
 		const num = parseFloat(input);
-	
+
 		if (!num.toString().includes('e')) {
 			return num.toString();
 		}
-	
+
 		const [base, exponent] = num.toExponential().split('e');
 		const exp = parseInt(exponent, 10);
-	
+
 		if (exp < 0) {
 			return '0.' + '0'.repeat(Math.abs(exp) - 1) + base.replace('.', '');
 		} else {
@@ -56,7 +56,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			return decimalPart + '0'.repeat(exp - (decimalPart.length - 1));
 		}
 	};
-	
+
 	size = convertScientificToDecimal(size);
 	price = convertScientificToDecimal(price);
 
@@ -85,6 +85,49 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		});
 };
 
+const createMarginTransferByKitId = (userKitId, balance_symbol, balance_amount, margin_to_spot, opts = { additionalHeaders: null }) => {
+
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+			}
+
+			return getNodeLib().marginTransfer(user.network_id, balance_symbol, balance_amount, margin_to_spot, opts);
+		});
+};
+
+const closeMarginPositionByKitId = (userKitId, target_asset, position_id, opts = { additionalHeaders: null }) => {
+
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+			}
+
+			return getNodeLib().closePosition(user.network_id, target_asset, position_id, opts);
+		});
+};
+
+const getUserMarginPositionByKitId = (userKitId, opts = { additionalHeaders: null }) => {
+
+	return getUserByKitId(userKitId)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			} else if (!user.network_id) {
+				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+			}
+
+			return getNodeLib().fetchPositions(user.network_id, opts);
+		});
+};
+
+
 const executeUserOrder = async (user_id, opts, token, req) => {
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
@@ -95,18 +138,18 @@ const executeUserOrder = async (user_id, opts, token, req) => {
 
 	if (size < 0) {
 		throw new Error(INVALID_SIZE);
-	} 
+	}
 
 	if (price < 0) {
 		throw new Error(INVALID_PRICE);
-	} 
+	}
 
 	let res;
 	if (type === 'market') {
-		const pairInfo  = getKitPairsConfig()[symbol];
+		const pairInfo = getKitPairsConfig()[symbol];
 		const decimalPoint = new BigNumber(pairInfo.increment_size).dp();
 		let roundedAmount = size;
-		if(new BigNumber(size).dp() > decimalPoint) {
+		if (new BigNumber(size).dp() > decimalPoint) {
 			roundedAmount = new BigNumber(size).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 		}
 		res = await createUserOrderByKitId(user_id, symbol, side, roundedAmount, type, 0, opts);
@@ -120,7 +163,7 @@ const executeUserOrder = async (user_id, opts, token, req) => {
 			throw new Error(BROKER_PAUSED);
 		}
 
-		if(size < brokerPair.min_size || size > brokerPair.max_size) {
+		if (size < brokerPair.min_size || size > brokerPair.max_size) {
 			throw new Error(BROKER_SIZE_EXCEED);
 		}
 
@@ -249,7 +292,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				} else if (receiving_amount != null) {
 					responseObj.spending_amount = brokerQuote.spending_amount;
 				}
-				
+
 				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
 				if (baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
 					throw new Error(BROKER_SIZE_EXCEED);
@@ -264,7 +307,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
 		try {
-		
+
 			if (!subscribedToPair(symbol)) {
 				return reject(new Error(INVALID_SYMBOL(symbol)));
 			}
@@ -361,7 +404,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 		responseObj.spending_amount = priceValues.spending_amount;
 		responseObj.receiving_amount = priceValues.receiving_amount;
-		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) {
 			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
 		}
 
@@ -379,7 +422,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		}
 
 		return responseObj;
-	} 
+	}
 	else {
 		let symbol = spending_amount ? `${spending_currency}-${receiving_currency}` : `${receiving_currency}-${spending_currency}`;
 		let size = spending_amount || receiving_amount;
@@ -390,7 +433,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			result.token = spendingAmount?.token;
 		}
 		if (result?.quote_amount) {
-			result.spending_amount = spending_amount ||  result?.quote_amount;
+			result.spending_amount = spending_amount || result?.quote_amount;
 			result.receiving_amount = receiving_amount || result?.quote_amount;
 			result.spending_currency = spending_currency;
 			result.receiving_currency = receiving_currency;
@@ -405,7 +448,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			expiryDate.setSeconds(30);
 			result.expiry = expiryDate;
 			return result;
-		} 
+		}
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
 };
@@ -1329,7 +1372,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 							symbol: `${from}-${to}`,
 							type,
 							active,
-							side: 'sell', 
+							side: 'sell',
 							size: initialAmount,
 							price: price,
 							token
@@ -1352,7 +1395,7 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 							symbol: `${from}-${to}`,
 							type,
 							active,
-							side: 'buy', 
+							side: 'buy',
 							size: initialAmount / price,
 							price: price,
 							token
@@ -1371,8 +1414,8 @@ const findConversionRate = (startCurrency, endCurrency, rates, visited = new Set
 	return shortestPath;
 };
 const findTradeAmount = (trades, initialFunds) => {
-	const availableFunds = { ...initialFunds }; 
-	const results = []; 
+	const availableFunds = { ...initialFunds };
+	const results = [];
 
 	for (const trade of trades) {
 		const [baseCurrency, quoteCurrency] = trade.symbol.split('-');
@@ -1384,7 +1427,7 @@ const findTradeAmount = (trades, initialFunds) => {
 			spendingCurrency = baseCurrency;
 			spendingAmount = size;
 			receivingCurrency = quoteCurrency;
-			receivingAmount = size * price; 
+			receivingAmount = size * price;
 		} else if (side === 'buy') {
 			spendingCurrency = quoteCurrency;
 			spendingAmount = availableFunds[quoteCurrency] || 0;
@@ -1426,8 +1469,8 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	const from = assets[0];
 	const to = assets[1];
 	//Check min values
-	const baseCoinInfo  = getKitCoin(from);
-	const quoteCoinInfo  = getKitCoin(to);
+	const baseCoinInfo = getKitCoin(from);
+	const quoteCoinInfo = getKitCoin(to);
 	if (size < baseCoinInfo.min) {
 		throw new Error('Size too small for the rate');
 	}
@@ -1445,28 +1488,28 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	}
 
 	//Find Trade Paths
-	if(!data) {
-		for (const rate of quickTrades) { 
+	if (!data) {
+		for (const rate of quickTrades) {
 			prices[rate.symbol] = { type: rate.type, price: NaN, active: rate.active };
 		}
 		let result = findConversionRate(from, to, prices, new Set(), size);
 		let index = 0;
-		for(const rate of result?.trades) {
-			if(!rate.active) { index++; continue;}
+		for (const rate of result?.trades) {
+			if (!rate.active) { index++; continue; }
 
 			try {
 				const trades = findTradeAmount(result.trades, { [from]: size });
-				
-				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency,  bearerToken, ip, opts, req, { user_id: id, network_id });
-				
-				let calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount  : quotePrice.spending_amount / quotePrice.receiving_amount;
-				
+
+				const quotePrice = await getUserQuickTrade(trades[index].spending_currency, trades[index].spending_amount, trades[index].receiving_amount, trades[index].receiving_currency, bearerToken, ip, opts, req, { user_id: id, network_id });
+
+				let calculatedPrice = rate.side === 'sell' ? quotePrice.receiving_amount / quotePrice.spending_amount : quotePrice.spending_amount / quotePrice.receiving_amount;
+
 				if (result.trades.length - 1 === index && !noSpread) {
 					nonspreadedPrice = calculatedPrice;
 					calculatedPrice = rate.side === 'sell' ? calculatedPrice * (1 - ((spread) / 100)) : calculatedPrice * (1 + (spread / 100));
 				}
 				result.trades[index].price = calculatedPrice;
-				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null};
+				prices[rate.symbol] = { type: rate.type, price: calculatedPrice, token: quotePrice?.token || null };
 				result = findConversionRate(from, to, prices, new Set(), size);
 				index++;
 			} catch (error) {
@@ -1481,7 +1524,7 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		await client.setexAsync(`${user_id}-${symbol}-rates`, 25, JSON.stringify(prices));
 
 	const result = findConversionRate(from, to, prices, new Set(), size);
-	if (result?.trades?.length && !noSpread && nonspreadedPrice) result.trades[result.trades.length -1].price = nonspreadedPrice;
+	if (result?.trades?.length && !noSpread && nonspreadedPrice) result.trades[result.trades.length - 1].price = nonspreadedPrice;
 	let token;
 
 	if (result?.totalRate && result.totalRate < quoteCoinInfo.min) {
@@ -1525,7 +1568,7 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 		throw new Error(TOKEN_EXPIRED);
 	}
 	const { source_account, currency } = getKitConfig()?.chain_trade_config || {};
-	
+
 	const tradeInfo = JSON.parse(storedToken);
 
 	const user = await getUserByKitId(user_id);
@@ -1552,15 +1595,15 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 			throw new Error('Rate not found!');
 		}
 
-		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`,  JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, opts, req, sourceUser.id, sourceUser.network_id);
+		lastRate = await getUserChainTradeQuote(null, `${currency}-${tradeInfo.quote_asset}`, JSON.parse(await client.getAsync(initialRate.token)).totalRate, null, opts, req, sourceUser.id, sourceUser.network_id);
 	} else {
 		lastRate = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id);
 	}
-	
+
 	if (!lastRate?.token) {
 		throw new Error('Rate not found!');
 	}
-		
+
 	const token = JSON.parse(await client.getAsync(lastRate.token));
 	let successfulTrades = [];
 	try {
@@ -1572,8 +1615,8 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 
 	const assets = lastTrade.symbol.split('-');
 	const to = assets[0];
-	
-	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price ) /  tradeInfo.size);
+
+	const brokerPrice = to === tradeInfo.quote_asset ? (lastTrade.size / tradeInfo.size) : ((lastTrade.size * lastTrade.price) / tradeInfo.size);
 	// trade between end user and middle man account
 
 	let result;
@@ -1600,8 +1643,8 @@ const executeUserChainTrade = async (user_id, userToken, opts, req) => {
 		);
 		throw new Error(error.message);
 	}
-	
-	
+
+
 	try {
 		// get the currency amount back for the middle man account
 		const { token } = await getUserChainTradeQuote(null, `${tradeInfo.base_asset}-${currency}`, tradeInfo.size, null, opts, req, sourceUser.id, sourceUser.network_id, true);
@@ -1636,19 +1679,19 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 			let { symbol, price, side, size, type } = trade;
 			if (size < 0) {
 				throw new Error(INVALID_SIZE);
-			} 
-		
+			}
+
 			if (price < 0) {
 				throw new Error(INVALID_PRICE);
-			} 
-		
+			}
+
 			let res;
 			let currentFee = 0;
 			if (type === 'pro') {
 				const fee = size * currentFee;
 				size = size - fee;
 
-				const pairInfo  = getKitPairsConfig()[symbol];
+				const pairInfo = getKitPairsConfig()[symbol];
 				const decimalPoint = new BigNumber(pairInfo.increment_size).dp();
 				let roundedAmount = size;
 				roundedAmount = new BigNumber(size).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
@@ -1659,17 +1702,17 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 					}
 				});
 
-				currentFee = res?.fee_structure?.taker || 0; 
+				currentFee = res?.fee_structure?.taker || 0;
 			}
 			else if (type === 'broker') {
 
 				const brokerPair = await getModel('broker').findOne({ where: { symbol } });
-		
+
 				const broker = await getUserByKitId(brokerPair.user_id);
-		
+
 				const tierBroker = getKitTier(broker.verification_level);
 				const tierUser = getKitTier(sourceUser.verification_level);
-		
+
 				const makerFee = tierBroker.fees.maker[symbol];
 				const takerFee = tierUser.fees.taker[symbol];
 
@@ -1685,7 +1728,7 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 					sourceUser.network_id,
 					{ maker: makerFee, taker: takerFee }
 				);
-				currentFee = takerFee || 0; 
+				currentFee = takerFee || 0;
 			}
 			else if (type === 'network') {
 				const tierUser = getKitTier(sourceUser.verification_level);
@@ -1748,7 +1791,10 @@ module.exports = {
 	createTrade,
 	getUserChainTradeQuote,
 	executeUserChainTrade,
-	findConversionRate
+	findConversionRate,
+	createMarginTransferByKitId,
+	closeMarginPositionByKitId,
+	getUserMarginPositionByKitId
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,
