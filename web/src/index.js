@@ -9,6 +9,7 @@ import merge from 'lodash.merge';
 import { Router, browserHistory } from 'react-router';
 import ConfigProvider from 'components/ConfigProvider';
 import EditProvider from 'components/EditProvider';
+import ElasticRumProvider from 'components/ElasticRumProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
 import { addElements, injectHTML } from 'utils/script';
@@ -333,14 +334,16 @@ const bootstrapApp = (
 	render(
 		<Provider store={store}>
 			<ErrorBoundary>
-				<EditProvider>
-					<ConfigProvider initialConfig={appConfig}>
-						<Router
-							routes={generateRoutes(remoteRoutes)}
-							history={browserHistory}
-						/>
-					</ConfigProvider>
-				</EditProvider>
+				<ElasticRumProvider>
+					<EditProvider>
+						<ConfigProvider initialConfig={appConfig}>
+							<Router
+								routes={generateRoutes(remoteRoutes)}
+								history={browserHistory}
+							/>
+						</ConfigProvider>
+					</EditProvider>
+				</ElasticRumProvider>
 			</ErrorBoundary>
 		</Provider>,
 		document.getElementById('root')

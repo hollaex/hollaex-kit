@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
 		"@ant-design/icons": "4.2.2",
+		"@elastic/apm-rum": "^5.17.0",
 		"@material/button": "0.7.0",
 		"@paciolan/remote-component": "2.11.0",
 		"@simonwep/pickr": "1.8.1",
@@ -88,8 +89,8 @@
 		"ws-heartbeat": "1.2.0"
 	},
 	"devDependencies": {
-		"@google-cloud/translate": "7.2.2",
 		"@craco/craco": "5.8.0",
+		"@google-cloud/translate": "7.2.2",
 		"cpy-cli": "3.1.1",
 		"glob": "7.1.7",
 		"husky": "4.3.0",
