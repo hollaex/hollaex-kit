@@ -542,6 +542,18 @@ const Otcdeskpopup = ({
 		);
 	};
 
+	const onHandleOpenAdvancedPopup = () => {
+		setDisplayAdvancedModal(true);
+		if (selectedMarket && selectedExchange) {
+			const symbol = selectedMarket?.replace('/', '-')?.toLowerCase();
+			setFormulaVariable(`${selectedExchange}_${symbol}`);
+			if (isValidFormula(formula) || !formula) {
+				setFormula(`${selectedExchange}_${symbol}`);
+				handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
+			}
+		}
+	};
+
 	const renderModalContent = () => {
 		switch (type) {
 			case 'step1':
@@ -1187,16 +1199,27 @@ const Otcdeskpopup = ({
 												Formula:{' '}
 												<span style={{ fontWeight: '600' }}>{formula}</span>
 												{!isValidFormula(formula) && (
-													<span
-														className="caps underline-text ml-2 pointer clear-text"
-														onClick={() => {
-															handlePreviewChange('', 'formula');
-															setFormula('');
-															setSelectedMarket('');
-														}}
-													>
-														Clear
-													</span>
+													<>
+														{!isUpgrade && (
+															<span
+																onClick={() => onHandleOpenAdvancedPopup()}
+																className="ml-3 mr-2 pointer underline-text"
+															>
+																EDIT
+															</span>
+														)}
+
+														<span
+															className="caps underline-text ml-2 pointer clear-text"
+															onClick={() => {
+																handlePreviewChange('', 'formula');
+																setFormula('');
+																setSelectedMarket('');
+															}}
+														>
+															Clear
+														</span>
+													</>
 												)}
 											</div>
 										)}
@@ -1359,24 +1382,7 @@ const Otcdeskpopup = ({
 
 											{!isUpgrade && (
 												<div
-													onClick={() => {
-														setDisplayAdvancedModal(true);
-														if (selectedMarket && selectedExchange) {
-															const symbol = selectedMarket
-																.replace('/', '-')
-																.toLowerCase();
-															setFormulaVariable(
-																`${selectedExchange}_${symbol}`
-															);
-															if (isValidFormula(formula) || !formula) {
-																setFormula(`${selectedExchange}_${symbol}`);
-																handlePreviewChange(
-																	`${selectedExchange}_${symbol}`,
-																	'formula'
-																);
-															}
-														}
-													}}
+													onClick={() => onHandleOpenAdvancedPopup()}
 													className="mt-5"
 													style={{
 														cursor: 'pointer',
