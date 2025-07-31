@@ -167,7 +167,17 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, version,
 const withdrawalRequestEmail = (user, data, domain, ip, version) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
-	const token = data.transaction_id || crypto.randomBytes(60).toString('hex');
+	let token;
+
+	if (version === "v3") {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		token = `${letters}-${numbers}`;
+	} else {
+		token = data.transaction_id || crypto.randomBytes(60).toString('hex');
+	}
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {

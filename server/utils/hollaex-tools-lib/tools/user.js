@@ -22,6 +22,7 @@ const {
 } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
+const crypto = require('crypto');
 const { SERVER_PATH } = require('../constants');
 const {
 	SIGNUP_NOT_AVAILABLE,
@@ -167,7 +168,18 @@ const signUpUser = (email, password, opts = { referral: null }, version) => {
 			});
 		})
 		.then((user) => {
-			const verification_code = uuid();
+			let verification_code;
+
+			if (version === "v3") {
+				const letters = Array.from({ length: 2 }, () =>
+					String.fromCharCode(65 + crypto.randomInt(0, 26))
+				).join('');
+				const numbers = Math.floor(10000 + Math.random() * 90000);
+				verification_code = `${letters}-${numbers}`;
+			} else {
+				verification_code = uuid();
+			}
+
 			storeVerificationCode(user, verification_code);
 			return all([
 				verification_code,
