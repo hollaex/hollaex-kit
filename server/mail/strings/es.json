@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Alerta de inicio de sesión sospechoso",
 			"html": "<div><p>Estimado ${name},</p><p>Hemos detectado un reciente intento de inicio de sesión en tu cuenta desde un dispositivo o ubicación nuevos. Por favor, utiliza el código a continuación para confirmar el inicio si fuiste tú. Si no, toma medidas inmediatas para proteger tu cuenta.</p><p><strong>Detalles del inicio de sesión:</strong><br />Dirección IP: ${ip}<br />Ubicación: ${location}<br />Dispositivo: ${device}<br />Hora: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Si esto <strong>no fuiste tú</strong>, recomendamos <a href=\"${freeze_account_link}\">congelar tu cuenta</a> inmediatamente para prevenir accesos no autorizados.</p><p>Saludos,<br />Equipo ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Estimado/a ${name}</p><p>Ha solicitado un retiro de ${amount} ${currency} a la dirección ${address}.<br /><br />Cantidad: ${amount} ${currency}<br />Comisión: ${fee} ${fee_coin}<br />Dirección: ${address}<br /><span id=\"network\">Red: ${network}</span><br /><br />Para confirmar este retiro, por favor use el siguiente código de verificación.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Este código es válido por tiempo limitado y debe ingresarse para continuar.</p><p>Si no realizó esta solicitud, puede ignorar este mensaje; no se realizará ningún cambio en su cuenta.</p><p>Solicitud iniciada desde: ${ip}</p><p>Saludos cordiales<br>Equipo ${api_name}</p></div>",
+			"title": "Solicitud de retiro de ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Estimado/a ${name}</p><p>Ha solicitado restablecer la contraseña de su cuenta.<br />Para proceder, por favor use el código de verificación a continuación.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Ingrese este código en la página de restablecimiento de contraseña para continuar. El código tiene validez limitada.</p><p>Si no realizó esta solicitud, puede ignorar este mensaje.</p><p>Solicitud iniciada desde: ${ip}</p><p>Saludos cordiales<br>Equipo ${api_name}</p></div>",
+			"title": "Solicitud de restablecimiento de contraseña"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Estimado/a ${name}</p><p>Para completar su registro, verifique su correo electrónico utilizando el siguiente código.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Ingrese este código en la página de registro para completar su inscripción. El código es válido por tiempo limitado.</p><p>Si tiene alguna pregunta, puede responder directamente a este correo.</p><p>Saludos cordiales<br>Equipo ${api_name}</p></div>",
+			"title": "Registro – Código de verificación"
 		}
 	}
 }

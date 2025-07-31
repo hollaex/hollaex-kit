@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Сэжигтэй нэвтрэлтийн анхааруулга",
 			"html": "<div><p>Сайн байна уу ${name},</p><p>Таны бүртгэлд шинэ төхөөрөмж эсвэл байршлаас нэвтрэх оролдлого илэрлээ. Хэрэв энэ та байсан бол доорх кодыг ашиглан баталгаажуулна уу. Хэрвээ үгүй бол, бүртгэлээ хамгаалахын тулд яаралтай арга хэмжээ авна уу.</p><p><strong>Нэвтрэлтийн дэлгэрэнгүй:</strong><br />IP хаяг: ${ip}<br />Байршил: ${location}<br />Төхөөрөмж: ${device}<br />Цаг: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>Хэрэв энэ та биш бол</strong>, <a href=\"${freeze_account_link}\">бүртгэлээ нэн даруй царцаахыг</a> зөвлөж байна.</p><p>Хүндэтгэсэн,<br />${api_name} баг</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Хүндэт ${name}</p><p>Та ${amount} ${currency}-г ${address} хаяг руу гаргах хүсэлт гаргасан байна.<br /><br />Дүн: ${amount} ${currency}<br />Төлбөр: ${fee} ${fee_coin}<br />Хаяг: ${address}<br /><span id=\"network\">Сүлжээ: ${network}</span><br /><br />Энэ гаргалтыг баталгаажуулахын тулд доорх баталгаажуулах кодыг ашиглана уу.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Энэ код нь тодорхой хугацаанд хүчинтэй бөгөөд үргэлжлүүлэхийн тулд оруулах шаардлагатай.</p><p>Хэрэв энэ хүсэлт санамсаргүй байсан бол энэ мэйлд анхааралгүй өнгөрөөгөөрэй; таны дансанд ямарч өөрчлөлт хийгдэхгүй.</p><p>Хүсэлтийг эхлүүлсэн IP: ${ip}</p><p>Хүндэтгэсэн<br />${api_name} баг</p></div>",
+			"title": "${currency} гаргалт хүсэлт"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Хүндэт ${name}</p><p>Та дансны нууц үгийг дахин тохируулах хүсэлт гаргасан байна.<br />Үргэлжлүүлэхийн тулд доорх баталгаажуулах кодыг ашиглана уу.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Үргэлжлүүлэхийн тулд энэ кодуудыг нууц үг дахин тохируулах хуудас дээр оруулна уу. Код нь хугацаатай хүчинтэй.</p><p>Хэрэв та энэ хүсэлтийг хийгээгүй бол энэ захидлыг үл хайхрах боломжтой.</p><p>Хүсэлтийг эхлүүлсэн IP: ${ip}</p><p>Хүндэтгэсэн<br />${api_name} баг</p></div>",
+			"title": "Нууц үг дахин тохируулах хүсэлт"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Хүндэт ${name}</p><p>Бүртгэлээ дуусгахын тулд доорх кодыг ашиглан имэйлийг баталгаажуулна уу.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Энэ кодыг бүртгэлийн хуудас дээр оруулж бүртгэлээ дуусгана уу. Код нь тодорхой хугацаанд хүчинтэй.</p><p>Асуулт байвал энэ имэйлд хариу бичнэ үү.</p><p>Хүндэтгэсэн<br />${api_name} баг</p></div>",
+			"title": "Бүртгэл – баталгаажуулах код"
 		}
 	}
 }

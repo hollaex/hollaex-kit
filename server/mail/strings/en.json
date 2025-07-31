@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Suspicious Login Alert",
 			"html": "<div><p>Dear ${name},</p><p>We noticed a recent login attempt on your account from a new device or location. Please use the code below to confirm this login if it was you. If not, take immediate action to protect your account.</p><p><strong>Login Details:</strong><br />IP Address: ${ip}<br />Location: ${location}<br />Device: ${device}<br />Time: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>If this was <strong>not you</strong>, we recommend <a href=\"${freeze_account_link}\">freezing your account</a> immediately to prevent unauthorized access.</p><p>Regards,<br />${api_name} Team</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Dear ${name}</p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}.<br /><br />Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Address: ${address}<br /><span id=\"network\">Network: ${network}</span><br /><br />To confirm this withdrawal, please use the verification code below.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>This code is valid for a limited time and must be entered to proceed.</p><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p>Regards<br />${api_name} team</p></div>",
+			"title": "${currency} Withdrawal Request"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Dear ${name}</p><p>You have requested to reset the password for your account.<br />To proceed, please use the verification code provided below.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>Enter this code in the password reset page to continue. The code is valid for a limited time.</p><p>If you did not make this request, you can safely ignore this message.</p><p>Request initiated from: ${ip}</p><p>Regards<br />${api_name} team</p></div>",
+			"title": "Reset Password Request"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Dear ${name}</p><p>To complete your registration, please verify your email using the code below.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>Enter this code in the registration page to complete your sign up. The code is valid for a limited time.</p><p>If you have any questions, feel free to contact us by replying to this email.</p><p>Regards<br />${api_name} team</p></div>",
+			"title": "Sign Up"
 		}
 	}
 }

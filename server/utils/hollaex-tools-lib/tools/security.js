@@ -253,9 +253,19 @@ const getResetPasswordCode = (code) => {
 		});
 };
 
-const createResetPasswordCode = (userId) => {
+const createResetPasswordCode = (userId, version) => {
+
+	let code;
 	//Generate new random code
-	const code = crypto.randomBytes(20).toString('hex');
+	if (version === "v3") {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		code = `${letters}-${numbers}`;
+	} else {
+		code = crypto.randomBytes(20).toString('hex');
+	}
 
 	//Code is expire in 5 mins
 	return client.setexAsync(`ResetPasswordCode:${code}`, 60 * 5, userId)
@@ -264,7 +274,7 @@ const createResetPasswordCode = (userId) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain) => {
+const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -274,11 +284,11 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
+			return all([createResetPasswordCode(user.id, version), user, checkCaptcha(captcha, ip)]);
 		})
 		.then(([code, user]) => {
 			sendEmail(
-				MAILTYPE.RESET_PASSWORD,
+				version === "v3" ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
 				email,
 				{ code, ip },
 				user.settings,

@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Şüpheli Giriş Uyarısı",
 			"html": "<div><p>Merhaba ${name},</p><p>Hesabınıza yeni bir cihaz veya konumdan giriş yapılmaya çalışıldığını fark ettik. Eğer bu sizseniz, lütfen aşağıdaki kodu kullanarak girişi onaylayın. Aksi takdirde, hesabınızı korumak için hemen önlem alın.</p><p><strong>Giriş Detayları:</strong><br />IP Adresi: ${ip}<br />Konum: ${location}<br />Cihaz: ${device}<br />Zaman: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>Eğer bu siz değilseniz</strong>, <a href=\"${freeze_account_link}\">hesabınızı hemen dondurmanızı</a> öneririz.</p><p>Saygılarımızla,<br />${api_name} Ekibi</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Sayın ${name}</p><p>${address} adresine ${amount} ${currency} çekim talebinde bulundunuz.<br /><br />Tutar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Adres: ${address}<br /><span id=\"network\">Ağ: ${network}</span><br /><br />Bu çekimi onaylamak için lütfen aşağıdaki doğrulama kodunu kullanın.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Bu kod sınırlı süre için geçerlidir ve devam etmek için girilmelidir.</p><p>Bu istek yanlışlıkla yapılmışsa, bu mesajı görmezden gelebilirsiniz; hesabınızda herhangi bir değişiklik olmayacaktır.</p><p>Talebin başlatıldığı cihaz/IP: ${ip}</p><p>Saygılarımızla<br />${api_name} ekibi</p></div>",
+			"title": "${currency} Çekim Talebi"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Sayın ${name}</p><p>Hesabınızın parolasını sıfırlama talebinde bulundunuz.<br />Devam etmek için lütfen aşağıdaki doğrulama kodunu kullanın.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Devam etmek için bu kodu parola sıfırlama sayfasına girin. Kodun geçerlilik süresi sınırlıdır.</p><p>Bu isteği siz yapmadıysanız, bu mesajı güvenle görmezden gelebilirsiniz.</p><p>Talebin başlatıldığı cihaz/IP: ${ip}</p><p>Saygılarımızla<br />${api_name} ekibi</p></div>",
+			"title": "Parola Sıfırlama Talebi"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Sayın ${name}</p><p>Kayıt işleminizi tamamlamak için lütfen aşağıdaki kodu kullanarak e-posta adresinizi doğrulayın.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Kayıt sayfasında bu kodu girerek kayıt işlemini tamamlayın. Kod sınırlı süre için geçerlidir.</p><p>Herhangi bir sorunuz varsa, bu e-postayı yanıtlayarak bize ulaşabilirsiniz.</p><p>Saygılarımızla<br />${api_name} ekibi</p></div>",
+			"title": "Kayıt – Doğrulama Kodu"
 		}
 	}
 }

@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Peringatan Login Mencurigakan",
 			"html": "<div><p>Hai ${name},</p><p>Kami mendeteksi upaya login terbaru ke akun Anda dari perangkat atau lokasi baru. Silakan gunakan kode di bawah ini untuk mengonfirmasi login jika itu Anda. Jika tidak, segera ambil tindakan untuk melindungi akun Anda.</p><p><strong>Detail Login:</strong><br />Alamat IP: ${ip}<br />Lokasi: ${location}<br />Perangkat: ${device}<br />Waktu: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Jika <strong>bukan Anda</strong>, kami sarankan untuk segera <a href=\"${freeze_account_link}\">membekukan akun Anda</a> untuk mencegah akses tidak sah.</p><p>Salam,<br />Tim ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Yth. ${name}</p><p>Anda telah mengajukan permintaan penarikan sebesar ${amount} ${currency} ke alamat ${address}.<br /><br />Jumlah: ${amount} ${currency}<br />Biaya: ${fee} ${fee_coin}<br />Alamat: ${address}<br /><span id=\"network\">Jaringan: ${network}</span><br /><br />Untuk mengonfirmasi penarikan ini, silakan gunakan kode verifikasi di bawah ini.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Kode ini hanya berlaku untuk waktu terbatas dan harus dimasukkan untuk melanjutkan.</p><p>Jika permintaan ini dilakukan secara tidak sengaja, Anda dapat mengabaikan email ini; tidak ada perubahan yang akan dilakukan pada akun Anda.</p><p>Permintaan dimulai dari: ${ip}</p><p>Salam<br />Tim ${api_name}</p></div>",
+			"title": "Permintaan Penarikan ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Yth. ${name}</p><p>Anda telah meminta pengaturan ulang kata sandi akun Anda.<br />Untuk melanjutkan, silakan gunakan kode verifikasi di bawah ini.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Masukkan kode ini di halaman reset kata sandi untuk melanjutkan. Kode ini berlaku untuk waktu terbatas.</p><p>Jika Anda tidak membuat permintaan ini, abaikan email ini dengan aman.</p><p>Permintaan dimulai dari: ${ip}</p><p>Salam<br />Tim ${api_name}</p></div>",
+			"title": "Permintaan Reset Kata Sandi"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Yth. ${name}</p><p>Untuk menyelesaikan pendaftaran Anda, silakan verifikasi email Anda menggunakan kode di bawah ini.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Masukkan kode ini di halaman pendaftaran untuk menyelesaikan proses. Kode ini berlaku untuk waktu terbatas.</p><p>Jika Anda memiliki pertanyaan, cukup balas email ini.</p><p>Salam<br />Tim ${api_name}</p></div>",
+			"title": "Verifikasi Pendaftaran"
 		}
 	}
 }

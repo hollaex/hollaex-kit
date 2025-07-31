@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Alerte de connexion suspecte",
 			"html": "<div><p>Bonjour ${name},</p><p>Nous avons détecté une tentative de connexion récente à votre compte depuis un nouvel appareil ou une nouvelle localisation. Veuillez utiliser le code ci-dessous pour confirmer cette connexion si c'était vous. Sinon, prenez des mesures immédiates pour protéger votre compte.</p><p><strong>Détails de la connexion :</strong><br />Adresse IP : ${ip}<br />Localisation : ${location}<br />Appareil : ${device}<br />Heure : ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Si ce <strong>n'était pas vous</strong>, nous vous recommandons de <a href=\"${freeze_account_link}\">geler votre compte</a> immédiatement pour éviter tout accès non autorisé.</p><p>Cordialement,<br />L'équipe ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Cher/Chère ${name}</p><p>Vous avez demandé un retrait de ${amount} ${currency} vers l’adresse ${address}.<br /><br />Montant : ${amount} ${currency}<br />Frais : ${fee} ${fee_coin}<br />Adresse : ${address}<br /><span id=\"network\">Réseau : ${network}</span><br /><br />Pour confirmer ce retrait, veuillez utiliser le code de vérification ci-dessous.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Ce code est valable pour une durée limitée et doit être saisi pour continuer.</p><p>Si cette demande est une erreur, vous pouvez ignorer ce message ; aucun changement ne sera effectué sur votre compte.</p><p>Demande initiée depuis : ${ip}</p><p>Cordialement<br>L’équipe ${api_name}</p></div>",
+			"title": "Demande de retrait en ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Cher/Chère ${name}</p><p>Vous avez demandé la réinitialisation de votre mot de passe.<br />Pour continuer, veuillez utiliser le code de vérification ci-dessous.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Entrez ce code sur la page de réinitialisation de mot de passe pour poursuivre. Le code est valable pour une durée limitée.</p><p>Si vous n’avez pas fait cette demande, vous pouvez ignorer ce message.</p><p>Demande initiée depuis : ${ip}</p><p>Cordialement<br>L’équipe ${api_name}</p></div>",
+			"title": "Demande de réinitialisation de mot de passe"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Cher/Chère ${name}</p><p>Pour finaliser votre inscription, veuillez vérifier votre e‑mail en utilisant le code ci‑dessous.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Entrez ce code sur la page d’enregistrement pour terminer votre inscription. Le code est valable pour une durée limitée.</p><p>Si vous avez des questions, n’hésitez pas à répondre à cet e‑mail.</p><p>Cordialement<br>L’équipe ${api_name}</p></div>",
+			"title": "Inscription – Code de vérification"
 		}
 	}
 }

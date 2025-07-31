@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Alerta de login suspeito",
 			"html": "<div><p>Olá ${name},</p><p>Detectamos uma tentativa recente de login em sua conta a partir de um novo dispositivo ou local. Se foi você, utilize o código abaixo para confirmar o login. Caso contrário, tome medidas imediatas para proteger sua conta.</p><p><strong>Detalhes do login:</strong><br />Endereço IP: ${ip}<br />Localização: ${location}<br />Dispositivo: ${device}<br />Horário: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Se <strong>não foi você</strong>, recomendamos <a href=\"${freeze_account_link}\">congelar sua conta</a> imediatamente para evitar acessos não autorizados.</p><p>Atenciosamente,<br />Equipe ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Prezado(a) ${name}</p><p>Você solicitou um saque de ${amount} ${currency} para o endereço ${address}.<br /><br />Valor: ${amount} ${currency}<br />Taxa: ${fee} ${fee_coin}<br />Endereço: ${address}<br /><span id=\"network\">Rede: ${network}</span><br /><br />Para confirmar este saque, por favor utilize o código de verificação abaixo.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Este código é válido por tempo limitado e deve ser utilizado para continuar.</p><p>Se você não solicitou isso, pode ignorar esta mensagem; nenhuma alteração será feita em sua conta.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br>Equipe ${api_name}</p></div>",
+			"title": "Solicitação de Saque em ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Prezado(a) ${name}</p><p>Você solicitou redefinir a senha da sua conta.<br />Para prosseguir, utilize o código de verificação abaixo.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Insira este código na página de redefinição de senha para continuar. O código tem validade limitada.</p><p>Se você não fez esta solicitação, pode ignorar esta mensagem.</p><p>Solicitação iniciada de: ${ip}</p><p>Atenciosamente<br>Equipe ${api_name}</p></div>",
+			"title": "Solicitação de Redefinição de Senha"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Prezado(a) ${name}</p><p>Para concluir seu registro, confirme seu e‑mail usando o código abaixo.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Digite este código na página de registro para concluir seu cadastro. O código é válido por tempo limitado.</p><p>Se tiver dúvidas, basta responder este e‑mail.</p><p>Atenciosamente<br>Equipe ${api_name}</p></div>",
+			"title": "Cadastro – Código de Confirmação"
 		}
 	}
 }

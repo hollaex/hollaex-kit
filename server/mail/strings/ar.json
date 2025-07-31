@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "تنبيه تسجيل دخول مشبوه",
 			"html": "<div><p>عزيزي ${name}،</p><p>لاحظنا محاولة تسجيل دخول حديثة إلى حسابك من جهاز أو موقع جديد. يرجى استخدام الرمز أدناه لتأكيد تسجيل الدخول إذا كنت أنت من قام بذلك. إذا لم تكن أنت، اتخذ إجراءً فورياً لحماية حسابك.</p><p><strong>تفاصيل تسجيل الدخول:</strong><br />عنوان IP: ${ip}<br />الموقع: ${location}<br />الجهاز: ${device}<br />الوقت: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>إذا <strong>لم تكن أنت</strong>، ننصحك <a href=\"${freeze_account_link}\">بتجميد حسابك</a> فوراً لمنع أي وصول غير مصرح به.</p><p>مع التحية،<br />فريق ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لقد طلبت سحب مبلغ ${amount} ${currency} إلى العنوان ${address}.<br /><br />المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${fee_coin}<br />العنوان: ${address}<br /><span id=\"network\">الشبكة: ${network}</span><br /><br />لتأكيد هذا السحب، يرجى استخدام رمز التحقق أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>هذا الرمز صالح لفترة محدودة ويجب إدخاله للمتابعة.</p><p>إذا كانت هذه الطلبية عن طريق الخطأ، يمكنك تجاهل الرسالة بأمان؛ لن يتم إجراء أي تغييرات على حسابك.</p><p>تم تشغيل الطلب من: ${ip}</p><p>تحياتي<br>فريق ${api_name}</p></div>",
+			"title": "طلب سحب ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لقد طلبت إعادة تعيين كلمة المرور لحسابك.<br />للمتابعة، يرجى استخدام رمز التحقق أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>أدخل هذا الرمز في صفحة إعادة تعيين كلمة المرور للمتابعة. الرمز صالح فقط لفترة محدودة.</p><p>إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.</p><p>تم تشغيل الطلب من: ${ip}</p><p>تحياتي<br>فريق ${api_name}</p></div>",
+			"title": "طلب إعادة تعيين كلمة المرور"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لإكمال تسجيلك، يرجى التحقق من بريدك الإلكتروني باستخدام الرمز أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>أدخل هذا الرمز في صفحة التسجيل لإكمال التسجيل. الرمز صالح فقط لفترة محدودة.</p><p>إذا كان لديك أي أسئلة، يمكنك الرد مباشرة على هذا البريد.</p><p>تحياتي<br>فريق ${api_name}</p></div>",
+			"title": "تأكيد التسجيل"
 		}
 	}
 }

@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "Verdächtiger Login-Versuch",
 			"html": "<div><p>Hallo ${name},</p><p>Wir haben einen kürzlichen Anmeldeversuch von einem neuen Gerät oder Standort festgestellt. Bitte verwende den untenstehenden Code, um diesen Login zu bestätigen, falls du es warst. Falls nicht, ergreife sofort Maßnahmen, um dein Konto zu schützen.</p><p><strong>Anmeldedetails:</strong><br />IP-Adresse: ${ip}<br />Standort: ${location}<br />Gerät: ${device}<br />Zeit: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Falls du das <strong>nicht warst</strong>, empfehlen wir dir, dein <a href=\"${freeze_account_link}\">Konto sofort einzufrieren</a>, um unbefugten Zugriff zu verhindern.</p><p>Viele Grüße,<br />${api_name} Team</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>Sehr geehrte/r ${name}</p><p>Sie haben eine Auszahlung über ${amount} ${currency} an ${address} beantragt.<br /><br />Betrag: ${amount} ${currency}<br />Gebühr: ${fee} ${fee_coin}<br />Adresse: ${address}<br /><span id=\"network\">Netzwerk: ${network}</span><br /><br />Zur Bestätigung dieser Auszahlung verwenden Sie bitte den folgenden Verifizierungscode.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Dieser Code ist nur eine begrenzte Zeit gültig und muss eingegeben werden, um fortzufahren.</p><p>Wenn diese Anfrage versehentlich erfolgte, können Sie diese Nachricht ignorieren – es wird nichts an Ihrem Konto geändert.</p><p>Anfrage initiiert von: ${ip}</p><p>Mit freundlichen Grüßen<br>${api_name}-Team</p></div>",
+			"title": "${currency}-Auszahlung bestätigt"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>Sehr geehrte/r ${name}</p><p>Sie haben eine Zurücksetzung Ihres Passworts angefordert.<br />Verwenden Sie bitte den folgenden Verifizierungscode, um fortzufahren.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Geben Sie diesen Code auf der Passwort‑Zurücksetzen Seite ein. Der Code ist nur begrenzt gültig.</p><p>Wenn Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail ignorieren.</p><p>Anfrage initiiert von: ${ip}</p><p>Mit freundlichen Grüßen<br>${api_name}-Team</p></div>",
+			"title": "Passwort zurücksetzen Anfrage"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>Sehr geehrte/r ${name}</p><p>Zur Abschließung Ihrer Registrierung verifizieren Sie bitte Ihre E‑Mail-Adresse mit dem folgenden Code.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Geben Sie diesen Code auf der Registrierungsseite ein, um sich zu registrieren. Der Code ist nur begrenzt gültig.</p><p>Bei Fragen antworten Sie gerne einfach auf diese E‑Mail.</p><p>Mit freundlichen Grüßen<br>${api_name}-Team</p></div>",
+			"title": "Registrierung – Bestätigungscode"
 		}
 	}
 }
