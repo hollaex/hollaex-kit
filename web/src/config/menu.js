@@ -100,6 +100,13 @@ export const MENU_ITEMS = {
 			activePaths: ['/wallet/history', '/wallet'],
 		},
 		{
+			path: '/margin',
+			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'WALLET_FOOTER'}`,
+			string_id: 'ACCOUNTS.MARGIN_TRADE',
+			hide_from_appbar: false,
+			activePaths: ['/margin'],
+		},
+		{
 			path: '/transactions',
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',

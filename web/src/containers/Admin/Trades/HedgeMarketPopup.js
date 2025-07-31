@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Loading } from 'containers/DigitalAssets/components/utils';
 
 const Pophedge = ({
 	MarketPop,
@@ -14,8 +15,12 @@ const Pophedge = ({
 	hedgeSymbol,
 	hedgeApi,
 	hedge,
+	marketLoading = false,
 }) => {
-	const [filter, setFilter] = useState();
+	const isDisableNext = hedgeMarkets?.find(
+		(data) => data?.symbol?.toLowerCase() === hedgeSymbol?.toLowerCase()
+	);
+
 	return (
 		<>
 			<Modal
@@ -33,8 +38,11 @@ const Pophedge = ({
 						id="marketkey mb-2"
 						value={hedgeSymbol}
 						onChange={(e) => {
-							setFilter(e.target.value);
+							setHedgeSymbol(e.target.value);
 						}}
+						allowClear
+						className="market-select-input"
+						onClear={() => setHedgeSymbol('')}
 					/>
 					<div className="email-option-wrapper mt-5">
 						<div className="d-flex table-header email-header">
@@ -45,22 +53,38 @@ const Pophedge = ({
 						<div className="overflow">
 							{hedgeMarkets
 								?.filter((m) =>
-									filter
-										? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase())
+									hedgeSymbol
+										? m?.symbol
+												?.toLowerCase()
+												?.includes(hedgeSymbol?.toLowerCase())
 										: true
 								)
 								.map((data, index) => {
 									return (
 										<div
 											key={index}
-											className="email-option"
+											className={
+												data?.symbol?.toLowerCase() ===
+												hedgeSymbol?.toLowerCase()
+													? 'email-option highlighted-option'
+													: 'email-option'
+											}
 											onClick={() => setHedgeSymbol(data.symbol)}
 										>
 											<div className="d-flex w-85">
-												<div className="w-50">
-													{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}
-												</div>
-												<div className="w-50">{data.symbol}</div>
+												{marketLoading ? (
+													<Loading index={index} />
+												) : (
+													<div className="w-50">
+														{hedgeApi.charAt(0).toUpperCase() +
+															hedgeApi.slice(1)}
+													</div>
+												)}
+												{marketLoading ? (
+													<Loading index={index} />
+												) : (
+													<div className="w-50">{data.symbol}</div>
+												)}
 												{/* <div className="w-50 preview_text">{'-'}</div> */}
 											</div>
 										</div>
@@ -96,6 +120,7 @@ const Pophedge = ({
 							type="primary"
 							className="green-btn"
 							onClick={() => chooseMarket({}, 'confirm', hedge)}
+							disabled={!isDisableNext}
 						>
 							Confirm
 						</Button>

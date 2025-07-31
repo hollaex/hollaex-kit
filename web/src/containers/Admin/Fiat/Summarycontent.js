@@ -703,7 +703,10 @@ const Summarycontent = ({
 									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
 									wrapperClassName="withdrawalIcon"
 								/>
-								<Link to="/admin/financials?tab=2" className="underline ml-1">
+								<Link
+									to="/admin/financials?deposits"
+									className="underline ml-1"
+								>
 									View fiat deposits
 								</Link>
 							</span>
@@ -750,7 +753,10 @@ const Summarycontent = ({
 									icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
 									wrapperClassName="withdrawalIcon "
 								/>
-								<Link to="/admin/financials?tab=3" className="underline ml-1">
+								<Link
+									to="/admin/financials?withdrawals"
+									className="underline ml-1"
+								>
 									View fiat withdrawals
 								</Link>
 							</span>
@@ -830,6 +836,7 @@ const Summarycontent = ({
 				footer={null}
 				onCancel={onCancelModal}
 				width="37rem"
+				className="fiat-control-validate-popup-wrapper"
 			>
 				{isOpen ? (
 					<ValidateDismiss

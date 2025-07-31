@@ -366,6 +366,23 @@ const MobileBarMoreOptions = ({
 
 	const otherFunctionOptions = [
 		{
+			icon_id: 'INTERFACE_OPTION_ICON',
+			iconText: 'SUMMARY.TITLE',
+			path: '/summary',
+			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.SUMMARY_DESCRIPTION',
+			searchContent: [
+				STRINGS['ACCOUNT_TEXT'],
+				STRINGS['HOLLAEX_TOKEN.INFO'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.TIERS'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.UPGRADE'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.DETAILS'],
+				STRINGS['SUMMARY.ACCOUNT_DETAILS'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.MY'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.FRIENDS'],
+			],
+		},
+		{
 			icon_id: 'API_OPTION_ICON',
 			iconText: 'MORE_OPTIONS_LABEL.ICONS.API',
 			path: '/security?apiKeys',
@@ -722,10 +739,12 @@ const MobileBarMoreOptions = ({
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.SETUP_ORDER'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.BUY_AUTOMATICALLY'],
 				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.DCA'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.TRADER'],
+				STRINGS['TRADE_TAB_TRADE'],
 			],
 		},
 		{
-			icon_id: 'INTERFACE_OPTION_ICON',
+			icon_id: 'SETTING_INTERFACE_ICON',
 			iconText: 'USER_SETTINGS.TITLE_INTERFACE',
 			path: '/settings?interface',
 			isDisplay: true,
@@ -1089,7 +1108,11 @@ const MobileBarMoreOptions = ({
 															]
 														}
 														wrapperClassName="icon-logo"
-														type="CS8"
+														type={
+															data?.icon_id === 'SETTING_INTERFACE_ICON'
+																? 'CS9'
+																: 'CS8'
+														}
 													/>
 													{data?.icon_id === 'REFERRAL_OPTION_ICON' && (
 														<span>

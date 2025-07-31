@@ -165,6 +165,8 @@ class Verification extends Component {
 				return 'identity';
 			case 'bank':
 				return 'banks';
+			case 'user_payments':
+				return 'payment-accounts';
 			default:
 				return '';
 		}

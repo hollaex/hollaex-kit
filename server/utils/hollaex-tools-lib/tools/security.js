@@ -303,6 +303,20 @@ const verifyOtp = (userSecret, userDigits) => {
 	return serverDigits.includes(userDigits);
 };
 
+const getUserOtpCode = (user_id, usedParam = true) => {
+	return dbQuery.findOne('otp code', {
+		where: {
+			used: usedParam,
+			user_id
+		},
+		attributes: ['id', 'secret'],
+		order: [['updated_at', 'DESC']]
+	})
+		.then((otpCode) => {
+			return generateOtp(otpCode.secret, 30)
+		})
+};
+
 const hasUserOtpEnabled = (id) => {
 	return dbQuery.findOne('user', {
 		where: { id },
@@ -1355,6 +1369,7 @@ module.exports = {
 	checkOtp,
 	generateOtp,
 	generateOtpSecret,
+	getUserOtpCode,
 	findUserOtp,
 	setActiveUserOtp,
 	updateUserOtpEnabled,

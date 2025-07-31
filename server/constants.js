@@ -236,7 +236,8 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
-	'smtp'
+	'smtp',
+	'test_key',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
@@ -460,6 +461,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/bitcoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/bitcoin',
+			txPath: '/tx'
 		}
 	],
 	xrp: [
@@ -541,6 +547,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/dogecoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/dogecoin',
+			txPath: '/tx'
 		}
 	],
 	ltc: [
@@ -548,6 +559,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/litecoin/transaction'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/litecoin',
+			txPath: '/tx'
 		}
 	],
 	etn: [
@@ -559,15 +575,15 @@ exports.EXPLORERS = {
 	],
 	ada: [
 		{
+			name: 'CardanoScan',
+			baseUrl: 'https://cardanoscan.io',
+			txPath: '/transaction'
+		},
+		{
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/cardano/transaction'
 		},
-		{
-			name: 'CardanoScan',
-			baseUrl: 'https://cardanoscan.io',
-			txPath: '/transaction'
-		}
 	],
 	eos: [
 		{
@@ -610,12 +626,22 @@ exports.EXPLORERS = {
 			name: 'PolygonScan',
 			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/polygon',
+			txPath: '/tx'
 		}
 	],
 	pol: [
 		{
 			name: 'PolygonScan',
 			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/polygon',
 			txPath: '/tx'
 		}
 	],
@@ -631,8 +657,39 @@ exports.EXPLORERS = {
 			name: 'Arbiscan Explorer',
 			baseUrl: 'https://arbiscan.io',
 			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/arbitrum-one',
+			txPath: '/tx'
 		}
-	]
+	],
+	sui: [
+		{
+			name: 'Sui Scan',
+			baseUrl: 'https://suiscan.xyz/mainnet',
+			txPath: '/tx'
+		},
+		{
+			name: 'OKLink',
+			baseUrl: 'https://www.oklink.com/sui',
+			txPath: '/tx'
+		}
+	],
+	s: [
+		{
+			name: 'Sonic Scan',
+			baseUrl: 'https://sonicscan.org',
+			txPath: '/tx'
+		}
+	],
+	// ton: [
+	// 	{
+	// 		name: 'OKLink',
+	// 		baseUrl: 'https://www.oklink.com/ton',
+	// 		txPath: '/tx'
+	// 	}
+	// ]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
