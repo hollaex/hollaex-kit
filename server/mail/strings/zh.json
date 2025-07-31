@@ -175,6 +175,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "可疑登录提醒",
 			"html": "<div><p>亲爱的 ${name}，</p><p>我们注意到有一项从新设备或位置发起的登录尝试。若为您本人操作，请使用以下验证码确认登录。如非您本人操作，请立即采取措施保护您的账户安全。</p><p><strong>登录详情：</strong><br />IP地址：${ip}<br />位置：${location}<br />设备：${device}<br />时间：${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>如果<strong>不是您本人</strong>，我们建议您立即<a href=\"${freeze_account_link}\">冻结账户</a>以防止未经授权的访问。</p><p>此致敬礼，<br />${api_name} 团队</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>尊敬的 ${name}</p><p>您已请求将 ${amount} ${currency} 提取至地址 ${address}。<br /><br />金额：${amount} ${currency}<br />手续费：${fee} ${fee_coin}<br />地址：${address}<br /><span id=\"network\">网络：${network}</span><br /><br />要确认此次提现，请使用下面的验证码。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>此验证码有效期有限，必须输入才能继续操作。</p><p>如果您未发起此请求，可忽略此邮件；您的账户不会受到影响。</p><p>请求发起自：${ip}</p><p>此致<br />${api_name} 团队</p></div>",
+			"title": "${currency} 提现请求"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>尊敬的 ${name}</p><p>您已请求重置账户密码。<br />为继续操作，请使用以下验证码。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>请在密码重置页面输入此验证码继续。验证码有效期有限。</p><p>如果您没有提出此请求，可忽略此邮件。</p><p>请求发起自：${ip}</p><p>此致<br />${api_name} 团队</p></div>",
+			"title": "重置密码请求"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>尊敬的 ${name}</p><p>为完成注册，请使用以下验证码验证您的邮件。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>请输入此验证码至注册页面以完成注册。此验证码有效期有限。</p><p>如有疑问，请直接回复此邮件。</p><p>此致<br />${api_name} 团队</p></div>",
+			"title": "注册验证"
 		}
 	}
 }

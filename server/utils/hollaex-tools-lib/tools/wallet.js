@@ -114,7 +114,7 @@ const findLimit = (limits = [], currency) => {
 
 
 
-const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
+const sendRequestWithdrawalEmail = (user_id, address, amount, currency, version, opts = {
 	network: null,
 	otpCode: null,
 	fee: null,
@@ -158,12 +158,13 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					network: opts.network
 				},
 				opts.domain,
-				opts.ip
+				opts.ip,
+				version
 			);
 		});
 };
 
-const withdrawalRequestEmail = (user, data, domain, ip) => {
+const withdrawalRequestEmail = (user, data, domain, ip, version) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
 	const token = data.transaction_id || crypto.randomBytes(60).toString('hex');
@@ -172,7 +173,7 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 		.then(() => {
 			const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
 			sendEmail(
-				MAILTYPE.WITHDRAWAL_REQUEST,
+				version === "v3" ? MAILTYPE.WITHDRAWAL_REQUEST_CODE : MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
 					amount,

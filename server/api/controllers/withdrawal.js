@@ -76,7 +76,8 @@ const requestWithdrawal = (req, res) => {
 		otp_code,
 		amount,
 		currency,
-		network
+		network,
+		version
 	} = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 	const ip = req.headers['x-real-ip'];
@@ -94,7 +95,7 @@ const requestWithdrawal = (req, res) => {
 		network
 	);
 
-	toolsLib.wallet.sendRequestWithdrawalEmail(id, address, amount, currency, {
+	toolsLib.wallet.sendRequestWithdrawalEmail(id, address, amount, currency, version, {
 		network,
 		otpCode: otp_code,
 		ip,

@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "هشدار ورود مشکوک",
 			"html": "<div><p>${name} عزیز،</p><p>یک تلاش ورود جدید از دستگاه یا مکان جدید به حساب شما مشاهده شده است. لطفاً اگر این ورود توسط شما بوده است، از کد زیر برای تأیید آن استفاده کنید. در غیر این صورت، بلافاصله برای حفاظت از حساب خود اقدام کنید.</p><p><strong>جزئیات ورود:</strong><br />آدرس IP: ${ip}<br />مکان: ${location}<br />دستگاه: ${device}<br />زمان: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>اگر این ورود <strong>توسط شما نبوده است</strong>، توصیه می‌کنیم <a href=\"${freeze_account_link}\">حساب خود را فورا مسدود کنید</a> تا از دسترسی غیرمجاز جلوگیری شود.</p><p>با احترام،<br />تیم ${api_name}</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>کاربر محترم ${name}</p><p>شما درخواست برداشت ${amount} ${currency} به آدرس ${address} داده‌اید.<br /><br />مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${fee_coin}<br />آدرس: ${address}<br /><span id=\"network\">شبکه: ${network}</span><br /><br />برای تأیید این برداشت، لطفاً از کد تأیید زیر استفاده کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد برای مدت محدودی معتبر است و باید برای ادامه وارد شود.</p><p>اگر این درخواست اشتباه بوده، می‌توانید به‌راحتی آن را نادیده بگیرید؛ هیچ تغییری در حساب شما انجام نخواهد شد.</p><p>درخواست از: ${ip}</p><p>با احترام<br>تیم ${api_name}</p></div>",
+			"title": "درخواست برداشت ${currency}"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>کاربر محترم ${name}</p><p>شما درخواست بازنشانی رمز عبور حساب خود را داده‌اید.<br />برای ادامه، لطفاً از کد تأیید زیر استفاده کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد را در صفحه بازنشانی رمز عبور وارد کنید. کد برای مدت محدودی معتبر است.</p><p>اگر شما این درخواست را صادر نکرده‌اید، می‌توانید این پیام را نادیده بگیرید.</p><p>درخواست از: ${ip}</p><p>با احترام<br>تیم ${api_name}</p></div>",
+			"title": "درخواست بازنشانی رمز عبور"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>کاربر محترم ${name}</p><p>برای کامل کردن ثبت‌نام، لطفاً با استفاده از کد زیر ایمیل خود را تأیید کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد را در صفحه ثبت‌نام وارد کنید تا ثبت‌نام کامل شود. کد برای مدت محدودی معتبر است.</p><p>اگر سؤال دارید، فقط به همین ایمیل پاسخ دهید.</p><p>با احترام<br>تیم ${api_name}</p></div>",
+			"title": "تایید ثبت‌نام"
 		}
 	}
 }

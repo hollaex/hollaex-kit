@@ -309,6 +309,11 @@ definitions:
         description: Blockchain network
         minLength: 1
         maxLength: 10
+      version:
+        type: string
+        enum:
+          - v2
+          - v3
   OtpRequest:
     type: object
     required:

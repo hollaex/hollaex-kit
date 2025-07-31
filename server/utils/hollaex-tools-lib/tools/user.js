@@ -121,7 +121,7 @@ const storeVerificationCode = (user, verification_code) => {
 	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
 };
 
-const signUpUser = (email, password, opts = { referral: null }) => {
+const signUpUser = (email, password, opts = { referral: null }, version) => {
 	if (!getKitConfig().new_user_is_activated) {
 		return reject(new Error(SIGNUP_NOT_AVAILABLE));
 	}
@@ -184,7 +184,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 			}));
 
 			sendEmail(
-				MAILTYPE.SIGNUP,
+				version === "v3" ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
 				email,
 				verificationCode,
 				{}

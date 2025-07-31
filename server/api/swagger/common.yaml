@@ -259,6 +259,11 @@ paths:
           required: true
           type: string
           maxLength: 256
+        - name: version
+          in: query
+          required: false
+          type: string
+          enum: ['v2', 'v3']
       responses:
         200:
           description: Success

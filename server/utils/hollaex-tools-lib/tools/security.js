@@ -264,7 +264,7 @@ const createResetPasswordCode = (userId) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain) => {
+const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -278,7 +278,7 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 		})
 		.then(([code, user]) => {
 			sendEmail(
-				MAILTYPE.RESET_PASSWORD,
+				version === "v3" ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
 				email,
 				{ code, ip },
 				user.settings,

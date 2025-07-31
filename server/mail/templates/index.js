@@ -571,9 +571,47 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{time\}/g, data.time || 'Unknown Time');
 		html = html.replace(/\$\{confirmation_code\}/g, data.verification_code);
 		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.verification_code}&prompt=false&freeze_account=true`);
+	} 
+	else if (type === MAILTYPE.WITHDRAWAL_REQUEST_CODE) {
+		let currency = data.currency || '';
+		let fee_coin = data.fee_coin || data.currency || '';
+		html = html.replace(/\$\{currency\}/g, currency.toUpperCase());
+		html = html.replace(/\$\{fee_coin\}/g, fee_coin.toUpperCase());
+
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{amount\}/g, data.amount || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
+		if (data.address) {
+			html = html.replace(/\$\{address\}/g, data.address || '');
+		} else {
+			html = html.replace(
+				/<div id='address'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{confirmation_code\}/g, data.transaction_id);
+		if (data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(
+				/<div id='network'[^>]*>[\s\S]*?<\/div>/,
+				'' // skip
+			);
+		}
 	}
-
-
+	else if (type === MAILTYPE.RESET_PASSWORD_CODE) { 
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{confirmation_code\}/g, data.code);
+	}
+	else if (type === MAILTYPE.SIGNUP_CODE) {
+		html = html.replace(/\$\{name\}/g, email);
+		html = html.replace(/\$\{api_name\}/g, API_NAME());
+		html = html.replace(/\$\{confirmation_code\}/g, data);
+	}
 	return html;
 };
 
@@ -586,6 +624,7 @@ const getTitle = (type, title = '', data) => {
 		type === MAILTYPE.DEPOSIT_PENDING ||
 		type === MAILTYPE.DEPOSIT_COMPLETED ||
 		type === MAILTYPE.WITHDRAWAL_REQUEST ||
+		type === MAILTYPE.WITHDRAWAL_REQUEST_CODE ||
 		type === MAILTYPE.DEPOSIT_CANCEL ||
 		type === MAILTYPE.WITHDRAWAL_CANCEL
 	) {
