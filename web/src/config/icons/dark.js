@@ -363,7 +363,7 @@ const nestedIcons = {
 	FROZEN_ICON: '/assets/images/frozen.svg',
 	CONFIRM_FREEZE_ICON: '/assets/images/confirm-freeze.svg',
 
-	HOME_PAGE_TRADE_ICON: '/assets/images/home-page-trade.png',
+	HOME_PAGE_TRADE_ICON: '/assets/images/orderbook-home-page.png',
 	DI_LANDING_PAGE_SECTION_QUESTION_SECTION: '/assets/images/faq-background.png',
 	DI_LANDING_PAGE_SECTION_QUICK_TRADE_CALCULATOR:
 		'/assets/images/global-background.png',

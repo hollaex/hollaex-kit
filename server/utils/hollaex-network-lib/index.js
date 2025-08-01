@@ -115,7 +115,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/signup`;
+		}/signup`;
 		const data = { email };
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -303,7 +303,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/user?user_id=${userId}`;
+		}/user?user_id=${userId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -412,7 +412,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/wallets?`;
+		}/wallets?`;
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
@@ -502,7 +502,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/withdraw?user_id=${userId}`;
+		}/withdraw?user_id=${userId}`;
 		const data = { address, currency, amount };
 		if (opts.network) {
 			data.network = opts.network;
@@ -543,7 +543,7 @@ class HollaExNetwork {
 
 		const verb = 'DELETE';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/withdraw?user_id=${userId}&id=${withdrawalId}`;
+		}/withdraw?user_id=${userId}&id=${withdrawalId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -601,7 +601,7 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/deposits?`;
+		}/deposits?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -731,7 +731,7 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/deposits?user_id=${userId}`;
+		}/deposits?user_id=${userId}`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -854,7 +854,7 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/withdrawals?`;
+		}/withdrawals?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -984,7 +984,7 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/withdrawals?user_id=${userId}`;
+		}/withdrawals?user_id=${userId}`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -1209,7 +1209,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/trade`;
+		}/trade`;
 
 		const data = {
 			side,
@@ -1254,7 +1254,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/order?user_id=${userId}&order_id=${orderId}`;
+		}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1323,7 +1323,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/order?user_id=${userId}`;
+		}/order?user_id=${userId}`;
 		const data = { symbol, side, size, type, price };
 
 		if (isPlainObject(feeData.fee_structure)) {
@@ -1376,7 +1376,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/margin?user_id=${userId}`;
+		}/margin/transfer?user_id=${userId}`;
 		const data = { balance_symbol, balance_amount, margin_to_spot };
 
 		const headers = generateHeaders(
@@ -1411,7 +1411,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/margin/position?user_id=${userId}`;
+		}/margin/position?user_id=${userId}`;
 		const data = { target_asset, position_id };
 
 		const headers = generateHeaders(
@@ -1445,7 +1445,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/margin/position?user_id=${userId}`;
+		}/margin/position?user_id=${userId}`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -1480,7 +1480,7 @@ class HollaExNetwork {
 
 		const verb = 'DELETE';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/order?user_id=${userId}&order_id=${orderId}`;
+		}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1704,7 +1704,7 @@ class HollaExNetwork {
 		const verb = 'DELETE';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/order/all?user_id=${userId}`;
+		}/order/all?user_id=${userId}`;
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
@@ -1738,7 +1738,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/user/stats?user_id=${userId}`;
+		}/user/stats?user_id=${userId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1841,7 +1841,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/transfer`;
+		}/transfer`;
 		const data = {
 			sender_id: senderId,
 			receiver_id: receiverId,
@@ -1911,7 +1911,7 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/trades/history?`;
+		}/trades/history?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -2006,7 +2006,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/orderbook`;
+		}/orderbook`;
 
 		if (symbol) {
 			path += `?symbol=${symbol}`;
@@ -2035,7 +2035,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/orderbooks`;
+		}/orderbooks`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2075,7 +2075,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2111,7 +2111,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/charts?from=${from}&to=${to}&resolution=${resolution}`;
+		}/charts?from=${from}&to=${to}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2148,7 +2148,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/minichart?assets=${assets}`;
+		}/minichart?assets=${assets}`;
 
 		if (opts.from) {
 			path += `&from=${opts.from}`;
@@ -2189,7 +2189,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/udf/config`;
+		}/udf/config`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2228,7 +2228,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2258,7 +2258,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/udf/symbols?symbol=${symbol}`;
+		}/udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2316,7 +2316,7 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/tickers`;
+		}/tickers`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2816,7 +2816,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		let path = `${this.baseUrl}/oracle/prices?exchange_id=${this.exchange_id
-			}&assets=${assets}`;
+		}&assets=${assets}`;
 
 		if (isString(opts.quote)) {
 			path += `&quote=${opts.quote}`;
@@ -2959,7 +2959,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/coin/all`;
+		}/coin/all`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -3002,7 +3002,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/coin`;
+		}/coin`;
 		const data = {
 			symbol,
 			fullname
@@ -3082,7 +3082,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/coins?`;
+		}/coins?`;
 
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
@@ -3136,7 +3136,7 @@ class HollaExNetwork {
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/coin`;
+		}/coin`;
 		const data = {};
 
 		for (const field in fields) {
@@ -3221,7 +3221,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/pair/all`;
+		}/pair/all`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -3264,7 +3264,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/pair`;
+		}/pair`;
 		const data = {
 			name,
 			pair_base: baseCoin,
@@ -3337,7 +3337,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		let path = `${this.baseUrl}/network/${this.exchange_id
-			}/pairs?`;
+		}/pairs?`;
 
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
@@ -3383,7 +3383,7 @@ class HollaExNetwork {
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/pair`;
+		}/pair`;
 		const data = {};
 
 		for (const field in fields) {
@@ -3450,7 +3450,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/icon`;
+		}/icon`;
 
 		const formData = {
 			file: {
@@ -3484,7 +3484,7 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 		const path = `${this.baseUrl}/network/${this.exchange_id
-			}/jwt`;
+		}/jwt`;
 
 
 
