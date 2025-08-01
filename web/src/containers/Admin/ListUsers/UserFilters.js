@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
 	Button,
 	Input,
@@ -12,7 +14,13 @@ import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './UserFilters.scss';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
-const UseFilters = ({ applyFilters }) => {
+import { setIsActiveFilterUser } from 'actions/appActions';
+
+const UseFilters = ({
+	applyFilters,
+	isActiveFilterUser,
+	setIsActiveFilterUser,
+}) => {
 	const { Option } = Select;
 	const fieldKeyValue = {
 		id: { type: 'string', label: 'User ID' },
@@ -87,6 +95,17 @@ const UseFilters = ({ applyFilters }) => {
 	const [filters, setFilters] = useState(defaultFilters);
 
 	const [field, setField] = useState();
+
+	const userFilterRef = useRef(null);
+
+	useEffect(() => {
+		if (isActiveFilterUser) {
+			userFilterRef.current.focus();
+			setIsActiveFilterUser(false);
+		}
+		//eslint-disable-next-line
+	}, [isActiveFilterUser]);
+
 	const dateFormat = 'YYYY/MM/DD';
 
 	const canReset = filters?.find(
@@ -264,10 +283,15 @@ const UseFilters = ({ applyFilters }) => {
 						(key) => !filters.find((filter) => filter.field === key)
 					)?.length !== 0 && (
 						<Select
+							ref={userFilterRef}
 							className="select-box"
 							showSearch
 							style={{ width: 150 }}
 							placeholder="Add filter"
+							{...(isActiveFilterUser ? { open: true } : {})}
+							onBlur={() => {
+								setIsActiveFilterUser(false);
+							}}
 							value={field}
 							onChange={(value) => {
 								setField(null);
@@ -344,4 +368,12 @@ const UseFilters = ({ applyFilters }) => {
 	);
 };
 
-export default UseFilters;
+const mapStateToProps = (state) => ({
+	isActiveFilterUser: state.app.isActiveFilterUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsActiveFilterUser: bindActionCreators(setIsActiveFilterUser, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UseFilters);

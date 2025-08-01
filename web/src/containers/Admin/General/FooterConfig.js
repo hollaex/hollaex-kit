@@ -461,7 +461,7 @@ class FooterConfig extends Component {
 		const { isDisable } = this.props;
 		return (
 			<div>
-				<h3>Footer Links</h3>
+				<h3 id="footer-links">Footer Links</h3>
 				<Form
 					fields={custom_fields}
 					initialValues={initialCustom}

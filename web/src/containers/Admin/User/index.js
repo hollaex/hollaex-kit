@@ -33,6 +33,7 @@ class App extends Component {
 		this.state = {
 			...INITIAL_STATE,
 			kycPluginName,
+			profile: '',
 		};
 	}
 
@@ -65,7 +66,10 @@ class App extends Component {
 	};
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.location.search !== prevProps.location.search) {
+		if (
+			this.props.location.search !== prevProps.location.search &&
+			!Object.keys(prevProps.location?.query)?.includes('tab')
+		) {
 			if (this.props.location.search) {
 				const qs = querystring.parse(this.props.location.search);
 				if (qs.id) {
@@ -86,6 +90,7 @@ class App extends Component {
 				this.props.router.replace(
 					`/admin/user?id=${this.state.userInformation.id}`
 				);
+				this.setState({ profile: '' });
 			}
 		}
 	}
@@ -95,6 +100,10 @@ class App extends Component {
 		const { router } = this.props;
 		const { kycPluginName, ...rest } = INITIAL_STATE;
 		this.setState({ ...rest, loading: true });
+		if (values?.tab) {
+			this.setState({ profile: values?.tab });
+			delete values?.tab;
+		}
 		if (values.id) {
 			router.replace(`/admin/user?id=${values.id}`);
 		}
@@ -241,6 +250,8 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 				requestUserData={this.requestUserData}
 				referral_history_config={this.props.referral_history_config}
+				router={this.props.router}
+				userProfile={this.state.profile}
 			/>
 		) : (
 			<div className="app_container-content user-container">

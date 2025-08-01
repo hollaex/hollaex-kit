@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { Modal } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 import { setEditMode } from 'actions/appActions';
 
 import './index.css';
+import OperatorControlSearch from '../AppWrapper/OperatorControlSearch';
 
 const CARD_LIST = [
 	{
@@ -84,8 +86,34 @@ const CARD_LIST = [
 
 const Dashboard = ({ constants = {}, setEditMode = () => {} }) => {
 	let showLabel = constants.api_name || '';
+
+	const [isDisplaySearch, setIsDisplaySearch] = useState(false);
+	const [search, setSearch] = useState('');
+
+	const onHandleSearch = (text) => {
+		setSearch(text);
+	};
+
+	const onHandleClose = () => {
+		setIsDisplaySearch(false);
+		setSearch('');
+	};
+
 	return (
 		<div className="admin-content-wrapper">
+			<Modal
+				visible={isDisplaySearch}
+				onCancel={onHandleClose}
+				footer={null}
+				maskClosable={false}
+				className="operator-control-search-popup"
+			>
+				<OperatorControlSearch
+					onHandleClose={onHandleClose}
+					search={search}
+					setSearch={onHandleSearch}
+				/>
+			</Modal>
 			<div className="flex-menu">
 				<ReactSVG
 					src={constants.logo_image || STATIC_ICONS.HEX_PATTERN_ICON}
@@ -121,6 +149,28 @@ const Dashboard = ({ constants = {}, setEditMode = () => {} }) => {
 						</div>
 					</div>
 				))}
+				<div className="admin-dash-card flex-menu">
+					<div>
+						<ReactSVG
+							src={STATIC_ICONS['OPERATOR_CONTROL_SEARCH']}
+							className="card-icon operator-control-search-icon"
+						/>
+					</div>
+					<div>
+						<div className="card-title">Search</div>
+						<div className="card-description">
+							Explore exchange functions, pages and features.
+						</div>
+						<div className="card-link">
+							<span
+								className="pointer underline-text"
+								onClick={() => setIsDisplaySearch(true)}
+							>
+								View more
+							</span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

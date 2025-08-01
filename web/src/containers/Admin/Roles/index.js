@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Button, Table, Select, Modal, message } from 'antd';
 import { Tabs, Input } from 'antd';
@@ -162,7 +162,7 @@ const renderItems = (filteredRoles) => {
 	);
 };
 
-const Roles = ({ constants, user, coins, setRolesList }) => {
+const Roles = ({ constants, user, coins, setRolesList, router }) => {
 	const limit = 50;
 	const [operatorList, setOperatorList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -229,6 +229,19 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeTab]);
+
+	useEffect(() => {
+		const [, params] = window.location.search.split('?');
+		if (params === 'designate') {
+			setActiveTab('0');
+		} else if (params === 'manage') {
+			setActiveTab('1');
+		} else if (!params) {
+			setActiveTab('0');
+			router.replace('/admin/roles?designate');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [window.location.search]);
 
 	const handleInvite = (values) => {
 		setButtonSubmitting(true);
@@ -418,6 +431,11 @@ const Roles = ({ constants, user, coins, setRolesList }) => {
 
 	const onHandleTabChange = (tab) => {
 		setActiveTab(tab);
+		if (tab === '0') {
+			router.replace('/admin/roles?designate');
+		} else {
+			router.replace('/admin/roles?manage');
+		}
 	};
 
 	const roleDetails = roles.reduce(
@@ -826,4 +844,4 @@ const mapDispatchToProps = (dispatch) => ({
 	setRolesList: bindActionCreators(setRolesList, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Roles);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Roles));

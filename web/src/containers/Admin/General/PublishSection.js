@@ -19,7 +19,16 @@ const PublishSection = ({
 }) => {
 	return (
 		<div>
-			<div className="sub-title">{title}</div>
+			<div
+				className="sub-title"
+				id={
+					title === 'Onboarding background image'
+						? 'onboarding-background'
+						: title?.split(' ')?.join('-')?.toLowerCase()
+				}
+			>
+				{title}
+			</div>
 			<div className="description">{description}</div>
 			<div className="file-wrapper">
 				<Collapse defaultActiveKey={['1']} bordered={false} ghost>

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Tabs } from 'antd';
@@ -12,12 +12,20 @@ import P2PActive from './p2pActive';
 import P2PUnverifiedPayments from './p2punverifiedPayments';
 import { setExchange } from 'actions/assetActions';
 import P2PFeedbacks from './p2pFeedbacks';
+import { setSelectedP2pTab } from 'actions/appActions';
 
 const TabPane = Tabs.TabPane;
 
-const P2P = () => {
+const P2P = ({ selectedP2pTab, setSelectedP2pTab = () => {} }) => {
 	const [hideTabs, setHideTabs] = useState(false);
 	const [activeTab, setActiveTab] = useState('1');
+
+	useEffect(() => {
+		if (selectedP2pTab) {
+			setActiveTab(selectedP2pTab);
+			setSelectedP2pTab(null);
+		}
+	}, [selectedP2pTab]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
@@ -69,10 +77,12 @@ const mapStateToProps = (state) => ({
 	coinObjects: state.app.allContracts.coins,
 	broker: state.app.broker,
 	features: state.app.constants.features,
+	selectedP2pTab: state.app.selectedP2pTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setSelectedP2pTab: bindActionCreators(setSelectedP2pTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(P2P);
