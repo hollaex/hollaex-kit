@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactQuill from 'react-quill';
 import { ReactSVG } from 'react-svg';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 import {
 	Button,
 	DatePicker,
@@ -171,11 +171,29 @@ const AdminAnnouncement = ({
 	setAppAnnouncements,
 	setIsAdminAnnouncementFeature,
 	getAnnouncements,
+	router,
 }) => {
 	const [activeTab, setActiveTab] = useState('0');
+	const tabs = ['activeAnnouncement', 'displayLocation'];
+
+	useEffect(() => {
+		const [, params] = window.location.search?.split('?');
+		if (params === 'activeAnnouncement') {
+			setActiveTab('0');
+		} else if (params === 'displayLocation') {
+			setActiveTab('1');
+		} else if (!params) {
+			setActiveTab('0');
+			router.push('/admin/announcement?activeAnnouncement');
+		}
+		// eslint-disable-next-line
+	}, [window.location.search]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+		const url = new URL(window.location.href);
+		url.search = `?${tabs[key]}`;
+		router.replace(url);
 	};
 
 	return (
@@ -1245,4 +1263,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminAnnouncement);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(AdminAnnouncement));

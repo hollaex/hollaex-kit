@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button, Input, Modal, message } from 'antd';
 import _debounce from 'lodash/debounce';
 
@@ -8,6 +10,7 @@ import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
 
 import './index.css';
+import { setIsDisplayAddPlugin } from 'actions/appActions';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -23,9 +26,22 @@ class MyPlugins extends Component {
 		};
 	}
 
+	handleDisplayAddPlugin = () => {
+		const { isDisplayAddPlugin, setIsDisplayAddPlugin } = this.props;
+		if (isDisplayAddPlugin && !this.state.isVisible) {
+			this.setState({ isVisible: true });
+			setIsDisplayAddPlugin(false);
+		}
+	};
+
 	componentDidMount() {
 		// this.props.getMyPlugins();
 		// this.props.getPlugins();
+		this.handleDisplayAddPlugin();
+	}
+
+	componentDidUpdate() {
+		this.handleDisplayAddPlugin();
 	}
 
 	componentWillUnmount() {
@@ -384,4 +400,11 @@ class MyPlugins extends Component {
 	}
 }
 
-export default MyPlugins;
+const mapStateToProps = (state) => ({
+	isDisplayAddPlugin: state.app.isDisplayAddPlugin,
+});
+const mapDispatchToProps = (dispatch) => ({
+	setIsDisplayAddPlugin: bindActionCreators(setIsDisplayAddPlugin, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPlugins);

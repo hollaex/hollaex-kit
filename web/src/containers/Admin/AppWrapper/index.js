@@ -3,7 +3,17 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
+import {
+	Layout,
+	Menu,
+	Row,
+	Col,
+	Spin,
+	message,
+	Tooltip,
+	Input,
+	Modal,
+} from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
@@ -68,6 +78,7 @@ import { getTabParams } from '../AdminFinancials/Assets';
 import { roleStyles } from '../Roles/RoleManagement';
 import { fetchRoles } from '../Roles/action';
 import { isColorDark } from '../Roles/Utils';
+import OperatorControlSearch from './OperatorControlSearch';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -117,6 +128,8 @@ class AppWrapper extends React.Component {
 			setupCompleted: true,
 			myPlugins: [],
 			isConfigure: false,
+			isDisplaySearchPopup: false,
+			search: '',
 		};
 	}
 
@@ -522,6 +535,14 @@ class AppWrapper extends React.Component {
 		this.setState({ isConfigure: !this.state.isConfigure });
 	};
 
+	setSearch = (text) => {
+		this.setState({ search: text });
+	};
+
+	onHandleClose = () => {
+		this.setState({ isDisplaySearchPopup: false, search: '' });
+	};
+
 	render() {
 		const {
 			children,
@@ -657,6 +678,19 @@ class AppWrapper extends React.Component {
 			const prevPath = localStorage.getItem('prevPath');
 			return (
 				<Fragment>
+					<Modal
+						visible={this.state.isDisplaySearchPopup}
+						onCancel={this.onHandleClose}
+						footer={null}
+						maskClosable={false}
+						className="operator-control-search-popup"
+					>
+						<OperatorControlSearch
+							onHandleClose={this.onHandleClose}
+							search={this.state.search}
+							setSearch={this.setSearch}
+						/>
+					</Modal>
 					<div className="admin-top-bar">
 						<Link to={prevPath}>
 							<div className="top-box-menu">
@@ -665,9 +699,25 @@ class AppWrapper extends React.Component {
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className="mr-2 time-wrapper">
+						<div className="mr-2 time-wrapper d-flex align-items-center">
+							<div
+								className="pointer"
+								onClick={() =>
+									this.setState({
+										isDisplaySearchPopup: true,
+									})
+								}
+							>
+								<Input
+									placeholder="Search"
+									size="small"
+									readOnly
+									prefix={<ReactSVG src={STATIC_ICONS['SEARCH']} />}
+									className="admin-search-input"
+								/>
+							</div>
 							<Tooltip placement="bottom" title={<Timer isHover={true} />}>
-								<div className="ml-2">
+								<div className="ml-4">
 									<Timer isHover={false} />
 								</div>
 							</Tooltip>

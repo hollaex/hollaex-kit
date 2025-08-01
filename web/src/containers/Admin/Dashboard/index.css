@@ -25,3 +25,7 @@
 	margin-top: 0.5rem;
 	text-decoration: underline;
 }
+
+.admin-dash-card .card-icon.operator-control-search-icon div:first-child {
+	text-align: center;
+}

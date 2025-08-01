@@ -4,7 +4,7 @@ import { requestAddUser } from '../User/actions';
 
 const { Item } = Form;
 
-const AddUser = ({ onCancel, requestFullUsers }) => {
+const AddUser = ({ onCancel, requestFullUsers, setIsActiveAddNewUsers }) => {
 	const onFinish = (values) => {
 		const { password, confirmPassword, userEmail } = values;
 
@@ -20,6 +20,7 @@ const AddUser = ({ onCancel, requestFullUsers }) => {
 		} else {
 			message.error('Password do not match');
 		}
+		setIsActiveAddNewUsers(false);
 	};
 
 	return (

@@ -1056,7 +1056,9 @@ class GeneralContent extends Component {
 					{this.props.user?.configs?.includes('api_name') &&
 					activeTab === 'branding' ? (
 						<div>
-							<div className="sub-title">Exchange Name</div>
+							<div className="sub-title" id="exchange-name">
+								Exchange Name
+							</div>
 							<NameForm
 								initialValues={initialNameValues}
 								onSubmit={this.handleSubmitName}
@@ -1072,7 +1074,9 @@ class GeneralContent extends Component {
 					activeTab === 'localization' ? (
 						<div>
 							<div>
-								<div className="sub-title">Country</div>
+								<div className="sub-title" id="country">
+									Country
+								</div>
 								<CountryForm
 									initialValues={initialCountryValues}
 									onSubmit={this.handleSubmitDefault}
@@ -1087,7 +1091,9 @@ class GeneralContent extends Component {
 							{this.props.user?.configs?.includes('timezone') && (
 								<>
 									<div>
-										<div className="sub-title">Timezone</div>
+										<div className="sub-title" id="timezone">
+											Timezone
+										</div>
 										<Select
 											onChange={(e) => {
 												this.handleInputChangeTimezone('timezone', e);
@@ -1117,7 +1123,9 @@ class GeneralContent extends Component {
 
 							{this.props.user?.configs?.includes('valid_languages') && (
 								<div>
-									<div className="sub-title">Language</div>
+									<div className="sub-title" id="language">
+										Language
+									</div>
 									<div className="description">
 										You can edit language and strings{' '}
 										<span
@@ -1151,7 +1159,9 @@ class GeneralContent extends Component {
 							<div className="divider" />
 							{this.props.user?.configs?.includes('strings') && (
 								<div>
-									<div className="sub-title">Theme</div>
+									<div className="sub-title" id="theme">
+										Theme
+									</div>
 									<div className="description">
 										You can edit theme and create new themes{' '}
 										<span
@@ -1187,7 +1197,9 @@ class GeneralContent extends Component {
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
-									<div className="sub-title">Native currency</div>
+									<div className="sub-title" id="native-currency">
+										Native currency
+									</div>
 									<div className="description">
 										This currency unit will be used for valuing
 										deposits/withdrawals and other important areas.
@@ -1211,7 +1223,7 @@ class GeneralContent extends Component {
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
-									<div className="sub-title">
+									<div className="sub-title" id="other-currency-display-option">
 										Other currency display options
 									</div>
 									<div className="description">
@@ -1312,7 +1324,9 @@ class GeneralContent extends Component {
 							<div
 								className={features.home_page ? 'mb-5' : 'mb-5 disable-feature'}
 							>
-								<div className="sub-title">Landing page</div>
+								<div className="sub-title" id="landing-page">
+									Landing page
+								</div>
 								<div className="description">
 									<span>
 										This is typically the first page your users will see. You
@@ -1329,7 +1343,9 @@ class GeneralContent extends Component {
 							</div>
 							<div className="divider"></div>
 							<div className="mb-5">
-								<div className="sub-title">Onboarding background image</div>
+								<div className="sub-title" id="onboarding-background-image">
+									Onboarding background image
+								</div>
 								<div className="description">
 									<span>
 										To change the login/signup background image please visit the{' '}
@@ -1349,7 +1365,9 @@ class GeneralContent extends Component {
 							<div className="description">
 								Setup the login and sign up section of your platform.
 							</div>
-							<div className="sub-title pt-4">Allow new sign ups</div>
+							<div className="sub-title pt-4" id="allow-new-signups">
+								Allow new sign ups
+							</div>
 							<div className="small-text ml-0">
 								(Turning on sign ups will allow new users to sign up on your
 								platforms)
@@ -1477,7 +1495,9 @@ class GeneralContent extends Component {
 							The help pop up displays helpful links for your users and can be
 							accessed in various areas that say 'help'.
 						</p>
-						<div className="sub-title pt-3">Helpdesk link</div>
+						<div className="sub-title pt-3" id="helpdesk-link">
+							Helpdesk link
+						</div>
 						<div className="description mb-4">
 							This link will be used for your any help sections on your
 							exchange. You can put a direct link to your helpdesk service or
@@ -1493,7 +1513,9 @@ class GeneralContent extends Component {
 							onSubmit={this.handleSubmitHelpDesk}
 							buttonSubmitting={buttonSubmitting}
 						/>
-						<div className="sub-title mt-4 pt-3">API documentation link</div>
+						<div className="sub-title mt-4 pt-3" id="api-documentation-link">
+							API documentation link
+						</div>
 						<div className="description mb-4">
 							Provide the link to your exchanges API documentation. This link
 							will appear on universal help pop up.
@@ -1655,7 +1677,9 @@ class GeneralContent extends Component {
 				activeTab === 'security' ? (
 					<div>
 						<div className="general-wrapper">
-							<div className="sub-title">Geofencing</div>
+							<div className="sub-title" id="geofencing">
+								Geofencing
+							</div>
 							<div className="description">
 								Add a blacklist country to block activity from certain location.
 							</div>
@@ -1725,7 +1749,9 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
-							<div className="sub-title">Suspicious Login</div>
+							<div className="sub-title" id="suspicious-login">
+								Suspicious Login
+							</div>
 							<div className="description">
 								<div>
 									Enable/Disable Suspicious Login feauture for user logins
@@ -1806,7 +1832,7 @@ class GeneralContent extends Component {
 							</div>
 						</div> */}
 						<div className="general-wrapper my-5">
-							<div className="d-flex align-items-center">
+							<div className="d-flex align-items-center" id="tech-access-key">
 								<span className="sub-title mr-2">Tech Access Key</span>
 								<Tooltip
 									title={`Creates an access key for HollaEx®'s technical team to run remote diagnostics tests for exchange troubleshooting. Enable only when instructed to do so`}
@@ -1881,7 +1907,9 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
-							<div className="sub-title">API keys</div>
+							<div className="sub-title" id="api-keys">
+								API keys
+							</div>
 							<div className="description d-flex flex-column">
 								<span>
 									Generate API keys for programmatic access to your exchange.

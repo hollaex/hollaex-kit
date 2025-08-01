@@ -100,6 +100,31 @@ import {
 	SET_ROLES,
 	SET_EDIT_MODE,
 	SET_TRANSACTION_PAIR,
+	SET_IS_ACTIVE_ADD_NEW_UESRS,
+	SET_IS_ACTIVE_DELETE_USER,
+	SET_IS_ACTIVE_FREEZE_USER,
+	SET_IS_ACTIVE_USER_FEE_DISCOUNT,
+	SET_IS_EMAIL_VERIFIED_USER,
+	SET_IS_DISABLED_USER_2FA,
+	SET_IS_ACTIVE_FLAG_USER,
+	SET_IS_ACTIVE_WITHDRAWAL_BLOCK,
+	SET_IS_DISPLAY_CONSOLE_HEAD,
+	SET_IS_DISPLAY_CONSOLE_BODY,
+	SET_IS_GRAPHICS_EDIT_MODE,
+	SET_IS_THEMES_EDIT_MODE,
+	SET_IS_STRINGS_EDIT_MODE,
+	SET_IS_DISPLAY_CREATE_ASSET,
+	SET_IS_DISPLAY_CREATE_ORDER,
+	SET_IS_DISPLAY_CREATE_TRADE,
+	SET_IS_ACTIVE_INDEPENDENT_LIMIT,
+	SET_IS_ACTIVE_COLLECTIVE_LIMIT,
+	SET_IS_DISPLAY_CREATE_MARKET,
+	SET_IS_DISPLAY_ADD_MARKET,
+	SET_SELECTED_ORDERS_TAB,
+	SET_SELECTED_P2P_TAB,
+	SET_IS_DISPLAY_CREATE_REFERRAL,
+	SET_IS_DISPLAY_ADD_PLUGIN,
+	SET_IS_ACTIVE_FILTER_USER,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -253,6 +278,32 @@ const INITIAL_STATE = {
 	rolesList: [],
 	isOperatorEdit: false,
 	transactionPair: null,
+	isActiveAddNewUsers: false,
+	isActiveDeleteUser: false,
+	isActiveUserFeeDiscount: false,
+	isActiveFreezeUser: false,
+	isEmailVerifiedUser: false,
+	isDisabledUser2fa: false,
+	isActiveFlagUser: false,
+	isActiveWithdrawalBlock: false,
+	isDisplayConsoleHead: false,
+	isDisplayConsoleBody: false,
+	isGraphicsEditMode: false,
+	isThemesEditMode: false,
+	isStringsEditMode: false,
+	isDisplayCreateAsset: false,
+	isDisplayCreateOrder: false,
+	isDisplayCreateTrade: false,
+	isActiveIndependentLimit: false,
+	isActiveCollectiveLimit: false,
+	isDisplayAddMarket: false,
+	isDisplayCreateMarket: false,
+	isActiveCreateMarketOrder: false,
+	selectedOrdersTab: null,
+	selectedP2pTab: null,
+	isDisplayCreateReferral: false,
+	isDisplayAddPlugin: false,
+	isActiveFilterUser: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -1037,6 +1088,156 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				transactionPair: payload.transactionPair,
+			};
+		}
+		case SET_IS_ACTIVE_ADD_NEW_UESRS: {
+			return {
+				...state,
+				isActiveAddNewUsers: payload.isActiveAddNewUsers,
+			};
+		}
+		case SET_IS_ACTIVE_DELETE_USER: {
+			return {
+				...state,
+				isActiveDeleteUser: payload.isActiveDeleteUser,
+			};
+		}
+		case SET_IS_ACTIVE_USER_FEE_DISCOUNT: {
+			return {
+				...state,
+				isActiveUserFeeDiscount: payload.isActiveUserFeeDiscount,
+			};
+		}
+		case SET_IS_ACTIVE_FREEZE_USER: {
+			return {
+				...state,
+				isActiveFreezeUser: payload.isActiveFreezeUser,
+			};
+		}
+		case SET_IS_EMAIL_VERIFIED_USER: {
+			return {
+				...state,
+				isEmailVerifiedUser: payload.isEmailVerifiedUser,
+			};
+		}
+		case SET_IS_DISABLED_USER_2FA: {
+			return {
+				...state,
+				isDisabledUser2fa: payload.isDisabledUser2fa,
+			};
+		}
+		case SET_IS_ACTIVE_FLAG_USER: {
+			return {
+				...state,
+				isActiveFlagUser: payload.isActiveFlagUser,
+			};
+		}
+		case SET_IS_ACTIVE_WITHDRAWAL_BLOCK: {
+			return {
+				...state,
+				isActiveWithdrawalBlock: payload.isActiveWithdrawalBlock,
+			};
+		}
+		case SET_IS_DISPLAY_CONSOLE_HEAD: {
+			return {
+				...state,
+				isDisplayConsoleHead: payload.isDisplayConsoleHead,
+			};
+		}
+		case SET_IS_DISPLAY_CONSOLE_BODY: {
+			return {
+				...state,
+				isDisplayConsoleBody: payload.isDisplayConsoleBody,
+			};
+		}
+		case SET_IS_GRAPHICS_EDIT_MODE: {
+			return {
+				...state,
+				isGraphicsEditMode: payload.isGraphicsEditMode,
+			};
+		}
+		case SET_IS_THEMES_EDIT_MODE: {
+			return {
+				...state,
+				isThemesEditMode: payload.isThemesEditMode,
+			};
+		}
+		case SET_IS_STRINGS_EDIT_MODE: {
+			return {
+				...state,
+				isStringsEditMode: payload.isStringsEditMode,
+			};
+		}
+		case SET_IS_DISPLAY_CREATE_ASSET: {
+			return {
+				...state,
+				isDisplayCreateAsset: payload.isDisplayCreateAsset,
+			};
+		}
+		case SET_IS_DISPLAY_CREATE_ORDER: {
+			return {
+				...state,
+				isDisplayCreateOrder: payload.isDisplayCreateOrder,
+			};
+		}
+		case SET_IS_DISPLAY_CREATE_TRADE: {
+			return {
+				...state,
+				isDisplayCreateTrade: payload.isDisplayCreateTrade,
+			};
+		}
+		case SET_IS_ACTIVE_INDEPENDENT_LIMIT: {
+			return {
+				...state,
+				isActiveIndependentLimit: payload.isActiveIndependentLimit,
+			};
+		}
+		case SET_IS_ACTIVE_COLLECTIVE_LIMIT: {
+			return {
+				...state,
+				isActiveCollectiveLimit: payload.isActiveCollectiveLimit,
+			};
+		}
+		case SET_IS_DISPLAY_ADD_MARKET: {
+			return {
+				...state,
+				isDisplayAddMarket: payload.isDisplayAddMarket,
+			};
+		}
+		case SET_IS_DISPLAY_CREATE_MARKET: {
+			return {
+				...state,
+				isDisplayCreateMarket: payload.isDisplayCreateMarket,
+			};
+		}
+		case SET_SELECTED_ORDERS_TAB: {
+			return {
+				...state,
+				selectedOrdersTab: payload.selectedOrdersTab,
+			};
+		}
+		case SET_SELECTED_P2P_TAB: {
+			return {
+				...state,
+				selectedP2pTab: payload.selectedP2pTab,
+			};
+		}
+		case SET_IS_DISPLAY_CREATE_REFERRAL: {
+			return {
+				...state,
+				isDisplayCreateReferral: payload.isDisplayCreateReferral,
+			};
+		}
+		case SET_IS_DISPLAY_ADD_PLUGIN: {
+			return {
+				...state,
+				isDisplayAddPlugin: payload.isDisplayAddPlugin,
+			};
+		}
+		case SET_IS_ACTIVE_FILTER_USER: {
+			return {
+				...state,
+				isActiveFilterUser: payload.isActiveFilterUser,
 			};
 		}
 		default:

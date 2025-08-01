@@ -292,7 +292,7 @@ export const EmailSettingsForm = ({
 
 	return (
 		<div className="email-config-form mb-5">
-			<h2>Email Configuration</h2>
+			<h2 id="email-configuration">Email Configuration</h2>
 			<EmailForm
 				initialValues={initialValues.configuration}
 				onSubmit={(formProps) =>
@@ -305,7 +305,7 @@ export const EmailSettingsForm = ({
 			/>
 			<div className="divider"></div>
 			<div className="mb-4 width-50">
-				<h2>Customize emails</h2>
+				<h2 id="customize-email">Customize emails</h2>
 				<p>Select the type of email you'd like to edit below.</p>
 				{Object.keys(emailData).length ? (
 					<CustomizeEmailForm
@@ -323,7 +323,7 @@ export const EmailSettingsForm = ({
 			</div>
 			<div className="divider"></div>
 			<div className="mb-4">
-				<h2>Email Audit</h2>
+				<h2 id="email-audit">Email Audit</h2>
 				<p>
 					This feature allows specific email to receive a copy of all important
 					emails sent to the user for audit purposes. By filling the auditor
