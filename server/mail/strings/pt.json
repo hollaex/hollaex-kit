@@ -85,7 +85,7 @@
 			"title": "${currency} Depósito Pendente"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Dear ${name} </p><p> Seu ${currency} O depósito de ${amount} ${currency} foi confirmado e concluído e está disponível em sua ${currency} carteira.</p><p>Quantia: ${amount} ${currency}<br />Status: ${status}<br />Endereço: ${address}<br />ID da transação: ${transaction_id}<br /><span id='network'>Rede: ${network}</span><br />Taxa: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Saudações<br> ${api_name} equipe </p></div>",
+			"html": "<div><div><p> Dear ${name} </p><p> Seu ${currency} O depósito de ${amount} ${currency} foi confirmado e concluído e está disponível em sua ${currency} carteira.</p><p>Quantia: ${amount} ${currency}<br />Status: ${status}<br />Endereço: ${address}<br />ID da transação: ${transaction_id}<br /><div id='network'>Rede: ${network}</div><br />Taxa: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Saudações<br> ${api_name} equipe </p></div>",
 			"title": "${currency} Depósito concluído"
 		},
 		"WITHDRAWAL_PENDING": {

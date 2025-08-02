@@ -85,7 +85,7 @@
 			"title": "${currency} dépôt en attente"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Bonjour ${name} </p><p> Votre ${currency} dépôt pour ${amount} ${currency} est confirmé et complété et il est disponible dans votre portefeuille ${currency}.</p><p>Montant : ${amount} ${currency}<br />Status : ${status}<br />Addresse: ${address}<br />Identité de la transaction : ${transaction_id}<br /><span id='network'>Réseau : ${network}</span><br />Frais: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Bien cordialement<br> l'équipe ${api_name} </p></div>",
+			"html": "<div><div><p> Bonjour ${name} </p><p> Votre ${currency} dépôt pour ${amount} ${currency} est confirmé et complété et il est disponible dans votre portefeuille ${currency}.</p><p>Montant : ${amount} ${currency}<br />Status : ${status}<br />Addresse: ${address}<br />Identité de la transaction : ${transaction_id}<br /><div id='network'>Réseau : ${network}</div><br />Frais: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Bien cordialement<br> l'équipe ${api_name} </p></div>",
 			"title": "${currency} dépôt confirmé"
 		},
 		"WITHDRAWAL_PENDING": {

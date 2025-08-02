@@ -33,7 +33,7 @@
 			"title": "${currency} Deposit pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Dear ${name} </p><p> Your ${currency} deposit for ${amount} ${currency} is confirmed and completed and it is available in your ${currency} wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br />Fee: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><div><p> Dear ${name} </p><p> Your ${currency} deposit for ${amount} ${currency} is confirmed and completed and it is available in your ${currency} wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br /><div id=\"address\">Address: ${address}</div><br />Transaction ID: ${transaction_id}<br /><div id=\"network\">Network: ${network}</div><br />Fee: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} Deposit completed"
 		},
 		"WITHDRAWAL_PENDING": {
