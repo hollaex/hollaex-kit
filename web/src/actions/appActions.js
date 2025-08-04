@@ -140,6 +140,34 @@ export const SET_IS_ACTIVE_FAV_QUICK_TRADE = 'SET_IS_ACTIVE_FAV_QUICK_TRADE';
 export const SET_ROLES = 'SET_ROLES';
 export const SET_EDIT_MODE = 'SET_EDIT_MODE';
 export const SET_TRANSACTION_PAIR = 'SET_TRANSACTION_PAIR';
+export const SET_IS_ACTIVE_ADD_NEW_UESRS = 'SET_IS_ACTIVE_ADD_NEW_UESRS';
+export const SET_IS_ACTIVE_DELETE_USER = 'SET_IS_ACTIVE_DELETE_USER';
+export const SET_IS_ACTIVE_USER_FEE_DISCOUNT =
+	'SET_IS_ACTIVE_USER_FEE_DISCOUNT';
+export const SET_IS_ACTIVE_FREEZE_USER = 'SET_IS_ACTIVE_FREEZE_USER';
+export const SET_IS_EMAIL_VERIFIED_USER = 'SET_IS_EMAIL_VERIFIED_USER';
+export const SET_IS_DISABLED_USER_2FA = 'SET_IS_DISABLED_USER_2FA';
+export const SET_IS_ACTIVE_FLAG_USER = 'SET_IS_ACTIVE_FLAG_USER';
+export const SET_IS_ACTIVE_WITHDRAWAL_BLOCK = 'SET_IS_ACTIVE_WITHDRAWAL_BLOCK';
+export const SET_IS_DISPLAY_CONSOLE_HEAD = 'SET_IS_DISPLAY_CONSOLE_HEAD';
+export const SET_IS_DISPLAY_CONSOLE_BODY = 'SET_IS_DISPLAY_CONSOLE_BODY';
+export const SET_IS_GRAPHICS_EDIT_MODE = 'SET_IS_GRAPHICS_EDIT_MODE';
+export const SET_IS_THEMES_EDIT_MODE = 'SET_IS_THEMES_EDIT_MODE';
+export const SET_IS_STRINGS_EDIT_MODE = 'SET_IS_STRINGS_EDIT_MODE';
+export const SET_IS_DISPLAY_CREATE_ASSET = 'SET_IS_DISPLAY_CREATE_ASSET';
+export const SET_IS_DISPLAY_CREATE_ORDER = 'SET_IS_DISPLAY_CREATE_ORDER';
+export const SET_IS_DISPLAY_CREATE_TRADE = 'SET_IS_DISPLAY_CREATE_TRADE';
+export const SET_IS_ACTIVE_INDEPENDENT_LIMIT =
+	'SET_IS_ACTIVE_INDEPENDENT_LIMIT';
+export const SET_IS_ACTIVE_COLLECTIVE_LIMIT = 'SET_IS_ACTIVE_COLLECTIVE_LIMIT';
+export const SET_IS_DISPLAY_ADD_MARKET = 'SET_IS_DISPLAY_ADD_MARKET';
+export const SET_IS_DISPLAY_CREATE_MARKET = 'SET_IS_DISPLAY_CREATE_MARKET';
+export const SET_SELECTED_ORDERS_TAB = 'SET_SELECTED_ORDERS_TAB';
+export const SET_SELECTED_P2P_TAB = 'SET_SELECTED_P2P_TAB';
+export const SET_IS_DISPLAY_CREATE_REFERRAL = 'SET_IS_DISPLAY_CREATE_REFERRAL';
+export const SET_IS_DISPLAY_ADD_PLUGIN = 'SET_IS_DISPLAY_ADD_PLUGIN';
+export const SET_IS_ACTIVE_FILTER_USER = 'SET_IS_ACTIVE_FILTER_USER';
+export const SET_RECENT_SEARCHES = 'SET_RECENT_SEARCHES';
 
 export const SORT = {
 	VOL: 'volume',
@@ -979,5 +1007,187 @@ export const setTransactionPair = (transactionPair) => {
 	return {
 		type: SET_TRANSACTION_PAIR,
 		payload: { transactionPair },
+	};
+};
+
+export const setIsActiveAddNewUsers = (isActiveAddNewUsers) => {
+	return {
+		type: SET_IS_ACTIVE_ADD_NEW_UESRS,
+		payload: { isActiveAddNewUsers },
+	};
+};
+
+export const setIsActiveDeleteUser = (isActiveDeleteUser) => {
+	return {
+		type: SET_IS_ACTIVE_DELETE_USER,
+		payload: { isActiveDeleteUser },
+	};
+};
+
+export const setIsActiveUserFeeDiscount = (isActiveUserFeeDiscount) => {
+	return {
+		type: SET_IS_ACTIVE_USER_FEE_DISCOUNT,
+		payload: { isActiveUserFeeDiscount },
+	};
+};
+
+export const setIsActiveFreezeUser = (isActiveFreezeUser) => {
+	return {
+		type: SET_IS_ACTIVE_FREEZE_USER,
+		payload: { isActiveFreezeUser },
+	};
+};
+
+export const setIsEmailVerifiedUser = (isEmailVerifiedUser) => {
+	return {
+		type: SET_IS_EMAIL_VERIFIED_USER,
+		payload: { isEmailVerifiedUser },
+	};
+};
+
+export const setIsDisabledUser2fa = (isDisabledUser2fa) => {
+	return {
+		type: SET_IS_DISABLED_USER_2FA,
+		payload: { isDisabledUser2fa },
+	};
+};
+
+export const setIsActiveFlagUser = (isActiveFlagUser) => {
+	return {
+		type: SET_IS_ACTIVE_FLAG_USER,
+		payload: { isActiveFlagUser },
+	};
+};
+
+export const setIsActiveWithdrawalBlock = (isActiveWithdrawalBlock) => {
+	return {
+		type: SET_IS_ACTIVE_WITHDRAWAL_BLOCK,
+		payload: { isActiveWithdrawalBlock },
+	};
+};
+
+export const setIsDisplayConsoleHead = (isDisplayConsoleHead) => {
+	return {
+		type: SET_IS_DISPLAY_CONSOLE_HEAD,
+		payload: { isDisplayConsoleHead },
+	};
+};
+
+export const setIsDisplayConsoleBody = (isDisplayConsoleBody) => {
+	return {
+		type: SET_IS_DISPLAY_CONSOLE_BODY,
+		payload: { isDisplayConsoleBody },
+	};
+};
+
+export const setIsGraphicsEditMode = (isGraphicsEditMode) => {
+	return {
+		type: SET_IS_GRAPHICS_EDIT_MODE,
+		payload: { isGraphicsEditMode },
+	};
+};
+
+export const setIsThemesEditMode = (isThemesEditMode) => {
+	return {
+		type: SET_IS_THEMES_EDIT_MODE,
+		payload: { isThemesEditMode },
+	};
+};
+
+export const setIsStringsEditMode = (isStringsEditMode) => {
+	return {
+		type: SET_IS_STRINGS_EDIT_MODE,
+		payload: { isStringsEditMode },
+	};
+};
+
+export const setIsDisplayCreateAsset = (isDisplayCreateAsset) => {
+	return {
+		type: SET_IS_DISPLAY_CREATE_ASSET,
+		payload: { isDisplayCreateAsset },
+	};
+};
+
+export const setIsDisplayCreateOrder = (isDisplayCreateOrder) => {
+	return {
+		type: SET_IS_DISPLAY_CREATE_ORDER,
+		payload: { isDisplayCreateOrder },
+	};
+};
+
+export const setIsDisplayCreateTrade = (isDisplayCreateTrade) => {
+	return {
+		type: SET_IS_DISPLAY_CREATE_TRADE,
+		payload: { isDisplayCreateTrade },
+	};
+};
+
+export const setIsActiveIndependentLimit = (isActiveIndependentLimit) => {
+	return {
+		type: SET_IS_ACTIVE_INDEPENDENT_LIMIT,
+		payload: { isActiveIndependentLimit },
+	};
+};
+
+export const setIsActiveCollectiveLimit = (isActiveCollectiveLimit) => {
+	return {
+		type: SET_IS_ACTIVE_COLLECTIVE_LIMIT,
+		payload: { isActiveCollectiveLimit },
+	};
+};
+
+export const setIsDisplayAddMarket = (isDisplayAddMarket) => {
+	return {
+		type: SET_IS_DISPLAY_ADD_MARKET,
+		payload: { isDisplayAddMarket },
+	};
+};
+
+export const setIsDisplayCreateMarket = (isDisplayCreateMarket) => {
+	return {
+		type: SET_IS_DISPLAY_CREATE_MARKET,
+		payload: { isDisplayCreateMarket },
+	};
+};
+
+export const setSelectedOrdersTab = (selectedOrdersTab) => {
+	return {
+		type: SET_SELECTED_ORDERS_TAB,
+		payload: { selectedOrdersTab },
+	};
+};
+
+export const setSelectedP2pTab = (selectedP2pTab) => {
+	return {
+		type: SET_SELECTED_P2P_TAB,
+		payload: { selectedP2pTab },
+	};
+};
+
+export const setIsDisplayCreateReferral = (isDisplayCreateReferral) => {
+	return {
+		type: SET_IS_DISPLAY_CREATE_REFERRAL,
+		payload: { isDisplayCreateReferral },
+	};
+};
+
+export const setIsDisplayAddPlugin = (isDisplayAddPlugin) => {
+	return {
+		type: SET_IS_DISPLAY_ADD_PLUGIN,
+		payload: { isDisplayAddPlugin },
+	};
+};
+
+export const setIsActiveFilterUser = (isActiveFilterUser) => {
+	return {
+		type: SET_IS_ACTIVE_FILTER_USER,
+		payload: { isActiveFilterUser },
+	};
+};
+
+export const setRecentSearches = (recentSearches) => {
+	return {
+		type: SET_RECENT_SEARCHES,
+		payload: { recentSearches },
 	};
 };

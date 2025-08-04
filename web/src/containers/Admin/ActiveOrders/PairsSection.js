@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Tabs, Row, Col, Table, Tooltip, Button, Spin } from 'antd';
 import { CSVLink } from 'react-csv';
-import Moment from 'react-moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
+import Moment from 'react-moment';
+import debounce from 'lodash.debounce';
 
 import { formatCurrency } from '../../../utils/index';
 import { requestActiveOrders, requestCancelOrders } from './action';
+import { setSelectedOrdersTab } from 'actions/appActions';
 
 const TabPane = Tabs.TabPane;
 
@@ -165,13 +169,31 @@ class PairsSection extends Component {
 	componentDidMount() {
 		this.handleTrades('buy');
 		this.handleTrades('sell');
+		if (this.props?.selectedOrdersTab) {
+			this.tabChange(this.props?.selectedOrdersTab);
+			this.props.setSelectedOrdersTab(null);
+		}
 	}
 
+	debounceClearTab = debounce(() => {
+		this.props.setSelectedOrdersTab(null);
+	}, 500);
+
 	componentDidUpdate(prevProps, prevState) {
-		const { open, pair } = this.props;
+		const { open, pair, selectedOrdersTab } = this.props;
 		if (pair !== prevProps.pair || open !== prevProps.open) {
 			this.handleTrades('buy');
 			this.handleTrades('sell');
+		}
+		if (selectedOrdersTab && selectedOrdersTab !== this.state.activeTab) {
+			this.tabChange(selectedOrdersTab);
+			this.debounceClearTab();
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.debounceClearTab) {
+			this.debounceClearTab.cancel();
 		}
 	}
 
@@ -317,7 +339,7 @@ class PairsSection extends Component {
 			: getColumns(this.props.userId, this.onCancelOrder);
 		return (
 			<div className="f-1 admin-user-container">
-				<Tabs onChange={this.tabChange}>
+				<Tabs onChange={this.tabChange} activeKey={this.state.activeTab}>
 					<TabPane tab="Bids" key="buy">
 						<Row>
 							<div className="f-1 mt-4">
@@ -386,4 +408,12 @@ class PairsSection extends Component {
 	}
 }
 
-export default PairsSection;
+const mapStateToProps = (state) => ({
+	selectedOrdersTab: state.app.selectedOrdersTab,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setSelectedOrdersTab: bindActionCreators(setSelectedOrdersTab, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PairsSection);

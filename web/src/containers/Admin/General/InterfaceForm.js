@@ -607,7 +607,7 @@ const InterfaceForm = ({
 										/>
 									</div>
 									<div className="ml-2 checkbox-txt">
-										Announcement
+										<div id="announcement">Announcement</div>
 										<div className="small-text">
 											(Announcement posts, alert popups to notify users)
 										</div>
@@ -624,7 +624,7 @@ const InterfaceForm = ({
 									className="feature-icon mr-1"
 								/>
 								<div className="ml-2 checkbox-txt">
-									Pro trade (Market)
+									<div id="pro-trade">Pro trade (Market)</div>
 									<div className="small-text">
 										(Chart, orderbook, limit orders with wallet)
 									</div>
@@ -646,7 +646,7 @@ const InterfaceForm = ({
 									</div>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Quick trade (Convert)
+									<div id="quick-trade">Quick trade (Convert)</div>
 									<div className="d-flex justify-content-between">
 										<div className="small-text">
 											(Simple buy/sell interface with wallet)
@@ -667,7 +667,7 @@ const InterfaceForm = ({
 										/>
 									</div>
 									<div className="ml-2 checkbox-txt">
-										Auto Trade
+										<div id="auto-trade">Auto Trade</div>
 										<div className="d-flex justify-content-between">
 											<div className="small-text">
 												(Automate your trades based on your settings)
@@ -691,7 +691,7 @@ const InterfaceForm = ({
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Defi Staking
+									<div id="defi-stake">Defi Staking</div>
 									<div className="small-text">
 										(Lock coins and distribute crypto rewards for Defi)
 									</div>
@@ -710,7 +710,7 @@ const InterfaceForm = ({
 									/>
 								</div>
 								<div className="ml-2 checkbox-txt">
-									Cefi Staking
+									<div id="cefi-stake">Cefi Staking</div>
 									<div className="small-text">
 										(Lock coins and distribute crypto rewards for Cefi)
 									</div>
@@ -728,7 +728,7 @@ const InterfaceForm = ({
 										className="feature-icon mr-1"
 									/>
 									<div className="ml-2 checkbox-txt">
-										Profit&Loss Analytics
+										<div id="balance-history-info">Profit&Loss Analytics</div>
 										<div className="small-text">
 											(User Balance History, P/L analysis)
 										</div>
@@ -760,7 +760,7 @@ const InterfaceForm = ({
 										</div>
 
 										<div className="ml-2 checkbox-txt">
-											P2P
+											<div id="p2p">P2P</div>
 											<div className="small-text">
 												(P2P Trading for merchants and exchange users)
 											</div>
@@ -791,27 +791,29 @@ const InterfaceForm = ({
 										/>
 									</span>
 									<div className="ml-2 checkbox-txt">
-										Referral System{' '}
-										{referralHistoryData.active && (
-											<span
-												style={{
-													padding: 5,
-													position: 'relative',
-													left: 5,
-													bottom: 5,
-													color: 'white',
-													backgroundColor: '#288500',
-													cursor: 'pointer',
-												}}
-												onClick={(e) => {
-													e.stopPropagation();
-													e.preventDefault();
-													setDisplayReferralHistoryModal(true);
-												}}
-											>
-												Configure
-											</span>
-										)}
+										<div id="referral-system">
+											Referral System{' '}
+											{referralHistoryData.active && (
+												<span
+													style={{
+														padding: 5,
+														position: 'relative',
+														left: 5,
+														bottom: 5,
+														color: 'white',
+														backgroundColor: '#288500',
+														cursor: 'pointer',
+													}}
+													onClick={(e) => {
+														e.stopPropagation();
+														e.preventDefault();
+														setDisplayReferralHistoryModal(true);
+													}}
+												>
+													Configure
+												</span>
+											)}
+										</div>
 										<div className="small-text">
 											(User referral system with analytics)
 										</div>
@@ -832,27 +834,29 @@ const InterfaceForm = ({
 										/>
 									</div>
 									<div className="ml-2 checkbox-txt">
-										Chain Trading{' '}
-										{chainTradeData.active && (
-											<span
-												style={{
-													padding: 5,
-													position: 'relative',
-													left: 5,
-													bottom: 5,
-													color: 'white',
-													backgroundColor: '#288500',
-													cursor: 'pointer',
-												}}
-												onClick={(e) => {
-													e.stopPropagation();
-													e.preventDefault();
-													setDisplayChainTradeModal(true);
-												}}
-											>
-												Configure
-											</span>
-										)}
+										<div id="chain-trade">
+											Chain Trading{' '}
+											{chainTradeData.active && (
+												<span
+													style={{
+														padding: 5,
+														position: 'relative',
+														left: 5,
+														bottom: 5,
+														color: 'white',
+														backgroundColor: '#288500',
+														cursor: 'pointer',
+													}}
+													onClick={(e) => {
+														e.stopPropagation();
+														e.preventDefault();
+														setDisplayChainTradeModal(true);
+													}}
+												>
+													Configure
+												</span>
+											)}
+										</div>
 										<div className="small-text">
 											(Allows users to convert any asset to another)
 										</div>
@@ -881,7 +885,7 @@ const InterfaceForm = ({
 											/>
 										</div>
 										<div className="ml-2 checkbox-txt">
-											Fiat Controls
+											<div id="fiat-controls">Fiat Controls</div>
 											<div className="small-text">
 												(On & off ramping and tracking for fiat assets)
 											</div>
@@ -931,7 +935,7 @@ const InterfaceForm = ({
 											/>
 										</div>
 										<div className="ml-2 checkbox-txt">
-											Chat system
+											<div id="chat-system">Chat system</div>
 											<div className="d-flex justify-content-between">
 												<div className="small-text">
 													(Usernames, text and emoji communication)
@@ -983,7 +987,7 @@ const InterfaceForm = ({
 											/>
 										</div>
 										<div className="ml-2 checkbox-txt">
-											Home Landing page
+											<div id="home-landing-page">Home Landing page</div>
 											<div className="d-flex justify-content-between">
 												<div className="small-text">
 													(This will be the first page seen on your domain)
@@ -1035,7 +1039,7 @@ const InterfaceForm = ({
 											/>
 										</div>
 										<div className="ml-2 checkbox-txt">
-											Apps
+											<div id="apps">Apps</div>
 											<div className="d-flex justify-content-between">
 												<div className="small-text">
 													(Give your users extra exchange applications)
