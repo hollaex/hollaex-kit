@@ -4,7 +4,7 @@
 	"description": "hollaex network api and websocket library for nodejs",
 	"main": "index.js",
 	"dependencies": {
-		"file-type": "16.5.2",
+		"file-type": "16.5.4",
 		"is-base64": "1.1.0",
 		"lodash": "4.17.21",
 		"moment": "2.24.0",
