@@ -85,7 +85,7 @@
 			"title": "${currency} واریز pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}</div><br />کارمزد: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} واریز completed"
 		},
 		"WITHDRAWAL_PENDING": {

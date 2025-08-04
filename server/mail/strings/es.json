@@ -85,7 +85,7 @@
 			"title": "${currency} Depósito pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Estimado/ Estimada ${name} </p><p> Su ${currency} depósito por ${amount} ${currency} está confirmado y completado y está disponible en su ${currency} billetera.</p><p>Cantidad: ${amount} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacción: ${transaction_id}<br /><span id='network'>La red: ${network}</span><br />Tarifa: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+			"html": "<div><div><p> Estimado/ Estimada ${name} </p><p> Su ${currency} depósito por ${amount} ${currency} está confirmado y completado y está disponible en su ${currency} billetera.</p><p>Cantidad: ${amount} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacción: ${transaction_id}<br /><div id='network'>La red: ${network}</div><br />Tarifa: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
 			"title": "${currency} Depósito completed"
 		},
 		"WITHDRAWAL_PENDING": {

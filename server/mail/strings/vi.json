@@ -85,7 +85,7 @@
 			"title": "${currency} Nạp tiền chưa giải quyết"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name} thân mến </p><p> Giao dịch nạp ${currency} với số lượng ${amount} ${currency} đã được xác nhận và hoàn tất thành công. Số tiền đã được cập nhập vào ví ${currency} của quý khách.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br />Phí: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+			"html": "<div><div><p> ${name} thân mến </p><p> Giao dịch nạp ${currency} với số lượng ${amount} ${currency} đã được xác nhận và hoàn tất thành công. Số tiền đã được cập nhập vào ví ${currency} của quý khách.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><div id='network'>Mạng: ${network}</div><br />Phí: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
 			"title": "${currency} Nạp tiền hoàn thành"
 		},
 		"WITHDRAWAL_PENDING": {
