@@ -689,6 +689,7 @@ class AppWrapper extends React.Component {
 							onHandleClose={this.onHandleClose}
 							search={this.state.search}
 							setSearch={this.setSearch}
+							isDisplaySearchPopup={this.state.isDisplaySearchPopup}
 						/>
 					</Modal>
 					<div className="admin-top-bar">

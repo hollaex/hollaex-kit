@@ -97,7 +97,6 @@ const ActiveOrders = ({
 			if (debouncedHide) {
 				debouncedHide.cancel();
 			}
-			setIsDisplayCreateOrder(false);
 		};
 		//eslint-disable-next-line
 	}, [isDisplayCreateOrder]);

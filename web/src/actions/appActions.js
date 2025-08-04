@@ -167,6 +167,7 @@ export const SET_SELECTED_P2P_TAB = 'SET_SELECTED_P2P_TAB';
 export const SET_IS_DISPLAY_CREATE_REFERRAL = 'SET_IS_DISPLAY_CREATE_REFERRAL';
 export const SET_IS_DISPLAY_ADD_PLUGIN = 'SET_IS_DISPLAY_ADD_PLUGIN';
 export const SET_IS_ACTIVE_FILTER_USER = 'SET_IS_ACTIVE_FILTER_USER';
+export const SET_RECENT_SEARCHES = 'SET_RECENT_SEARCHES';
 
 export const SORT = {
 	VOL: 'volume',
@@ -1181,5 +1182,12 @@ export const setIsActiveFilterUser = (isActiveFilterUser) => {
 	return {
 		type: SET_IS_ACTIVE_FILTER_USER,
 		payload: { isActiveFilterUser },
+	};
+};
+
+export const setRecentSearches = (recentSearches) => {
+	return {
+		type: SET_RECENT_SEARCHES,
+		payload: { recentSearches },
 	};
 };

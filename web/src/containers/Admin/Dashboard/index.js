@@ -112,6 +112,7 @@ const Dashboard = ({ constants = {}, setEditMode = () => {} }) => {
 					onHandleClose={onHandleClose}
 					search={search}
 					setSearch={onHandleSearch}
+					isDisplaySearchPopup={isDisplaySearch}
 				/>
 			</Modal>
 			<div className="flex-menu">

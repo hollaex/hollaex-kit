@@ -688,6 +688,7 @@
 	.ant-collapse-header {
 	padding: unset;
 	padding-left: 1.5rem;
+	width: fit-content;
 }
 
 .operator-control-search-card-details

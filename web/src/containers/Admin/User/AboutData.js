@@ -51,6 +51,8 @@ import { onHandleBadge, roleStyles } from '../Roles/RoleManagement';
 import {
 	setIsActiveUserFeeDiscount,
 	setIsActiveWithdrawalBlock,
+	setIsDisabledUser2fa,
+	setIsEmailVerifiedUser,
 } from 'actions/appActions';
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 
@@ -486,6 +488,8 @@ const AboutData = ({
 	isActiveWithdrawalBlock = false,
 	setIsActiveUserFeeDiscount = () => {},
 	setIsActiveWithdrawalBlock = () => {},
+	setIsEmailVerifiedUser = () => {},
+	setIsDisabledUser2fa = () => {},
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -506,9 +510,13 @@ const AboutData = ({
 		isActiveDeleteUser && deleteUser();
 		isActiveFreezeUser && freezeAccount(!userData?.activated);
 		isActiveUserFeeDiscount && handleApply('fee-discount', true);
-		isEmailVerifiedUser && !userData?.email_verified && verifyEmail();
-		isDisabledUser2fa && userData.otp_enabled && disableOTP();
-		isActiveFlagUser && flagUser(!userData.flagged);
+		isEmailVerifiedUser && !userData?.email_verified
+			? verifyEmail()
+			: setIsEmailVerifiedUser(false);
+		isDisabledUser2fa && userData?.otp_enabled
+			? disableOTP()
+			: setIsDisabledUser2fa(false);
+		isActiveFlagUser && flagUser(!userData?.flagged);
 		isActiveWithdrawalBlock && setWithdrawalBlockOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -710,7 +718,7 @@ const AboutData = ({
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.email_verified ? (
 							<Fragment>
-								<div className="about-info-content">
+								<div className="about-info-content" id="user-email-verified">
 									<div>Email verification</div>
 									<div>Verified</div>
 								</div>
@@ -757,7 +765,7 @@ const AboutData = ({
 						) : (
 							<Fragment>
 								<div>
-									<div>2FA disabled</div>
+									<div id="user-2fa-disabled">2FA disabled</div>
 								</div>
 								<div>
 									<ReactSVG
@@ -1250,6 +1258,8 @@ const mapDispatchToProps = (dispatch) => ({
 		setIsActiveWithdrawalBlock,
 		dispatch
 	),
+	setIsEmailVerifiedUser: bindActionCreators(setIsEmailVerifiedUser, dispatch),
+	setIsDisabledUser2fa: bindActionCreators(setIsDisabledUser2fa, dispatch),
 });
 
 export default connect(

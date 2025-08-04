@@ -142,6 +142,7 @@ class Resources extends Component {
 						onHandleClose={this.onHandleClose}
 						search={this.state.search}
 						setSearch={this.onHandleSearch}
+						isDisplaySearchPopup={this.state.isDisplaySearch}
 					/>
 				</Modal>
 				<div className="mainSection">

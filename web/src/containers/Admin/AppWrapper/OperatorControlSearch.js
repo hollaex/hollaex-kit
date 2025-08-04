@@ -32,6 +32,7 @@ import {
 	setIsGraphicsEditMode,
 	setIsStringsEditMode,
 	setIsThemesEditMode,
+	setRecentSearches,
 	setSelectedOrdersTab,
 	setSelectedP2pTab,
 } from 'actions/appActions';
@@ -43,6 +44,9 @@ const OperatorControlSearch = ({
 	user,
 	search,
 	setSearch,
+	recentSearches = [],
+	isDisplaySearchPopup = false,
+	setRecentSearches = () => {},
 	setIsActiveAddNewUsers = () => {},
 	setIsActiveDeleteUser = () => {},
 	setIsActiveFreezeUser = () => {},
@@ -70,8 +74,11 @@ const OperatorControlSearch = ({
 	setIsActiveFilterUser = () => {},
 }) => {
 	const MAX_RECENT = 6;
+	let flashCount = 0;
+	let flashMax = 0;
+	let flashElement = null;
+
 	const [selectedCategory, setSelectedCategory] = useState('all');
-	const [recentSearches, setRecentSearches] = useState([]);
 	const [openPanels, setOpenPanels] = useState({});
 	const [openInnerPanels, setOpenInnerPanels] = useState({});
 
@@ -805,6 +812,7 @@ const OperatorControlSearch = ({
 							docLink:
 								'https://docs.hollaex.com/how-tos/operator-control-panel/user-profile#email-verification',
 							path: `/admin/user?id=${user?.id}&tab=about`,
+							sectionId: 'user-email-verified',
 						},
 						{
 							innerTitle: `Disable user's 2FA`,
@@ -822,6 +830,7 @@ const OperatorControlSearch = ({
 							docLink:
 								'https://docs.hollaex.com/how-tos/operator-control-panel/user-profile#two-factor-authentication-2fa',
 							path: `/admin/user?id=${user?.id}&tab=about`,
+							sectionId: 'user-2fa-disabled',
 						},
 						{
 							innerTitle: 'Freeze user account',
@@ -1049,6 +1058,21 @@ const OperatorControlSearch = ({
 				'tokens',
 				'manage assets',
 				'asset list',
+				'bitcoin',
+				'btc',
+				'usdt',
+				'ethereum',
+				'eth',
+				'tether',
+				'xrp',
+				'sol',
+				'solana',
+				'usdc',
+				'tron',
+				'trx',
+				'erc20',
+				'blockchain',
+				'chain',
 			],
 			docLink: 'https://docs.hollaex.com/how-tos/operator-control-panel/assets',
 			subContent: [
@@ -1273,6 +1297,7 @@ const OperatorControlSearch = ({
 					path: '/admin/trade?public-markets',
 					description:
 						'HollaEx markets (Markets offered by HollaEx) and/or Other markets (Markets offered by other providers/exchanges within HollaEx network)',
+					searchContent: ['price'],
 					onHandleOpenPopup: () => setIsDisplayAddMarket(true),
 				},
 				{
@@ -1280,6 +1305,7 @@ const OperatorControlSearch = ({
 					path: '/admin/trade?public-markets',
 					description:
 						'Create a new market by selecting the Base Asset that will be traded and the quote asset that the base asset will be priced in',
+					searchContent: ['price'],
 					onHandleOpenPopup: () => setIsDisplayCreateMarket(true),
 				},
 			],
@@ -1323,7 +1349,12 @@ const OperatorControlSearch = ({
 			path: '/admin/trade?otc-desk',
 			description:
 				'Configure and monitor the over-the-counter (OTC) desk and services.',
-			searchContent: ['over the counter', 'otc trading', 'otc settings'],
+			searchContent: [
+				'over the counter',
+				'otc trading',
+				'otc settings',
+				'price',
+			],
 			docLink:
 				'https://docs.hollaex.com/how-tos/operator-control-panel/markets#otc-desk',
 		},
@@ -1640,6 +1671,7 @@ const OperatorControlSearch = ({
 				'assign role',
 				'set user role',
 				'user permissions',
+				'invite',
 			],
 			docLink: 'https://docs.hollaex.com/how-tos/operator-control-panel/roles',
 		},
@@ -1653,6 +1685,7 @@ const OperatorControlSearch = ({
 				'edit roles',
 				'roles management',
 				'user roles',
+				'invite',
 			],
 		},
 	];
@@ -1924,26 +1957,53 @@ const OperatorControlSearch = ({
 		el.classList.remove('highlight-section');
 	}, 2000);
 
-	const scrollToSection = (sectionId) => {
+	const debouncedFlash = debounce(() => {
+		if (!flashElement) return;
+
+		flashElement.classList.toggle('highlight-section');
+		flashCount++;
+
+		if (flashCount < flashMax) {
+			debouncedFlash();
+		} else {
+			animationRemove(flashElement);
+			flashElement = null;
+			flashCount = 0;
+			flashMax = 0;
+		}
+	}, 500);
+
+	const flashHighlight = (el, flashes = 3, interval = 300) => {
+		if (!el) return;
+
+		flashElement = el;
+		flashCount = 0;
+		flashMax = flashes * 2;
+
+		debouncedFlash.cancel();
+		debouncedFlash.flush = debounce(debouncedFlash.flush, interval)?.flush;
+
+		debouncedFlash();
+	};
+
+	const scrollToSection = debounce((sectionId) => {
 		const el = document.getElementById(sectionId);
 		if (el) {
 			el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			el.classList.add('highlight-section');
-			animationRemove(el);
+			flashHighlight(el);
 		}
-	};
-
-	const scrollAnimation = debounce((sectionId) => {
-		scrollToSection(sectionId);
 	}, 1000);
 
 	useEffect(() => {
-		return () => {
+		if (!isDisplaySearchPopup) {
 			animationRemove.cancel();
-			scrollAnimation.cancel();
-		};
+			scrollToSection.cancel();
+			debouncedFlash.cancel();
+			setOpenPanels({});
+			setOpenInnerPanels({});
+		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [isDisplaySearchPopup]);
 
 	useEffect(() => {
 		if (search?.length === 0) {
@@ -1976,7 +2036,7 @@ const OperatorControlSearch = ({
 		setSearch('');
 		setOpenPanels({});
 		setOpenInnerPanels({});
-		scrollAnimation(sectionId);
+		scrollToSection(sectionId);
 	};
 
 	const highlightText = (
@@ -2250,6 +2310,14 @@ const OperatorControlSearch = ({
 		);
 	};
 
+	const handleInnerPanel = (sectionKey) => {
+		const prevActive = openInnerPanels[sectionKey] || false;
+		setOpenInnerPanels((prev) => ({
+			...(prevActive && prev),
+			[sectionKey]: !prev?.[sectionKey],
+		}));
+	};
+
 	const SubContentList = ({
 		subContent = [],
 		onHandleRoute = () => {},
@@ -2270,7 +2338,6 @@ const OperatorControlSearch = ({
 							<div className="d-flex gap-1 align-items-center justify-content-between">
 								{subItem?.innerContent ? (
 									<Collapse
-										accordion={true}
 										expandIcon={({ isActive }) =>
 											isActive ? (
 												<MinusSquareOutlined className="toggle-icon" />
@@ -2280,12 +2347,7 @@ const OperatorControlSearch = ({
 										}
 										activeKey={shouldOpenInner ? ['1'] : []}
 										className="operator-control-search-toggle-wrapper"
-										onChange={() => {
-											setOpenInnerPanels((prev) => ({
-												...prev,
-												[innerKey]: !prev?.[innerKey],
-											}));
-										}}
+										onChange={() => handleInnerPanel(innerKey)}
 									>
 										<Collapse.Panel
 											header={<SubContentTitle subItem={subItem} />}
@@ -2447,10 +2509,33 @@ const OperatorControlSearch = ({
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [search]);
 
-	const handlePanelChange = (sectionKey) => (activeKey) => {
+	const handlePanelChange = (sectionKey) => (activeKey = []) => {
+		const prevActive = openPanels[sectionKey] || [];
+		let newActiveKeys = [];
+		const isInnerPanelClose = prevActive?.some((key) => {
+			return Object.keys(openInnerPanels || {})?.some((data) => {
+				return data?.includes(key);
+			});
+		});
+		if (isInnerPanelClose) {
+			setOpenInnerPanels({});
+		}
+
+		if (search) {
+			const isTogglingSame = prevActive?.some(
+				(key) => !activeKey?.includes(key)
+			);
+			newActiveKeys = isTogglingSame
+				? activeKey
+				: [activeKey[activeKey?.length - 1]];
+		} else {
+			newActiveKeys =
+				activeKey?.length > 1 ? [activeKey[activeKey?.length - 1]] : activeKey;
+		}
+
 		setOpenPanels((prev) => ({
 			...prev,
-			[sectionKey]: activeKey ? [activeKey] : [],
+			[sectionKey]: newActiveKeys,
 		}));
 	};
 
@@ -2576,7 +2661,6 @@ const OperatorControlSearch = ({
 														<div className="search-line" />
 														<div className="flex flex-col gap-2">
 															<Collapse
-																accordion={true}
 																activeKey={activeKey}
 																onChange={handlePanelChange(sectionKey)}
 																expandIcon={({ isActive, panelKey }) => {
@@ -2660,6 +2744,7 @@ const OperatorControlSearch = ({
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	user: state.user,
+	recentSearches: state.app.recentSearches,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -2721,6 +2806,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setIsDisplayAddPlugin: bindActionCreators(setIsDisplayAddPlugin, dispatch),
 	setIsActiveFilterUser: bindActionCreators(setIsActiveFilterUser, dispatch),
+	setRecentSearches: bindActionCreators(setRecentSearches, dispatch),
 });
 
 export default connect(

@@ -125,6 +125,7 @@ import {
 	SET_IS_DISPLAY_CREATE_REFERRAL,
 	SET_IS_DISPLAY_ADD_PLUGIN,
 	SET_IS_ACTIVE_FILTER_USER,
+	SET_RECENT_SEARCHES,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -304,6 +305,7 @@ const INITIAL_STATE = {
 	isDisplayCreateReferral: false,
 	isDisplayAddPlugin: false,
 	isActiveFilterUser: false,
+	recentSearches: [],
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -1238,6 +1240,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				isActiveFilterUser: payload.isActiveFilterUser,
+			};
+		}
+		case SET_RECENT_SEARCHES: {
+			return {
+				...state,
+				recentSearches: payload.recentSearches,
 			};
 		}
 		default:
