@@ -95,7 +95,9 @@ const MarginTrading = ({
 			message.success(`Success: ${response.data.message}`);
 			fetchMarginPositions();
 		} catch (error) {
-			message.error(`Error: ${error.response?.data?.message || error.message}`);
+			message.error(
+				`Error: ${error.response?.data?.message?.message || error.message}`
+			);
 		}
 	};
 
@@ -147,6 +149,8 @@ const MarginTrading = ({
 				}
 				acc[coin][key] = userBalance[key];
 			}
+			console.log({ userBalance });
+
 			return acc;
 		}, {});
 
@@ -167,7 +171,7 @@ const MarginTrading = ({
 						const {
 							[`${coin}_margin_balance`]: marginBalance,
 							[`${coin}_margin_available`]: marginAvailable,
-							[`${coin}_margin_borrowed`]: marginBorrowed,
+							[`${coin}_borrowed`]: marginBorrowed,
 						} = coins[coin];
 
 						return (

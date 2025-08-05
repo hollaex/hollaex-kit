@@ -89,7 +89,7 @@
 			"title": "${currency} Yatırımı Bekliyor"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Sayın ${name} </p><p> ${currency} cinsinden, ${amount} ${currency} yatırımınız onaylanmış ve tamamlanmıştır. Bakiyenize, ${currency} cüzdanınızdan erişebilirsiniz.</p><p>Miktar: ${amount} ${currency}<br />Durum: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><span id=\"network\">Ağ: ${network}</span><br />Ücret: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><div><p> Sayın ${name} </p><p> ${currency} cinsinden, ${amount} ${currency} yatırımınız onaylanmış ve tamamlanmıştır. Bakiyenize, ${currency} cüzdanınızdan erişebilirsiniz.</p><p>Miktar: ${amount} ${currency}<br />Durum: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><div id=\"network\">Ağ: ${network}</div><br />Ücret: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Yatırımı Tamamlandı"
 		},
 		"WITHDRAWAL_PENDING": {

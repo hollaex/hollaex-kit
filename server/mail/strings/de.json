@@ -85,7 +85,7 @@
 			"title": "${currency} Einzahlung pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Sehr geehrte/r ${name} </p><p> Ihre ${currency} Anzahlung für ${amount} ${currency} ist bestätigt und abgeschlossen und steht in Ihrer ${currency} Geldbörse zur Verfügung.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><span id='network'>Netzwerk: ${network}</span><br />Gebühr: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"html": "<div><div><p> Sehr geehrte/r ${name} </p><p> Ihre ${currency} Anzahlung für ${amount} ${currency} ist bestätigt und abgeschlossen und steht in Ihrer ${currency} Geldbörse zur Verfügung.</p><p>Betrag: ${amount} ${currency}<br />Status: ${status}<br />Adresse: ${address}<br />Transaktionsnummer: ${transaction_id}<br /><div id='network'>Netzwerk: ${network}</div><br />Gebühr: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
 			"title": "${currency} Einzahlung completed"
 		},
 		"WITHDRAWAL_PENDING": {

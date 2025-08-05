@@ -33,7 +33,7 @@
 			"title": "${currency} орлого хүлээгдэж байна"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Эрхэм хүндэт ${name} </p><p> Таны ${amount} ${currency} орлого амжилттай хийгдэж, таны ${currency} хэтэвчинд орлоо.</p><p>Дүн: ${amount} ${currency}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Сүлжээ: ${network}</span><br />Шимтгэл: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"html": "<div><div><p> Эрхэм хүндэт ${name} </p><p> Таны ${amount} ${currency} орлого амжилттай хийгдэж, таны ${currency} хэтэвчинд орлоо.</p><p>Дүн: ${amount} ${currency}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><div id=\"network\">Сүлжээ: ${network}</div><br />Шимтгэл: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
 			"title": "${currency} Орлого амжилттай"
 		},
 		"WITHDRAWAL_PENDING": {

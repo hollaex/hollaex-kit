@@ -85,7 +85,7 @@
 			"title": "${currency} ايداع pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}العزيز </p><p> تم تأكيد وديعة ${currency} بمبلغ ${amount} ${currency} واكتملت وهي متوفرة في محفظتك ${currency}.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><div><p> ${name}العزيز </p><p> تم تأكيد وديعة ${currency} بمبلغ ${amount} ${currency} واكتملت وهي متوفرة في محفظتك ${currency}.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}</div><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} ايداع completed"
 		},
 		"WITHDRAWAL_PENDING": {

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 import { Button } from 'antd';
 import { DownOutlined, CloseOutlined } from '@ant-design/icons';
 
 import Tab from '../Tab';
 import Coins from '../Coins';
+import { setIsDisplayCreateMarket } from 'actions/appActions';
 
 const getCoinPairSelect = (currentPresetPair, pairBase, pair2, moveToStep) => {
 	if (currentPresetPair.id) {
@@ -61,6 +64,8 @@ const AddPairTab = ({
 	activeTab,
 	handleTabs,
 	handleSelectType,
+	isDisplayCreateMarket = false,
+	setIsDisplayCreateMarket = () => {},
 }) => {
 	const pairBase =
 		allCoins.filter((data) => data.symbol === currentPresetPair.pair_base)[0] ||
@@ -72,6 +77,15 @@ const AddPairTab = ({
 		moveToStep('pair-init-selection');
 		handleSelectType();
 	};
+
+	useEffect(() => {
+		if (isDisplayCreateMarket) {
+			handleNavigate();
+			setIsDisplayCreateMarket(false);
+		}
+		//eslint-disable-next-line
+	}, [isDisplayCreateMarket]);
+
 	const renderContent = () => {
 		return (
 			<div>
@@ -131,10 +145,9 @@ const AddPairTab = ({
 			<div className="title">Add Market</div>
 			{isExchangeWizard ? (
 				<div>
-					Markets are based on assets selected in the previous step. To see
-					more markets{' '}
-					<Link onClick={() => moveToParentStep(2)}>go back</Link> and add more
-					assets.
+					Markets are based on assets selected in the previous step. To see more
+					markets <Link onClick={() => moveToParentStep(2)}>go back</Link> and
+					add more assets.
 				</div>
 			) : null}
 			<Tab
@@ -161,4 +174,14 @@ const AddPairTab = ({
 	);
 };
 
-export default AddPairTab;
+const mapStateToProps = (state) => ({
+	isDisplayCreateMarket: state.app.isDisplayCreateMarket,
+});
+const mapDispatchToProps = (dispatch) => ({
+	setIsDisplayCreateMarket: bindActionCreators(
+		setIsDisplayCreateMarket,
+		dispatch
+	),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddPairTab);

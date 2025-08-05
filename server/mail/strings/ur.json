@@ -33,7 +33,7 @@
 			"title": "${currency} ڈپازٹ زیر التواء"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> میرےعزیز ${name} </p><p> آپ کا ${currency} ڑپازٹ ${amount} ${currency} تصدیق شدہ اور مکمل ہے اور یہ آپ کے بٹوے میں دستیاب ہے۔ ${currency} </p><p>رقم: ${amount} ${currency}<br />حالت: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br />فیس: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"html": "<div><div><p> میرےعزیز ${name} </p><p> آپ کا ${currency} ڑپازٹ ${amount} ${currency} تصدیق شدہ اور مکمل ہے اور یہ آپ کے بٹوے میں دستیاب ہے۔ ${currency} </p><p>رقم: ${amount} ${currency}<br />حالت: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><div id=\"network\">نیٹ ورک: ${network}</div><br />فیس: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> سلام<br> ${api_name} ٹیم </p></div>",
 			"title": "${currency} ڈپازٹ مکمل ہو گیا۔"
 		},
 		"WITHDRAWAL_PENDING": {
