@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
 import { Table, Button, Spin, Input, Select } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
+
+import { Coin } from 'components';
 import {
 	requestStakersByAdmin,
 	requestStakePools,
 	getStakingAnalytics,
 } from './actions';
-import moment from 'moment';
-import BigNumber from 'bignumber.js';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
-const UserStaking = ({ coins }) => {
+const UserStaking = ({
+	coins,
+	isUserProfileStakeTab = false,
+	router,
+	selectedUserId = null,
+}) => {
 	const [userData, setUserData] = useState([]);
-	const [stakePools, setStakePools] = useState([]);
+	const [stakePools, setStakePools] = useState([{ id: '0', name: 'All' }]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues, setQueryValues] = useState();
 	const [queryFilters, setQueryFilters] = useState({
@@ -41,7 +50,7 @@ const UserStaking = ({ coins }) => {
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+						<Button className="ant-btn green-btn no-border ant-tooltip-open ant-btn-primary">
 							{data?.user_id}
 						</Button>
 						{/* <div className="ml-3">{data.User.email}</div> */}
@@ -54,8 +63,16 @@ const UserStaking = ({ coins }) => {
 			dataIndex: 'currency',
 			key: 'currency',
 			render: (user_id, data) => {
+				const { icon_id } = coins[data?.stake?.currency] || DEFAULT_COIN_DATA;
 				return (
-					<div className="d-flex">{data?.stake?.currency.toUpperCase()}</div>
+					<div className="d-flex">
+						{icon_id && (
+							<span className="mr-2">
+								<Coin iconId={icon_id} type="CS7" />
+							</span>
+						)}
+						{data?.stake?.currency?.toUpperCase()}
+					</div>
 				);
 			},
 		},
@@ -117,20 +134,20 @@ const UserStaking = ({ coins }) => {
 			key: 'reward',
 			render: (user_id, data) => {
 				const incrementUnit =
-					coins[data.reward_currency || data.currency].increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit).dp();
+					coins[data?.reward_currency || data?.currency]?.increment_unit;
+				const decimalPoint = new BigNumber(incrementUnit)?.dp();
 				const sourceAmount =
 					data?.reward &&
 					new BigNumber(data?.reward - data?.slashed)
-						.decimalPlaces(decimalPoint)
-						.toNumber();
+						?.decimalPlaces(decimalPoint)
+						?.toNumber();
 
 				return (
 					<div className="d-flex">
 						{sourceAmount}{' '}
 						{(
 							data?.stake?.reward_currency || data?.stake?.currency
-						).toUpperCase()}
+						)?.toUpperCase()}
 					</div>
 				);
 			},
@@ -144,7 +161,7 @@ const UserStaking = ({ coins }) => {
 					<div className="d-flex">
 						{data?.status === 'unstaking' ? (
 							<span>
-								<ExclamationCircleFilled style={{ color: 'red' }} />{' '}
+								<ExclamationCircleFilled className="stake-warning-icon" />{' '}
 								Unstaking...
 							</span>
 						) : data?.status === 'staking' ? (
@@ -163,20 +180,20 @@ const UserStaking = ({ coins }) => {
 		// requestExchangeStakers(queryFilters.page, queryFilters.limit);
 		requestStakePools()
 			.then((res) => {
-				setStakePools(res?.data || []);
+				setStakePools((prev) => [...prev, ...(res?.data || [])]);
 				if (res?.data?.length > 0) {
-					setQueryValues({ ...queryValues, stake_id: res.data[0].id });
+					setQueryValues({ ...queryValues, stake_id: stakePools[0]?.id });
 				}
 			})
 			.catch((err) => err);
 		getStakingAnalytics().then((res) => {
-			setStakingAnalytics(res.data);
+			setStakingAnalytics(res?.data);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
-		requestExchangeStakers(queryFilters.page, queryFilters.limit);
+		requestExchangeStakers(queryFilters?.page, queryFilters?.limit);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryValues]);
 
@@ -185,20 +202,34 @@ const UserStaking = ({ coins }) => {
 	};
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
+		let requestQueryValues = {};
 		if (!queryValues?.user_id && !queryValues?.stake_id) return;
 		setIsLoading(true);
-		requestStakersByAdmin({ page, limit, ...queryValues })
+		if (isUserProfileStakeTab && selectedUserId) {
+			requestQueryValues = {
+				user_id: String(selectedUserId),
+				...(queryValues?.stake_id !== '0' && queryValues),
+			};
+		} else {
+			const { stake_id, user_id } = queryValues || {};
+			if (stake_id === '0') {
+				requestQueryValues = user_id ? { user_id } : {};
+			} else {
+				requestQueryValues = user_id === '' ? { stake_id } : { ...queryValues };
+			}
+		}
+		requestStakersByAdmin({ page, limit, ...requestQueryValues })
 			.then((response) => {
 				setUserData(
-					page === 1 ? response.data : [...userData, ...response.data]
+					page === 1 ? response?.data : [...userData, ...response?.data]
 				);
 
 				setQueryFilters({
-					total: response.count,
+					total: response?.count,
 					fetched: true,
 					page,
-					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
-					isRemaining: response.count > page * limit,
+					currentTablePage: page === 1 ? 1 : queryFilters?.currentTablePage,
+					isRemaining: response?.count > page * limit,
 				});
 
 				setIsLoading(false);
@@ -250,22 +281,24 @@ const UserStaking = ({ coins }) => {
 	// };
 
 	return (
-		<div>
-			<div style={{ color: 'white', fontWeight: 'bold' }}>
-				User active stakes
-			</div>
-			<div style={{ color: '#ccc' }}>
-				Track the users that are staking, and when their stake is maturing.
-			</div>
+		<div className="admin-users-stake-wrapper">
+			{!isUserProfileStakeTab && (
+				<>
+					<div className="bold">User active stakes</div>
+					<div className="stake-section-description">
+						Track the users that are staking, and when their stake is maturing.
+					</div>
 
-			<div style={{ color: '#ccc', marginTop: 20 }}>
-				<span style={{ fontWeight: 'bold', color: 'white' }}>Note:</span>{' '}
-				Unstaking requires 1 day to settle. (an email will be sent to notify of
-				any unstaking events) After settlement the user will automatically
-				receive their initial stake amount (principle) and their earnings.
-			</div>
+					<div className="stake-guideline mt-4">
+						<span className="bold text-white">Note:</span> Unstaking requires 1
+						day to settle. (an email will be sent to notify of any unstaking
+						events) After settlement the user will automatically receive their
+						initial stake amount (principle) and their earnings.
+					</div>
+				</>
+			)}
 			<div>
-				<div style={{ marginTop: 20 }}>
+				<div>
 					{/* <SessionFilters
 						applyFilters={(filters) => {
 							setQueryValues(filters);
@@ -274,8 +307,8 @@ const UserStaking = ({ coins }) => {
 						defaultFilters={defaultFilters}
 					/> */}
 				</div>
-				<div className="mt-5">
-					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				<div className={`${!isUserProfileStakeTab && 'mt-5'}`}>
+					<div className="stake-filter-wrapper d-flex justify-content-between">
 						{/* <span
 							onClick={(e) => {
 								requestDownload();
@@ -285,55 +318,91 @@ const UserStaking = ({ coins }) => {
 						>
 							Search user
 						</span> */}
-						<span style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
-							<div>
-								<div>Search user</div>
-								<div style={{ display: 'flex', gap: 10 }}>
-									<Input
-										style={{}}
-										placeholder="Search User ID"
-										onChange={(e) => {
-											setUserQuery({
-												...(userQuery?.status && { status: userQuery.status }),
-												...(e.target.value && { user_id: e.target.value }),
-											});
-										}}
-										value={userQuery.user_id}
-									/>
-									<Button
-										onClick={() => {
-											setQueryValues(userQuery);
-										}}
-										style={{
-											backgroundColor: '#288500',
-											color: 'white',
-											flex: 1,
-											height: 35,
-											marginRight: 5,
-										}}
-										type="default"
-									>
-										Apply
-									</Button>
+						<span className="stake-filter-container d-flex flex-row">
+							{!isUserProfileStakeTab && (
+								<div>
+									<div>Search user</div>
+									<div className="pt-2 user-search-field d-flex">
+										<Input
+											placeholder="Search User ID"
+											onChange={(e) => {
+												setUserQuery({
+													...(userQuery?.status && {
+														status: userQuery?.status,
+													}),
+													...{ user_id: e.target?.value },
+												});
+											}}
+											value={userQuery?.user_id?.trim()}
+											className="no-border"
+										/>
+										<Button
+											onClick={() => {
+												setQueryValues((prev) => ({
+													...prev,
+													...(userQuery || {}),
+												}));
+											}}
+											type="default"
+											className="apply-btn no-border"
+										>
+											Apply
+										</Button>
+									</div>
 								</div>
-							</div>
-							<div>
+							)}
+							<div
+								className={`${
+									isUserProfileStakeTab
+										? 'd-flex flex-column staking-pool-filter-container'
+										: 'staking-pool-filter-container'
+								}`}
+							>
+								{isUserProfileStakeTab && (
+									<div className="d-flex flex-column stake-summary-message">
+										<span className="bold">Active/closed stakes</span>
+										<span>Below are the user's active and closes stakes.</span>
+										<span>
+											To view all pools and user view the main{' '}
+											<span
+												className="underline-text pointer"
+												onClick={() => router.push(`admin/stakes?user-staking`)}
+											>
+												Stakes page.
+											</span>
+										</span>
+									</div>
+								)}
 								<span>
-									<div>Stake Pools</div>
-									<div>
+									<div>Filter by Staking Pools</div>
+									<div className="pt-2">
 										<Select
 											showSearch
 											className="select-box"
-											style={{ width: 200 }}
+											dropdownClassName="stake-pool-filter-dropdown"
 											value={queryValues?.stake_id}
 											placeholder="Select Staking Pool"
 											onChange={(e) => {
-												setQueryValues({ stake_id: e });
+												setQueryValues((prev) => ({
+													...(prev?.user_id !== '' && prev),
+													stake_id: e,
+												}));
 											}}
+											filterOption={(input, option) =>
+												option?.props?.children
+													?.toLowerCase()
+													?.includes(input?.toLowerCase())
+											}
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
 										>
 											{stakePools.map((stakePool) => (
-												<Select.Option value={stakePool.id}>
-													{stakePool.name}
+												<Select.Option
+													key={stakePool?.name}
+													value={stakePool?.id}
+												>
+													{stakePool?.name}
 												</Select.Option>
 											))}
 										</Select>
@@ -362,40 +431,42 @@ const UserStaking = ({ coins }) => {
 							</span> */}
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
-								<span style={{ fontWeight: 'bold' }}>Total stakers:</span>{' '}
-								{queryFilters.total} users
+								<span className="bold">Total stakers:</span>{' '}
+								{queryFilters?.total}{' '}
+								{isUserProfileStakeTab ? 'stakes' : 'users'}
 							</div>
-							<div style={{ display: 'flex', flexDirection: 'column' }}>
+							<div className="d-flex flex-column">
 								Appox. stake value:{' '}
 								{stakingAnayltics?.stakingAmount?.map((stake) => {
-									const incrementUnit = coins[stake?.currency].increment_unit;
-									const decimalPoint = new BigNumber(incrementUnit).dp();
-									const sourceAmount = new BigNumber(stake.total_amount)
-										.decimalPlaces(decimalPoint)
-										.toNumber();
+									const incrementUnit = coins[stake?.currency]?.increment_unit;
+									const decimalPoint = new BigNumber(incrementUnit)?.dp();
+									const sourceAmount = new BigNumber(stake?.total_amount)
+										?.decimalPlaces(decimalPoint)
+										?.toNumber();
 
 									return (
 										<div>
-											<span style={{ fontWeight: 'bold' }}></span>{' '}
-											{sourceAmount} {stake?.currency?.toUpperCase()}
+											<span className="bold"></span> {sourceAmount}{' '}
+											{stake?.currency?.toUpperCase()}
 										</div>
 									);
 								})}
 							</div>
 							<div>-</div>
 							<div>
-								<div style={{ display: 'flex', flexDirection: 'column' }}>
+								<div className="d-flex flex-column">
 									Value unstaking:{' '}
 									{stakingAnayltics?.unstakingAmount?.map((stake) => {
-										const incrementUnit = coins[stake?.currency].increment_unit;
-										const decimalPoint = new BigNumber(incrementUnit).dp();
-										const sourceAmount = new BigNumber(stake.total_amount)
-											.decimalPlaces(decimalPoint)
-											.toNumber();
+										const incrementUnit =
+											coins[stake?.currency]?.increment_unit;
+										const decimalPoint = new BigNumber(incrementUnit)?.dp();
+										const sourceAmount = new BigNumber(stake?.total_amount)
+											?.decimalPlaces(decimalPoint)
+											?.toNumber();
 										return (
 											<div>
-												<span style={{ fontWeight: 'bold' }}></span>{' '}
-												{sourceAmount} {stake?.currency?.toUpperCase()}
+												<span className="bold"></span> {sourceAmount}{' '}
+												{stake?.currency?.toUpperCase()}
 											</div>
 										);
 									})}
@@ -441,7 +512,7 @@ const UserStaking = ({ coins }) => {
 								columns={columns}
 								dataSource={
 									userData.sort((a, b) => {
-										return statuses[a.status] - statuses[b.status];
+										return statuses[a?.status] - statuses[b?.status];
 									})
 									// .filter((x) =>
 									// 	userQuery?.status === 'closed'
@@ -452,10 +523,10 @@ const UserStaking = ({ coins }) => {
 								// expandedRowRender={renderRowContent}
 								expandRowByClick={true}
 								rowKey={(data) => {
-									return data.id;
+									return data?.id;
 								}}
 								pagination={{
-									current: queryFilters.currentTablePage,
+									current: queryFilters?.currentTablePage,
 									onChange: pageChange,
 								}}
 							/>
@@ -467,4 +538,4 @@ const UserStaking = ({ coins }) => {
 	);
 };
 
-export default UserStaking;
+export default withRouter(UserStaking);

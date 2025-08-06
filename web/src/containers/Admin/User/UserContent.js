@@ -46,6 +46,7 @@ import {
 	setIsDisabledUser2fa,
 	setIsEmailVerifiedUser,
 } from 'actions/appActions';
+import UserStaking from '../Stakes/UserStaking';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -71,6 +72,7 @@ class UserContent extends Component {
 			'payment_methods',
 			'referrals',
 			'meta',
+			'stakes',
 		],
 	};
 
@@ -582,6 +584,13 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					}
+					<TabPane tab="Stakes" key="stakes">
+						<UserStaking
+							coins={this.props?.coins}
+							isUserProfileStakeTab={true}
+							selectedUserId={userInformation?.id}
+						/>
+					</TabPane>
 					{
 						<TabPane tab="Referrals" key="referrals">
 							<Referrals
