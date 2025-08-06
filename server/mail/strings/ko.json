@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "의심스러운 로그인 알림",
 			"html": "<div><p>${name} 님,</p><p>새로운 기기 또는 위치에서 귀하의 계정에 대한 로그인 시도가 감지되었습니다. 본인이 맞다면 아래 코드를 사용하여 로그인을 확인해주세요. 아니라면 즉시 계정을 보호하기 위한 조치를 취하시기 바랍니다.</p><p><strong>로그인 세부 정보:</strong><br />IP 주소: ${ip}<br />위치: ${location}<br />기기: ${device}<br />시간: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>본인이 아니라면</strong>, <a href=\"${freeze_account_link}\">즉시 계정을 동결</a>하는 것을 권장합니다.</p><p>감사합니다.<br />${api_name} 팀</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>${name}님, 안녕하세요</p><p>다음 주소로 ${amount} ${currency} 출금을 요청하셨습니다: ${address}.<br /><br />금액: ${amount} ${currency}<br />수수료: ${fee} ${fee_coin}<br />주소: ${address}<br /><span id=\"network\">네트워크: ${network}</span><br /><br />이 출금을 승인하려면 아래 인증 코드를 사용하세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>이 코드는 제한된 시간 동안만 유효합니다. 입력하여 진행하세요.</p><p>요청이 실수였다면 무시해도 됩니다. 계정에 변경사항은 없습니다.</p><p>요청 발신: ${ip}</p><p>감사합니다<br />${api_name}팀</p></div>",
+			"title": "${currency} 출금 요청"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>${name}님, 안녕하세요</p><p>비밀번호 재설정을 요청하셨습니다.<br />계속하려면 아래 인증 코드를 사용해 주세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>이 코드를 비밀번호 재설정 페이지에 입력하고 진행하세요. 유효 기간이 있습니다.</p><p>요청하지 않았다면 이 메시지를 무시하세요.</p><p>요청 발신: ${ip}</p><p>감사합니다<br />${api_name}팀</p></div>",
+			"title": "비밀번호 재설정 요청"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>${name}님, 안녕하세요</p><p>가입을 완료하려면 아래 코드를 사용해 이메일 인증을 해주세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>이 코드를 가입 페이지에 입력해 가입을 완료하세요. 코드는 제한된 시간 동안 유효합니다.</p><p>궁금한 점이 있으면 이 이메일에 회신해 주세요.</p><p>감사합니다<br />${api_name}팀</p></div>",
+			"title": "회원가입 – 인증 코드"
 		}
 	}
 }

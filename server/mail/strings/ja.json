@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "不審なログインの警告",
 			"html": "<div><p>${name} 様</p><p>新しいデバイスまたは場所からアカウントへのログイン試行が検出されました。ご本人によるものであれば、以下のコードを使用してログインを確認してください。そうでない場合は、直ちにアカウントの保護措置を講じてください。</p><p><strong>ログイン詳細:</strong><br />IPアドレス: ${ip}<br />場所: ${location}<br />デバイス: ${device}<br />時間: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>心当たりがない場合</strong>は、すぐに<a href=\"${freeze_account_link}\">アカウントを凍結</a>することをお勧めします。</p><p>よろしくお願いいたします。<br />${api_name} チーム</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>${name} 様</p><p>${address} 宛に ${amount} ${currency} の出金をリクエストされました。<br /><br />金額：${amount} ${currency}<br />手数料：${fee} ${fee_coin}<br />住所：${address}<br /><span id=\"network\">ネットワーク：${network}</span><br /><br />この出金を確定するには、以下の認証コードをご利用ください。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>このコードは期限付きで有効です。入力して続行してください。</p><p>誤ってリクエストされた場合は、このまま無視して問題ありません。アカウントへの変更はありません。</p><p>リクエスト発信元：${ip}</p><p>よろしくお願いいたします。<br />${api_name}チーム</p></div>",
+			"title": "${currency} 出金リクエスト"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>${name} 様</p><p>アカウントのパスワードリセットをリクエストされました。<br />続行するには、以下の認証コードをご利用ください。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>このコードをパスワードリセットページに入力して続行してください。コードには有効期限があります。</p><p>リクエストしていない場合は、このメールを無視してください。</p><p>リクエスト発信元：${ip}</p><p>よろしくお願いいたします。<br />${api_name}チーム</p></div>",
+			"title": "パスワードリセットリクエスト"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>${name} 様</p><p>登録を完了するには、以下のコードを使用してメールの確認を行ってください。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>このコードを登録ページに入力して登録を完了してください。コードは期限付きで有効です。</p><p>質問がある場合は、このメールに返信してください。</p><p>よろしくお願いいたします。<br />${api_name}チーム</p></div>",
+			"title": "サインアップ確認コード"
 		}
 	}
 }

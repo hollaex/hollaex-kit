@@ -179,6 +179,18 @@
 		"SUSPICIOUS_LOGIN_CODE": {
 			"title": "مشکوک لاگ ان کی اطلاع",
 			"html": "<div><p>محترم ${name}،</p><p>ہم نے آپ کے اکاؤنٹ میں ایک نئے آلہ یا مقام سے لاگ ان کی کوشش کا پتہ لگایا ہے۔ اگر یہ آپ تھے، تو براہ کرم نیچے دیا گیا کوڈ استعمال کر کے تصدیق کریں۔ اگر نہیں، تو اپنے اکاؤنٹ کی حفاظت کے لیے فوری اقدام کریں۔</p><p><strong>لاگ ان کی تفصیلات:</strong><br />IP ایڈریس: ${ip}<br />مقام: ${location}<br />ڈیوائس: ${device}<br />وقت: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>اگر یہ آپ نہیں تھے</strong>، تو ہم تجویز کرتے ہیں کہ آپ <a href=\"${freeze_account_link}\">فوری طور پر اپنے اکاؤنٹ کو منجمد کریں</a> تاکہ غیر مجاز رسائی سے بچا جا سکے۔</p><p>خیراندیش،<br />${api_name} ٹیم</p></div>"
+		},
+		"WITHDRAWAL_REQUEST_CODE": {
+			"html": "<div><p>محترم ${name}</p><p>آپ نے ${address} پر ${amount} ${currency} کی رقم نکالنے کی درخواست کی ہے۔<br /><br />رقم: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br />پتہ: ${address}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><br />اس رقم کی تصدیق کرنے کے لیے، براہ کرم نیچے درجہ ذیل تصدیقی کوڈ استعمال کریں۔</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>یہ کوڈ محدود مدت کے لیے موزوں ہے اور جاری کرنے کے لیے داخل کیا جانا ضروری ہے۔</p><p>اگر یہ درخواست غلطی سے کی گئی ہے، تو اسے نظرانداز کرنا محفوظ ہے؛ آپ کے اکاؤنٹ میں کوئی تبدیلی نہیں کی جائے گی۔</p><p>درخواست شروع کرنے والا: ${ip}</p><p>سلام<br>ٹیم ${api_name}</p></div>",
+			"title": "${currency} واپسی کی درخواست"
+		},
+		"RESET_PASSWORD_CODE": {
+			"html": "<div><p>محترم ${name}</p><p>آپ نے اپنے اکاؤنٹ کا پاس ورڈ ری سیٹ کرنے کا فیصلہ کیا ہے۔<br />آگے بڑھنے کے لیے، براہ کرم نیچے دیا گیا تصدیقی کوڈ استعمال کریں۔</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>اس کوڈ کو پاس ورڈ ری سیٹ صفحے پر درج کریں۔ کوڈ محدود مدت کے لیے کام کرتا ہے۔</p><p>اگر آپ نے اس درخواست کا آغاز نہیں کیا، تو آپ محفوظ طریقے سے اسے نظرانداز کرسکتے ہیں۔</p><p>درخواست شروع کرنے والا: ${ip}</p><p>سلام<br>ٹیم ${api_name}</p></div>",
+			"title": "پاس ورڈ دوبارہ ترتیب دینے کی درخواست"
+		},
+		"SIGNUP_CODE": {
+			"html": "<div><p>محترم ${name}</p><p>اپنا رجسٹریشن مکمل کرنے کے لیے، براہ کرم نیچے دیا گیا کوڈ استعمال کرکے اپنا ای میل تصدیق کریں۔</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>اس کوڈ کو رجسٹریشن صفحے پر درج کریں تاکہ آپ کی رجسٹریشن مکمل ہو سکے۔ کوڈ محدود مدت کے لیے کارآمد ہے۔</p><p>اگر آپ کو کسی سوال کا سامنا ہو، تو بس اس ای میل کا جواب دیں۔</p><p>سلام<br>ٹیم ${api_name}</p></div>",
+			"title": "رجسٹریشن – تصدیقی کوڈ"
 		}
 	}
 }

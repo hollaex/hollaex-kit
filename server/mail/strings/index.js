@@ -75,6 +75,9 @@ const MAILTYPE = {
 	// SUSPICIOUS LOGIN
 	SUSPICIOUS_LOGIN: 'suspicious_login',
 	SUSPICIOUS_LOGIN_CODE: 'suspicious_login_code',
+	WITHDRAWAL_REQUEST_CODE: 'withdrawal_request_code',
+	RESET_PASSWORD_CODE: 'reset_password_code',
+	SIGNUP_CODE: 'signup_code',
 };
 
 const languageFile = (lang) => {
