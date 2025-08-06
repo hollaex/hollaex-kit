@@ -21,14 +21,16 @@ const ElasticRumProvider = ({ children, location, history }) => {
 		// Track initial page load with enhanced path tracking
 		if (window.elasticRum) {
 			// Create a custom page load transaction
-			const pathSegments = window.location.pathname.split('/').filter(Boolean);
+			const pathSegments = window.location?.pathname
+				?.split('/')
+				?.filter(Boolean);
 			const pageName =
-				pathSegments.length > 0
-					? pathSegments[pathSegments.length - 1]
+				pathSegments?.length > 0
+					? pathSegments[pathSegments?.length - 1]
 					: 'home';
 			const transactionName = `Page: ${pageName}`;
 
-			const transaction = window.elasticRum.apm.startTransaction(
+			const transaction = window?.elasticRum?.apm?.startTransaction(
 				transactionName,
 				'page-load'
 			);
@@ -38,9 +40,9 @@ const ElasticRumProvider = ({ children, location, history }) => {
 				pageName,
 				pageLoad: true,
 				initialLoad: true,
-				pathSegments: pathSegments.join(','),
-				fullPath: window.location.pathname,
-				url: window.location.href,
+				pathSegments: pathSegments?.join(','),
+				fullPath: window.location?.pathname,
+				url: window.location?.href,
 				referrer: document.referrer,
 			});
 
@@ -56,17 +58,17 @@ const ElasticRumProvider = ({ children, location, history }) => {
 	// Intercept DOMContentLoaded to create custom page load transaction
 	useEffect(() => {
 		const handleDOMContentLoaded = () => {
-			if (window.elasticRum && !window.elasticRum.pageLoadTracked) {
-				const pathSegments = window.location.pathname
-					.split('/')
-					.filter(Boolean);
+			if (window?.elasticRum && !window.elasticRum?.pageLoadTracked) {
+				const pathSegments = window.location?.pathname
+					?.split('/')
+					?.filter(Boolean);
 				const pageName =
-					pathSegments.length > 0
-						? pathSegments[pathSegments.length - 1]
+					pathSegments?.length > 0
+						? pathSegments[pathSegments?.length - 1]
 						: 'home';
 				const transactionName = `Page: ${pageName}`;
 
-				const transaction = window.elasticRum.apm.startTransaction(
+				const transaction = window?.elasticRum?.apm?.startTransaction(
 					transactionName,
 					'page-load'
 				);
@@ -75,9 +77,9 @@ const ElasticRumProvider = ({ children, location, history }) => {
 					pageName,
 					pageLoad: true,
 					domContentLoaded: true,
-					pathSegments: pathSegments.join(','),
-					fullPath: window.location.pathname,
-					url: window.location.href,
+					pathSegments: pathSegments?.join(','),
+					fullPath: window.location?.pathname,
+					url: window.location?.href,
 				});
 
 				// Mark as tracked to avoid duplicates
@@ -112,8 +114,8 @@ const ElasticRumProvider = ({ children, location, history }) => {
 			// Add additional route-specific labels
 			addLabels({
 				routeChange: true,
-				search: location.search,
-				hash: location.hash,
+				search: location?.search,
+				hash: location?.hash,
 			});
 
 			// End the transaction when component unmounts or route changes
@@ -127,30 +129,30 @@ const ElasticRumProvider = ({ children, location, history }) => {
 
 	// Listen for navigation events
 	useEffect(() => {
-		if (!history || !window.elasticRum) return;
+		if (!history || !window?.elasticRum) return;
 
 		const unlisten = history.listen((location, action) => {
-			if (window.elasticRum) {
+			if (window?.elasticRum) {
 				// Create descriptive navigation transaction name
-				const pathSegments = location.pathname.split('/').filter(Boolean);
+				const pathSegments = location.pathname?.split('/')?.filter(Boolean);
 				const pageName =
-					pathSegments.length > 0
-						? pathSegments[pathSegments.length - 1]
+					pathSegments?.length > 0
+						? pathSegments[pathSegments?.length - 1]
 						: 'home';
 				const transactionName = `Navigation: ${action} to ${pageName}`;
 
 				// Start navigation transaction
-				const transaction = window.elasticRum.apm.startTransaction(
+				const transaction = window?.elasticRum?.apm?.startTransaction(
 					transactionName,
 					'navigation'
 				);
 
 				addLabels({
 					action,
-					route: location.pathname,
+					route: location?.pathname,
 					pageName: pageName,
-					pathSegments: pathSegments.join(','),
-					search: location.search,
+					pathSegments: pathSegments?.join(','),
+					search: location?.search,
 					navigationType: action,
 				});
 
@@ -171,21 +173,21 @@ const ElasticRumProvider = ({ children, location, history }) => {
 	// Global error boundary for Elastic RUM
 	useEffect(() => {
 		const handleGlobalError = (event) => {
-			if (window.elasticRum) {
-				captureError(event.error || event, {
+			if (window?.elasticRum) {
+				captureError(event?.error || event, {
 					context: 'global-error',
-					url: window.location.href,
+					url: window.location?.href,
 					userAgent: navigator.userAgent,
 				});
 			}
 		};
 
 		const handleUnhandledRejection = (event) => {
-			if (window.elasticRum) {
-				captureError(event.reason, {
+			if (window?.elasticRum) {
+				captureError(event?.reason, {
 					context: 'unhandled-rejection',
-					url: window.location.href,
-					promise: event.promise,
+					url: window.location?.href,
+					promise: event?.promise,
 				});
 			}
 		};
@@ -205,16 +207,16 @@ const ElasticRumProvider = ({ children, location, history }) => {
 
 	// Performance monitoring
 	useEffect(() => {
-		if (!window.elasticRum) return;
+		if (!window?.elasticRum) return;
 
 		// Monitor Core Web Vitals
 		const observer = new PerformanceObserver((list) => {
-			for (const entry of list.getEntries()) {
-				if (window.elasticRum) {
+			for (const entry of list?.getEntries()) {
+				if (window?.elasticRum) {
 					addLabels({
-						metric: entry.name,
-						value: entry.value,
-						entryType: entry.entryType,
+						metric: entry?.name,
+						value: entry?.value,
+						entryType: entry?.entryType,
 					});
 				}
 			}
@@ -265,14 +267,16 @@ export const withElasticRum = (WrappedComponent, options = {}) => {
 		const elasticRum = useElasticRum();
 
 		useEffect(() => {
-			if (elasticRum && options.trackComponent) {
+			if (elasticRum && options?.trackComponent) {
 				const transactionName =
-					options.transactionName ||
-					`Component: ${WrappedComponent.displayName || WrappedComponent.name}`;
+					options?.transactionName ||
+					`Component: ${
+						WrappedComponent?.displayName || WrappedComponent?.name
+					}`;
 				elasticRum.setTransactionContext(transactionName, 'component');
 
-				if (options.labels) {
-					elasticRum.addLabels(options.labels);
+				if (options?.labels) {
+					elasticRum.addLabels(options?.labels);
 				}
 			}
 		}, [elasticRum]);
@@ -281,39 +285,9 @@ export const withElasticRum = (WrappedComponent, options = {}) => {
 	};
 
 	WithElasticRum.displayName = `withElasticRum(${
-		WrappedComponent.displayName || WrappedComponent.name
+		WrappedComponent?.displayName || WrappedComponent?.name
 	})`;
 	return WithElasticRum;
 };
-
-// Error boundary component for Elastic RUM
-export class ElasticRumErrorBoundary extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { hasError: false };
-	}
-
-	static getDerivedStateFromError(error) {
-		return { hasError: true };
-	}
-
-	componentDidCatch(error, errorInfo) {
-		if (window.elasticRum) {
-			captureError(error, {
-				context: 'error-boundary',
-				componentStack: errorInfo.componentStack,
-				componentName: this.props.componentName || 'Unknown',
-			});
-		}
-	}
-
-	render() {
-		if (this.state.hasError) {
-			return this.props.fallback || <div>Something went wrong.</div>;
-		}
-
-		return this.props.children;
-	}
-}
 
 export default withRouter(ElasticRumProvider);

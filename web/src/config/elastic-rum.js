@@ -70,22 +70,22 @@ let apm = null;
 export const initializeElasticRum = () => {
 	try {
 		const config = getElasticRumConfig();
-		if (config.active) {
+		if (config?.active) {
 			apm = initApm(config);
 
 			// Add custom context
 			apm.setCustomContext({
 				app: 'hollaex-exchange',
-				version: config.serviceVersion,
-				environment: config.environment,
+				version: config?.serviceVersion,
+				environment: config?.environment,
 			});
 
 			const setUserContext = (user) => {
 				if (apm && user) {
 					apm.setUserContext({
-						id: user.id || user.user_id,
-						email: user.email,
-						username: user.username || user.nickname,
+						id: user?.id || user?.user_id,
+						email: user?.email,
+						username: user?.username || user?.full_name,
 					});
 				}
 			};
@@ -128,10 +128,6 @@ export const initializeElasticRum = () => {
 				captureError,
 				addSpan,
 			};
-
-			console.log('Elastic RUM initialized successfully');
-		} else {
-			console.log('Elastic RUM is disabled');
 		}
 	} catch (error) {
 		console.error('Failed to initialize Elastic RUM:', error);
@@ -141,31 +137,31 @@ export const initializeElasticRum = () => {
 export const getApm = () => apm;
 
 export const setUserContext = (user) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		window.elasticRum.setUserContext(user);
 	}
 };
 
 export const setTransactionContext = (name, type) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		window.elasticRum.setTransactionContext(name, type);
 	}
 };
 
 export const addLabels = (labels) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		window.elasticRum.addLabels(labels);
 	}
 };
 
 export const captureError = (error, context) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		window.elasticRum.captureError(error, context);
 	}
 };
 
 export const addSpan = (name, type, subtype, action) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		return window.elasticRum.addSpan(name, type, subtype, action);
 	}
 	return null;

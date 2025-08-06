@@ -3,17 +3,17 @@ import { captureError, addLabels, addSpan } from '../config/elastic-rum';
 
 // Redux middleware for Elastic RUM
 export const elasticRumMiddleware = (store) => (next) => (action) => {
-	const startTime = performance.now();
+	const startTime = performance?.now();
 
 	// Start a span for the action
-	const span = addSpan(`Redux Action: ${action.type}`, 'redux', 'action');
+	const span = addSpan(`Redux Action: ${action?.type}`, 'redux', 'action');
 
 	try {
 		// Add action-specific labels
-		if (window.elasticRum) {
+		if (window?.elasticRum) {
 			addLabels({
-				actionType: action.type,
-				actionPayload: JSON.stringify(action.payload || {}),
+				actionType: action?.type,
+				actionPayload: JSON.stringify(action?.payload || {}),
 				reduxAction: true,
 			});
 		}
@@ -27,8 +27,8 @@ export const elasticRumMiddleware = (store) => (next) => (action) => {
 		}
 
 		// Track action duration
-		const duration = performance.now() - startTime;
-		if (window.elasticRum) {
+		const duration = performance?.now() - startTime;
+		if (window?.elasticRum) {
 			addLabels({
 				actionDuration: duration,
 				actionSuccess: true,
@@ -45,8 +45,8 @@ export const elasticRumMiddleware = (store) => (next) => (action) => {
 		// Capture the error
 		captureError(error, {
 			context: 'redux-action',
-			actionType: action.type,
-			actionPayload: action.payload,
+			actionType: action?.type,
+			actionPayload: action?.payload,
 		});
 
 		// Re-throw the error
@@ -57,15 +57,15 @@ export const elasticRumMiddleware = (store) => (next) => (action) => {
 // API call wrapper for Elastic RUM
 export const withElasticRumTracking = (apiCall, options = {}) => {
 	return async (...args) => {
-		const startTime = performance.now();
-		const operationName = options.name || 'API Call';
+		const startTime = performance?.now();
+		const operationName = options?.name || 'API Call';
 
 		// Start a span for the API call
 		const span = addSpan(operationName, 'http', 'request');
 
 		try {
 			// Add API call labels
-			if (window.elasticRum) {
+			if (window?.elasticRum) {
 				addLabels({
 					apiOperation: operationName,
 					apiArgs: JSON.stringify(args),
@@ -82,8 +82,8 @@ export const withElasticRumTracking = (apiCall, options = {}) => {
 			}
 
 			// Track API call duration
-			const duration = performance.now() - startTime;
-			if (window.elasticRum) {
+			const duration = performance?.now() - startTime;
+			if (window?.elasticRum) {
 				addLabels({
 					apiDuration: duration,
 					apiSuccess: true,
@@ -103,7 +103,7 @@ export const withElasticRumTracking = (apiCall, options = {}) => {
 				context: 'api-call',
 				operationName,
 				args,
-				duration: performance.now() - startTime,
+				duration: performance?.now() - startTime,
 			});
 
 			// Re-throw the error
@@ -114,7 +114,7 @@ export const withElasticRumTracking = (apiCall, options = {}) => {
 
 // User interaction tracking
 export const trackUserInteraction = (interactionName, details = {}) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		const span = addSpan(
 			`User Interaction: ${interactionName}`,
 			'user',
@@ -135,7 +135,7 @@ export const trackUserInteraction = (interactionName, details = {}) => {
 // Performance tracking for specific operations
 export const trackPerformance = (operationName, operation) => {
 	return async (...args) => {
-		const startTime = performance.now();
+		const startTime = performance?.now();
 		const span = addSpan(
 			`Performance: ${operationName}`,
 			'performance',
@@ -150,7 +150,7 @@ export const trackPerformance = (operationName, operation) => {
 
 			const result = await operation(...args);
 
-			const duration = performance.now() - startTime;
+			const duration = performance?.now() - startTime;
 			addLabels({
 				operationDuration: duration,
 				operationSuccess: true,
@@ -169,7 +169,7 @@ export const trackPerformance = (operationName, operation) => {
 			captureError(error, {
 				context: 'performance-operation',
 				operationName,
-				duration: performance.now() - startTime,
+				duration: performance?.now() - startTime,
 			});
 
 			throw error;
@@ -213,7 +213,7 @@ export const trackWebSocketConnection = (url, options = {}) => {
 
 // Form submission tracking
 export const trackFormSubmission = (formName, formData = {}) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		const span = addSpan(`Form Submission: ${formName}`, 'form', 'submission');
 
 		addLabels({
@@ -229,13 +229,13 @@ export const trackFormSubmission = (formName, formData = {}) => {
 
 // Page load tracking
 export const trackPageLoad = (pageName) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		const span = addSpan(`Page Load: ${pageName}`, 'page', 'load');
 
 		addLabels({
 			pageName,
 			pageLoad: true,
-			url: window.location.href,
+			url: window.location?.href,
 		});
 
 		return span;
@@ -245,14 +245,16 @@ export const trackPageLoad = (pageName) => {
 
 // Enhanced page tracking with path analysis
 export const trackPageWithPath = () => {
-	if (window.elasticRum) {
-		const pathSegments = window.location.pathname.split('/').filter(Boolean);
+	if (window?.elasticRum) {
+		const pathSegments = window.location?.pathname?.split('/')?.filter(Boolean);
 		const pageName =
-			pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : 'home';
-		const section = pathSegments.length > 1 ? pathSegments[0] : 'main';
+			pathSegments?.length > 0
+				? pathSegments[pathSegments?.length - 1]
+				: 'home';
+		const section = pathSegments?.length > 1 ? pathSegments[0] : 'main';
 
 		const transactionName = `Page: ${pageName}`;
-		const transaction = window.elasticRum.apm.startTransaction(
+		const transaction = window?.elasticRum?.apm?.startTransaction(
 			transactionName,
 			'page-load'
 		);
@@ -260,9 +262,9 @@ export const trackPageWithPath = () => {
 		addLabels({
 			pageName,
 			section,
-			pathSegments: pathSegments.join(','),
-			fullPath: window.location.pathname,
-			url: window.location.href,
+			pathSegments: pathSegments?.join(','),
+			fullPath: window.location?.pathname,
+			url: window.location?.href,
 			referrer: document.referrer,
 		});
 
@@ -273,7 +275,7 @@ export const trackPageWithPath = () => {
 
 // Custom event tracking
 export const trackCustomEvent = (eventName, eventData = {}) => {
-	if (window.elasticRum) {
+	if (window?.elasticRum) {
 		const span = addSpan(`Custom Event: ${eventName}`, 'custom', 'event');
 
 		addLabels({
@@ -291,9 +293,9 @@ export const trackCustomEvent = (eventName, eventData = {}) => {
 export const trackError = (error, context = {}) => {
 	captureError(error, {
 		...context,
-		url: window.location.href,
-		userAgent: navigator.userAgent,
-		timestamp: new Date().toISOString(),
+		url: window.location?.href,
+		userAgent: navigator?.userAgent,
+		timestamp: new Date()?.toISOString(),
 	});
 };
 
@@ -302,7 +304,7 @@ export const monitorPerformance = {
 	// Monitor function execution time
 	measureFunction: (functionName, fn) => {
 		return async (...args) => {
-			const startTime = performance.now();
+			const startTime = performance?.now();
 			const span = addSpan(
 				`Function: ${functionName}`,
 				'function',
@@ -311,7 +313,7 @@ export const monitorPerformance = {
 
 			try {
 				const result = await fn(...args);
-				const duration = performance.now() - startTime;
+				const duration = performance?.now() - startTime;
 
 				addLabels({
 					functionName,
@@ -332,7 +334,7 @@ export const monitorPerformance = {
 				trackError(error, {
 					context: 'function-execution',
 					functionName,
-					duration: performance.now() - startTime,
+					duration: performance?.now() - startTime,
 				});
 
 				throw error;
@@ -345,7 +347,7 @@ export const monitorPerformance = {
 		return (WrappedComponent) => {
 			return class extends React.Component {
 				componentDidMount() {
-					if (window.elasticRum) {
+					if (window?.elasticRum) {
 						addLabels({
 							componentName,
 							componentMounted: true,
