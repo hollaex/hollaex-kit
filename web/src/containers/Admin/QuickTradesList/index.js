@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Select, Button, Modal, Input, message } from 'antd';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { CloseOutlined } from '@ant-design/icons';
 import PairsSection from './PairsSection';
 import { submitOrderByAdmin } from './action';
 import _debounce from 'lodash/debounce';
 import { requestUsers } from '../Stakes/actions';
 import './index.scss';
+import { setIsDisplayCreateTrade } from 'actions/appActions';
 
 // const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
 
-const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
+const QuickTradesList = ({
+	pairs,
+	coins,
+	userId,
+	getThisExchangeOrder,
+	isDisplayCreateTrade,
+	setIsDisplayCreateTrade = () => {},
+}) => {
 	// const [options, setOptions] = useState([]);
 	const [coinOptions, setCoinOptions] = useState([]);
 	const [baseCoin, setBaseCoin] = useState(null);
@@ -26,6 +35,16 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 	// useEffect(() => {
 	// 	setOptions(getOptions(pairs));
 	// }, [pairs]);
+
+	useEffect(() => {
+		if (isDisplayCreateTrade) {
+			if (!userId) getAllUserData();
+			setDisplayCreateOrder(true);
+			setIsDisplayCreateTrade(false);
+		}
+		return () => setIsDisplayCreateTrade(false);
+		//eslint-disable-next-line
+	}, [isDisplayCreateTrade]);
 
 	useEffect(() => {
 		const options = [];
@@ -520,6 +539,14 @@ const QuickTradesList = ({ pairs, coins, userId, getThisExchangeOrder }) => {
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	coins: state.app.coins,
+	isDisplayCreateTrade: state.app.isDisplayCreateTrade,
 });
 
-export default connect(mapStateToProps)(QuickTradesList);
+const mapDispatchToProps = (dispatch) => ({
+	setIsDisplayCreateTrade: bindActionCreators(
+		setIsDisplayCreateTrade,
+		dispatch
+	),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuickTradesList);

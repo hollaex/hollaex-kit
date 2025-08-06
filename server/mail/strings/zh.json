@@ -81,7 +81,7 @@
 			"title": "${currency} 存款待處理"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}  </p><p> 你的${amount} ${currency}存款已完成。你的${currency}可在钱包中进行确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br />手续费: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><div><p> ${name}  </p><p> 你的${amount} ${currency}存款已完成。你的${currency}可在钱包中进行确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}</div><br />手续费: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 存款完成"
 		},
 		"WITHDRAWAL_PENDING": {

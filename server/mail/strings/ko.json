@@ -85,7 +85,7 @@
 			"title": "${currency} 입금 보류 중"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}님} </p><p> 회원님의 ${amount} ${currency} 입금이 완료되었습니다. 회원님의 ${currency} 지갑에서 확인 및 이용하실 수 있습니다.</p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><span id='network'>회로망: ${network}</span><br />수수료: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><div><p> ${name}님} </p><p> 회원님의 ${amount} ${currency} 입금이 완료되었습니다. 회원님의 ${currency} 지갑에서 확인 및 이용하실 수 있습니다.</p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}</div><br />수수료: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 입금 완료"
 		},
 		"WITHDRAWAL_PENDING": {

@@ -30,7 +30,7 @@ paths:
             default:
                description: Error
                schema:
-                  $ref: '#/definitions/MessageResponse'
+                  $ref: '#/definitions/ObjectResponse'
          security:
             - Token: []
          x-security-types:

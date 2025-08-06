@@ -41,7 +41,9 @@ const EmailVerificationForm = ({
 
 	return (
 		<div className="general-wrapper mb-5 ml-5">
-			<div className="sub-title">Email verification</div>
+			<div className="sub-title" id="email-verification">
+				Email verification
+			</div>
 			<Form
 				form={form}
 				name="email-verification-form"

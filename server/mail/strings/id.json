@@ -85,7 +85,7 @@
 			"title": "${currency} Deposito pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Kepada ${name} </p><p> Deposit ${currency} Anda untukr ${amount} ${currency} telah dikonfirmasi dan berhasil dibuat dan tersedia di dompet ${currency} Anda.</p><p>Jumlah: ${amount} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><span id='network'>Jaringan: ${network}</span><br />Biaya: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Salam<br> ${api_name} tim </p></div>",
+			"html": "<div><div><p> Kepada ${name} </p><p> Deposit ${currency} Anda untukr ${amount} ${currency} telah dikonfirmasi dan berhasil dibuat dan tersedia di dompet ${currency} Anda.</p><p>Jumlah: ${amount} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><div id='network'>Jaringan: ${network}</div><br />Biaya: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Salam<br> ${api_name} tim </p></div>",
 			"title": "${currency} Deposito completed"
 		},
 		"WITHDRAWAL_PENDING": {

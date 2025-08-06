@@ -449,7 +449,7 @@ const ProfitLossSection = ({
 		});
 
 		Object.keys(coins || {}).forEach((coin) => {
-			if (!sortedCoins.find((x) => x.symbol === coins[coin].symbol)) {
+			if (!sortedCoins.find((x) => x?.symbol === coins?.[coin]?.symbol)) {
 				sortedCoins.push(coins[coin]);
 			}
 		});
@@ -457,6 +457,7 @@ const ProfitLossSection = ({
 		return (
 			<>
 				{sortedCoins.map((coin, index) => {
+					if (!coin) return null;
 					const { symbol } = coin;
 					const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					const selectedCoin = assets.find((coin) => coin[0] === symbol);
@@ -790,6 +791,7 @@ const ProfitLossSection = ({
 	};
 
 	const getSourceDecimals = (symbol, value) => {
+		if (!coins[symbol]) return 0;
 		const incrementUnit = coins[symbol].increment_unit;
 		const decimalPoint = new BigNumber(incrementUnit).dp();
 		const sourceAmount = new BigNumber(value || 0)
