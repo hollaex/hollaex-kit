@@ -1,7 +1,9 @@
 import { init as initApm } from '@elastic/apm-rum';
+import store from 'store';
 
 // Elastic RUM Configuration
 const getElasticRumConfig = () => {
+	const getExchangeName = store?.getState()?.app.constants?.api_name;
 	const isProduction = process.env.NODE_ENV === 'production';
 	const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -38,7 +40,7 @@ const getElasticRumConfig = () => {
 			user: null, // Will be set dynamically
 		},
 		labels: {
-			app: 'hollaex-web',
+			app: getExchangeName || 'hollaex-web',
 			platform: 'web',
 		},
 		transactionSampleRate: isProduction ? 0.1 : 1.0, // 10% in production, 100% in development
@@ -68,6 +70,7 @@ const getElasticRumConfig = () => {
 let apm = null;
 
 export const initializeElasticRum = () => {
+	const getExchangeName = store.getState()?.app.constants?.api_name;
 	try {
 		const config = getElasticRumConfig();
 		if (config?.active) {
@@ -75,7 +78,7 @@ export const initializeElasticRum = () => {
 
 			// Add custom context
 			apm.setCustomContext({
-				app: 'hollaex-exchange',
+				app: getExchangeName || 'hollaex-exchange',
 				version: config?.serviceVersion,
 				environment: config?.environment,
 			});
