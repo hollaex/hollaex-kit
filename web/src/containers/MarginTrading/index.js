@@ -149,7 +149,6 @@ const MarginTrading = ({
 				}
 				acc[coin][key] = userBalance[key];
 			}
-			console.log({ userBalance });
 
 			return acc;
 		}, {});

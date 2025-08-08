@@ -1100,6 +1100,10 @@ class GeneralContent extends Component {
 											}}
 											value={this?.state?.constants?.secrets?.emails?.timezone}
 											placeholder="Select email timezone"
+											className="select-exchange-timezone"
+											getPopupContainer={(triggerNode) =>
+												triggerNode?.parentNode
+											}
 										>
 											{minimalTimezoneSet.map((timezone) => {
 												return (
@@ -1277,6 +1281,10 @@ class GeneralContent extends Component {
 														],
 													});
 												}}
+												className="select-native-currency"
+												getPopupContainer={(triggerNode) =>
+													triggerNode?.parentNode
+												}
 											>
 												{Object.keys(coins).map((key) => (
 													<Option value={key}>{coins[key].fullname}</Option>

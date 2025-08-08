@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { ReactSVG } from 'react-svg';
-import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
+import _debounce from 'lodash/debounce';
+import { Tabs, Button, Breadcrumb, message, Modal, Select, Spin } from 'antd';
 
 import {
 	// Balance,
@@ -46,6 +47,7 @@ import {
 	setIsDisabledUser2fa,
 	setIsEmailVerifiedUser,
 } from 'actions/appActions';
+import { requestUsers } from '../Stakes/actions';
 import UserStaking from '../Stakes/UserStaking';
 
 // import Flagger from '../Flaguser';
@@ -74,7 +76,15 @@ class UserContent extends Component {
 			'meta',
 			'stakes',
 		],
+		users: [],
+		selectedMode: 'User ID',
+		filteredValue: null,
+		isLoading: false,
 	};
+
+	handleLoading = _debounce(() => {
+		this.setState({ isLoading: false });
+	}, 500);
 
 	componentDidMount() {
 		const { userProfile } = this.props;
@@ -108,6 +118,12 @@ class UserContent extends Component {
 			this.props.router?.location?.search
 		) {
 			this.onHandlePath();
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.handleLoading) {
+			this.handleLoading.cancel();
 		}
 	}
 
@@ -372,6 +388,43 @@ class UserContent extends Component {
 		}
 	};
 
+	getUserData = async (value = { search: '' }) => {
+		this.setState({ isLoading: true });
+		try {
+			const response = await requestUsers(value);
+			if (response?.data) {
+				this.setState({ users: response?.data });
+			}
+		} catch (error) {
+			console.error('error', error);
+		}
+		this.handleLoading();
+	};
+
+	onHandleSelect = (value = { search: '' }) => {
+		this.setState({ filteredValue: value?.search });
+		this.state.users.forEach((data) => {
+			if (data?.email === value?.search) {
+				this.props.router.replace(`/admin/user?id=${data?.id}`);
+			}
+		});
+	};
+
+	onSearch = (value = '') => {
+		if (!value) {
+			this.setState({ filteredValue: null });
+		} else {
+			const params =
+				this.state.selectedMode === 'User Email'
+					? { search: value }
+					: { id: value };
+			this.setState({ filteredValue: value });
+			this.getUserData(params);
+		}
+	};
+
+	handleSearch = _debounce(this.onSearch, 500);
+
 	render() {
 		const {
 			coins,
@@ -387,6 +440,9 @@ class UserContent extends Component {
 			kycPluginName,
 			requestUserData,
 			referral_history_config,
+			router: {
+				location: { query },
+			},
 		} = this.props;
 
 		const {
@@ -394,6 +450,9 @@ class UserContent extends Component {
 			showRecoverModal,
 			showDeleteModal,
 			userTiers,
+			selectedMode,
+			users,
+			filteredValue,
 		} = this.state;
 
 		const {
@@ -428,7 +487,7 @@ class UserContent extends Component {
 		} else {
 			roleInitialValues.role = 'user';
 		}
-
+		const userFilterModes = ['User ID', 'User Email'];
 		return (
 			<div className="app_container-content admin-user-content">
 				<Breadcrumb>
@@ -464,16 +523,64 @@ class UserContent extends Component {
 							<div className="user-seperator"></div>
 							<div>{userInformation.email}</div>
 						</div>
-						<div className="d-flex">
-							<Button
-								size="medium"
-								type="primary"
-								style={{ marginRight: 5 }}
-								onClick={refreshAllData}
-								className="green-btn"
-							>
-								Refresh
-							</Button>
+						<div className="d-flex user-select-wrapper">
+							<div className="d-flex flex-column ml-2">
+								<span className="font-weight-bold mb-2 fs-14">Select User</span>
+								<div className="d-flex align-items-center gap-1 select-wrapper flex-wrap">
+									<Select
+										defaultValue={selectedMode}
+										onChange={(value) => this.setState({ selectedMode: value })}
+										getPopupContainer={(triggerNode) => triggerNode?.parentNode}
+										className="user-filter-mode"
+									>
+										{userFilterModes?.map(
+											(data, index) =>
+												selectedMode !== data && (
+													<Select.Option key={index} value={data} />
+												)
+										)}
+									</Select>
+									<Select
+										placeholder={`Filter by ${this.state.selectedMode}`}
+										onSearch={(text) => this.handleSearch(text)}
+										className="user-value-dropdown"
+										showSearch
+										filterOption={false}
+										allowClear
+										notFoundContent={null}
+										value={filteredValue}
+										onSelect={(value) => this.onHandleSelect({ search: value })}
+										getPopupContainer={(triggerNode) => triggerNode?.parentNode}
+										onClear={() => this.setState({ filteredValue: null })}
+									>
+										{users
+											?.filter((data) => {
+												return String(data?.id) !== query?.id;
+											})
+											?.map((data) => {
+												return (
+													<Select.Option key={data?.id} value={data?.email}>
+														{data?.email}
+													</Select.Option>
+												);
+											})}
+									</Select>
+									<Spin
+										spinning={this.state.isLoading}
+										size="medium"
+										className="ml-2"
+									/>
+									<Button
+										size="medium"
+										type="primary"
+										style={{ marginRight: 5 }}
+										onClick={refreshAllData}
+										className="green-btn"
+									>
+										Refresh
+									</Button>
+								</div>
+							</div>
 						</div>
 					</div>
 				) : null}

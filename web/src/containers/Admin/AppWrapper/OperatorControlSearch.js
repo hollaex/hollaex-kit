@@ -1300,6 +1300,8 @@ const OperatorControlSearch = ({
 				'trading pairs',
 				'market management',
 				'available markets',
+				'margin trading',
+				'leverage',
 			],
 			docLink:
 				'https://docs.hollaex.com/how-tos/operator-control-panel/markets',

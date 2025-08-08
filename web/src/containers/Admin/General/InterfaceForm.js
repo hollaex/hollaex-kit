@@ -294,6 +294,7 @@ const InterfaceForm = ({
 									currency: e,
 								});
 							}}
+							getPopupContainer={(trigger) => trigger?.parentNode}
 						>
 							{Object.keys(coins).map((key) => (
 								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
@@ -321,6 +322,7 @@ const InterfaceForm = ({
 									earning_rate: e,
 								});
 							}}
+							getPopupContainer={(trigger) => trigger?.parentNode}
 						>
 							{[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((rate) => (
 								<Select.Option value={rate}>{rate}</Select.Option>
@@ -487,6 +489,7 @@ const InterfaceForm = ({
 									currency: e,
 								});
 							}}
+							getPopupContainer={(trigger) => trigger?.parentNode}
 						>
 							{Object.keys(coins).map((key) => (
 								<Select.Option value={key}>{coins[key].fullname}</Select.Option>
