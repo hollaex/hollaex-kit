@@ -7671,6 +7671,11 @@ table th {
 .confirmation-icon-popup .ant-modal-body {
   background-color: #0000ff; }
 
+.operator-control-edit-mode-warning-popup .ReactModal__Overlay {
+  z-index: 10002 !important; }
+  .operator-control-edit-mode-warning-popup .ReactModal__Overlay .ReactModal__Content {
+    width: 35rem; }
+
 .init-container {
   flex: 1;
   height: 100%; }

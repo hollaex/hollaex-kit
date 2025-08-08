@@ -893,6 +893,18 @@ const MobileBarMoreOptions = ({
 			],
 		},
 		{
+			icon_id: 'VOLUME_OPTION_ICON',
+			iconText: 'ACCOUNTS.MARGIN_TRADE',
+			path: '/margin',
+			isDisplay: true,
+			toolTipText: 'DESKTOP_NAVIGATION.MARGIN_TRADING_DESC',
+			searchContent: [
+				STRINGS['MORE_OPTIONS_LABEL.HOT_FUNCTION.TRADE'],
+				STRINGS['MORE_OPTIONS_LABEL.OTHER_FUNCTIONS.LEVERAGE'],
+				STRINGS['DEVELOPERS_TOKEN.TRADING_ACCESS'],
+			],
+		},
+		{
 			icon_id: 'REVOKE_SESSION',
 			iconText: 'SIGN_OUT_TEXT',
 			path: browserHistory?.getCurrentLocation(),

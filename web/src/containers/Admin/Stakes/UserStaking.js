@@ -431,9 +431,8 @@ const UserStaking = ({
 							</span> */}
 							{/* <span>Total: {queryFilters.total || '-'}</span> */}
 							<div>
-								<span className="bold">Total stakers:</span>{' '}
-								{queryFilters?.total}{' '}
-								{isUserProfileStakeTab ? 'stakes' : 'users'}
+								<span className="bold">Total stakes:</span>{' '}
+								{queryFilters?.total} stakes
 							</div>
 							<div className="d-flex flex-column">
 								Appox. stake value:{' '}

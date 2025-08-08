@@ -2591,7 +2591,8 @@
 			"UPGRADE": "Upgrade",
 			"DETAILS": "Details",
 			"FRIENDS": "Friends",
-			"TRADER": "Trader"
+			"TRADER": "Trader",
+			"LEVERAGE": "Leverage"
 		}
 	},
 	"CONNECTIONS": {
@@ -2650,7 +2651,8 @@
 		"ONRAMPER_DESC": "Use Onramper to buy and sell crypto",
 		"AUTO_TRADER_DESC": "Recurring automatic buy & sell transactions",
 		"ANNOUNCEMENT_DESC": "Updates, listings and other news",
-		"WALLET_DESCRIPTION": "View your wallet asset and balances"
+		"WALLET_DESCRIPTION": "View your wallet asset and balances",
+		"MARGIN_TRADING_DESC": "Trade with leverage using margin"
 	},
 	"DESKTOP_ULTIMATE_SEARCH": {
 		"SEARCH_DESCRIPTION": "Find Functions, Coins, and More",

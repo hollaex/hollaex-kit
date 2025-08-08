@@ -303,6 +303,8 @@ const TransactionLimits = ({
 								onChange={(value) => {
 									setTierFilter(value);
 								}}
+								className="select-tier"
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							>
 								<Option value={null}>All</Option>
 								{Object.values(userTiers || {}).map((tier) => (

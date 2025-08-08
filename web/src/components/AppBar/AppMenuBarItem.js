@@ -163,6 +163,13 @@ const AppMenuBarItem = ({
 			description: 'DESKTOP_NAVIGATION.AUTO_TRADER_DESC',
 			isDisplay: features?.auto_trade_config,
 		},
+		{
+			icon: 'VOLUME_OPTION_ICON',
+			title: 'ACCOUNTS.MARGIN_TRADE',
+			path: '/margin',
+			isDisplay: true,
+			description: 'DESKTOP_NAVIGATION.MARGIN_TRADING_DESC',
+		},
 	];
 
 	const earnOptions = [
@@ -222,7 +229,7 @@ const AppMenuBarItem = ({
 			return tradeOptions;
 		} else if (path === '/referral') {
 			return earnOptions;
-		} else {
+		} else if (path === getRemoteRoutes?.[0]?.path) {
 			return othersOptions;
 		}
 	};

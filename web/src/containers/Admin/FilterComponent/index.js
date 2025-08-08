@@ -128,6 +128,8 @@ class Filter extends Component {
 					onChange={this.handleSelect}
 					size="small"
 					value={this.state.selectedValue}
+					className="select-filters"
+					getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 				>
 					{selectOptions.map((option, index) => (
 						<Select.Option key={index} value={option.value}>

@@ -136,6 +136,7 @@ const ActiveOrders = ({
 										value={selectedEmailData && selectedEmailData.label}
 										onChange={(text) => handleEmailChange(text)}
 										showAction={['focus', 'click']}
+										getPopupContainer={(trigger) => trigger?.parentNode}
 									>
 										{emailOptions &&
 											emailOptions.map((email) => (
@@ -161,6 +162,8 @@ const ActiveOrders = ({
 										symbol: value,
 									})
 								}
+								className="select-order-symbol"
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							/>
 						</div>
 
@@ -176,6 +179,8 @@ const ActiveOrders = ({
 								value={orderPayload?.type}
 								style={{ width: '100%' }}
 								placeholder="Select Order Type"
+								className="select-order-type"
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							>
 								<Select.Option value="limit">Limit</Select.Option>
 								<Select.Option value="market">Market</Select.Option>
@@ -194,6 +199,8 @@ const ActiveOrders = ({
 								value={orderPayload?.side}
 								style={{ width: '100%' }}
 								placeholder="Select side"
+								className="select-order-side"
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							>
 								<Select.Option value="buy">Buy</Select.Option>
 								<Select.Option value="sell">Sell</Select.Option>
@@ -332,6 +339,8 @@ const ActiveOrders = ({
 						options={options}
 						value={pair}
 						onChange={setPair}
+						className="select-market-pair"
+						getPopupContainer={(trigger) => trigger?.parentNode}
 					/>
 					<Select
 						style={{
@@ -340,6 +349,8 @@ const ActiveOrders = ({
 						options={TYPE_OPTIONS}
 						value={type}
 						onChange={setType}
+						className="select-market-type"
+						getPopupContainer={(trigger) => trigger?.parentNode}
 					/>
 				</div>
 
