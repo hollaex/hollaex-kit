@@ -28,7 +28,8 @@ const getElasticRumConfig = () => {
 		environment,
 		serverUrl,
 		active:
-			isProduction || process.env.REACT_APP_ELASTIC_APM_ENABLED === 'true',
+			String(process.env.REACT_APP_ELASTIC_APM_ENABLED || '').toLowerCase() ===
+			'true',
 		distributedTracing: true,
 		distributedTracingOrigins: ['*'],
 		captureErrors: true,
