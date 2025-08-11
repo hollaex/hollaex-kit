@@ -2037,6 +2037,9 @@ $app-menu-width: calc(100vw - 40rem);
 							svg {
 								width: 80%;
 								height: 100%;
+								.interface-setting {
+									fill: $colors-main-black !important;
+								}
 							}
 							.hot-icon {
 								position: relative;

@@ -140,6 +140,7 @@ const Otcdeskpopup = ({
 	const [brokerPriceData] = useState({});
 	const [isDisconnect, setIsDisconnect] = useState(false);
 	const [errMsg, setErrorMsg] = useState('');
+	const [marketLoading, setMarketLoading] = useState(false);
 	const kitPlan = _toLower(kit?.info?.plan);
 	const selectableExchanges = [
 		'hollaex',
@@ -154,6 +155,12 @@ const Otcdeskpopup = ({
 	];
 	const connectPopupRef = useRef(null);
 	const errorMsgRef = useRef(null);
+
+	const isValidFormula = (input) => {
+		const regex = /^[a-z0-9]+_[a-z0-9]+-[a-z0-9]+$/i;
+		return regex.test(input);
+	};
+
 	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
@@ -189,7 +196,17 @@ const Otcdeskpopup = ({
 		}
 		if (previewData.exchange_name) {
 			handleSelectedExchange(previewData.exchange_name);
-		} else handleSelectedExchange(selectedExchange);
+		} else {
+			if (previewData?.formula) {
+				if (isValidFormula(previewData?.formula)) {
+					const [exchangeName, market] = previewData?.formula?.split('_');
+					const updatedMarket = market?.replace('-', '/')?.toUpperCase();
+					updatedMarket && setSelectedMarket(updatedMarket);
+					exchangeName && handleSelectedExchange(exchangeName);
+				}
+			} else handleSelectedExchange(selectedExchange);
+		}
+
 		if (previewData.rebalancing_symbol) {
 			setHedgeSymbol(previewData.rebalancing_symbol);
 		}
@@ -207,7 +224,7 @@ const Otcdeskpopup = ({
 				handlePreviewChange(foundPair.symbol, 'tracked_symbol');
 				const symbol = foundPair.symbol.replace('/', '-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
-				if (!formula) {
+				if (isValidFormula(formula) || !formula) {
 					setFormula(`${selectedExchange}_${symbol}`);
 					handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
 				}
@@ -406,7 +423,7 @@ const Otcdeskpopup = ({
 				handlePreviewChange(selectedMarket, 'tracked_symbol');
 				const symbol = selectedMarket.replace('/', '-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
-				if (!formula) {
+				if (isValidFormula(formula) || !formula) {
 					setFormula(`${selectedExchange}_${symbol}`);
 					handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
 				}
@@ -416,6 +433,12 @@ const Otcdeskpopup = ({
 			SetMarketPop(false);
 		} else if (isConfirm === 'back') {
 			SetMarketPop(false);
+			if (isValidFormula(formula)) {
+				const [, market] = formula?.split('_');
+				setSelectedMarket(market?.replace('-', '/')?.toUpperCase());
+			} else {
+				setSelectedMarket();
+			}
 		}
 	};
 	const renderErrorMsg = () => {
@@ -465,15 +488,20 @@ const Otcdeskpopup = ({
 
 	const handleSelectedExchange = async (value) => {
 		setSelectedExchange(value);
-
+		setMarketLoading(true);
 		if (value === 'uniswap') {
 			setDisplayUniswap(true);
 		} else {
 			if (value !== exchangeMarkets.exchange && value !== 'oracle') {
-				const markets = await getTrackedExchangeMarkets(value);
-				setExchangeMarkets({ exchange: value, markets });
+				try {
+					const markets = await getTrackedExchangeMarkets(value);
+					setExchangeMarkets({ exchange: value, markets });
+				} catch (err) {
+					console.error('error', err);
+				}
 			}
 		}
+		setMarketLoading(false);
 	};
 
 	const renderExchangeOptions = (hasOracle = true) => (
@@ -512,6 +540,18 @@ const Otcdeskpopup = ({
 			fullname?.includes(search) ||
 			value?.includes(search)
 		);
+	};
+
+	const onHandleOpenAdvancedPopup = () => {
+		setDisplayAdvancedModal(true);
+		if (selectedMarket && selectedExchange) {
+			const symbol = selectedMarket?.replace('/', '-')?.toLowerCase();
+			setFormulaVariable(`${selectedExchange}_${symbol}`);
+			if (isValidFormula(formula) || !formula) {
+				setFormula(`${selectedExchange}_${symbol}`);
+				handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
+			}
+		}
 	};
 
 	const renderModalContent = () => {
@@ -775,9 +815,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'min_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'min_size'
+										)
 									}
-									value={previewData && previewData.min_size}
+									value={previewData && previewData?.min_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -796,9 +839,12 @@ const Otcdeskpopup = ({
 									name="max"
 									min={0}
 									onChange={(e) =>
-										handlePreviewChange(Number(e.target.value), 'max_size')
+										handlePreviewChange(
+											e.target.value && Number(e.target.value),
+											'max_size'
+										)
 									}
-									value={previewData && previewData.max_size}
+									value={previewData && previewData?.max_size}
 									suffix={
 										previewData &&
 										previewData?.symbol?.split('-')[0]?.toUpperCase()
@@ -812,6 +858,9 @@ const Otcdeskpopup = ({
 								type="primary"
 								className="green-btn"
 								onClick={() => moveToStep('deal-params')}
+								disabled={
+									previewData?.min_size === '' || previewData?.max_size === ''
+								}
 							>
 								Next
 							</Button>
@@ -867,6 +916,7 @@ const Otcdeskpopup = ({
 										footer={null}
 										onCancel={() => {
 											setDisplayAdvancedModal(false);
+											setFormula(previewData?.formula);
 										}}
 									>
 										<h2 style={{ fontWeight: '600', color: 'white' }}>
@@ -1104,16 +1154,19 @@ const Otcdeskpopup = ({
 												HollaEx operators.
 											</div>
 										</div> */}
-										{!formula && (
+										{(isValidFormula(formula) || !formula) && (
 											<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 												<div>Platform price source</div>
 												<div className="select-box">
 													<Select
-														defaultValue={selectedExchange}
+														value={selectedExchange}
 														onChange={async (value) => {
 															setSelectedUniswapPairs({});
 															setDisplayUniswap(false);
 															setSelectedExchange();
+															setSelectedMarket('');
+															setFormula('');
+															handlePreviewChange('', 'formula');
 															handleSelectedExchange(value);
 															handlePreviewChange(value, 'exchange_name');
 															setFormulaVariable(`${value}_`);
@@ -1126,7 +1179,7 @@ const Otcdeskpopup = ({
 										)}
 
 										{!displayUniswap &&
-											!formula &&
+											(isValidFormula(formula) || !formula) &&
 											selectedExchange !== 'oracle' && (
 												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 													<div className="mt-4">Track market price</div>
@@ -1135,6 +1188,7 @@ const Otcdeskpopup = ({
 															placeholder="Select track market symbol"
 															onClick={handleMarkethedge}
 															value={selectedMarket}
+															className="track-market-select-input"
 														/>
 													</div>
 												</div>
@@ -1144,6 +1198,29 @@ const Otcdeskpopup = ({
 											<div className="mt-3 mb-2">
 												Formula:{' '}
 												<span style={{ fontWeight: '600' }}>{formula}</span>
+												{!isValidFormula(formula) && (
+													<>
+														{!isUpgrade && (
+															<span
+																onClick={() => onHandleOpenAdvancedPopup()}
+																className="ml-3 mr-2 pointer underline-text"
+															>
+																EDIT
+															</span>
+														)}
+
+														<span
+															className="caps underline-text ml-2 pointer clear-text"
+															onClick={() => {
+																handlePreviewChange('', 'formula');
+																setFormula('');
+																setSelectedMarket('');
+															}}
+														>
+															Clear
+														</span>
+													</>
+												)}
 											</div>
 										)}
 
@@ -1305,24 +1382,7 @@ const Otcdeskpopup = ({
 
 											{!isUpgrade && (
 												<div
-													onClick={() => {
-														setDisplayAdvancedModal(true);
-														if (selectedMarket && selectedExchange) {
-															const symbol = selectedMarket
-																.replace('/', '-')
-																.toLowerCase();
-															setFormulaVariable(
-																`${selectedExchange}_${symbol}`
-															);
-															if (!formula) {
-																setFormula(`${selectedExchange}_${symbol}`);
-																handlePreviewChange(
-																	`${selectedExchange}_${symbol}`,
-																	'formula'
-																);
-															}
-														}
-													}}
+													onClick={() => onHandleOpenAdvancedPopup()}
 													className="mt-5"
 													style={{
 														cursor: 'pointer',
@@ -1392,6 +1452,7 @@ const Otcdeskpopup = ({
 								handleCustomPrice={handleCustomPrice}
 								hedgeSymbol={selectedMarket}
 								hedge={false}
+								marketLoading={marketLoading}
 							/>
 						)}
 					</>
@@ -2132,6 +2193,7 @@ const Otcdeskpopup = ({
 								setHedgeSymbol={setHedgeSymbol}
 								hedgeSymbol={hedgeSymbol}
 								hedge={true}
+								marketLoading={marketLoading}
 							/>
 						)}
 					</div>

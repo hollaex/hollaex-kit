@@ -40,7 +40,7 @@ const Transfer = ({ coins = {}, assets }) => {
 	const [confirmData, setConfirmData] = useState({ email: true });
 	const [isDisableConfirm, setDisableConfirm] = useState(false);
 	const [isEmailMode, setEmailMode] = useState(false);
-	const [repeatTransfer, setRepeatTransfer] = useState('yes');
+	const [repeatTransfer, setRepeatTransfer] = useState('no');
 	const [isDisplayTranferComplete, setIsDisplayTranferComplete] = useState(
 		false
 	);
@@ -163,6 +163,7 @@ const Transfer = ({ coins = {}, assets }) => {
 		setSenderData([]);
 		setReceiverData([]);
 		setIsDisplayTranferComplete(false);
+		setRepeatTransfer('no');
 	};
 
 	const getBalance = (type, sendData = confirmData) => {
@@ -270,8 +271,8 @@ const Transfer = ({ coins = {}, assets }) => {
 			setConfirmData({ email: true });
 			setSenderData([]);
 			setReceiverData([]);
-			setRepeatTransfer('yes');
 		} else {
+			setRepeatTransfer('no');
 			onHandleBalance();
 		}
 		setIsDisplayTranferComplete(false);

@@ -256,6 +256,11 @@ const icons = {
 	DIGITAL_ASSETS_ICON: '/assets/images/digitial-asset.svg',
 	FIAT_CONTROLS_ICON: '/assets/images/fiat-controls.svg',
 	STAKING_ICON: '/assets/images/staking.svg',
+	TEST_ENVIRONMENT_ICON: '/assets/images/test-environment.png',
+	MINT_ICON: '/assets/images/mint-asset.svg',
+	BURN_ICON: '/assets/images/burn-asset.svg',
+	OPERATOR_CONTROL_SEARCH: '/assets/images/admin-search.svg',
+	SEARCH_CONTENT: '/assets/images/operator-control-search-content.png',
 };
 
 export default icons;

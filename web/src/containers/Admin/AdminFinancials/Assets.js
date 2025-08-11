@@ -25,6 +25,7 @@ import { setCoins, setExchange } from 'actions/assetActions';
 import { requestTotalBalance } from '../Wallets/actions';
 import { CheckOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
+import { setIsDisplayCreateAsset } from 'actions/appActions';
 
 const { Item } = Breadcrumb;
 
@@ -280,6 +281,8 @@ class Assets extends Component {
 			allCoins,
 			selectedMarkupAsset = {},
 			setSelectedMarkupAsset = () => {},
+			isDisplayCreateAsset = false,
+			setIsDisplayCreateAsset = () => {},
 		} = this.props;
 		if (selectedMarkupAsset && Object.keys(selectedMarkupAsset)?.length) {
 			const filteredAsset = allCoins?.find(
@@ -324,11 +327,19 @@ class Assets extends Component {
 				});
 			}
 		}
+		if (isDisplayCreateAsset && !this.state.isOpenAdd) {
+			this.handleCreateNew();
+			setIsDisplayCreateAsset(false);
+		}
 	}
 
 	componentWillUnmount() {
-		const { setSelectedMarkupAsset = () => {} } = this.props;
+		const {
+			setSelectedMarkupAsset = () => {},
+			setIsDisplayCreateAsset = () => {},
+		} = this.props;
 		setSelectedMarkupAsset({});
+		setIsDisplayCreateAsset(false);
 		this.debounceLoading.cancel();
 	}
 
@@ -1012,11 +1023,16 @@ class Assets extends Component {
 const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setIsDisplayCreateAsset: bindActionCreators(
+		setIsDisplayCreateAsset,
+		dispatch
+	),
 });
 const mapStateToProps = (state) => ({
 	allCoins: state.asset.allCoins,
 	constants: state.app.constants,
 	exchange: state.asset && state.asset.exchange,
+	isDisplayCreateAsset: state.app.isDisplayCreateAsset,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assets);

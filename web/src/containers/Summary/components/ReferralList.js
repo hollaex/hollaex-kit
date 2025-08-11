@@ -87,11 +87,24 @@ const ReferralList = ({
 	const [activeTab, setActiveTab] = useState('0');
 	const [realizedData, setRealizedData] = useState([]);
 
+	const tabList = ['summary', 'history'];
+
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+		router.replace(`/referral?${tabList[key]}`);
 	};
 	useEffect(() => {
 		if (features?.referral_history_config) {
+			const params = new URLSearchParams(window.location.search);
+			const tab = tabList?.find((data) => params.has(data));
+			const tabIndex = tabList?.indexOf(tab);
+			if (tabIndex !== -1 && tab) {
+				setActiveTab(tabIndex?.toString());
+				router.replace(`/referral?${tabList[tabIndex]}`);
+			} else {
+				router.replace(`/referral?${tabList[activeTab]}`);
+			}
+
 			fetchReferralCodes()
 				.then((res) => {
 					setReferralCodes(res.data);
@@ -127,6 +140,13 @@ const ReferralList = ({
 		}
 		// eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		if (router.location?.search === '') {
+			router.replace(`/referral?${tabList[activeTab]}`);
+		}
+		// eslint-disable-next-line
+	}, [router.location?.search]);
 
 	const HEADERS = [
 		{

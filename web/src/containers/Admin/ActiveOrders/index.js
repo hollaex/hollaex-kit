@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Select, Button, Modal, Input, message } from 'antd';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Row, Select, Button, Modal, Input, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import _debounce from 'lodash/debounce';
+
 import PairsSection from './PairsSection';
 import { submitOrderByAdmin } from './action';
-import _debounce from 'lodash/debounce';
 import { requestUsers } from '../Stakes/actions';
+import { setIsDisplayCreateOrder } from 'actions/appActions';
 import './index.scss';
 
 const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
 
-const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
+const ActiveOrders = ({
+	pairs,
+	userId,
+	getThisExchangeOrder,
+	setIsDisplayCreateOrder = () => {},
+	isDisplayCreateOrder,
+}) => {
 	const [options, setOptions] = useState([]);
 	const [pair, setPair] = useState(null);
 	const [type, setType] = useState(true);
@@ -73,6 +82,24 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 		return () => handleSearch && handleSearch.cancel();
 		// eslint-disable-next-line
 	}, []);
+
+	const debouncedHide = _debounce(() => {
+		setIsDisplayCreateOrder(false);
+	}, 500);
+
+	useEffect(() => {
+		if (isDisplayCreateOrder) {
+			if (!userId) getAllUserData();
+			setDisplayCreateOrder(true);
+			debouncedHide();
+		}
+		return () => {
+			if (debouncedHide) {
+				debouncedHide.cancel();
+			}
+		};
+		//eslint-disable-next-line
+	}, [isDisplayCreateOrder]);
 
 	return (
 		<div className="app_container-content">
@@ -344,6 +371,14 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
+	isDisplayCreateOrder: state.app.isDisplayCreateOrder,
 });
 
-export default connect(mapStateToProps)(ActiveOrders);
+const mapDispatchToProps = (dispatch) => ({
+	setIsDisplayCreateOrder: bindActionCreators(
+		setIsDisplayCreateOrder,
+		dispatch
+	),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveOrders);

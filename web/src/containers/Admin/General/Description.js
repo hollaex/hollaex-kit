@@ -51,7 +51,7 @@ class Description extends Component {
 		} = this.props;
 		return (
 			<div className="description-wrapper">
-				<div>
+				<div id="exchange-description">
 					<h3>
 						Exchange description{' '}
 						<Tooltip
@@ -77,7 +77,7 @@ class Description extends Component {
 				/>
 				<div className="divider"></div>
 				<div>
-					<h3>
+					<h3 id="footer-small-text">
 						Footer small text{' '}
 						<Tooltip
 							overlayClassName="admin-general-description-tip general-description-tip-right"
@@ -99,7 +99,7 @@ class Description extends Component {
 				/>
 				<div className="divider"></div>
 				<div>
-					<h3>
+					<h3 id="referral-badge">
 						Referral Badge{' '}
 						<Tooltip
 							overlayClassName="admin-general-description-tip general-description-tip-right"

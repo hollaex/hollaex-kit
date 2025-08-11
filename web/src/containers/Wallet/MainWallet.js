@@ -154,6 +154,7 @@ class Wallet extends Component {
 
 	componentWillUnmount = () => {
 		this.priceAssetsTimeout && clearTimeout(this.priceAssetsTimeout);
+		this.props.setActiveBalanceHistory(false);
 	};
 
 	getMobileSlider = (coins, oraclePrices) => {

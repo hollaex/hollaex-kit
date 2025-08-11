@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { Table, Button, Modal } from 'antd';
+import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Table, Button, Modal } from 'antd';
-import { Link } from 'react-router';
-import { formatDate } from 'utils';
-import { requestUsers } from './actions';
+
 import AddUser from './AddUser';
 import UseFilters from './UserFilters';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { formatDate } from 'utils';
+import { requestUsers } from './actions';
+import { setIsActiveAddNewUsers } from 'actions/appActions';
 
 import './index.css';
 
@@ -31,8 +35,20 @@ class FullListUsers extends Component {
 		};
 	}
 
+	componentDidUpdate() {
+		const { isActiveAddNewUsers, setIsActiveAddNewUsers } = this.props;
+		if (isActiveAddNewUsers) {
+			this.setState({ isVisible: isActiveAddNewUsers });
+			setIsActiveAddNewUsers(false);
+		}
+	}
+
 	UNSAFE_componentWillMount() {
 		this.requestFullUsers(this.state.page, this.state.limit);
+	}
+
+	componentWillUnmount() {
+		this.props.setIsActiveAddNewUsers(false);
 	}
 
 	requestFullUsers = (page = 1, limit = 50) => {
@@ -81,6 +97,7 @@ class FullListUsers extends Component {
 
 	onCancel = () => {
 		this.setState({ isVisible: false });
+		this.props.setIsActiveAddNewUsers(false);
 	};
 
 	applyFilters = (filters) => {
@@ -216,15 +233,20 @@ class FullListUsers extends Component {
 						className="blue-admin-table"
 						columns={COLUMNS}
 						dataSource={users}
-
 						expandable={{
 							expandedRowRender: renderRowContent,
 							expandRowByClick: true,
 							expandIcon: ({ expanded, onExpand, record }) =>
 								expanded ? (
-									<MinusCircleOutlined onClick={(e) => onExpand(record, e)} style={{ marginRight: 8 }} />
+									<MinusCircleOutlined
+										onClick={(e) => onExpand(record, e)}
+										style={{ marginRight: 8 }}
+									/>
 								) : (
-									<PlusCircleOutlined onClick={(e) => onExpand(record, e)} style={{ marginRight: 8 }} />
+									<PlusCircleOutlined
+										onClick={(e) => onExpand(record, e)}
+										style={{ marginRight: 8 }}
+									/>
 								),
 						}}
 						rowKey={(data) => {
@@ -247,6 +269,7 @@ class FullListUsers extends Component {
 					<AddUser
 						onCancel={this.onCancel}
 						requestFullUsers={this.requestFullUsers}
+						setIsActiveAddNewUsers={this.props.setIsActiveAddNewUsers}
 					/>
 				</Modal>
 			</div>
@@ -254,4 +277,12 @@ class FullListUsers extends Component {
 	}
 }
 
-export default FullListUsers;
+const mapStateToProps = (state) => ({
+	isActiveAddNewUsers: state.app.isActiveAddNewUsers,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsActiveAddNewUsers: bindActionCreators(setIsActiveAddNewUsers, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FullListUsers);

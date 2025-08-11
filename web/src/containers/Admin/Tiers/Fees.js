@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Table } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
 // import { PercentageOutlined } from '@ant-design/icons';
 
@@ -100,6 +101,49 @@ const Fees = ({
 	coins,
 	quicktradePairs,
 }) => {
+	const [visibleTierStart, setVisibleTierStart] = useState(0);
+	const [visibleTierCount, setVisibleTierCount] = useState(2);
+	const containerRef = useRef(null);
+
+	const updateVisibleTierCount = () => {
+		if (!containerRef.current) return;
+		const containerWidth = containerRef.current.offsetWidth || 0;
+		const staticColumnsWidth = 150 + 140;
+		const arrowWidth = 48 * 2;
+		const tierColWidth = 120;
+		const availableWidth = containerWidth - staticColumnsWidth - arrowWidth;
+		const count = Math.max(1, Math.floor(availableWidth / tierColWidth));
+		setVisibleTierCount(count);
+	};
+
+	useEffect(() => {
+		updateVisibleTierCount();
+		window.addEventListener('resize', updateVisibleTierCount);
+		return () => window.removeEventListener('resize', updateVisibleTierCount);
+	}, []);
+
+	const tierLevels = Object.keys(userTiers || {});
+	const maxTierIndex = tierLevels?.length - 1;
+
+	const handlePrev = () => {
+		setVisibleTierStart((prev) => Math.max(0, prev - visibleTierCount));
+	};
+	const handleNext = () => {
+		setVisibleTierStart((prev) =>
+			Math.min(maxTierIndex - visibleTierCount + 1, prev + visibleTierCount)
+		);
+	};
+
+	const visibleTierLevels = tierLevels?.slice(
+		visibleTierStart,
+		visibleTierStart + visibleTierCount
+	);
+
+	const visibleUserTiers = {};
+	visibleTierLevels.forEach((level) => {
+		visibleUserTiers[level] = userTiers[level];
+	});
+
 	const constructTierData = () => {
 		let feesData = Object.keys(userTiers).map((level) => {
 			const data = userTiers[level].fees;
@@ -130,9 +174,11 @@ const Fees = ({
 		return temp;
 	};
 	const tierPairsData = userTiers ? constructTierData() : [];
+	const isActivePrev = visibleTierStart > 0;
+	const isActiveNext = visibleTierStart + visibleTierCount <= maxTierIndex;
 
 	return (
-		<div className="admin-tiers-wrapper">
+		<div className="admin-tiers-wrapper" ref={containerRef}>
 			<div className="d-flex justify-content-between align-items-center mb-4">
 				<div className="d-flex flex-column">
 					<span className="font-weight-bold admin-tier-title">
@@ -147,15 +193,37 @@ const Fees = ({
 					Edit Fees
 				</Button>
 			</div>
-			<div className="my-4">
+			<div className="my-4 tier-fees-table-wrapper d-flex">
+				{isActivePrev && (
+					<div
+						className={`pointer tier-arrow-icon d-flex flex-column align-items-center justify-content-between${
+							visibleTierStart === 0 ? ' disabled' : ''
+						}`}
+						onClick={handlePrev}
+					>
+						<LeftOutlined className="mt-3" />
+						<LeftOutlined />
+						<LeftOutlined className="mb-3" />
+					</div>
+				)}
 				<Table
-					columns={getHeaders(userTiers, ICONS, onEditFees, coins)}
+					columns={getHeaders(visibleUserTiers, ICONS, onEditFees, coins)}
 					dataSource={tierPairsData}
 					rowKey={(data) => data.id}
 					bordered
 					scroll={{ x: 'auto' }}
 					pagination={false}
 				/>
+				{isActiveNext && (
+					<div
+						className="pointer tier-arrow-icon d-flex flex-column align-items-center justify-content-between"
+						onClick={handleNext}
+					>
+						<RightOutlined className="mt-3" />
+						<RightOutlined />
+						<RightOutlined className="mb-3" />
+					</div>
+				)}
 			</div>
 		</div>
 	);

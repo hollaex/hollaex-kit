@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 import { Button, Checkbox, message } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 
@@ -26,6 +27,7 @@ const P2PMyDeals = ({
 	refresh,
 	setSelectedDealEdit,
 	setTab,
+	router,
 }) => {
 	const [myDeals, setMyDeals] = useState([]);
 	const [checks, setCheks] = useState([]);
@@ -337,6 +339,7 @@ const P2PMyDeals = ({
 												onClick={() => {
 													setSelectedDealEdit(deal);
 													setTab('3');
+													router.replace('/p2p/post-deal');
 												}}
 												ghost
 												className="whiteTextP2P edit-deal-btn"
@@ -368,4 +371,4 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 });
 
-export default connect(mapStateToProps)(withConfig(P2PMyDeals));
+export default connect(mapStateToProps)(withRouter(withConfig(P2PMyDeals)));

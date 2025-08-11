@@ -40,10 +40,14 @@ const Index = ({
 	const [search, setSearch] = useState();
 
 	const scrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth',
-		});
+		const scrollOptions = { top: 0, behavior: 'smooth' };
+		if (isMobile) {
+			return document
+				.querySelector('.app_container-content')
+				?.scrollTo(scrollOptions);
+		} else {
+			return window.scrollTo(scrollOptions);
+		}
 	};
 
 	useEffect(() => {

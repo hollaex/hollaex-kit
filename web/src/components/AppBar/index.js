@@ -30,8 +30,6 @@ import {
 	renderAnnouncementMessage,
 	renderRemoveEmptyTag,
 } from './Utils';
-import { formatToFixed } from 'utils/currency';
-import { marketPriceSelector } from 'containers/Trade/utils';
 import { getFormattedDate } from 'utils/string';
 import ThemeSwitcher from './ThemeSwitcher';
 import withEdit from 'components/EditProvider/withEdit';
@@ -64,9 +62,6 @@ class AppBar extends Component {
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
-		this.setState({
-			title: document?.title ? document?.title : '',
-		});
 
 		const getPopupId = JSON.parse(localStorage.getItem('announcementPopup'));
 		if (!getPopupId) {
@@ -139,34 +134,8 @@ class AppBar extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const {
-			pair,
-			pairs,
-			lastPrice,
-			isProTrade,
-			isQuickTrade,
-			constants,
-		} = this.props;
-		const { increment_price } = pairs[pair] || { pair_base: '', pair_2: '' };
-		const price = formatToFixed(lastPrice, increment_price);
 		if (prevProps.theme !== this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
-		}
-		if (isProTrade) {
-			document.title = `${price} | ${pair?.toUpperCase()} | ${
-				constants?.api_name
-			}`;
-		} else if (isQuickTrade) {
-			const pairData = pair.split('-');
-			const firstAsset = pairData[0];
-			const secondAsset = pairData[1];
-			document.title = `${
-				STRINGS['CONVERT']
-			} ${firstAsset?.toUpperCase()} ${STRINGS[
-				'TO'
-			]?.toLowerCase()} ${secondAsset?.toUpperCase()} | ${constants?.api_name}`;
-		} else {
-			document.title = this.state.title;
 		}
 	}
 
@@ -563,68 +532,66 @@ class AppBar extends Component {
 							constants?.features?.announcement &&
 							isLoggedIn() &&
 							this.renderAnnouncementTopbar()}
-						{(!isLoggedIn() || isHome) && (
-							<MobileBarWrapper
-								className={classnames(
-									'd-flex',
-									'app_bar-mobile',
-									'align-items-center',
-									!isHome
-										? 'justify-content-center'
-										: 'justify-content-between px-4'
-								)}
-							>
-								<Link to="/">
-									<div
-										style={{
-											backgroundImage: `url(${constants.logo_image})`,
-										}}
-										className="homeicon-svg"
-									/>
-								</Link>
-								{isHome && (
-									<div className="app-navbar-wrapper">
-										{languageFormValue
-											?.filter(({ value }) => value === activeLanguage)
-											?.map(({ value, icon, label }, index) => (
-												<div
-													key={index}
-													className="language_option"
-													onClick={() => this.onHandleOpenPopup()}
-												>
-													<Image
-														icon={icon}
-														alt={label}
-														wrapperClassName="flag-icon mr-2"
-													/>
-													<span className="caps text-nowrap">
-														{value}
-														{user?.settings?.interface?.display_currency && (
-															<span>
-																/{user?.settings?.interface?.display_currency}
-															</span>
-														)}
-													</span>
-												</div>
-											))}
-										<div
-											className={
-												isHome ? 'login-container ml-3' : 'login-container'
-											}
-											onClick={() => this.onHandleNavigate()}
-										>
-											<EditWrapper
-												stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+						<MobileBarWrapper
+							className={classnames(
+								'd-flex',
+								'app_bar-mobile',
+								'align-items-center',
+								!isHome
+									? 'justify-content-center'
+									: 'justify-content-between px-4'
+							)}
+						>
+							<Link to="/">
+								<div
+									style={{
+										backgroundImage: `url(${constants.logo_image})`,
+									}}
+									className="homeicon-svg"
+								/>
+							</Link>
+							{isHome && (
+								<div className="app-navbar-wrapper">
+									{languageFormValue
+										?.filter(({ value }) => value === activeLanguage)
+										?.map(({ value, icon, label }, index) => (
+											<div
+												key={index}
+												className="language_option"
+												onClick={() => this.onHandleOpenPopup()}
 											>
-												{!isLoggedIn()
-													? STRINGS['LOGIN_TEXT'].toUpperCase()
-													: STRINGS['ACCOUNT_TEXT']}
-											</EditWrapper>
-										</div>
+												<Image
+													icon={icon}
+													alt={label}
+													wrapperClassName="flag-icon mr-2"
+												/>
+												<span className="caps text-nowrap">
+													{value}
+													{user?.settings?.interface?.display_currency && (
+														<span>
+															/{user?.settings?.interface?.display_currency}
+														</span>
+													)}
+												</span>
+											</div>
+										))}
+									<div
+										className={
+											isHome ? 'login-container ml-3' : 'login-container'
+										}
+										onClick={() => this.onHandleNavigate()}
+									>
+										<EditWrapper
+											stringId={!isLoggedIn() ? 'LOGIN_TEXT' : 'ACCOUNT_TEXT'}
+										>
+											{!isLoggedIn()
+												? STRINGS['LOGIN_TEXT'].toUpperCase()
+												: STRINGS['ACCOUNT_TEXT']}
+										</EditWrapper>
 									</div>
-								)}
-							</MobileBarWrapper>
-						)}
+								</div>
+							)}
+						</MobileBarWrapper>
 						{isLoggedIn() && this.renderAnnouncementPopup()}
 					</div>
 				) : (
@@ -796,16 +763,12 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		theme: state.app.theme,
 		pair: state.app.pair,
-		pairs: state.app.pairs,
 		coins: state.app.coins,
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,
 		activeLanguage: state.app.language,
 		selectable_native_currencies:
 			state.app.constants.selectable_native_currencies,
-		lastPrice: marketPriceSelector(state),
-		isProTrade: state.app.isProTrade,
-		isQuickTrade: state.app.isQuickTrade,
 		getAnnouncementDetails: state.app.announcements,
 	};
 };

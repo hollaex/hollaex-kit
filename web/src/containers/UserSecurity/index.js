@@ -95,6 +95,18 @@ class UserSecurity extends Component {
 			) {
 				this.setState({ activeTab: 2 });
 				this.props.setSecurityTab(2);
+			} else if (
+				window.location.search &&
+				window.location.search?.includes('sessions')
+			) {
+				this.setState({ activeTab: 3 });
+				this.props.setSecurityTab(3);
+			} else if (
+				window.location.search &&
+				window.location.search?.includes('login-history')
+			) {
+				this.setState({ activeTab: 4 });
+				this.props.setSecurityTab(4);
 			} else {
 				this.setState({ activeTab: 0 });
 				this.props.setSecurityTab(0);
@@ -168,6 +180,10 @@ class UserSecurity extends Component {
 			currentTab = 'password';
 		} else if (this.state.activeTab === 2) {
 			currentTab = 'apiKeys';
+		} else if (this.state.activeTab === 3) {
+			currentTab = 'sessions';
+		} else if (this.state.activeTab === 4) {
+			currentTab = 'login-history';
 		} else {
 			currentTab = '2fa';
 		}

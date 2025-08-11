@@ -82,7 +82,11 @@ class TransactionsHistory extends Component {
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		urlSearchParams.set('tab', currTab);
 		const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
-		window.history.pushState({}, '', newUrl);
+		if (window.location?.search !== `?${urlSearchParams?.toString()}`) {
+			this.props.router.push(newUrl);
+		} else {
+			this.props.router.replace(newUrl);
+		}
 	}
 
 	getActiveTabName() {
@@ -127,9 +131,9 @@ class TransactionsHistory extends Component {
 	}
 
 	componentDidUpdate() {
-		const { isFromWallet } = this.props;
-		if (!isFromWallet) {
-			const activeTabName = this.getActiveTabName();
+		const { isFromWallet, router } = this.props;
+		const activeTabName = this.getActiveTabName();
+		if (!isFromWallet && !router.location.query?.tab?.includes(activeTabName)) {
 			this.updateParams(activeTabName);
 		}
 	}

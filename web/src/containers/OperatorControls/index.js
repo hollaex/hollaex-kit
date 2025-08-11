@@ -40,6 +40,11 @@ import {
 	setAdminWalletSortData,
 	setAdminDigitalAssetsSortData,
 	setEditMode,
+	setIsDisplayConsoleHead,
+	setIsDisplayConsoleBody,
+	setIsGraphicsEditMode,
+	setIsThemesEditMode,
+	setIsStringsEditMode,
 } from 'actions/appActions';
 import {
 	pushTempContent,
@@ -119,6 +124,7 @@ class OperatorControls extends Component {
 			isUpload: false,
 			isRemove: false,
 			removedKeys: [],
+			activeTab: 'head',
 		};
 	}
 
@@ -141,6 +147,11 @@ class OperatorControls extends Component {
 				query: { stringSettings = false, themeSettings = false } = {},
 			} = {},
 			isOperatorEdit,
+			isDisplayConsoleHead,
+			isDisplayConsoleBody,
+			isThemesEditMode,
+			isStringsEditMode,
+			isGraphicsEditMode,
 		} = this.props;
 		if (isOperatorEdit) {
 			this.toggleEditMode();
@@ -151,9 +162,15 @@ class OperatorControls extends Component {
 		if (stringSettings) {
 			this.toggleEditMode();
 			this.openStringSettingsModal();
-		} else if (themeSettings) {
+		} else if (themeSettings || isThemesEditMode) {
 			this.toggleEditMode();
 			this.openThemeSettings();
+		} else if (isGraphicsEditMode) {
+			this.toggleEditMode();
+			this.openAllIconsModal();
+		} else if (isStringsEditMode) {
+			this.toggleEditMode();
+			this.openAllStringsModal();
 		}
 		const role = checkRole();
 		if (role === 'admin') {
@@ -163,6 +180,11 @@ class OperatorControls extends Component {
 			}
 		}
 		document.addEventListener('keydown', this.handleKeyDown);
+
+		if (isDisplayConsoleHead || isDisplayConsoleBody) {
+			this.setState({ activeTab: isDisplayConsoleHead ? 'head' : 'body' });
+			this.toggleInjectMode();
+		}
 	}
 
 	componentWillUnmount() {
@@ -171,6 +193,7 @@ class OperatorControls extends Component {
 		document.removeEventListener('keydown', this.handleKeyDown);
 		this.removeAdminListeners();
 		clearTimeout(this.languageChange);
+		this.props.setIsDisplayConsoleHead(false);
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
@@ -483,18 +506,39 @@ class OperatorControls extends Component {
 	};
 
 	toggleEditMode = () => {
-		const { handleEditMode, isEditMode, isInjectMode } = this.props;
+		const {
+			handleEditMode,
+			isEditMode,
+			isInjectMode,
+			isGraphicsEditMode,
+			isThemesEditMode,
+			isStringsEditMode,
+			setIsGraphicsEditMode,
+			setIsThemesEditMode,
+			setIsStringsEditMode,
+		} = this.props;
 		if (!isInjectMode) {
 			if (!isEditMode) {
 				handleEditMode();
 			} else {
 				this.openExitConfirmationModal();
 			}
+			isGraphicsEditMode && setIsGraphicsEditMode(false);
+			isThemesEditMode && setIsThemesEditMode(false);
+			isStringsEditMode && setIsStringsEditMode(false);
 		}
 	};
 
 	toggleInjectMode = () => {
-		const { handleInjectMode, isEditMode, isInjectMode } = this.props;
+		const {
+			handleInjectMode,
+			isEditMode,
+			isInjectMode,
+			isDisplayConsoleHead,
+			isDisplayConsoleBody,
+			setIsDisplayConsoleHead,
+			setIsDisplayConsoleBody,
+		} = this.props;
 		const { injected_html } = this.state;
 		if (!isEditMode) {
 			if (!isInjectMode || isEqual(injected_html, this.props.injected_html)) {
@@ -502,6 +546,8 @@ class OperatorControls extends Component {
 			} else {
 				this.openExitConsoleConfirmationModal();
 			}
+			isDisplayConsoleHead && setIsDisplayConsoleHead(false);
+			isDisplayConsoleBody && setIsDisplayConsoleBody(false);
 		}
 	};
 
@@ -1040,6 +1086,12 @@ class OperatorControls extends Component {
 		this.removeIcon(themeKey, iconKey);
 	};
 
+	onHandleTabChange = (tab) => {
+		this.setState({
+			activeTab: tab,
+		});
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -1188,7 +1240,11 @@ class OperatorControls extends Component {
 									</Button>
 								</div>
 							</div>
-							<Tabs className="w-100 h-100">
+							<Tabs
+								className="w-100 h-100"
+								activeKey={this.state.activeTab}
+								onChange={this.onHandleTabChange}
+							>
 								{TAB_KEYS.map((key) => {
 									const title = `${'<'}${key.toUpperCase()}${'>'}`;
 									const placeholder = `${'<'}!-- In this section you can insert any HTML code to the ${title} of your website --${'>'}`;
@@ -1510,6 +1566,11 @@ const mapStateToProps = (state) => ({
 	default_wallet_sort: state.app.default_wallet_sort,
 	default_digital_assets_sort: state.app.default_digital_assets_sort,
 	isOperatorEdit: state.app.isOperatorEdit,
+	isDisplayConsoleHead: state.app.isDisplayConsoleHead,
+	isDisplayConsoleBody: state.app.isDisplayConsoleBody,
+	isGraphicsEditMode: state.app.isGraphicsEditMode,
+	isThemesEditMode: state.app.isThemesEditMode,
+	isStringsEditMode: state.app.isStringsEditMode,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1522,6 +1583,17 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
 	setEditMode: bindActionCreators(setEditMode, dispatch),
+	setIsDisplayConsoleHead: bindActionCreators(
+		setIsDisplayConsoleHead,
+		dispatch
+	),
+	setIsDisplayConsoleBody: bindActionCreators(
+		setIsDisplayConsoleBody,
+		dispatch
+	),
+	setIsGraphicsEditMode: bindActionCreators(setIsGraphicsEditMode, dispatch),
+	setIsThemesEditMode: bindActionCreators(setIsThemesEditMode, dispatch),
+	setIsStringsEditMode: bindActionCreators(setIsStringsEditMode, dispatch),
 });
 
 export default connect(

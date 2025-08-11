@@ -173,3 +173,9 @@
 .admin-deposit-wrapper .blue-admin-table .ant-table {
 	overflow: scroll;
 }
+
+.Validate-Dismiss-popup .confirm-container .fees-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 2%;
+}

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 import { ReactSVG } from 'react-svg';
 import { Tabs, Button, Breadcrumb, message, Modal } from 'antd';
 
@@ -36,6 +38,15 @@ import {
 import UserMetaForm from './UserMetaForm';
 import PaymentMethods from './PaymentMethods';
 import DeletionConfirmation from './DeleteConfirmation';
+import {
+	setIsActiveAddNewUsers,
+	setIsActiveDeleteUser,
+	setIsActiveFlagUser,
+	setIsActiveFreezeUser,
+	setIsDisabledUser2fa,
+	setIsEmailVerifiedUser,
+} from 'actions/appActions';
+import UserStaking from '../Stakes/UserStaking';
 
 // import Flagger from '../Flaguser';
 // import Notes from './Notes';
@@ -49,11 +60,70 @@ class UserContent extends Component {
 		showRecoverModal: false,
 		showDeleteModal: false,
 		userTiers: {},
+		activeTab: 'about',
+		userTabs: [
+			'about',
+			'balance',
+			'orders',
+			'bank',
+			'trade',
+			'deposits',
+			'withdrawals',
+			'payment_methods',
+			'referrals',
+			'meta',
+			'stakes',
+		],
 	};
 
 	componentDidMount() {
+		const { userProfile } = this.props;
+		const {
+			location: { pathname, query },
+		} = this.props.router;
+		const { activeTab, userTabs } = this.state;
 		this.getTiers();
+		const params = new URLSearchParams();
+		params.set('id', query?.id);
+		params.set('tab', userProfile ? userProfile : activeTab);
+		const updateParams = `${pathname}?${params?.toString()}`;
+		if (userProfile) {
+			this.setState({ activeTab: userProfile });
+		}
+		if (userTabs?.includes(activeTab)) {
+			this.props.router.replace(updateParams?.toString());
+		} else {
+			this.props.router.push(`/admin`);
+		}
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const { activeTab, userTabs } = this.state;
+		if (!userTabs?.includes(activeTab)) {
+			this.props.router.push(`/admin`);
+		}
+		if (
+			(this.state.activeTab !== prevState.activeTab ||
+				!userTabs?.includes(window.location.search)) &&
+			this.props.router?.location?.search
+		) {
+			this.onHandlePath();
+		}
+	}
+
+	onHandlePath = () => {
+		const {
+			location: { pathname, query },
+		} = this.props.router;
+		const { activeTab, userTabs } = this.state;
+		const params = new URLSearchParams();
+		params.set('id', query?.id);
+		params.set('tab', activeTab);
+		const updateParams = `${pathname}?${params?.toString()}`;
+		if (userTabs?.includes(activeTab)) {
+			window.history.replaceState(null, '', updateParams?.toString());
+		}
+	};
 
 	getTiers = () => {
 		requestTiers()
@@ -66,7 +136,11 @@ class UserContent extends Component {
 	};
 
 	disableOTP = () => {
-		const { userInformation = {}, refreshData } = this.props;
+		const {
+			userInformation = {},
+			refreshData,
+			setIsDisabledUser2fa,
+		} = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 		};
@@ -94,12 +168,20 @@ class UserContent extends Component {
 							err.data && err.data.message ? err.data.message : err.message;
 						message.error(_error);
 					});
+				setIsDisabledUser2fa(false);
+			},
+			onCancel() {
+				setIsDisabledUser2fa(false);
 			},
 		});
 	};
 
 	flagUser = (value) => {
-		const { userInformation = {}, refreshData } = this.props;
+		const {
+			userInformation = {},
+			refreshData,
+			setIsActiveFlagUser = () => {},
+		} = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 			flagged: value,
@@ -133,12 +215,20 @@ class UserContent extends Component {
 							err.data && err.data.message ? err.data.message : err.message;
 						message.error(_error);
 					});
+				setIsActiveFlagUser(false);
+			},
+			onCancel() {
+				setIsActiveFlagUser(false);
 			},
 		});
 	};
 
 	freezeAccount = (value) => {
-		const { userInformation = {}, refreshData } = this.props;
+		const {
+			userInformation = {},
+			refreshData,
+			setIsActiveFreezeUser,
+		} = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 			activated: value,
@@ -181,6 +271,10 @@ class UserContent extends Component {
 							err.data && err.data.message ? err.data.message : err.message;
 						message.error(_error);
 					});
+				setIsActiveFreezeUser(false);
+			},
+			onCancel() {
+				setIsActiveFreezeUser(false);
 			},
 		});
 	};
@@ -201,6 +295,7 @@ class UserContent extends Component {
 					err.data && err.data.message ? err.data.message : err.message;
 				message.error(_error);
 			});
+		this.props.setIsEmailVerifiedUser(false);
 	};
 
 	handleRecoverUser = () => {
@@ -237,6 +332,7 @@ class UserContent extends Component {
 				message.error(_error);
 			});
 		this.setState({ showDeleteModal: false });
+		this.props.setIsActiveDeleteUser(false);
 	};
 
 	openVerifyEmailModal = () => {
@@ -260,6 +356,20 @@ class UserContent extends Component {
 	renderTabBar = (props, DefaultTabBar) => {
 		if (this.props.isConfigure) return <div></div>;
 		return <DefaultTabBar {...props} />;
+	};
+
+	onHandleTabChange = (value) => {
+		this.setState({ activeTab: value });
+	};
+
+	onHandleCancel = (modalType = '') => {
+		if (modalType === 'verifyEmailModal') {
+			this.setState({ showVerifyEmailModal: false });
+			this.props.setIsEmailVerifiedUser(false);
+		} else if (modalType === 'deleteConfirmationModal') {
+			this.setState({ showDeleteModal: false });
+			this.props.setIsActiveDeleteUser(false);
+		}
 	};
 
 	render() {
@@ -370,6 +480,8 @@ class UserContent extends Component {
 				<Tabs
 					// tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
 					renderTabBar={this.renderTabBar}
+					activeKey={this.state.activeTab}
+					onChange={this.onHandleTabChange}
 				>
 					<TabPane tab="About" key="about">
 						<div>
@@ -472,6 +584,13 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					}
+					<TabPane tab="Stakes" key="stakes">
+						<UserStaking
+							coins={this.props?.coins}
+							isUserProfileStakeTab={true}
+							selectedUserId={userInformation?.id}
+						/>
+					</TabPane>
 					{
 						<TabPane tab="Referrals" key="referrals">
 							<Referrals
@@ -493,7 +612,7 @@ class UserContent extends Component {
 				</Tabs>
 				<VerifyEmailConfirmation
 					visible={showVerifyEmailModal}
-					onCancel={() => this.setState({ showVerifyEmailModal: false })}
+					onCancel={() => this.onHandleCancel('verifyEmailModal')}
 					onConfirm={this.verifyUserEmail}
 					userData={userInformation}
 				/>
@@ -505,7 +624,7 @@ class UserContent extends Component {
 				/>
 				<DeletionConfirmation
 					visible={showDeleteModal}
-					onCancel={() => this.setState({ showDeleteModal: false })}
+					onCancel={() => this.onHandleCancel('deleteConfirmationModal')}
 					onConfirm={this.handleDeleteUser}
 					userData={userInformation}
 				/>
@@ -514,4 +633,15 @@ class UserContent extends Component {
 	}
 }
 
-export default UserContent;
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsActiveAddNewUsers: bindActionCreators(setIsActiveAddNewUsers, dispatch),
+	setIsActiveDeleteUser: bindActionCreators(setIsActiveDeleteUser, dispatch),
+	setIsActiveFreezeUser: bindActionCreators(setIsActiveFreezeUser, dispatch),
+	setIsEmailVerifiedUser: bindActionCreators(setIsEmailVerifiedUser, dispatch),
+	setIsDisabledUser2fa: bindActionCreators(setIsDisabledUser2fa, dispatch),
+	setIsActiveFlagUser: bindActionCreators(setIsActiveFlagUser, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserContent);

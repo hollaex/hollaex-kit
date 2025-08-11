@@ -33,6 +33,36 @@ const getWithdrawalFee = (req, res) => {
 	}
 };
 
+const getUserWithdrawalCode = (req, res) => {
+	loggerWithdrawals.verbose(req.uuid, 'controllers/user/getUserWithdrawalCode', req.auth);
+
+	const testKey = req.headers['test-key'];
+
+	if (!testKey) {
+		throw new Error('test key is required');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.value) {
+		throw new Error('invalid test key');
+	}
+	if (!toolsLib?.getKitSecrets()?.test_key?.active) {
+		throw new Error('Inactive test environment');
+	}
+	if (toolsLib?.getKitSecrets()?.test_key?.value !== testKey) {
+		throw new Error('Invalid test environment key');
+	}
+
+	toolsLib.wallet.getUserWithdrawalCode()
+		.then((token) => {
+			return res.json({ token });
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(req.uuid, 'controllers/user/getUserWithdrawalCode', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+
 const requestWithdrawal = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -523,5 +553,6 @@ module.exports = {
 	cancelWithdrawal,
 	performDirectWithdrawal,
 	getWithdrawalMax,
-	downloadWithdrawalsCsv
+	downloadWithdrawalsCsv,
+	getUserWithdrawalCode
 };

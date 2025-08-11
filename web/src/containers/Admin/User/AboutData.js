@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import {
 	Button,
@@ -46,6 +48,12 @@ import { sendEmailCode } from 'actions/userAction';
 import moment from 'moment';
 import { CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { onHandleBadge, roleStyles } from '../Roles/RoleManagement';
+import {
+	setIsActiveUserFeeDiscount,
+	setIsActiveWithdrawalBlock,
+	setIsDisabledUser2fa,
+	setIsEmailVerifiedUser,
+} from 'actions/appActions';
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 
 const ModalBtn = ({ onClick, btnName, disabled, className }) => {
@@ -76,6 +84,7 @@ const RenderModalContent = ({
 	refreshAllData,
 	userFields,
 	setUserFields,
+	setIsActiveUserFeeDiscount = () => {},
 }) => {
 	const [discount, setDiscount] = useState(userData.discount);
 
@@ -127,6 +136,7 @@ const RenderModalContent = ({
 	const submitValues = ({ feeDiscount }) => {
 		setDiscount(parseFloat(feeDiscount));
 		handleApply('fee-discount-confirm');
+		setIsActiveUserFeeDiscount(false);
 	};
 
 	const renderHeaderSection = (type) => {
@@ -469,6 +479,17 @@ const AboutData = ({
 	kycPluginName,
 	requestUserData,
 	refreshAllData,
+	isActiveFreezeUser = false,
+	isActiveUserFeeDiscount = false,
+	isEmailVerifiedUser = false,
+	isDisabledUser2fa = false,
+	isActiveFlagUser = false,
+	isActiveDeleteUser = false,
+	isActiveWithdrawalBlock = false,
+	setIsActiveUserFeeDiscount = () => {},
+	setIsActiveWithdrawalBlock = () => {},
+	setIsEmailVerifiedUser = () => {},
+	setIsDisabledUser2fa = () => {},
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -484,6 +505,21 @@ const AboutData = ({
 	const [displayWithdrawalBlock, setDisplayWithdrawalBlock] = useState(false);
 	const [selectedBanDate, setSelectedBanDate] = useState(null);
 	const [selectedBanOption, setSelectedBanOption] = useState(null);
+
+	useEffect(() => {
+		isActiveDeleteUser && deleteUser();
+		isActiveFreezeUser && freezeAccount(!userData?.activated);
+		isActiveUserFeeDiscount && handleApply('fee-discount', true);
+		isEmailVerifiedUser && !userData?.email_verified
+			? verifyEmail()
+			: setIsEmailVerifiedUser(false);
+		isDisabledUser2fa && userData?.otp_enabled
+			? disableOTP()
+			: setIsDisabledUser2fa(false);
+		isActiveFlagUser && flagUser(!userData?.flagged);
+		isActiveWithdrawalBlock && setWithdrawalBlockOptions();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		if (userData.discount) {
@@ -520,6 +556,7 @@ const AboutData = ({
 		setModalKey('');
 		setApply(false);
 		setUserFields({ ...userFields, userEmail: '' });
+		setIsActiveUserFeeDiscount(false);
 	};
 
 	const handleApply = (key, isApply = false) => {
@@ -681,7 +718,7 @@ const AboutData = ({
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.email_verified ? (
 							<Fragment>
-								<div className="about-info-content">
+								<div className="about-info-content" id="user-email-verified">
 									<div>Email verification</div>
 									<div>Verified</div>
 								</div>
@@ -728,7 +765,7 @@ const AboutData = ({
 						) : (
 							<Fragment>
 								<div>
-									<div>2FA disabled</div>
+									<div id="user-2fa-disabled">2FA disabled</div>
 								</div>
 								<div>
 									<ReactSVG
@@ -1076,6 +1113,7 @@ const AboutData = ({
 						footer={null}
 						onCancel={() => {
 							setDisplayWithdrawalBlock(false);
+							setIsActiveWithdrawalBlock(false);
 						}}
 					>
 						<h1 style={{ fontWeight: '600', color: 'white' }}>
@@ -1155,6 +1193,7 @@ const AboutData = ({
 							<Button
 								onClick={() => {
 									setDisplayWithdrawalBlock(false);
+									setIsActiveWithdrawalBlock(false);
 								}}
 								style={{
 									backgroundColor: '#288500',
@@ -1200,4 +1239,30 @@ const AboutData = ({
 	);
 };
 
-export default withConfig(AboutData);
+const mapStateToProps = (state) => ({
+	isActiveDeleteUser: state.app.isActiveDeleteUser,
+	isActiveFreezeUser: state.app.isActiveFreezeUser,
+	isActiveUserFeeDiscount: state.app.isActiveUserFeeDiscount,
+	isEmailVerifiedUser: state.app.isEmailVerifiedUser,
+	isDisabledUser2fa: state.app.isDisabledUser2fa,
+	isActiveFlagUser: state.app.isActiveFlagUser,
+	isActiveWithdrawalBlock: state.app.isActiveWithdrawalBlock,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsActiveUserFeeDiscount: bindActionCreators(
+		setIsActiveUserFeeDiscount,
+		dispatch
+	),
+	setIsActiveWithdrawalBlock: bindActionCreators(
+		setIsActiveWithdrawalBlock,
+		dispatch
+	),
+	setIsEmailVerifiedUser: bindActionCreators(setIsEmailVerifiedUser, dispatch),
+	setIsDisabledUser2fa: bindActionCreators(setIsDisabledUser2fa, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(AboutData));

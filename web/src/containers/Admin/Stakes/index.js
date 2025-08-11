@@ -49,7 +49,7 @@ const Stakes = (props) => {
 					/>
 				</TabPane>
 				<TabPane tab="User Staking" key="1">
-					<UserStaking coins={props.coins} />
+					<UserStaking coins={props.coins} isUserProfileStakeTab={false} />
 				</TabPane>
 			</Tabs>
 		</div>

@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import { Button, message, Table, Select, Input } from 'antd';
 import {
+	ArrowUpOutlined,
 	CaretDownOutlined,
 	LeftOutlined,
 	RightOutlined,
@@ -22,9 +23,6 @@ const getColumns = (
 	userTierListDetails,
 	feeData,
 	ICONS,
-	filterTier,
-	filterType,
-	filterFee,
 	coins,
 	nextColumnCount,
 	prevColumnCount,
@@ -33,13 +31,30 @@ const getColumns = (
 	isActiveNextcolumn = false,
 	isActivePreviousColumn = false,
 	isReviewFees = false,
-	tableData = []
+	tableData = [],
+	tierFilters,
+	isHighlightColumn = null,
+	handleHighlightColumn = () => {},
+	hoveredTier = null,
+	handleHoveredTier = () => {},
+	hoveredMarketType,
+	handleMarketType = () => {},
+	quicktradePairs = {}
 ) => {
+	const {
+		filterFee,
+		filterTier,
+		filterType,
+		filterMarket,
+		filterMarketType,
+		searchText,
+	} = tierFilters || {};
 	const children = [];
 	const levels = filterTier
 		? [filterTier]
 		: Object.keys(userTierListDetails || {});
 	const isEditMode = isReviewFees ? '' : 'pointer';
+	let colIndexCounter = 0;
 
 	const onHandleShadowEffect = (tier, shadowClass, feeType) => {
 		if (!tier) return;
@@ -68,21 +83,43 @@ const getColumns = (
 		}
 	};
 
+	const marketTitle = {
+		ORDERBOOK: 'pro',
+		'OTC - QUICK TRADE (CONVERT)': 'broker',
+		'HOLLAEX NETWORK SWAP (CONVERT)': 'network',
+	};
+
 	const columns = [
 		{
-			title: <div className="font-weight-bold">MARKETS</div>,
+			title: (
+				<div className="font-weight-bold">
+					MARKETS
+					{Array.isArray(tableData) && tableData?.length > 0 && (
+						<span className="ml-2 market-count">
+							({tableData?.filter((row) => !row?.isSectionTitle)?.length})
+						</span>
+					)}
+				</div>
+			),
 			dataIndex: 'market',
 			key: 'market',
 			fixed: 'left',
 			className: 'sticky-col',
+			onCell: (row) => {
+				const groupKey = marketTitle[row?._sectionTitle] || '';
+				const isHovered =
+					hoveredMarketType &&
+					quicktradePairs[row?.market]?.type === hoveredMarketType;
+				return {
+					onMouseEnter: () =>
+						handleMarketType(row?.isSectionTitle ? groupKey : null),
+					onMouseLeave: () => handleMarketType(null),
+					className: isHovered ? 'highlighted-fee-col' : '',
+				};
+			},
 			render: (market, row) => {
 				if (row?.isSectionTitle) {
-					const groupMap = {
-						ORDERBOOK: 'pro',
-						'OTC - QUICK TRADE (CONVERT)': 'broker',
-						'HOLLAEX NETWORK SWAP (CONVERT)': 'network',
-					};
-					const groupKey = groupMap[row?._sectionTitle] || '';
+					const groupKey = marketTitle[row?._sectionTitle] || '';
 					return (
 						<div
 							className={`font-weight-bold ${isEditMode}`}
@@ -102,7 +139,7 @@ const getColumns = (
 				const pair_base = market?.split('-')[0] || '';
 				return (
 					<div
-						className={`d-flex align-items-center admin-tier-filters-wrapper text-nowrap ${isEditMode}`}
+						className={`d-flex align-items-center admin-tier-market text-nowrap ${isEditMode}`}
 						onClick={() =>
 							!isReviewFees &&
 							tableData?.length &&
@@ -118,7 +155,14 @@ const getColumns = (
 			},
 		},
 		{
-			title: <div className="font-weight-bold">USER TIER ACCOUNT LEVELS</div>,
+			title: (
+				<div className="font-weight-bold">
+					USER TIER ACCOUNT LEVELS
+					{levels?.length > 0 && (
+						<span className="ml-2">({levels?.length})</span>
+					)}
+				</div>
+			),
 			children,
 			className: isActivePreviousColumn
 				? 'shadow-right'
@@ -129,6 +173,7 @@ const getColumns = (
 	];
 
 	const makeFeeColumn = (level, type) => {
+		const colIndex = colIndexCounter++;
 		const details = { level, type, editType: type };
 		return {
 			title: (
@@ -144,18 +189,63 @@ const getColumns = (
 			dataIndex: `tier_${level}_${type}`,
 			key: `tier_${level}_${type}`,
 			align: 'center',
+			onHeaderCell: () => ({
+				onMouseEnter: () => {
+					handleHighlightColumn(colIndex);
+					handleHoveredTier(null);
+				},
+				onMouseLeave: () => {
+					handleHighlightColumn(null);
+				},
+				className:
+					isHighlightColumn === colIndex || hoveredTier === level
+						? 'highlighted-fee-col'
+						: '',
+			}),
 			onCell: (row) => {
-				if (row?.isSectionTitle) return {};
+				const isHovered =
+					quicktradePairs[row?.market]?.type === hoveredMarketType;
+				const groupKey = marketTitle[row?._sectionTitle] || '';
+				if (row?.isSectionTitle)
+					return {
+						onMouseEnter: () =>
+							handleMarketType(row?.isSectionTitle ? groupKey : null),
+						onMouseLeave: () => handleMarketType(null),
+						className: isHovered ? 'highlighted-fee-col' : '',
+					};
 				const fee = feeData[level]?.[row?.market]?.[type];
 				const originalFee = userTiers[level]?.fees?.[type]?.[row?.market];
 
-				return fee !== undefined &&
-					originalFee !== undefined &&
-					fee !== originalFee
-					? { className: `edited-fees-td ${isEditMode}` }
-					: Number(fee) === Number(filterFee)
-					? { className: `highlighted-fee ${isEditMode}` }
-					: { className: isEditMode };
+				return {
+					onMouseEnter: () => {
+						handleHighlightColumn(colIndex);
+						handleHoveredTier(null);
+					},
+					onMouseLeave: () => {
+						handleHighlightColumn(null);
+					},
+					className:
+						(isHighlightColumn === colIndex ||
+						hoveredTier === level ||
+						isHovered
+							? 'highlighted-fee-col '
+							: '') +
+						(fee !== undefined &&
+						originalFee !== undefined &&
+						fee !== originalFee
+							? `edited-fees-td ${isEditMode}`
+							: (Number(fee) === Number(filterFee) &&
+									filterFee !== null &&
+									filterFee !== '') ||
+							  (!filterFee &&
+									(filterMarket ||
+										filterMarketType ||
+										searchText ||
+										filterTier ||
+										filterType))
+							? `highlighted-fee ${isEditMode}`
+							: isEditMode),
+				};
 			},
 			render: (tier, row) => {
 				const tierFee = feeData[level]?.[row?.market]?.[type];
@@ -200,6 +290,11 @@ const getColumns = (
 						tableData?.length &&
 						handleSelectFeesEdit(tierDetail)
 					}
+					onMouseEnter={() => {
+						handleHoveredTier(level);
+						handleHighlightColumn(null);
+					}}
+					onMouseLeave={() => handleHoveredTier(null)}
 				>
 					<Image
 						icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
@@ -209,7 +304,16 @@ const getColumns = (
 				</div>
 			),
 			children: tierChildren,
-			className: isEditMode,
+			className:
+				(isHighlightColumn !== null &&
+					tierChildren?.some(
+						(data, i) =>
+							data?.key &&
+							isHighlightColumn === colIndexCounter - tierChildren?.length + i
+					)) ||
+				hoveredTier === level
+					? `highlighted-fee-col ${isEditMode}`
+					: isEditMode,
 		};
 	});
 
@@ -244,8 +348,13 @@ class EditFees extends Component {
 			prevColumnCount: 0,
 			isReviewFees: false,
 			visibleTierCount: 0,
+			isHighlightColumn: null,
+			hoveredTier: null,
+			hoveredMarketType: null,
+			filterBarScrolled: null,
 		};
 		this.tableContainerRef = createRef();
+		this.scrollRef = createRef();
 	}
 
 	tableData = [];
@@ -254,11 +363,48 @@ class EditFees extends Component {
 		this.constructData();
 		window.addEventListener('resize', this.handleResizeColumns);
 		this.handleResizeColumns();
+		if (this.scrollRef.current) {
+			this.scrollRef.current.addEventListener(
+				'scroll',
+				this.handleScrollContainer,
+				{ passive: true }
+			);
+		}
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleResizeColumns);
+		if (this.scrollRef.current) {
+			this.scrollRef.current.removeEventListener(
+				'scroll',
+				this.handleScrollContainer
+			);
+		}
 	}
+
+	handleScrollContainer = () => {
+		const ref = this.scrollRef?.current;
+		const filterBar = ref?.querySelector('.admin-tier-filters-wrapper');
+		const scrolled =
+			filterBar?.getBoundingClientRect()?.top <=
+			ref?.getBoundingClientRect()?.top;
+		if (!ref) return;
+		if (!filterBar) return;
+		if (this.state.filterBarScrolled !== scrolled) {
+			this.setState({ filterBarScrolled: scrolled });
+		}
+	};
+
+	handleScrollToTop = () => {
+		const ref = this.scrollRef.current;
+		if (ref) {
+			if (ref.scrollTo) {
+				ref.scrollTo({ top: 0, behavior: 'smooth' });
+			} else {
+				ref.scrollTop = 0;
+			}
+		}
+	};
 
 	handleResizeColumns = () => {
 		const container = this.tableContainerRef?.current;
@@ -535,7 +681,7 @@ class EditFees extends Component {
 								break;
 							}
 						}
-					} else if (feeValue) {
+					} else if (feeValue || feeValue === 0) {
 						for (const level of Object.keys(userTierListDetails || {})) {
 							const fees = feeData?.[level]?.[market];
 							if (
@@ -631,11 +777,96 @@ class EditFees extends Component {
 		});
 	};
 
+	getFilteredFeeCellCount = () => {
+		const { userTierListDetails, quicktradePairs, tierFilters } = this.props;
+		const { feeData, markets } = this.state;
+		const {
+			filterTier,
+			filterType,
+			filterFee,
+			filterMarket,
+			filterMarketType,
+			searchText,
+		} = tierFilters || {};
+
+		const hasAnyFilter =
+			filterTier ||
+			filterType ||
+			(filterFee !== undefined &&
+				filterFee !== null &&
+				filterFee !== '' &&
+				!isNaN(Number(filterFee))) ||
+			filterMarket ||
+			filterMarketType ||
+			(searchText && searchText?.trim() !== '');
+
+		if (!hasAnyFilter) return 0;
+
+		const levels = filterTier
+			? [filterTier]
+			: Object.keys(userTierListDetails || {});
+		const types = filterType ? [filterType] : ['maker', 'taker'];
+		const feeValue =
+			filterFee !== undefined && filterFee !== '' && !isNaN(Number(filterFee))
+				? Number(filterFee)
+				: null;
+		const search = searchText?.toLowerCase?.() || '';
+
+		let count = 0;
+		(markets || []).forEach((market) => {
+			const pairInfo =
+				quicktradePairs[market] || quicktradePairs[flipPair(market)];
+
+			if (!pairInfo) return;
+			if (filterMarketType && pairInfo?.type !== filterMarketType) return;
+			if (filterMarket && market !== filterMarket) return;
+			if (search && !market?.toLowerCase?.()?.includes(search)) return;
+
+			levels.forEach((level) => {
+				types.forEach((type) => {
+					const fee =
+						feeData?.[level]?.[market]?.[type] ??
+						userTierListDetails?.[level]?.fees?.[type]?.[market];
+					if (fee === undefined) return;
+					if (
+						filterFee !== undefined &&
+						filterFee !== null &&
+						filterFee !== '' &&
+						!isNaN(Number(filterFee)) &&
+						Number(fee) !== Number(feeValue)
+					) {
+						return;
+					}
+					count += 1;
+				});
+			});
+		});
+		return count;
+	};
+
+	getFeeCount = () => {
+		const { selectedFee } = this.props.selectedDetails;
+		let feeCount = null;
+		['maker', 'taker'].forEach((type) => {
+			Object.values(selectedFee).forEach((selectedTiers) => {
+				if (selectedTiers[type]) {
+					feeCount += Object.keys(selectedTiers[type])?.length || 0;
+				}
+			});
+		});
+		return feeCount;
+	};
+
+	handleHighlightColumn = (index) =>
+		this.setState({ isHighlightColumn: index });
+	handleHoveredTier = (tier) => this.setState({ hoveredTier: tier });
+	handleMarketType = (marketType) =>
+		this.setState({ hoveredMarketType: marketType });
+
 	render() {
 		const {
 			icons: ICONS = {},
 			userTierListDetails = {},
-			handleClose,
 			coins = {},
 			handleSelectFeesEdit = () => {},
 			tierFilters,
@@ -645,7 +876,14 @@ class EditFees extends Component {
 			selectedDetails: { selectedMarkets = [], selectedTiers = [] },
 			isActiveEditFees,
 		} = this.props;
-		const { feeData, markets, isReviewFees } = this.state;
+		const {
+			feeData,
+			markets,
+			isReviewFees,
+			isHighlightColumn,
+			hoveredMarketType,
+			filterBarScrolled,
+		} = this.state;
 		const {
 			filterTier,
 			filterType,
@@ -686,21 +924,33 @@ class EditFees extends Component {
 		const isActiveNextcolumn = nextColumnCount < totalTiers && !filterTier;
 		const isActivePreviousColumn = prevColumnCount > 0 && !filterTier;
 
+		const isActiveFilter =
+			filterTier ||
+			filterType ||
+			(filterFee !== undefined &&
+				filterFee !== null &&
+				filterFee !== '' &&
+				!isNaN(Number(filterFee))) ||
+			filterMarket ||
+			filterMarketType ||
+			(searchText && searchText?.trim() !== '');
+
 		return (
-			<div className="admin-tiers-wrapper">
-				<div
-					className="d-flex fs-24 underline-text pointer px-5 py-2"
-					onClick={handleClose}
-				>
-					{'< '}Back
-				</div>
+			<div
+				ref={this.scrollRef}
+				className={
+					isReviewFees
+						? 'admin-tiers-wrapper review-fee-tier-wrapper tier-fee-popup-wrapper'
+						: 'admin-tiers-wrapper tier-fee-popup-wrapper'
+				}
+			>
 				{!isReviewFees ? (
 					<div className="admin-edit-title-wrapper w-100">
-						<span className="admin-edit-title caps">Edit Fees</span>
+						<span className="admin-edit-title caps mt-5">Edit Fees</span>
 					</div>
 				) : (
 					<div className="d-flex flex-column admin-fee-review-wrapper justify-content-center align-items-center">
-						<div className="fs-24 my-2 bold">REVIEW & APPLY NEW FEES</div>
+						<div className="fs-24 my-2 bold mt-5">REVIEW & APPLY NEW FEES</div>
 						<div>You are about to apply a new fee model to your platform</div>
 						<div>
 							It will make immediate effect and all users will be charged the
@@ -713,7 +963,11 @@ class EditFees extends Component {
 				)}
 				<div className="admin-tiers-table-wrapper">
 					{!isReviewFees && (
-						<div className="d-flex align-items-center flex-wrap justify-content-center mb-3 admin-tier-filters-wrapper">
+						<div
+							className={`d-flex align-items-center flex-wrap justify-content-center mb-3 admin-tier-filters-wrapper ${
+								filterBarScrolled ? 'filters-scrolled' : ''
+							}`}
+						>
 							<div className="d-flex align-items-center admin-tier-filters">
 								<div className="w-100 no-wrap fees-title text-align-center">
 									FEES BY USER TIER
@@ -724,7 +978,11 @@ class EditFees extends Component {
 									value={filterTier}
 									onChange={(v) => this.handleFilterChange(v, 'filterTier')}
 									allowClear
-									className="blue-admin-select-wrapper"
+									className={
+										filterTier
+											? 'blue-admin-select-wrapper'
+											: 'blue-admin-select-wrapper inactive-field'
+									}
 									dropdownClassName="blue-admin-select-dropdown"
 									getPopupContainer={(trigger) => trigger?.parentNode}
 									suffixIcon={!filterTier ? <CaretDownOutlined /> : null}
@@ -739,7 +997,11 @@ class EditFees extends Component {
 									value={filterType}
 									onChange={(v) => this.handleFilterChange(v, 'filterType')}
 									allowClear
-									className="blue-admin-select-wrapper"
+									className={
+										filterType
+											? 'blue-admin-select-wrapper'
+											: 'blue-admin-select-wrapper inactive-field'
+									}
 									dropdownClassName="blue-admin-select-dropdown"
 									getPopupContainer={(trigger) => trigger?.parentNode}
 									suffixIcon={!filterType ? <CaretDownOutlined /> : null}
@@ -753,7 +1015,11 @@ class EditFees extends Component {
 									value={filterMarket}
 									onChange={(v) => this.handleFilterChange(v, 'filterMarket')}
 									allowClear
-									className="blue-admin-select-wrapper market-select-filter"
+									className={
+										filterMarket
+											? 'blue-admin-select-wrapper market-select-filter'
+											: 'blue-admin-select-wrapper market-select-filter inactive-field'
+									}
 									dropdownClassName="blue-admin-select-dropdown market-select-filter-dropdown"
 									getPopupContainer={(trigger) => trigger?.parentNode}
 									suffixIcon={!filterMarket ? <CaretDownOutlined /> : null}
@@ -768,7 +1034,11 @@ class EditFees extends Component {
 										this.handleFilterChange(v, 'filterMarketType')
 									}
 									allowClear
-									className="blue-admin-select-wrapper"
+									className={
+										filterMarketType
+											? 'blue-admin-select-wrapper'
+											: 'blue-admin-select-wrapper inactive-field'
+									}
 									dropdownClassName="blue-admin-select-dropdown"
 									getPopupContainer={(trigger) => trigger?.parentNode}
 									suffixIcon={!filterMarketType ? <CaretDownOutlined /> : null}
@@ -788,20 +1058,29 @@ class EditFees extends Component {
 									value={searchText}
 									onChange={this.handleSearchChange}
 									allowClear
-									className="blue-admin-input-wrapper"
+									className={
+										searchText
+											? 'blue-admin-input-wrapper'
+											: 'blue-admin-input-wrapper inactive-field'
+									}
 								/>
 							</div>
 							<div className="d-flex align-items-center admin-tier-filters">
 								<span className="filters-label">FEES:</span>
 								<Input
-									placeholder="Fee percentage amount%"
+									placeholder="Fee percentage amount"
 									value={filterFee}
 									onChange={(e) =>
 										this.handleFilterChange(e.target?.value, 'filterFee')
 									}
 									allowClear
 									type="number"
-									className="blue-admin-input-wrapper"
+									className={
+										filterFee
+											? 'blue-admin-input-wrapper'
+											: 'blue-admin-input-wrapper inactive-field'
+									}
+									suffix="%"
 								/>
 							</div>
 						</div>
@@ -835,9 +1114,6 @@ class EditFees extends Component {
 										userTierListDetails,
 										feeData,
 										ICONS,
-										filterTier,
-										filterType,
-										filterFee,
 										coins,
 										nextColumnCount,
 										prevColumnCount,
@@ -846,7 +1122,15 @@ class EditFees extends Component {
 										isActiveNextcolumn,
 										isActivePreviousColumn,
 										isReviewFees,
-										this.tableData
+										this.tableData,
+										tierFilters,
+										isHighlightColumn,
+										this.handleHighlightColumn,
+										this.state.hoveredTier,
+										this.handleHoveredTier,
+										hoveredMarketType,
+										this.handleMarketType,
+										quicktradePairs
 									)}
 									pagination={false}
 									bordered
@@ -865,16 +1149,25 @@ class EditFees extends Component {
 							</div>
 						</div>
 					</div>
-					<div className="button-container">
+					<div
+						className={
+							isReviewFees
+								? 'button-container review-fee-tier-wrapper'
+								: 'button-container'
+						}
+					>
 						{isReviewFees && (
 							<div className="d-flex justify-content-center gap-1 mb-2">
 								<div className="bold">
-									Market effected: {selectedMarkets?.length}
+									Market effected: {selectedMarkets && selectedMarkets?.length}
 								</div>
 								<div className="divider mx-3"></div>
 								<div className="bold">
-									Account tier effected: {selectedTiers?.length}
+									Account tier effected:{' '}
+									{selectedTiers && selectedTiers?.length}
 								</div>
+								<div className="divider mx-3"></div>
+								<div className="bold">Fee Count: {this.getFeeCount() || 0}</div>
 							</div>
 						)}
 						<div
@@ -888,21 +1181,39 @@ class EditFees extends Component {
 									  }`
 							}
 						>
-							{(isReviewFees || isActiveEditFees) && (
+							{((!isReviewFees && !isActiveEditFees) || isReviewFees) && (
 								<Button
-									className={
-										isReviewFees
-											? 'footer-back-btn px-5 mr-5 no-border'
-											: 'green-btn no-border px-5 py-2 reset-btn ml-5'
-									}
-									onClick={
-										isReviewFees
-											? this.handleBack
-											: () => setIsResetFeesPopup(true)
-									}
+									className="green-btn no-border back-to-top"
+									onClick={this.handleScrollToTop}
 								>
-									{isReviewFees ? 'BACK' : 'RESET'}
+									BACK TO TOP <ArrowUpOutlined />
 								</Button>
+							)}
+							{(isReviewFees || isActiveEditFees) && (
+								<div className="d-flex">
+									{!isReviewFees && (
+										<Button
+											className="green-btn no-border ml-5"
+											onClick={this.handleScrollToTop}
+										>
+											BACK TO TOP <ArrowUpOutlined />
+										</Button>
+									)}
+									<Button
+										className={
+											isReviewFees
+												? 'footer-back-btn px-5 mr-5 no-border'
+												: 'green-btn no-border px-5 py-2 reset-btn ml-3'
+										}
+										onClick={
+											isReviewFees
+												? this.handleBack
+												: () => setIsResetFeesPopup(true)
+										}
+									>
+										{isReviewFees ? 'BACK' : 'RESET'}
+									</Button>
+								</div>
 							)}
 							<div className="d-flex justify-content-end gap-1">
 								{(filterTier ||
@@ -916,24 +1227,30 @@ class EditFees extends Component {
 											className="d-flex align-items-center underline-text pointer"
 											onClick={this.onClearSearch}
 										>
-											CLEAR SEARCH
+											CLEAR SELECTION
 										</div>
 									)}
 								{!isActiveEditFees ? (
 									<Button
-										className="green-btn no-border adjust-fee-btn mr-5"
+										className={
+											isActiveFilter
+												? 'select-update-btn no-border adjust-fee-btn mr-5'
+												: 'green-btn no-border adjust-fee-btn mr-5'
+										}
 										onClick={() => {
 											this.tableData?.length &&
 												handleSelectFeesEdit({ editType: 'allTier' });
 										}}
 									>
-										ADJUST ALL FEES
+										{isActiveFilter
+											? `UPDATE SELECTED FEES (${this.getFilteredFeeCellCount()})`
+											: 'ADJUST ALL FEES'}
 									</Button>
 								) : (
 									<>
 										<Button
-											className={`green-btn no-border ${
-												isReviewFees ? 'confirm-btn' : ''
+											className={`no-border ${
+												isReviewFees ? 'confirm-btn green-btn' : ''
 											}`}
 											onClick={
 												isReviewFees ? this.handleSave : this.onHandleReview
@@ -944,13 +1261,19 @@ class EditFees extends Component {
 										</Button>
 										{!isReviewFees && (
 											<Button
-												className="green-btn no-border adjust-fee-btn mr-5"
+												className={
+													isActiveFilter
+														? 'select-update-btn no-border adjust-fee-btn mr-5'
+														: 'green-btn no-border adjust-fee-btn mr-5'
+												}
 												onClick={() => {
 													this.tableData?.length &&
 														handleSelectFeesEdit({ editType: 'allTier' });
 												}}
 											>
-												ADJUST ALL FEES
+												{isActiveFilter
+													? `UPDATE SELECTED FEES (${this.getFilteredFeeCellCount()})`
+													: 'ADJUST ALL FEES'}
 											</Button>
 										)}
 									</>

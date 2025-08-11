@@ -131,10 +131,14 @@ const AssetsList = ({
 	const hideViewMore = page + 1 >= totalPages;
 
 	const onHandleScrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth',
-		});
+		const scrollOptions = { top: 0, behavior: 'smooth' };
+		if (isMobile) {
+			return document
+				.querySelector('.app_container-content')
+				?.scrollTo(scrollOptions);
+		} else {
+			return window.scrollTo(scrollOptions);
+		}
 	};
 
 	return (

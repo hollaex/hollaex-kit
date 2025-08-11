@@ -21,8 +21,8 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 	&.layout-mobile {
 		.app_container-content {
-			min-height: $max-mobile-height;
-			max-height: $max-mobile-height;
+			min-height: $max-content-height-mobile;
+			max-height: $max-content-height-mobile;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
 
@@ -48,8 +48,8 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 		}
 		.content-with-bar {
-			min-height: $max-content-height-trade-mobile;
-			max-height: $max-content-height-trade-mobile;
+			min-height: $max-content-height-double-bar-mobile;
+			max-height: $max-content-height-double-bar-mobile;
 			max-width: $max-content-width-mobile;
 			padding: $content-display-vertical-margin;
 			margin: 0;

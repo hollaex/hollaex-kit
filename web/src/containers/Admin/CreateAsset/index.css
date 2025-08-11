@@ -444,7 +444,8 @@
 	margin-top: 8px;
 }
 .create-asset-container .ant-radio-wrapper,
-.create-asset-container .add-asset-wrapper .asset-tabs .tab-wrapper .ant-tabs {
+.create-asset-container .add-asset-wrapper .asset-tabs .tab-wrapper .ant-tabs,
+.burn-wrapper .toggle-advance-text {
 	color: #ffffff;
 }
 .create-asset-container
@@ -616,4 +617,41 @@
 .create-asset-container .coin-limit-wrap .infotxt2 {
 	font-size: 11px;
 	color: #bcbcbc;
+}
+
+.burn-wrapper .burn-wrapper-form .optional-text {
+	font-size: 14px;
+}
+
+.burn-wrapper .burn-wrapper-form .ant-space,
+.burn-wrapper .burn-wrapper-form .ant-space-item:first-child {
+	min-width: 95%;
+}
+
+.burn-wrapper .burn-wrapper-form .ant-row.ant-form-item {
+	width: 90%;
+}
+
+.burn-wrapper .burn-wrapper-form .description-wrapper {
+	margin-bottom: 3%;
+}
+
+.confirm-burn-details-popup .confirm-transfer-details .selected-type-image,
+.confirm-burn-details-popup .confirm-transfer-details .selected-type-image svg,
+.burn-wrapper .selected-type-image,
+.burn-wrapper .selected-type-image svg {
+	width: 3.5rem;
+}
+
+.confirm-burn-details-popup .confirm-transfer-details .confirm-transfer-title {
+	margin-bottom: unset;
+	margin-left: 2%;
+}
+
+.confirm-burn-details-popup .ant-modal-close-x {
+	color: #ffffff;
+}
+
+.confirm-burn-details-popup .ant-modal-close:focus {
+	outline: none;
 }

@@ -4252,7 +4252,7 @@ paths:
   /admin/announcements:
     x-swagger-router-controller: admin
     get:
-      description: Get announcements by admin
+      description: Get the list of announcements by the operator in a table
       operationId: fetchAnnouncements
       tags:
         - Admin
@@ -4322,7 +4322,7 @@ paths:
         - bearer
         - hmac
     post:
-      description: Create announcement by admin
+      description: Create a new announcement by the operator
       operationId: createAnnouncement
       tags:
         - Admin
@@ -4366,7 +4366,7 @@ paths:
         - bearer
         - hmac
     put:
-      description: Update announcement by admin
+      description: Update an exisiting announcement by the operator
       operationId: updateAnnouncement
       tags:
         - Admin
@@ -4412,7 +4412,7 @@ paths:
         - bearer
         - hmac
     delete:
-      description: Delete announcement
+      description: Remove an exisiting announcement by the operator
       operationId: deleteAnnouncement
       tags:
         - Admin
@@ -4443,7 +4443,7 @@ paths:
   /admin/role:
     x-swagger-router-controller: admin
     get:
-      description: Get roles by admin
+      description: Get the list of all exisiting role names by the operator
       operationId: getExchangeUserRoles
       tags:
         - Admin
@@ -4462,7 +4462,7 @@ paths:
         - bearer
         - hmac
     post:
-      description: Create role by admin
+      description: Create new role by the operator
       operationId: createExchangeUserRole
       tags:
         - Admin
@@ -4509,7 +4509,7 @@ paths:
         - bearer
         - hmac
     put:
-      description: Update role by admin
+      description: Update the configuration and permissions of an exisintg role by the operator
       operationId: updateExchangeUserRole
       tags:
         - Admin
@@ -4556,7 +4556,7 @@ paths:
         - bearer
         - hmac
     delete:
-      description: Delete role
+      description: Remove an exisiting role name (Only works if you detach the role from all operators)
       operationId: deleteExchangeUserRole
       tags:
         - Admin
@@ -4593,7 +4593,7 @@ paths:
   /admin/endpoints:
     x-swagger-router-controller: admin
     get:
-      description: Get endpoints by admin
+      description: Get the list of all API endpoints by the operator
       operationId: getExchangeEndpoints
       tags:
         - Admin

@@ -167,7 +167,8 @@ class Deposit extends Component {
 			);
 		} else if (
 			this.props.isDepositAndWithdraw ||
-			this.props.route.path === 'wallet/deposit'
+			this.props.route.path === 'wallet/deposit' ||
+			currency === ''
 		) {
 			return this.props.router?.push('/wallet/deposit');
 		} else {

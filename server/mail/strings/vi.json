@@ -85,7 +85,7 @@
 			"title": "${currency} Nạp tiền chưa giải quyết"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name} thân mến </p><p> Giao dịch nạp ${currency} với số lượng ${amount} ${currency} đã được xác nhận và hoàn tất thành công. Số tiền đã được cập nhập vào ví ${currency} của quý khách.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br />Phí: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+			"html": "<div><div><p> ${name} thân mến </p><p> Giao dịch nạp ${currency} với số lượng ${amount} ${currency} đã được xác nhận và hoàn tất thành công. Số tiền đã được cập nhập vào ví ${currency} của quý khách.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><div id='network'>Mạng: ${network}</div><br />Phí: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
 			"title": "${currency} Nạp tiền hoàn thành"
 		},
 		"WITHDRAWAL_PENDING": {
@@ -175,6 +175,10 @@
 		"SUSPICIOUS_LOGIN": {
 			"html": "<div><p>Xin chào ${name},</p><p>Chúng tôi đã phát hiện một nỗ lực đăng nhập gần đây vào tài khoản của bạn từ một thiết bị hoặc vị trí mới. Nếu đó là bạn, vui lòng xác nhận đăng nhập để bảo vệ tài khoản của bạn. Nếu không, hãy thực hiện các biện pháp ngay lập tức để bảo vệ tài khoản của bạn.</p><p><strong>Chi tiết đăng nhập:</strong><br />Địa chỉ IP: ${ip}<br />Vị trí: ${location}<br />Thiết bị: ${device}<br />Thời gian: ${time}</p><p>Chọn một trong các tùy chọn sau để tiếp tục:</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${confirmation_link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Xác nhận đăng nhập</Button></a></div><p>Nếu bạn không thực hiện nỗ lực đăng nhập này, chúng tôi khuyên bạn nên <a href=\"${freeze_account_link}\" style=\"color: #FF0000; text-decoration: underline;\">đóng băng tài khoản</a> ngay lập tức để ngăn chặn truy cập trái phép.</p><p>Trân trọng,<br />Đội ngũ ${api_name}</p></div>",
 			"title": "Cảnh báo đăng nhập đáng ngờ"
+		},
+		"SUSPICIOUS_LOGIN_CODE": {
+			"title": "Cảnh báo đăng nhập đáng ngờ",
+			"html": "<div><p>Xin chào ${name},</p><p>Chúng tôi phát hiện một lần đăng nhập gần đây vào tài khoản của bạn từ thiết bị hoặc vị trí mới. Nếu đó là bạn, vui lòng sử dụng mã bên dưới để xác nhận. Nếu không, hãy hành động ngay lập tức để bảo vệ tài khoản của bạn.</p><p><strong>Chi tiết đăng nhập:</strong><br />Địa chỉ IP: ${ip}<br />Vị trí: ${location}<br />Thiết bị: ${device}<br />Thời gian: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>Nếu <strong>không phải bạn</strong>, chúng tôi khuyến nghị bạn nên <a href=\"${freeze_account_link}\">đóng băng tài khoản</a> ngay lập tức để ngăn chặn truy cập trái phép.</p><p>Trân trọng,<br />Đội ngũ ${api_name}</p></div>"
 		}
 	}
 }

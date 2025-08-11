@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Switch, Button, Modal, message, Spin, Input, Select } from 'antd';
+import {
+	Switch,
+	Button,
+	Modal,
+	message,
+	Spin,
+	Input,
+	Select,
+	Tooltip,
+} from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -47,12 +56,16 @@ import {
 } from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 import PublishSection from './PublishSection';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import {
+	CloseCircleOutlined,
+	ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import Coins from '../Coins';
 import { BASE_CURRENCY } from 'config/constants';
 import { isLoggedIn } from 'utils/token';
 import { setPricesAndAsset } from 'actions/assetActions';
 import { minimalTimezoneSet } from '../Settings/Utils';
+import { STATIC_ICONS } from 'config/icons';
 const { Option } = Select;
 
 const NameForm = AdminHocForm('NameForm');
@@ -98,6 +111,13 @@ class GeneralContent extends Component {
 			isDisable: false,
 			defaultEmailData: {},
 			nativeCurrencies: [],
+			testKeyDetails: {
+				test_key: null,
+				isActive: false,
+			},
+			isDisplayKey: false,
+			isConfirmSave: false,
+			confirmText: null,
 		};
 		this.priceAssetTimeout = null;
 	}
@@ -160,7 +180,14 @@ class GeneralContent extends Component {
 		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
-				this.setState({ constants: res.data, loading: false });
+				this.setState({
+					constants: res.data,
+					testKeyDetails: {
+						test_key: res.data?.secrets?.test_key?.value || '',
+						isActive: res.data?.secrets?.test_key?.active || false,
+					},
+					loading: false,
+				});
 			})
 			.catch((err) => {
 				this.setState({ loading: false });
@@ -618,6 +645,9 @@ class GeneralContent extends Component {
 
 	handleClose = () => {
 		this.setState({ isVisible: false, selectedCountry: { isFocus: false } });
+		if (this.state.screen === 'testEnvironmentKey') {
+			this.setState({ confirmText: '' });
+		}
 	};
 
 	handleBackConfirm = () => {
@@ -629,6 +659,8 @@ class GeneralContent extends Component {
 			});
 		} else if (screen === 'step3') {
 			this.setState({ isVisible: false });
+		} else if (screen === 'testEnvironmentKey') {
+			this.setState({ isVisible: false, confirmText: '' });
 		}
 	};
 
@@ -672,6 +704,7 @@ class GeneralContent extends Component {
 			constants,
 			selectedCountry,
 			removeCountryValue,
+			testKeyDetails,
 		} = this.state;
 		if (screen === 'step2') {
 			if (
@@ -690,6 +723,20 @@ class GeneralContent extends Component {
 		} else if (screen === 'step3') {
 			this.handleSubmitName({ black_list_countries: removeCountryValue });
 			this.setState({ isVisible: false });
+		} else if (screen === 'testEnvironmentKey') {
+			this.setState({
+				isVisible: false,
+				isConfirmSave: !this.state.isConfirmSave,
+				confirmText: '',
+			});
+			this.handleSubmitGeneral({
+				secrets: {
+					test_key: {
+						value: testKeyDetails?.test_key,
+						active: testKeyDetails?.isActive,
+					},
+				},
+			});
 		}
 	};
 
@@ -753,8 +800,69 @@ class GeneralContent extends Component {
 		}
 	};
 	renderModalContent = () => {
-		const { screen, removeCountryLabel, selectedCountry } = this.state;
+		const {
+			screen,
+			removeCountryLabel,
+			selectedCountry,
+			testKeyDetails,
+		} = this.state;
 		switch (screen) {
+			case 'testEnvironmentKey':
+				return (
+					<div className="test-environment-popup-content">
+						<span className="bold title-text">
+							Enable this Key for Remote Access
+						</span>
+						<div className="test-environment-description-wrapper d-flex flex-column">
+							<div className="image-wrapper mt-4">
+								<Image
+									icon={STATIC_ICONS['TEST_ENVIRONMENT_ICON']}
+									wrapperClassName="test-key-icon"
+								/>
+								{testKeyDetails?.test_key && (
+									<span className="ml-3">{testKeyDetails?.test_key}</span>
+								)}
+							</div>
+							<div className="mt-3 mb-3 d-flex flex-column">
+								<span>
+									You are about to enable remote access to your exchange. This
+									will be used for testing preposes, however this is still a
+									sensitive action that requires you to keep the above key
+									hidden and safe.
+								</span>
+								<span className="my-2 mt-4">Do you understand?</span>
+							</div>
+							<Input
+								placeholder={`Type 'I UNDERSTAND' to proceed`}
+								className="mt-2 w-75"
+								size="middle"
+								value={this.state.confirmText}
+								onChange={(e) => {
+									this.setState({ confirmText: e.target?.value });
+								}}
+							/>
+						</div>
+						<div className="button-container mt-5">
+							<Button
+								className="green-btn no-border w-50"
+								onClick={this.handleBackConfirm}
+							>
+								Back
+							</Button>
+							<Button
+								className={
+									this.state.confirmText !== 'I UNDERSTAND'
+										? 'green-btn no-border w-50 disabled-content'
+										: 'green-btn no-border w-50'
+								}
+								onClick={this.handleConfirm}
+								disabled={this.state.confirmText !== 'I UNDERSTAND'}
+							>
+								Yes, Proceed
+							</Button>
+						</div>
+					</div>
+				);
 			case 'step2':
 				return (
 					<div className="general-geo-wrapper">
@@ -884,6 +992,16 @@ class GeneralContent extends Component {
 		features?.home_page ? browserHistory.push('/') : handleTabChange('3');
 	};
 
+	handletoggle = (checked) => {
+		this.setState({
+			testKeyDetails: {
+				...this.state.testKeyDetails,
+				isActive: checked,
+			},
+			isConfirmSave: !this.state.isConfirmSave,
+		});
+	};
+
 	render() {
 		const {
 			initialEmailValues,
@@ -906,6 +1024,9 @@ class GeneralContent extends Component {
 			isDisable,
 			emailData,
 			defaultEmailData,
+			testKeyDetails,
+			isDisplayKey,
+			isConfirmSave,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const {
@@ -935,7 +1056,9 @@ class GeneralContent extends Component {
 					{this.props.user?.configs?.includes('api_name') &&
 					activeTab === 'branding' ? (
 						<div>
-							<div className="sub-title">Exchange Name</div>
+							<div className="sub-title" id="exchange-name">
+								Exchange Name
+							</div>
 							<NameForm
 								initialValues={initialNameValues}
 								onSubmit={this.handleSubmitName}
@@ -951,7 +1074,9 @@ class GeneralContent extends Component {
 					activeTab === 'localization' ? (
 						<div>
 							<div>
-								<div className="sub-title">Country</div>
+								<div className="sub-title" id="country">
+									Country
+								</div>
 								<CountryForm
 									initialValues={initialCountryValues}
 									onSubmit={this.handleSubmitDefault}
@@ -966,7 +1091,9 @@ class GeneralContent extends Component {
 							{this.props.user?.configs?.includes('timezone') && (
 								<>
 									<div>
-										<div className="sub-title">Timezone</div>
+										<div className="sub-title" id="timezone">
+											Timezone
+										</div>
 										<Select
 											onChange={(e) => {
 												this.handleInputChangeTimezone('timezone', e);
@@ -996,7 +1123,9 @@ class GeneralContent extends Component {
 
 							{this.props.user?.configs?.includes('valid_languages') && (
 								<div>
-									<div className="sub-title">Language</div>
+									<div className="sub-title" id="language">
+										Language
+									</div>
 									<div className="description">
 										You can edit language and strings{' '}
 										<span
@@ -1030,7 +1159,9 @@ class GeneralContent extends Component {
 							<div className="divider" />
 							{this.props.user?.configs?.includes('strings') && (
 								<div>
-									<div className="sub-title">Theme</div>
+									<div className="sub-title" id="theme">
+										Theme
+									</div>
 									<div className="description">
 										You can edit theme and create new themes{' '}
 										<span
@@ -1066,7 +1197,9 @@ class GeneralContent extends Component {
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
-									<div className="sub-title">Native currency</div>
+									<div className="sub-title" id="native-currency">
+										Native currency
+									</div>
 									<div className="description">
 										This currency unit will be used for valuing
 										deposits/withdrawals and other important areas.
@@ -1090,7 +1223,7 @@ class GeneralContent extends Component {
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
-									<div className="sub-title">
+									<div className="sub-title" id="other-currency-display-option">
 										Other currency display options
 									</div>
 									<div className="description">
@@ -1191,7 +1324,9 @@ class GeneralContent extends Component {
 							<div
 								className={features.home_page ? 'mb-5' : 'mb-5 disable-feature'}
 							>
-								<div className="sub-title">Landing page</div>
+								<div className="sub-title" id="landing-page">
+									Landing page
+								</div>
 								<div className="description">
 									<span>
 										This is typically the first page your users will see. You
@@ -1208,7 +1343,9 @@ class GeneralContent extends Component {
 							</div>
 							<div className="divider"></div>
 							<div className="mb-5">
-								<div className="sub-title">Onboarding background image</div>
+								<div className="sub-title" id="onboarding-background-image">
+									Onboarding background image
+								</div>
 								<div className="description">
 									<span>
 										To change the login/signup background image please visit the{' '}
@@ -1228,7 +1365,9 @@ class GeneralContent extends Component {
 							<div className="description">
 								Setup the login and sign up section of your platform.
 							</div>
-							<div className="sub-title pt-4">Allow new sign ups</div>
+							<div className="sub-title pt-4" id="allow-new-signups">
+								Allow new sign ups
+							</div>
 							<div className="small-text ml-0">
 								(Turning on sign ups will allow new users to sign up on your
 								platforms)
@@ -1356,7 +1495,9 @@ class GeneralContent extends Component {
 							The help pop up displays helpful links for your users and can be
 							accessed in various areas that say 'help'.
 						</p>
-						<div className="sub-title pt-3">Helpdesk link</div>
+						<div className="sub-title pt-3" id="helpdesk-link">
+							Helpdesk link
+						</div>
 						<div className="description mb-4">
 							This link will be used for your any help sections on your
 							exchange. You can put a direct link to your helpdesk service or
@@ -1372,7 +1513,9 @@ class GeneralContent extends Component {
 							onSubmit={this.handleSubmitHelpDesk}
 							buttonSubmitting={buttonSubmitting}
 						/>
-						<div className="sub-title mt-4 pt-3">API documentation link</div>
+						<div className="sub-title mt-4 pt-3" id="api-documentation-link">
+							API documentation link
+						</div>
 						<div className="description mb-4">
 							Provide the link to your exchanges API documentation. This link
 							will appear on universal help pop up.
@@ -1534,7 +1677,9 @@ class GeneralContent extends Component {
 				activeTab === 'security' ? (
 					<div>
 						<div className="general-wrapper">
-							<div className="sub-title">Geofencing</div>
+							<div className="sub-title" id="geofencing">
+								Geofencing
+							</div>
 							<div className="description">
 								Add a blacklist country to block activity from certain location.
 							</div>
@@ -1582,6 +1727,11 @@ class GeneralContent extends Component {
 								visible={this.state.isVisible}
 								footer={null}
 								onCancel={this.handleClose}
+								className={
+									this.state.screen === 'testEnvironmentKey'
+										? 'test-environment-popup-wrapper'
+										: ''
+								}
 							>
 								{this.renderModalContent()}
 							</Modal>
@@ -1599,7 +1749,9 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
-							<div className="sub-title">Suspicious Login</div>
+							<div className="sub-title" id="suspicious-login">
+								Suspicious Login
+							</div>
 							<div className="description">
 								<div>
 									Enable/Disable Suspicious Login feauture for user logins
@@ -1621,8 +1773,143 @@ class GeneralContent extends Component {
 							</div>
 						</div>
 						<div className="divider"></div>
+						{/* <div className="general-wrapper mb-5">
+							<div className="sub-title">Test Environment Key</div>
+							<div className="description">
+								<div>
+									Test Environment Key to allow test endpoints to be used
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Input
+										defaultValue={constants?.secrets?.test_key?.value}
+										placeholder={'Enter Test Environment Key'}
+										onChange={(e) => {
+											this.setState({
+												test_key: e.target.value,
+											});
+										}}
+									/>
+								</div>
+
+								<div style={{ marginTop: 10, marginBottom: 10 }}>
+									<span style={{ marginRight: 10, fontWeight: 'bold' }}>
+										Enable
+									</span>
+									<Switch
+										checked={constants?.secrets?.test_key?.active}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														value:
+															this.state.test_key ||
+															constants?.secrets?.test_key?.value,
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+								<div>
+									<Button
+										style={{ width: 120 }}
+										type="primary"
+										onClick={() => {
+											this.handleSubmitGeneral({
+												secrets: {
+													test_key: {
+														active: constants?.secrets?.test_key?.active,
+														value: this.state.test_key,
+													},
+												},
+											});
+										}}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
+						</div> */}
+						<div className="general-wrapper my-5">
+							<div className="d-flex align-items-center" id="tech-access-key">
+								<span className="sub-title mr-2">Tech Access Key</span>
+								<Tooltip
+									title={`Creates an access key for HollaEx®'s technical team to run remote diagnostics tests for exchange troubleshooting. Enable only when instructed to do so`}
+									overlayClassName="tech-access-tooltip"
+									placement="right"
+								>
+									<ExclamationCircleOutlined />
+								</Tooltip>
+							</div>
+							<div className="description d-flex flex-column">
+								<span>
+									Only enabled this when explicitly instructed by the HollaEx®
+									tech team.
+								</span>
+								{!isDisplayKey ? (
+									<span
+										className="underline-text pointer mt-3"
+										onClick={() => this.setState({ isDisplayKey: true })}
+									>
+										Show key
+									</span>
+								) : (
+									<div className="mt-3">
+										<div
+											className={
+												isConfirmSave || testKeyDetails?.isActive
+													? 'd-flex'
+													: 'd-flex disabled-content'
+											}
+										>
+											<div className="divider-container mr-3"></div>
+											<div className="d-flex justify-content-between align-items-center toggle-container">
+												<div className="d-flex flex-column">
+													<span className="bold">
+														Your Test Environment Key:
+													</span>
+													{testKeyDetails?.test_key && (
+														<span>{testKeyDetails?.test_key}</span>
+													)}
+												</div>
+												<div>
+													<span className="bold">
+														{testKeyDetails?.isActive ? 'Enable' : 'Disabled'}
+													</span>
+													<Switch
+														checked={testKeyDetails?.isActive}
+														onChange={this.handletoggle}
+														className="ml-2"
+													/>
+												</div>
+											</div>
+										</div>
+										<Button
+											className={
+												!isConfirmSave
+													? 'green-btn no-border mt-3 minimal-btn disabled-content'
+													: 'green-btn minimal-btn no-border mt-3'
+											}
+											onClick={() =>
+												this.setState({
+													isVisible: true,
+													screen: 'testEnvironmentKey',
+												})
+											}
+											disabled={!isConfirmSave}
+										>
+											Save
+										</Button>
+									</div>
+								)}
+							</div>
+						</div>
+						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
-							<div className="sub-title">API keys</div>
+							<div className="sub-title" id="api-keys">
+								API keys
+							</div>
 							<div className="description d-flex flex-column">
 								<span>
 									Generate API keys for programmatic access to your exchange.
