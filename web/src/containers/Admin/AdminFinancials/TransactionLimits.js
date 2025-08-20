@@ -11,11 +11,22 @@ import {
 } from './action';
 import { requestTiers } from '../User/actions';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { setTransactionLimits } from 'actions/appActions';
+import {
+	setIsActiveCollectiveLimit,
+	setIsActiveIndependentLimit,
+	setTransactionLimits,
+} from 'actions/appActions';
 import { renderAsset } from '../Deposits/utils';
 const { Option } = Select;
 
-const TransactionLimits = ({ coins, setLimits }) => {
+const TransactionLimits = ({
+	coins,
+	setLimits,
+	isActiveIndependentLimit = false,
+	isActiveCollectiveLimit = false,
+	setIsActiveIndependentLimit = () => {},
+	setIsActiveCollectiveLimit = () => {},
+}) => {
 	const [coinData, setCoinData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [queryValues] = useState();
@@ -213,6 +224,17 @@ const TransactionLimits = ({ coins, setLimits }) => {
 			});
 	};
 
+	useEffect(() => {
+		if (isActiveIndependentLimit) {
+			setDisplayIndependentModal(true);
+			setIsActiveIndependentLimit(false);
+		} else if (isActiveCollectiveLimit) {
+			setDisplayCostumizationModal(true);
+			setIsActiveCollectiveLimit(false);
+		}
+		//eslint-disable-next-line
+	}, [isActiveIndependentLimit, isActiveCollectiveLimit]);
+
 	// const requestDownload = () => {
 	// 	// return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
 	// };
@@ -281,6 +303,8 @@ const TransactionLimits = ({ coins, setLimits }) => {
 								onChange={(value) => {
 									setTierFilter(value);
 								}}
+								className="select-tier"
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							>
 								<Option value={null}>All</Option>
 								{Object.values(userTiers || {}).map((tier) => (
@@ -867,10 +891,20 @@ const TransactionLimits = ({ coins, setLimits }) => {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	isActiveIndependentLimit: state.app.isActiveIndependentLimit,
+	isActiveCollectiveLimit: state.app.isActiveCollectiveLimit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setLimits: bindActionCreators(setTransactionLimits, dispatch),
+	setIsActiveIndependentLimit: bindActionCreators(
+		setIsActiveIndependentLimit,
+		dispatch
+	),
+	setIsActiveCollectiveLimit: bindActionCreators(
+		setIsActiveCollectiveLimit,
+		dispatch
+	),
 });
 
 export default connect(

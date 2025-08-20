@@ -57,6 +57,11 @@ export const performLogin = (values) =>
 		return res;
 	});
 
+export const performGoogleLogin = (values) =>
+	axios.post('/login/google', values).then((res) => {
+		return res;
+	});
+
 export const storeLoginResult = (token) => {
 	if (token) {
 		setTokenInApp(token, true);
@@ -68,6 +73,8 @@ export const storeLoginResult = (token) => {
 };
 
 export const performSignup = (values) => axios.post('/signup', values);
+export const performGoogleSignup = (values) =>
+	axios.post('/signup/google', values);
 
 const setTokenInApp = (token, setInStore = false) => {
 	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

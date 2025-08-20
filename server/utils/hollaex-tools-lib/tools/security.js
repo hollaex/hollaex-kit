@@ -111,8 +111,11 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 				client.delAsync(`ResetPasswordCode:${resetPasswordCode}`)
 			]);
 		})
-		.then(([user]) => {
-			return user.update({ password: newPassword }, { fields: ['password'] });
+		.then(async ([user]) => {
+			const updated = await user.update({ password: newPassword }, { fields: ['password'] });
+			const { disableUserWithdrawal } = require('./user');
+			await disableUserWithdrawal(user.id, { expiry_date: moment().add(24, 'hours').toISOString() });
+			return updated;
 		});
 };
 
@@ -253,9 +256,19 @@ const getResetPasswordCode = (code) => {
 		});
 };
 
-const createResetPasswordCode = (userId) => {
+const createResetPasswordCode = (userId, version) => {
+
+	let code;
 	//Generate new random code
-	const code = crypto.randomBytes(20).toString('hex');
+	if (version === 'v3') {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		code = `${letters}-${numbers}`;
+	} else {
+		code = crypto.randomBytes(20).toString('hex');
+	}
 
 	//Code is expire in 5 mins
 	return client.setexAsync(`ResetPasswordCode:${code}`, 60 * 5, userId)
@@ -264,7 +277,7 @@ const createResetPasswordCode = (userId) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain) => {
+const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -274,17 +287,31 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([createResetPasswordCode(user.id), user, checkCaptcha(captcha, ip)]);
+			return all([createResetPasswordCode(user.id, version), user, checkCaptcha(captcha, ip)]);
 		})
 		.then(([code, user]) => {
-			sendEmail(
-				MAILTYPE.RESET_PASSWORD,
-				email,
-				{ code, ip },
-				user.settings,
-				domain
-			);
-			return;
+			// Create a freeze-account token (valid for 6 hours) tied to the reset code
+			return client.setexAsync(
+				`user:freeze-account:${code}`,
+				60 * 60 * 6,
+				JSON.stringify({
+					id: code,
+					user_id: user.id,
+					email: user.email,
+					verification_code: code,
+					ip,
+					time: new Date().toISOString()
+				})
+			).then(() => {
+				sendEmail(
+					version === 'v3' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
+					email,
+					{ code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` },
+					user.settings,
+					domain
+				);
+				return;
+			});
 		});
 };
 
@@ -313,8 +340,8 @@ const getUserOtpCode = (user_id, usedParam = true) => {
 		order: [['updated_at', 'DESC']]
 	})
 		.then((otpCode) => {
-			return generateOtp(otpCode.secret, 30)
-		})
+			return generateOtp(otpCode.secret, 30);
+		});
 };
 
 const hasUserOtpEnabled = (id) => {
@@ -1010,7 +1037,9 @@ const issueToken = (
 	let scopes = [].concat(BASE_SCOPES);
 
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		scopes.push(role);
+		if (role) {
+			scopes.push(role);
+		}
 	}
 
 	const token = jwt.sign(

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ReactSVG } from 'react-svg';
 import { browserHistory } from 'react-router';
 import {
@@ -12,7 +12,6 @@ import {
 	Tree,
 	Typography,
 	Tabs,
-	Collapse,
 	Tooltip,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -30,7 +29,6 @@ import { OtpForm } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 const { Title } = Typography;
 const { TabPane } = Tabs;
-const { Panel } = Collapse;
 const KIT_CONFIG_KEYS = [
 	'captcha',
 	'api_name',
@@ -152,18 +150,6 @@ const convertRoutesToTree = (routes, parentPath = '') => {
 
 let routes = {};
 
-const kitConfigPermissions = KIT_CONFIG_KEYS.map((key) => ({
-	title: key,
-	key: `config:${key}`,
-	isLeaf: true,
-}));
-
-const kitSecretsPermissions = KIT_SECRETS_KEYS.map((key) => ({
-	title: key,
-	key: `secret:${key}`,
-	isLeaf: true,
-}));
-
 const totalCharacters = (name) => {
 	let sum = 0;
 	if (!name) return sum;
@@ -235,6 +221,13 @@ const PermissionTabs = ({
 	setRestrictions,
 	permissionDescriptions,
 	coins,
+	expandedKeys = [],
+	setExpandedKeys = () => {},
+	kitSecretsPermissions = [],
+	kitConfigPermissions = [],
+	activeTab,
+	setActiveTab = () => {},
+	search,
 }) => {
 	// const onCheck = (checkedKeys, { checkedNodes, halfCheckedKeys }, type) => {
 	//     const leafKeys = checkedNodes
@@ -245,11 +238,30 @@ const PermissionTabs = ({
 	//     setCheckedKeys([...otherKeys, ...leafKeys]);
 	// };
 
-	const onCheck = (keys, { checkedNodes, halfCheckedKeys }, type) => {
+	const onCheck = (
+		keys,
+		{ node, checked, checkedNodes, halfCheckedKeys },
+		type
+	) => {
 		// Get all leaf nodes that are checked
-		const leafKeys = checkedNodes
-			.filter((node) => node.isLeaf)
-			.map((node) => node.key);
+		const getAllLeafKeys = (leafNode = {}) => {
+			if (!leafNode?.children || leafNode?.children?.length === 0) {
+				return [leafNode?.key];
+			}
+			return leafNode?.children?.flatMap(getAllLeafKeys);
+		};
+
+		let leafKeys;
+		if (checked) {
+			leafKeys = Array.from(
+				new Set([...checkedKeys, ...getAllLeafKeys(node)])
+			)?.filter((key) => key?.startsWith(`${type}:`));
+		} else {
+			const removeKeys = getAllLeafKeys(node);
+			leafKeys = checkedKeys?.filter(
+				(key) => !removeKeys?.includes(key) && key?.startsWith(`${type}:`)
+			);
+		}
 
 		// Get all keys NOT from the current tab
 		const otherTabKeys = checkedKeys.filter(
@@ -300,76 +312,132 @@ const PermissionTabs = ({
 	// 	});
 	// };
 
+	const createTreeNode = (node) => {
+		const endpointKey = node?.key
+			.replace('route:', '/')
+			.replace(/\./g, '/')
+			.replace(/\/(get|post|put|delete)$/, ':$1');
+
+		const description = permissionDescriptions[`/admin${endpointKey}`]
+			? ` (${permissionDescriptions[`/admin${endpointKey}`]})`
+			: '';
+
+		return {
+			...node,
+			title: (
+				<span className="tree-node-label">
+					{node?.title} {description}
+				</span>
+			),
+			children: node?.children
+				? node?.children?.map((child) => createTreeNode(child))
+				: null,
+		};
+	};
+
 	const renderTreeNodes = (nodes) => {
-		return nodes.map((node) => {
-			const endpointKey = node.key
-				.replace('route:', '/')
-				.replace(/\./g, '/')
-				.replace(/\/(get|post|put|delete)$/, ':$1');
+		if (!search) {
+			return nodes?.map((node) => createTreeNode(node));
+		}
 
-			const description = permissionDescriptions[`/admin${endpointKey}`]
-				? ` (${permissionDescriptions[`/admin${endpointKey}`]})`
-				: '';
+		return nodes
+			?.map((node) => {
+				const nodeMatches = node?.title
+					?.toLowerCase()
+					?.includes(search?.toLowerCase());
+				const filteredChildren = renderTreeNodes(
+					node?.children || [],
+					node?.title,
+					node?.key
+				);
+				const childMatches = filteredChildren?.length > 0;
 
-			return {
-				...node,
-				title: (
-					<span className="tree-node-label">
-						{node.title} {description}
-					</span>
-				),
-				children: node.children ? renderTreeNodes(node.children) : null,
-			};
-		});
+				if (nodeMatches) {
+					return createTreeNode({ ...node, children: node?.children });
+				}
+
+				if (childMatches) {
+					return createTreeNode({ ...node, children: node?.children });
+				}
+
+				return null;
+			})
+			?.filter(Boolean);
 	};
 
 	// const currenciesList = Object.keys(coins);
 
 	return (
-		<Tabs defaultActiveKey="1">
+		<Tabs activeKey={activeTab} onChange={(value) => setActiveTab(value)}>
 			<TabPane
 				tab={<span className="permission-tab-header">API Routes</span>}
-				key="1"
+				key="apiRoute"
 			>
 				<div className="permission-tab-content">
-					<Tree
-						className="custom-tree"
-						checkable
-						onCheck={(keys, info) => onCheck(keys, info, 'route')}
-						checkedKeys={checkedKeys.filter((key) => key.startsWith('route:'))}
-						treeData={renderTreeNodes(treeData)}
-						height={400}
-					/>
+					{search && !renderTreeNodes(treeData)?.length ? (
+						<span className="text-white d-flex justify-content-center bold">
+							No Data
+						</span>
+					) : (
+						<Tree
+							className="custom-tree"
+							checkable
+							onCheck={(keys, info) => onCheck(keys, info, 'route')}
+							checkedKeys={checkedKeys?.filter((key) =>
+								key?.startsWith('route:')
+							)}
+							treeData={renderTreeNodes(treeData)}
+							height={400}
+							expandedKeys={expandedKeys}
+							onExpand={(data) => setExpandedKeys(data)}
+						/>
+					)}
 				</div>
 			</TabPane>
 			<TabPane
 				tab={<span className="permission-tab-header">Kit Configuration</span>}
-				key="2"
+				key="kitConfig"
 			>
 				<div className="permission-tab-content">
-					<Tree
-						className="custom-tree"
-						checkable
-						onCheck={(keys, info) => onCheck(keys, info, 'config')}
-						checkedKeys={checkedKeys.filter((key) => key.startsWith('config:'))}
-						treeData={kitConfigPermissions}
-						height={400}
-					/>
+					{kitConfigPermissions?.length ? (
+						<Tree
+							className="custom-tree"
+							checkable
+							onCheck={(keys, info) => onCheck(keys, info, 'config')}
+							checkedKeys={checkedKeys.filter((key) =>
+								key.startsWith('config:')
+							)}
+							treeData={kitConfigPermissions}
+							height={400}
+						/>
+					) : (
+						<span className="d-flex justify-content-center bold text-white">
+							No Data
+						</span>
+					)}
 				</div>
 			</TabPane>
 			<TabPane
 				tab={<span className="permission-tab-header">Kit Secrets</span>}
-				key="3"
+				key="kitSecret"
 			>
 				<div className="permission-tab-content">
-					<Tree
-						checkable
-						className="custom-tree"
-						onCheck={(keys, info) => onCheck(keys, info, 'secret')}
-						checkedKeys={checkedKeys.filter((key) => key.startsWith('secret:'))}
-						treeData={kitSecretsPermissions}
-						height={400}
-					/>
+					{kitSecretsPermissions?.length ? (
+						<Tree
+							checkable
+							className="custom-tree"
+							onCheck={(keys, info) => onCheck(keys, info, 'secret')}
+							checkedKeys={checkedKeys.filter((key) =>
+								key.startsWith('secret:')
+							)}
+							treeData={kitSecretsPermissions}
+							height={400}
+						/>
+					) : (
+						<span className="d-flex justify-content-center bold text-white">
+							No Data
+						</span>
+					)}
 				</div>
 			</TabPane>
 			{/* <TabPane
@@ -452,11 +520,36 @@ const RoleForm = ({
 	treeData,
 	permissionDescriptions,
 	coins,
+	isPermissionPopup,
+	setIsPermissionPopup,
 }) => {
 	const [form] = Form.useForm();
 	const [checkedKeys, setCheckedKeys] = useState([]);
 	const [restrictions, setRestrictions] = useState({});
 	const [selectedBadge, setSelectedBadge] = useState('');
+	const [search, setSearch] = useState(null);
+	const [expandedKeys, setExpandedKeys] = useState([]);
+	const [activeTab, setActiveTab] = useState('apiRoute');
+
+	const kitConfigPermissions = useMemo(() => {
+		return KIT_CONFIG_KEYS?.filter(
+			(data) => (search && data?.includes(search?.toLowerCase())) || !search
+		)?.map((key) => ({
+			title: key,
+			key: `config:${key}`,
+			isLeaf: true,
+		}));
+	}, [search]);
+
+	const kitSecretsPermissions = useMemo(() => {
+		return KIT_SECRETS_KEYS?.filter(
+			(data) => (search && data?.includes(search?.toLowerCase())) || !search
+		)?.map((key) => ({
+			title: key,
+			key: `secret:${key}`,
+			isLeaf: true,
+		}));
+	}, [search]);
 
 	function separateKeys(keys) {
 		const configAndSecretKeys = [];
@@ -533,6 +626,59 @@ const RoleForm = ({
 		//eslint-disable-next-line
 	}, []);
 
+	const searchTree = (
+		contents = [],
+		searchValue,
+		selectedKeys = [],
+		parentKey
+	) => {
+		contents.forEach((content) => {
+			const titleLower = content?.title?.toLowerCase();
+			if (titleLower?.startsWith(searchValue)) {
+				selectedKeys.push(content?.key);
+				if (parentKey) {
+					selectedKeys.push(parentKey);
+				}
+			}
+			if (content?.children) {
+				searchTree(content?.children, searchValue, selectedKeys, content?.key);
+			}
+		});
+	};
+
+	useEffect(() => {
+		const selectedKeys = [];
+		const searchLower = search?.toLowerCase();
+
+		if (!search) {
+			setExpandedKeys([]);
+			return;
+		}
+		searchTree(treeData, searchLower, selectedKeys);
+		if (selectedKeys?.length) {
+			setActiveTab('apiRoute');
+		}
+		if (
+			search &&
+			KIT_CONFIG_KEYS?.some((data) => data?.includes(searchLower)) &&
+			!selectedKeys?.length &&
+			activeTab !== 'kitConfig'
+		) {
+			setActiveTab('kitConfig');
+		}
+		if (
+			search &&
+			KIT_SECRETS_KEYS?.some((data) => data?.includes(searchLower)) &&
+			!selectedKeys?.length &&
+			activeTab !== 'kitConfig' &&
+			activeTab !== 'kitSecret'
+		) {
+			setActiveTab('kitSecret');
+		}
+		setExpandedKeys(selectedKeys);
+		// eslint-disable-next-line
+	}, [search]);
+
 	const onHandleChange = (e) => {
 		form.setFieldsValue({
 			role_name: e.target.value.toLowerCase().replace(/\s+/g, ''),
@@ -540,85 +686,113 @@ const RoleForm = ({
 		onHandleBadge();
 	};
 
+	const onHandleBack = () => {
+		setIsPermissionPopup(false);
+		setSearch(null);
+	};
+
+	const onHandleNext = () => {
+		setIsPermissionPopup(true);
+	};
+
 	return (
 		<Form form={form} layout="vertical" className="roles-detail-form-wrapper">
-			<Form.Item
-				name="role_name"
-				label={<span className="font-weight-bold">Role Name</span>}
-				rules={[
-					{ required: true, message: 'Please input the role name!' },
-					{ max: 50, message: 'Role name cannot exceed 50 characters!' },
-					{
-						pattern: /^(?!\s)(\S)*$/,
-						message:
-							'Role name cannot start with a space or contain whitespace!',
-					},
-				]}
-			>
-				<Input
-					onChange={(e) => onHandleChange(e)}
-					placeholder="Enter role name"
-					disabled={!!initialValues}
-				/>
-			</Form.Item>
-
-			<Form.Item
-				name="description"
-				label={<span className="font-weight-bold">Description</span>}
-				rules={[
-					{ required: true, message: 'Please input the role description!' },
-					{ max: 255, message: 'Description cannot exceed 255 characters!' },
-					{ whitespace: true, message: 'Please input the role name!' },
-				]}
-			>
-				<Input.TextArea rows={3} placeholder="Enter role description" />
-			</Form.Item>
-			<Form.Item
-				name="color"
-				label={<span className="font-weight-bold">Role Color Code</span>}
-			>
-				<ColorPicker
-					showText
-					allowClear
-					value={form.getFieldValue('color')}
-					onChange={(value) => {
-						form.setFieldsValue({ color: value });
-					}}
-				/>
-			</Form.Item>
-			<Form.Item
-				name="Badge"
-				label={<span className="font-weight-bold">Role Badge</span>}
-			>
-				<div className="role-badge-wrapper">
-					<ReactSVG src={selectedBadge} className="role-badge" />
-				</div>
-			</Form.Item>
-			<Divider orientation="left">
-				<span className="font-weight-bold">Permissions</span>
-			</Divider>
-
-			<Collapse defaultActiveKey={['1']}>
-				<Panel header="Permission Settings" key="1">
-					<PermissionTabs
-						checkedKeys={checkedKeys}
-						setCheckedKeys={setCheckedKeys}
-						treeData={treeData}
-						permissionDescriptions={permissionDescriptions}
-						restrictions={restrictions}
-						setRestrictions={setRestrictions}
-						coins={coins}
+			<div className={isPermissionPopup ? 'd-none' : 'd-block'}>
+				<Form.Item
+					name="role_name"
+					label={<span className="font-weight-bold">Role Name</span>}
+					rules={[
+						{ required: true, message: 'Please input the role name!' },
+						{ max: 50, message: 'Role name cannot exceed 50 characters!' },
+						{
+							pattern: /^(?!\s)(\S)*$/,
+							message:
+								'Role name cannot start with a space or contain whitespace!',
+						},
+					]}
+				>
+					<Input
+						onChange={(e) => onHandleChange(e)}
+						placeholder="Enter role name"
+						disabled={!!initialValues}
 					/>
-				</Panel>
-			</Collapse>
+				</Form.Item>
 
+				<Form.Item
+					name="description"
+					label={<span className="font-weight-bold">Description</span>}
+					rules={[
+						{ required: true, message: 'Please input the role description!' },
+						{ max: 255, message: 'Description cannot exceed 255 characters!' },
+						{ whitespace: true, message: 'Please input the role name!' },
+					]}
+				>
+					<Input.TextArea rows={3} placeholder="Enter role description" />
+				</Form.Item>
+				<Form.Item
+					name="color"
+					label={<span className="font-weight-bold">Role Color Code</span>}
+				>
+					<ColorPicker
+						showText
+						allowClear
+						value={form.getFieldValue('color')}
+						onChange={(value) => {
+							form.setFieldsValue({ color: value });
+						}}
+					/>
+				</Form.Item>
+				<Form.Item
+					name="Badge"
+					label={<span className="font-weight-bold">Role Badge</span>}
+				>
+					<div className="role-badge-wrapper">
+						<ReactSVG src={selectedBadge} className="role-badge" />
+					</div>
+				</Form.Item>
+			</div>
+			<div className={isPermissionPopup ? 'd-block' : 'd-none'}>
+				<div className="font-weight-bold text-white fs-14">Permissions</div>
+				<Input
+					className="mt-3 w-75 search-field"
+					placeholder="Enter permissions"
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					allowClear
+				/>
+				<PermissionTabs
+					checkedKeys={checkedKeys}
+					setCheckedKeys={setCheckedKeys}
+					treeData={treeData}
+					permissionDescriptions={permissionDescriptions}
+					restrictions={restrictions}
+					setRestrictions={setRestrictions}
+					coins={coins}
+					expandedKeys={expandedKeys}
+					setExpandedKeys={setExpandedKeys}
+					kitConfigPermissions={kitConfigPermissions}
+					kitSecretsPermissions={kitSecretsPermissions}
+					activeTab={activeTab}
+					setActiveTab={setActiveTab}
+					search={search}
+				/>
+			</div>
 			<Divider />
 
 			<Form.Item>
 				<div className="button-container">
-					<Button onClick={onCancel} className="cancel-btn role-btn w-50">
-						Cancel
-					</Button>
+					{isPermissionPopup ? (
+						<Button
+							onClick={() => onHandleBack()}
+							className="cancel-btn role-btn w-50"
+						>
+							Back
+						</Button>
+					) : (
+						<Button onClick={onCancel} className="cancel-btn role-btn w-50">
+							Cancel
+						</Button>
+					)}
 					{isEditing && ['admin']?.includes(initialValues?.role_name) ? (
 						<Tooltip
 							title={
@@ -635,10 +809,15 @@ const RoleForm = ({
 					) : (
 						<Button
 							type="primary"
-							onClick={handleSubmit}
+							htmlType="submit"
+							onClick={isPermissionPopup ? handleSubmit : onHandleNext}
 							className="role-btn w-50 green-btn"
 						>
-							{isEditing ? 'Update Role' : 'Create Role'}
+							{isPermissionPopup
+								? isEditing
+									? 'Update Role'
+									: 'Create Role'
+								: 'Next'}
 						</Button>
 					)}
 				</div>
@@ -702,6 +881,7 @@ const RoleManagement = ({
 	const [selectedRole, setSelectedRole] = useState({});
 	const [isPermissionDisplay, setIsPermissionDisplay] = useState({});
 	const [permissionDescriptions, setPermissionDescriptions] = useState({});
+	const [isPermissionPopup, setIsPermissionPopup] = useState(false);
 
 	useEffect(() => {
 		fetchEndpoints()
@@ -830,6 +1010,7 @@ const RoleManagement = ({
 					});
 			}
 			setIsModalVisible(false);
+			setIsPermissionPopup(false);
 		} catch (err) {
 			const _error =
 				err.data && err.data.message ? err.data.message : err.message;
@@ -885,6 +1066,7 @@ const RoleManagement = ({
 					message.error('Error fetching roles:', err);
 				});
 			setIsModalVisible(false);
+			setIsPermissionPopup(false);
 			setOtpDialogIsOpen(false);
 			setPayload();
 		} catch (err) {
@@ -924,6 +1106,17 @@ const RoleManagement = ({
 			...prev,
 			[role?.id]: !prev[role?.id],
 		}));
+	};
+
+	const onHandlePopup = () => {
+		setIsModalVisible(false);
+		setIsPermissionPopup(false);
+	};
+
+	const onHandleViewAll = (role) => {
+		handleEdit(role);
+		onHandleDisplayPermission(role);
+		setIsPermissionPopup(true);
 	};
 
 	return (
@@ -1097,10 +1290,7 @@ const RoleManagement = ({
 												4 && (
 												<li
 													className="text-decoration-underline pointer"
-													onClick={() => {
-														handleEdit(role);
-														onHandleDisplayPermission(role);
-													}}
+													onClick={() => onHandleViewAll(role)}
 												>
 													{`...view all ${
 														role?.permissions?.length +
@@ -1184,7 +1374,7 @@ const RoleManagement = ({
 					</span>
 				}
 				visible={isModalVisible}
-				onCancel={() => setIsModalVisible(false)}
+				onCancel={() => onHandlePopup()}
 				footer={null}
 				width={user.otp_enabled ? 550 : 400}
 				destroyOnClose
@@ -1199,6 +1389,9 @@ const RoleManagement = ({
 						treeData={treeData}
 						permissionDescriptions={permissionDescriptions}
 						coins={coins}
+						isPermissionPopup={isPermissionPopup}
+						setIsPermissionPopup={setIsPermissionPopup}
+						setTreeData={setTreeData}
 					/>
 				) : (
 					<Warning2faPopup

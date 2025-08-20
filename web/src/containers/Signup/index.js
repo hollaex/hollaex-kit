@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { performSignup } from 'actions/authAction';
+import { message } from 'antd';
+import { performGoogleSignup, performSignup } from 'actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from 'containers';
-import { IconTitle, Dialog, MobileBarBack } from 'components';
+import { IconTitle, Dialog, MobileBarBack, EditWrapper } from 'components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -18,6 +19,7 @@ import {
 	setEmailDetail,
 	setSignupEmail,
 } from 'actions/appActions';
+import GoogleOAuthLogin from 'utils/googleOAuth';
 
 let errorTimeOut = null;
 
@@ -152,6 +154,30 @@ class Signup extends Component {
 		this.setState({ success: false });
 	};
 
+	handleSignIn = async (values) => {
+		try {
+			const res = await performGoogleSignup({ google_token: values });
+			this.setState({ success: true });
+			return res;
+		} catch (error) {
+			const errors = {};
+			if (error?.response && error?.response?.status === 409) {
+				errors.email = STRINGS['VALIDATIONS.USER_EXIST'];
+			} else if (error.response) {
+				const { message = '' } = error?.response?.data;
+				if (message?.toLowerCase()?.indexOf('password') > -1) {
+					errors.password = STRINGS['VALIDATIONS.INVALID_PASSWORD'];
+				} else {
+					errors._error = message || error?.message;
+				}
+			} else {
+				errors._error = error?.message;
+			}
+
+			message.error(errors?._error);
+		}
+	};
+
 	render() {
 		const {
 			languageClasses,
@@ -228,6 +254,28 @@ class Signup extends Component {
 							formFields={formFields}
 						/>
 						{isMobile && <BottomLinks />}
+						{!!constants?.google_oauth?.client_id && (
+							<div
+								className={
+									isMobile
+										? 'mt-5 mb-4 google-oauth-button-wrapper'
+										: 'mt-5 google-oauth-button-wrapper'
+								}
+							>
+								<EditWrapper stringId="LOGIN.GOOGLE_LOGIN">
+									<span>
+										{STRINGS.formatString(
+											STRINGS['LOGIN.GOOGLE_LOGIN'],
+											STRINGS['SIGNUP_TEXT']
+										)}
+									</span>
+								</EditWrapper>
+								<GoogleOAuthLogin
+									onLoginSuccess={this.handleSignIn}
+									googleOAuth={constants?.google_oauth}
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 				{!isMobile && <BottomLinks />}

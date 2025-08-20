@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactQuill from 'react-quill';
 import { ReactSVG } from 'react-svg';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router';
 import {
 	Button,
 	DatePicker,
@@ -29,10 +29,7 @@ import {
 	setAdminAnnouncementDetails,
 } from './action';
 import './index.scss';
-import {
-	setAppAnnouncements,
-	setIsAdminAnnouncementFeature,
-} from 'actions/appActions';
+import { setAppAnnouncements } from 'actions/appActions';
 
 const TabPane = Tabs.TabPane;
 
@@ -169,13 +166,30 @@ const Editor = ({ announcement, onHandleChange }) => {
 const AdminAnnouncement = ({
 	constants,
 	setAppAnnouncements,
-	setIsAdminAnnouncementFeature,
 	getAnnouncements,
+	router,
 }) => {
 	const [activeTab, setActiveTab] = useState('0');
+	const tabs = ['activeAnnouncement', 'displayLocation'];
+
+	useEffect(() => {
+		const [, params] = window.location.search?.split('?');
+		if (params === 'activeAnnouncement') {
+			setActiveTab('0');
+		} else if (params === 'displayLocation') {
+			setActiveTab('1');
+		} else if (!params) {
+			setActiveTab('0');
+			router.push('/admin/announcement?activeAnnouncement');
+		}
+		// eslint-disable-next-line
+	}, [window.location.search]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
+		const url = new URL(window.location.href);
+		url.search = `?${tabs[key]}`;
+		router.replace(url);
 	};
 
 	return (
@@ -191,8 +205,8 @@ const AdminAnnouncement = ({
 						activeTab={'active announcement'}
 						constants={constants}
 						setAppAnnouncements={setAppAnnouncements}
-						setIsAdminAnnouncementFeature={setIsAdminAnnouncementFeature}
 						getAnnouncements={getAnnouncements}
+						router={router}
 					/>
 				</TabPane>
 				<TabPane tab="Display Locations" key="1">
@@ -200,8 +214,8 @@ const AdminAnnouncement = ({
 						activeTab={'display location'}
 						constants={constants}
 						setAppAnnouncements={setAppAnnouncements}
-						setIsAdminAnnouncementFeature={setIsAdminAnnouncementFeature}
 						getAnnouncements={getAnnouncements}
+						router={router}
 					/>
 				</TabPane>
 			</Tabs>
@@ -212,9 +226,9 @@ const AdminAnnouncement = ({
 const AnnouncementDetails = ({
 	constants,
 	setAppAnnouncements,
-	setIsAdminAnnouncementFeature,
 	activeTab,
 	getAnnouncements,
+	router,
 }) => {
 	const [isDisplayAddDetailPopup, setIsDisplayAddDetailPopup] = useState(false);
 	const [isDisplayRemoveAnnouncement, setIsRemoveAnnouncement] = useState(
@@ -528,8 +542,7 @@ const AnnouncementDetails = ({
 	};
 
 	const onHandleNavigate = () => {
-		setIsAdminAnnouncementFeature(true);
-		browserHistory.push('/admin/general');
+		router.push('/admin/general?features');
 	};
 
 	const onHandleDropdownConfigure = () => {
@@ -883,6 +896,7 @@ const AnnouncementDetails = ({
 									: selectedType
 							}
 							onChange={(value) => onHandleChange(value, 'default type')}
+							getPopupContainer={(trigger) => trigger?.parentNode}
 						>
 							{defaultAnnouncementType?.map((detail) => (
 								<Select.Option key={detail} value={detail}>
@@ -959,7 +973,7 @@ const AnnouncementDetails = ({
 										<span>
 											Turn on the announcements:{' '}
 											<span
-												className="text-decoration-underline feature-link"
+												className="text-decoration-underline feature-link pointer"
 												onClick={() => onHandleNavigate()}
 											>
 												here
@@ -1239,10 +1253,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setAppAnnouncements: bindActionCreators(setAppAnnouncements, dispatch),
-	setIsAdminAnnouncementFeature: bindActionCreators(
-		setIsAdminAnnouncementFeature,
-		dispatch
-	),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminAnnouncement);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(AdminAnnouncement));

@@ -103,7 +103,7 @@ export const MENU_ITEMS = {
 			path: '/margin',
 			icon_id: `${isMobile ? 'WALLET_FOOTER' : 'WALLET_FOOTER'}`,
 			string_id: 'ACCOUNTS.MARGIN_TRADE',
-			hide_from_appbar: false,
+			hide_from_appbar: true,
 			activePaths: ['/margin'],
 		},
 		{

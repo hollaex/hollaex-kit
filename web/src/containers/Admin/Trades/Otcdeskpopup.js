@@ -1821,6 +1821,7 @@ const Otcdeskpopup = ({
 									}
 									onChange={(text) => handleEmailChange(text)}
 									showAction={['focus', 'click']}
+									getPopupContainer={(trigger) => trigger?.parentNode}
 								>
 									{emailOptions &&
 										emailOptions.map((email) => (

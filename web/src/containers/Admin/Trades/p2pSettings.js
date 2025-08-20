@@ -511,6 +511,7 @@ const P2PSettings = ({
 								onChange={(e) => {
 									setSide(e);
 								}}
+								getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 							>
 								<Select.Option value={'sell'}>Sell</Select.Option>
 								<Select.Option value={'buy'}>Buy</Select.Option>
@@ -612,6 +613,8 @@ const P2PSettings = ({
 								onChange={(e) => {
 									setTransactionDuration(e);
 								}}
+								className="select-box"
+								getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 							>
 								{[10, 20, 30, 40, 50, 60].map((duration) => {
 									return (
@@ -741,6 +744,7 @@ const P2PSettings = ({
 									onChange={(e) => {
 										setUserTier(e);
 									}}
+									getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 								>
 									{Object.values(tiers || {}).map((tier) => {
 										return (
@@ -767,6 +771,7 @@ const P2PSettings = ({
 								onChange={(e) => {
 									setMerchantTier(e);
 								}}
+								getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 							>
 								{Object.values(tiers || {}).map((tier) => {
 									return (
@@ -942,6 +947,7 @@ const P2PSettings = ({
 										onChange={(text) => handleEmailChange(text)}
 										showAction={['focus', 'click']}
 										style={{ width: 200 }}
+										getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 									>
 										{emailOptions &&
 											emailOptions.map((email) => (

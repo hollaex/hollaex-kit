@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
@@ -40,6 +40,11 @@ import {
 	setAdminWalletSortData,
 	setAdminDigitalAssetsSortData,
 	setEditMode,
+	setIsDisplayConsoleHead,
+	setIsDisplayConsoleBody,
+	setIsGraphicsEditMode,
+	setIsThemesEditMode,
+	setIsStringsEditMode,
 } from 'actions/appActions';
 import {
 	pushTempContent,
@@ -119,6 +124,9 @@ class OperatorControls extends Component {
 			isUpload: false,
 			isRemove: false,
 			removedKeys: [],
+			activeTab: 'head',
+			isDisplayWarinigPopup: false,
+			isOperatorControls: false,
 		};
 	}
 
@@ -135,12 +143,21 @@ class OperatorControls extends Component {
 		}
 	};
 
+	handleDelayNavigate = debounce(() => {
+		this.props.router.push('/admin');
+	}, 100);
+
 	componentDidMount() {
 		const {
 			initialData: {
 				query: { stringSettings = false, themeSettings = false } = {},
 			} = {},
 			isOperatorEdit,
+			isDisplayConsoleHead,
+			isDisplayConsoleBody,
+			isThemesEditMode,
+			isStringsEditMode,
+			isGraphicsEditMode,
 		} = this.props;
 		if (isOperatorEdit) {
 			this.toggleEditMode();
@@ -151,9 +168,15 @@ class OperatorControls extends Component {
 		if (stringSettings) {
 			this.toggleEditMode();
 			this.openStringSettingsModal();
-		} else if (themeSettings) {
+		} else if (themeSettings || isThemesEditMode) {
 			this.toggleEditMode();
 			this.openThemeSettings();
+		} else if (isGraphicsEditMode) {
+			this.toggleEditMode();
+			this.openAllIconsModal();
+		} else if (isStringsEditMode) {
+			this.toggleEditMode();
+			this.openAllStringsModal();
 		}
 		const role = checkRole();
 		if (role === 'admin') {
@@ -163,6 +186,11 @@ class OperatorControls extends Component {
 			}
 		}
 		document.addEventListener('keydown', this.handleKeyDown);
+
+		if (isDisplayConsoleHead || isDisplayConsoleBody) {
+			this.setState({ activeTab: isDisplayConsoleHead ? 'head' : 'body' });
+			this.toggleInjectMode();
+		}
 	}
 
 	componentWillUnmount() {
@@ -171,6 +199,10 @@ class OperatorControls extends Component {
 		document.removeEventListener('keydown', this.handleKeyDown);
 		this.removeAdminListeners();
 		clearTimeout(this.languageChange);
+		this.props.setIsDisplayConsoleHead(false);
+		if (this.handleDelayNavigate) {
+			this.handleDelayNavigate.cancel();
+		}
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {
@@ -483,18 +515,41 @@ class OperatorControls extends Component {
 	};
 
 	toggleEditMode = () => {
-		const { handleEditMode, isEditMode, isInjectMode } = this.props;
+		const {
+			handleEditMode,
+			isEditMode,
+			isInjectMode,
+			isGraphicsEditMode,
+			isThemesEditMode,
+			isStringsEditMode,
+			setIsGraphicsEditMode,
+			setIsThemesEditMode,
+			setIsStringsEditMode,
+		} = this.props;
 		if (!isInjectMode) {
 			if (!isEditMode) {
 				handleEditMode();
 			} else {
 				this.openExitConfirmationModal();
 			}
+			isGraphicsEditMode && setIsGraphicsEditMode(false);
+			isThemesEditMode && setIsThemesEditMode(false);
+			isStringsEditMode && setIsStringsEditMode(false);
+		} else {
+			this.setState({ isDisplayWarinigPopup: true });
 		}
 	};
 
 	toggleInjectMode = () => {
-		const { handleInjectMode, isEditMode, isInjectMode } = this.props;
+		const {
+			handleInjectMode,
+			isEditMode,
+			isInjectMode,
+			isDisplayConsoleHead,
+			isDisplayConsoleBody,
+			setIsDisplayConsoleHead,
+			setIsDisplayConsoleBody,
+		} = this.props;
 		const { injected_html } = this.state;
 		if (!isEditMode) {
 			if (!isInjectMode || isEqual(injected_html, this.props.injected_html)) {
@@ -502,6 +557,10 @@ class OperatorControls extends Component {
 			} else {
 				this.openExitConsoleConfirmationModal();
 			}
+			isDisplayConsoleHead && setIsDisplayConsoleHead(false);
+			isDisplayConsoleBody && setIsDisplayConsoleBody(false);
+		} else {
+			this.setState({ isDisplayWarinigPopup: true });
 		}
 	};
 
@@ -1040,6 +1099,47 @@ class OperatorControls extends Component {
 		this.removeIcon(themeKey, iconKey);
 	};
 
+	onHandleTabChange = (tab) => {
+		this.setState({
+			activeTab: tab,
+		});
+	};
+
+	onHandleConfirmWaninigPopup = () => {
+		const {
+			isEditMode,
+			isInjectMode,
+			handleEditMode,
+			handleInjectMode,
+		} = this.props;
+		const {
+			isOperatorControls,
+			isAllStringsModalOpen,
+			isThemeSettingsOpen,
+			isAllIconsModalOpen,
+		} = this.state;
+		if (isOperatorControls) {
+			isEditMode && this.exitEditMode();
+			isInjectMode && this.exitInjectMode();
+			this.handleDelayNavigate();
+			this.setState({ isOperatorControls: false });
+		} else if (isEditMode) {
+			this.exitEditMode();
+			!isOperatorControls && handleInjectMode();
+		} else if (isInjectMode) {
+			this.exitInjectMode();
+			!isOperatorControls && handleEditMode();
+		}
+		isAllStringsModalOpen && this.closeAllStringsModal();
+		isThemeSettingsOpen && this.closeThemeSettings();
+		isAllIconsModalOpen && this.closeAllIconsModal();
+		this.setState({ isDisplayWarinigPopup: false });
+	};
+
+	onHandleCloseWarningPopup = () => {
+		this.setState({ isDisplayWarinigPopup: false, isOperatorControls: false });
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -1077,6 +1177,7 @@ class OperatorControls extends Component {
 			isRemove,
 			isUpload,
 			removedKeys,
+			isDisplayWarinigPopup,
 		} = this.state;
 		const {
 			isEditMode,
@@ -1095,9 +1196,7 @@ class OperatorControls extends Component {
 			>
 				<div className="operator-controls__buttons-wrapper">
 					<div
-						className={classnames('operator-controls__button', {
-							disabled: isInjectMode,
-						})}
+						className={classnames('operator-controls__button', {})}
 						onClick={this.toggleEditMode}
 					>
 						<EditFilled />
@@ -1105,27 +1204,28 @@ class OperatorControls extends Component {
 							{`${isEditMode ? 'Exit' : 'Enter'} edit mode`}
 						</span>
 					</div>
-					<div
-						className={classnames('operator-controls__button', {
-							disabled: isEditMode || isInjectMode,
-						})}
-					>
+					<div className={classnames('operator-controls__button', {})}>
 						{!isEditMode && !isInjectMode ? (
 							<Link to="/admin">
 								<SettingFilled />
 								<span className="pl-1">Operator controls</span>
 							</Link>
 						) : (
-							<div>
+							<div
+								onClick={() =>
+									this.setState({
+										isDisplayWarinigPopup: true,
+										isOperatorControls: true,
+									})
+								}
+							>
 								<SettingFilled />
 								<span className="pl-1">Operator controls</span>
 							</div>
 						)}
 					</div>
 					<div
-						className={classnames('operator-controls__button', {
-							disabled: isEditMode,
-						})}
+						className={classnames('operator-controls__button', {})}
 						onClick={this.toggleInjectMode}
 					>
 						<span>{`</>`}</span>
@@ -1188,7 +1288,11 @@ class OperatorControls extends Component {
 									</Button>
 								</div>
 							</div>
-							<Tabs className="w-100 h-100">
+							<Tabs
+								className="w-100 h-100"
+								activeKey={this.state.activeTab}
+								onChange={this.onHandleTabChange}
+							>
 								{TAB_KEYS.map((key) => {
 									const title = `${'<'}${key.toUpperCase()}${'>'}`;
 									const placeholder = `${'<'}!-- In this section you can insert any HTML code to the ${title} of your website --${'>'}`;
@@ -1495,6 +1599,40 @@ class OperatorControls extends Component {
 						</Button>
 					</footer>
 				</Modal>
+				<Modal
+					isOpen={isDisplayWarinigPopup}
+					label="operator-controls-modal"
+					className="operator-control-edit-mode-warning-popup operator-controls__modal"
+					onCloseDialog={this.onHandleCloseWarningPopup}
+					shouldCloseOnOverlayClick={true}
+					showCloseText={true}
+					bodyOpenClassName="operator-controls__modal-open"
+				>
+					<div className="operator-controls__modal-title">Warning!</div>
+					<div className="pt-3">
+						You are about to exit the{' '}
+						{isEditMode ? 'Edit Mode' : isInjectMode && 'Console'}. Any edits
+						you've made could be lost. Are you sure you want to proceed?
+					</div>
+					<footer className="d-flex justify-content-end pt-4">
+						<Button
+							className="mr-1 bold"
+							block
+							onClick={this.onHandleCloseWarningPopup}
+						>
+							Cancel
+						</Button>
+						<Button
+							block
+							className="ml-1 bold"
+							type="primary"
+							onClick={this.onHandleConfirmWaninigPopup}
+							danger
+						>
+							Okay
+						</Button>
+					</footer>
+				</Modal>
 			</div>
 		);
 	}
@@ -1510,6 +1648,11 @@ const mapStateToProps = (state) => ({
 	default_wallet_sort: state.app.default_wallet_sort,
 	default_digital_assets_sort: state.app.default_digital_assets_sort,
 	isOperatorEdit: state.app.isOperatorEdit,
+	isDisplayConsoleHead: state.app.isDisplayConsoleHead,
+	isDisplayConsoleBody: state.app.isDisplayConsoleBody,
+	isGraphicsEditMode: state.app.isGraphicsEditMode,
+	isThemesEditMode: state.app.isThemesEditMode,
+	isStringsEditMode: state.app.isStringsEditMode,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1522,9 +1665,20 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
 	setEditMode: bindActionCreators(setEditMode, dispatch),
+	setIsDisplayConsoleHead: bindActionCreators(
+		setIsDisplayConsoleHead,
+		dispatch
+	),
+	setIsDisplayConsoleBody: bindActionCreators(
+		setIsDisplayConsoleBody,
+		dispatch
+	),
+	setIsGraphicsEditMode: bindActionCreators(setIsGraphicsEditMode, dispatch),
+	setIsThemesEditMode: bindActionCreators(setIsThemesEditMode, dispatch),
+	setIsStringsEditMode: bindActionCreators(setIsStringsEditMode, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withEdit(withConfig(OperatorControls)));
+)(withRouter(withEdit(withConfig(OperatorControls))));

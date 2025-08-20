@@ -576,6 +576,7 @@ const CeFi = ({ coins, features, kit }) => {
 										reward_currency: e,
 									});
 								}}
+								getPopupContainer={(trigger) => trigger?.parentNode}
 							>
 								{Object.keys(coins).map((key) => (
 									<Option value={key}>{coins[key].fullname}</Option>
@@ -628,6 +629,7 @@ const CeFi = ({ coins, features, kit }) => {
 											reward_currency: e,
 										});
 									}}
+									getPopupContainer={(trigger) => trigger?.parentNode}
 								>
 									{Object.keys(coins).map((key) => (
 										<Option value={key}>{coins[key].fullname}</Option>

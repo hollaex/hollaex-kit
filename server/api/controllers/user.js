@@ -1,6 +1,6 @@
 'use strict';
 
-const { isEmail, isUUID } = require('validator');
+const { isEmail, isUUID, isMobilePhone } = require('validator');
 const toolsLib = require('hollaex-tools-lib');
 const crypto = require('crypto');
 const { sendEmail } = require('../../mail');
@@ -29,7 +29,9 @@ const {
 	NO_IP_FOUND,
 	INVALID_OTP_CODE,
 	OTP_CODE_NOT_FOUND,
-	INVALID_CAPTCHA
+	INVALID_CAPTCHA,
+	GOOGLE_ACCOUNT_MISMATCH,
+	SERVICE_NOT_AVAILABLE
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
@@ -92,7 +94,7 @@ const signUpUser = (req, res) => {
 		referral
 	} = req.swagger.params.signup.value;
 
-	let { email } = req.swagger.params.signup.value;
+	let { email, version } = req.swagger.params.signup.value;
 	const ip = req.headers['x-real-ip'];
 	loggerUser.debug(
 		req.uuid,
@@ -107,13 +109,77 @@ const signUpUser = (req, res) => {
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip);
 		})
-		.then(() => toolsLib.user.signUpUser(email, password, { referral }))
+		.then(() => toolsLib.user.signUpUser(email, password, { referral }, version))
 		.then(() => res.status(201).json({ message: USER_REGISTERED }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
+};
+
+// Google OAuth signup function
+const signUpUserWithGoogle = async (req, res) => {
+	const { google_token, referral } = req.swagger.params.signup.value;
+	const ip = req.headers['x-real-ip'];
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/signUpUserWithGoogle',
+		{ google_token: !!google_token, referral },
+		ip
+	);
+
+    try {
+        // Enforce kit configuration: only allow when google_oauth configured
+        const googleOAuthConfig = toolsLib?.getKitConfig?.()?.google_oauth?.client_id;
+        if (!googleOAuthConfig || (typeof googleOAuthConfig === 'string' && googleOAuthConfig.length === 0)) {
+            throw new Error(SERVICE_NOT_AVAILABLE);
+        }
+
+        // Geo/IP check (enforce same blocking as email login)
+        await toolsLib.security.checkIp(ip);
+
+        // Verify Google token and get user data
+        const googleUserData = await toolsLib.user.verifyGoogleToken(google_token);
+        const email = googleUserData.email.toLowerCase().trim();
+
+        // Check if user already exists
+        const existingUser = await toolsLib.user.getUserByEmail(email, false);
+        if (existingUser) {
+			throw new Error('User already exists');
+        }
+
+		// Generate a random password for Google OAuth users
+		const randomPassword = crypto.randomBytes(16).toString('hex');
+
+		// Create user with Google data
+        const userData = {
+            email,
+            password: randomPassword,
+            referral,
+            google_id: googleUserData.google_id || googleUserData.sub,
+            name: googleUserData.name,
+            email_verified: true, // Google emails are already verified
+            activated: true
+        };
+
+		await toolsLib.user.signUpUser(email, randomPassword, userData);
+
+		res.status(201).json({ 
+			message: USER_REGISTERED,
+			oauth_signup: true
+		});
+
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/signUpUserWithGoogle', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ 
+			message: messageObj?.message, 
+			lang: messageObj?.lang, 
+			code: messageObj?.code 
+		});
+	}
 };
 
 const getVerifyUser = (req, res) => {
@@ -206,7 +272,8 @@ const loginPost = (req, res) => {
 		version
 	} = req.swagger.params.authentication.value;
 	let {
-		email
+		email,
+		phone_number
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
@@ -253,6 +320,8 @@ const loginPost = (req, res) => {
 		'controllers/user/loginPost',
 		'email',
 		email,
+		'phone_number',
+		phone_number,
 		'otp_code',
 		otp_code,
 		'captcha',
@@ -273,8 +342,15 @@ const loginPost = (req, res) => {
 		referer
 	);
 
+	if (!email && !phone_number) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/loginPost missing email or phone_number'
+		);
+		return res.status(400).json({ message: 'Email or phone number is required' });
+	}
 
-	if (!email || typeof email !== 'string' || !isEmail(email)) {
+	if (email && (typeof email !== 'string' || !isEmail(email))) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/loginPost invalid email',
@@ -283,11 +359,29 @@ const loginPost = (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	email = email.toLowerCase().trim();
+	if (phone_number && (typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any'))) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/loginPost invalid phone_number',
+			phone_number
+		);
+		return res.status(400).json({ message: 'Invalid phone number' });
+	}
+
+	if (email) {
+		email = email.toLowerCase().trim();
+	}
+	if (phone_number) {
+		phone_number = phone_number.trim();
+	}
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
-			return toolsLib.user.getUserByEmail(email);
+			if (email) {
+				return toolsLib.user.getUserByEmail(email);
+			} else {
+				return toolsLib.user.getUserByPhoneNumber(phone_number);
+			}
 		})
 		.then(async (user) => {
 			if (!user) {
@@ -369,7 +463,7 @@ const loginPost = (req, res) => {
 
 				const data = {
 					id: loginData.id,
-					email,
+					email: user.email,
 					verification_code,
 					ip,
 					time,
@@ -380,7 +474,7 @@ const loginPost = (req, res) => {
 				await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 				await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
 
-				sendEmail(version === "v3" ? MAILTYPE.SUSPICIOUS_LOGIN_CODE : MAILTYPE.SUSPICIOUS_LOGIN, email, data, user.settings, domain);
+				sendEmail(version === "v3" ? MAILTYPE.SUSPICIOUS_LOGIN_CODE : MAILTYPE.SUSPICIOUS_LOGIN, user.email, data, user.settings, domain);
 				throw new Error('Suspicious login detected, please check your email.');
 			}
 
@@ -428,7 +522,7 @@ const loginPost = (req, res) => {
 			}));
 
 			if (!service) {
-				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
+				sendEmail(MAILTYPE.LOGIN, user.email, data, user.settings, domain);
 			}
 
 			let userRole
@@ -442,7 +536,7 @@ const loginPost = (req, res) => {
 				toolsLib.security.issueToken(
 					user.id,
 					user.network_id,
-					email,
+					user.email,
 					ip,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL,
 					user.settings.language,
@@ -465,6 +559,164 @@ const loginPost = (req, res) => {
 		});
 };
 
+// Google OAuth login function
+const loginWithGoogle = async (req, res) => {
+	const { google_token, service, long_term, version } = req.swagger.params.authentication.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+	const origin = req.headers.origin;
+	const referer = req.headers.referer;
+	const time = new Date();
+
+	let device;
+	if (req.headers['custom-device']) {
+		device = req.headers['user-agent'];
+	} else {
+		const userAgent = req.headers['user-agent'];
+		const result = detector.detect(userAgent);
+
+		const truncate = (str, maxLen = 100) => {
+			if (!str || typeof str !== 'string') return '';
+			return str.substring(0, maxLen);
+		};
+
+		let deviceParts = [
+			truncate(result.device.brand, 100),
+			truncate(result.device.model, 100),
+			truncate(result.device.type, 100),
+			truncate(result.client.name, 100),
+			truncate(result.client.type, 100),
+			truncate(result.os.name, 100)
+		].filter(Boolean);
+
+		device = deviceParts.join(' ').trim();
+
+		const encoder = new TextEncoder();
+		while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
+			deviceParts.pop();
+			device = deviceParts.join(' ').trim();
+		}
+	}
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/loginPostWithGoogle',
+		'google_token',
+		!!google_token,
+		'service',
+		service,
+		'long_term',
+		long_term,
+		'ip',
+		ip,
+		'device',
+		device,
+		'domain',
+		domain,
+		'origin',
+		origin,
+		'referer',
+		referer
+	);
+
+    try {
+        // Enforce kit configuration: only allow when google_oauth configured
+        const googleOAuthConfig = toolsLib?.getKitConfig?.()?.google_oauth?.client_id;
+        if (!googleOAuthConfig || (typeof googleOAuthConfig === 'string' && googleOAuthConfig.length === 0)) {
+            throw new Error(SERVICE_NOT_AVAILABLE);
+        }
+
+        // Enforce geo/IP restrictions the same as email login
+        await toolsLib.security.checkIp(ip);
+
+        // Verify Google token and get user data
+        const googleUserData = await toolsLib.user.verifyGoogleToken(google_token);
+        const email = googleUserData.email.toLowerCase().trim();
+
+        // Check if user exists
+        const user = await toolsLib.user.getUserByEmail(email, false);
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		}
+
+        // If user has google_id set and it does not match, reject
+        const tokenGoogleId = googleUserData.google_id || googleUserData.sub;
+        if (user.google_id && tokenGoogleId && user.google_id !== tokenGoogleId) {
+            throw new Error(GOOGLE_ACCOUNT_MISMATCH);
+        }
+        // If user has no google_id yet, link it now
+        if (!user.google_id && tokenGoogleId) {
+            await user.update({ google_id: tokenGoogleId }, { fields: ['google_id'], returning: true });
+        }
+
+		if (user.verification_level === 0) {
+			throw new Error(USER_NOT_VERIFIED);
+		} else if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
+			throw new Error(USER_EMAIL_NOT_VERIFIED);
+		} else if (!user.activated) {
+			throw new Error(USER_NOT_ACTIVATED);
+		}
+
+		const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+		if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+			throw new Error(LOGIN_NOT_ALLOW);
+		}
+
+		// Send login email notification if not a service login
+		if (!service) {
+			const data = { ip, time, device, country: '' };
+			sendEmail(MAILTYPE.LOGIN, user.email, data, user.settings, domain);
+		}
+
+		// Get user role
+		let userRole;
+		if (user.role) {
+			const roles = toolsLib.getRoles();
+			userRole = roles.find(role => role.role_name === user.role);
+		}
+
+		// Issue token
+		const token = await toolsLib.security.issueToken(
+			user.id,
+			user.network_id,
+			user.email,
+			ip,
+			long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL,
+			user.settings.language,
+			userRole?.permissions,
+			userRole?.configs,
+			user.role
+		);
+
+		// Create login record
+		if (!ip) {
+			throw new Error(NO_IP_FOUND);
+		}
+		await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
+
+		// Publish login event
+		publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+			type: 'user',
+			data: {
+				action: 'login',
+				user_id: user.id
+			}
+		}));
+
+		return res.status(201).json({ 
+			token,
+			oauth_login: true
+		});
+
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/loginPostWithGoogle catch', err.message);
+		return res.status(err.statusCode || 401).json({ 
+			message: errorMessageConverter(err, req?.auth?.sub?.lang)?.message, 
+			lang: errorMessageConverter(err, req?.auth?.sub?.lang)?.lang, 
+			code: errorMessageConverter(err, req?.auth?.sub?.lang)?.code 
+		});
+	}
+};
 
 const confirmLogin = (req, res) => {
 	loggerUser.verbose(
@@ -555,6 +807,7 @@ function requestEmailConfirmation(req, res) {
 
 const requestResetPassword = (req, res) => {
 	let email = req.swagger.params.email.value;
+	let version = req.swagger.params.version.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
 
@@ -580,7 +833,7 @@ const requestResetPassword = (req, res) => {
 
 	email = email.toLowerCase();
 
-	toolsLib.security.sendResetPasswordCode(email, null, ip, domain)
+	toolsLib.security.sendResetPasswordCode(email, null, ip, domain, version)
 		.then(() => {
 			return res.json({ message: `Password request sent to: ${email}` });
 		})
@@ -1961,9 +2214,11 @@ const fetchAnnouncements = (req, res) => {
 
 module.exports = {
 	signUpUser,
+	signUpUserWithGoogle,
 	getVerifyUser,
 	verifyUser,
 	loginPost,
+	loginWithGoogle,
 	verifyToken,
 	requestResetPassword,
 	resetPassword,

@@ -31,7 +31,8 @@ let configuration = {
 		onramp: {},
 		offramp: {},
 		user_payments: {},
-		dust: {}
+		dust: {},
+		google_oauth: {}
 	},
 	email: {}
 };
@@ -116,7 +117,8 @@ const resetAllConfig = () => {
 			onramp: {},
 			offramp: {},
 			user_payments: {},
-			dust: {}
+			dust: {},
+			google_oauth: {}
 		},
 		email: {}
 	};
@@ -227,7 +229,8 @@ exports.KIT_CONFIG_KEYS = [
 	'auto_trade_config',
 	'suspicious_login',
 	'apps',
-	'timezone'
+	'timezone',
+	'google_oauth'
 ];
 
 exports.KIT_SECRETS_KEYS = [

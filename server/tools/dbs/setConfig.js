@@ -72,7 +72,8 @@ const kit = {
 	onramp: {},
 	offramp: {},
 	user_payments: {},
-	dust: {}
+	dust: {},
+	google_oauth: {}
 };
 
 const secrets = {

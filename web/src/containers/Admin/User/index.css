@@ -520,3 +520,19 @@
 .user-role-container .support-operator-card-wrapper svg path {
 	fill: #ffffff;
 }
+
+.admin-user-content
+	.user-select-wrapper
+	.select-wrapper
+	.user-filter-mode
+	> .ant-select-selector {
+	min-width: 10rem;
+}
+
+.admin-user-content
+	.user-select-wrapper
+	.select-wrapper
+	.user-value-dropdown
+	> .ant-select-selector {
+	min-width: 16rem;
+}

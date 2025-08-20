@@ -37,6 +37,7 @@ class AssetsWrapper extends Component {
 			count: 0,
 			searchValue: '',
 			isLoading: true,
+			isInitialLoading: true,
 			isSearchActive: false,
 			selectedButton: !isMobile
 				? STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']
@@ -173,8 +174,14 @@ class AssetsWrapper extends Component {
 	};
 
 	getMinicharData = async () => {
-		const { coins } = this.props;
+		const { coins, searchValue } = this.props;
 		const coinsList = Object.keys(coins).map((val) => coins[val].code);
+		if (searchValue !== '') {
+			const FORM_NAME = 'SearchForm';
+			this.setState({ searchValue: '' });
+			this.handleTabSearch('');
+			this.props.dispatch(reset(FORM_NAME));
+		}
 		try {
 			this.setState({ isLoading: true });
 			await getMiniCharts(coinsList.toLocaleString()).then((chartValues) => {
@@ -196,7 +203,7 @@ class AssetsWrapper extends Component {
 		this.getMinicharData();
 		this.interval = setInterval(this.throttledGetMinicharData, 60000);
 		await onHandleInitialLoading(15 * 100);
-		this.setState({ isLoading: false });
+		this.setState({ isLoading: false, isInitialLoading: false });
 		window.addEventListener('keydown', this.handleKeyPress);
 	}
 
@@ -381,7 +388,14 @@ class AssetsWrapper extends Component {
 	};
 
 	render() {
-		const { data, page, pageSize, count, isLoading } = this.state;
+		const {
+			data,
+			page,
+			pageSize,
+			count,
+			isLoading,
+			isInitialLoading,
+		} = this.state;
 		const listButton = [
 			STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'],
 			STRINGS['DIGITAL_ASSETS.CARDS.GAINERS'],
@@ -519,6 +533,7 @@ class AssetsWrapper extends Component {
 					</div>
 					<AssetsList
 						loading={isLoading}
+						initialLoading={isInitialLoading}
 						coinsListData={data}
 						page={page}
 						pageSize={pageSize}

@@ -255,6 +255,7 @@ const configRoles = {
 		'emails',
 		'security',
 		'smtp',
+		'google_oauth'
 	]
 };
 

@@ -459,3 +459,12 @@ $operator-controls__panel-border-color: #a7a7a7;
 		background-color: $operator-controls__panel-main-color;
 	}
 }
+
+.operator-control-edit-mode-warning-popup {
+	.ReactModal__Overlay {
+		z-index: 10002 !important;
+		.ReactModal__Content {
+			width: 35rem;
+		}
+	}
+}

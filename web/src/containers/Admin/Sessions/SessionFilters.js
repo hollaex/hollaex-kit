@@ -121,6 +121,7 @@ const SessionFilters = ({ applyFilters, fieldKeyValue, defaultFilters }) => {
 										}
 										setFilters(newFilters);
 									}}
+									getPopupContainer={(triggerNode) => triggerNode?.parentNode}
 								>
 									{filter?.options.map((f) => (
 										<Option value={f.value}>{f.label}</Option>

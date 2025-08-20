@@ -84,7 +84,8 @@ const checkStatus = () => {
 			onramp: {},
 			offramp: {},
 			user_payments: {},
-			dust: {}
+			dust: {},
+			google_oauth: {}
 		},
 		email: {}
 	};

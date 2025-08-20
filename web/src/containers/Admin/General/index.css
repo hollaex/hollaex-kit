@@ -1266,6 +1266,21 @@ h3,
 	width: 40rem;
 }
 
+.general-wrapper.google-oauth-wrapper .description .ant-switch {
+	width: fit-content;
+}
+
+.general-wrapper.google-oauth-wrapper .description .google-oauth-field {
+	background: transparent;
+	color: #ffffff;
+}
+
+.general-wrapper.google-oauth-wrapper .description .google-oauth-field:hover,
+.general-wrapper.google-oauth-wrapper .description .google-oauth-field:focus {
+	border: 1px solid #ffffff;
+	box-shadow: none;
+}
+
 @media screen and (min-width: 2560px) {
 	.generate-api .right-container {
 		padding-left: 14%;

@@ -180,6 +180,11 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
+			google_id: {
+				type: DataTypes.STRING,
+				allowNull: true,
+				unique: true
+			}
 		},
 		{
 			underscored: true,

@@ -114,7 +114,7 @@ const findLimit = (limits = [], currency) => {
 
 
 
-const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
+const sendRequestWithdrawalEmail = (user_id, address, amount, currency, version, opts = {
 	network: null,
 	otpCode: null,
 	fee: null,
@@ -158,38 +158,62 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					network: opts.network
 				},
 				opts.domain,
-				opts.ip
+				opts.ip,
+				version
 			);
 		});
 };
 
-const withdrawalRequestEmail = (user, data, domain, ip) => {
+const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
-	const token = data.transaction_id || crypto.randomBytes(60).toString('hex');
+	let token;
 
-	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
-		.then(() => {
-			const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
-			sendEmail(
-				MAILTYPE.WITHDRAWAL_REQUEST,
-				email,
-				{
-					amount,
-					fee,
-					fee_markup,
-					fee_coin: fee_coin,
-					currency: currency,
-					transaction_id: token,
-					address,
-					ip,
-					network
-				},
-				user.settings,
-				domain
-			);
-			return data;
-		});
+	if (version === 'v3') {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		token = `${letters}-${numbers}`;
+	} else {
+		token = data.transaction_id || crypto.randomBytes(60).toString('hex');
+	}
+
+	await client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData);
+		
+	await client.setexAsync(
+		`user:freeze-account:${token}`,
+		60 * 60 * 6,
+		JSON.stringify({
+			id: token,
+			user_id: user.id,
+			email: user.email,
+			verification_code: token,
+			ip,
+			time: new Date().toISOString()
+		})
+	);
+
+	const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
+	sendEmail(
+		version === 'v3' ? MAILTYPE.WITHDRAWAL_REQUEST_CODE : MAILTYPE.WITHDRAWAL_REQUEST,
+		email,
+		{
+			amount,
+			fee,
+			fee_markup,
+			fee_coin: fee_coin,
+			currency: currency,
+			transaction_id: token,
+			address,
+			ip,
+			network,
+			freeze_account_link: `${domain}/confirm-login?token=${token}&prompt=false&freeze_account=true`
+		},
+		user.settings,
+		domain
+	);
+	return data;
 };
 
 const validateWithdrawalToken = (token) => {

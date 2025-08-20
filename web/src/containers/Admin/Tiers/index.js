@@ -174,6 +174,7 @@ const Tiers = ({
 	allCoins = [],
 	coins,
 	quicktradePair,
+	router,
 }) => {
 	const [userTiers, setTiers] = useState({});
 	const [isNew, setNew] = useState(false);
@@ -208,6 +209,7 @@ const Tiers = ({
 	});
 	const [filteredTableData, setFilteredTableData] = useState([]);
 	const [isActiveEditFees, setIsActiveEditFees] = useState(false);
+	const [activeTab, setActiveTab] = useState('fees');
 
 	const isConfirmEdit =
 		!editFeeInput ||
@@ -220,6 +222,19 @@ const Tiers = ({
 		'section-title-pro',
 		'section-title-network',
 	]);
+
+	useEffect(() => {
+		const [, params] = window.location.search.split('?');
+		if (params === 'fees') {
+			setActiveTab('fees');
+		} else if (params === 'tiers') {
+			setActiveTab('tiers');
+		} else if (!params) {
+			setActiveTab('fees');
+			router.replace('/admin/tiers?fees');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [window.location.search]);
 
 	useEffect(() => {
 		if (userTiers && Object.keys(userTiers).length) {
@@ -1149,9 +1164,22 @@ const Tiers = ({
 		return getMarketCount('popupMarketCount');
 	};
 
+	const onHandleTabChange = (tab) => {
+		setActiveTab(tab);
+		if (tab === 'fees') {
+			router.replace('/admin/tiers?fees');
+		} else if (tab === 'tiers') {
+			router.replace('/admin/tiers?tiers');
+		}
+	};
+
 	return (
 		<div className="admin-tiers-wrapper admin-earnings-container w-100">
-			<Tabs>
+			<Tabs
+				defaultActiveKey="fees"
+				activeKey={activeTab}
+				onChange={onHandleTabChange}
+			>
 				<TabPane tab="Fees" key="fees">
 					<Fees
 						userTiers={userTiers}

@@ -10,15 +10,23 @@ import {
 	performLogin,
 	storeLoginResult,
 	setLogoutMessage,
+	performGoogleLogin,
 } from 'actions/authAction';
 import LoginForm from './LoginForm';
-import { Dialog, OtpForm, IconTitle, Notification } from 'components';
+import {
+	Dialog,
+	OtpForm,
+	IconTitle,
+	Notification,
+	EditWrapper,
+} from 'components';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { errorHandler } from 'components/OtpForm/utils';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import GoogleOAuthLogin from 'utils/googleOAuth';
 
 let errorTimeOut = null;
 
@@ -199,6 +207,22 @@ class Login extends Component {
 		localStorage.setItem('deposit_initial_display', true);
 	};
 
+	handleGoogleLogin = async (token) => {
+		try {
+			const res = await performGoogleLogin({ google_token: token });
+			if (res?.data?.token) this.setState({ token: res?.data?.token });
+			this.props.setPricesAndAssetPending();
+			storeLoginResult(res?.data?.token);
+			if (res?.data?.callbackUrl) {
+				this.redirectToService(res?.data?.callbackUrl);
+			} else {
+				this.redirectToHome();
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	render() {
 		const {
 			logoutMessage,
@@ -252,6 +276,22 @@ class Login extends Component {
 						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
 						{isMobile && <BottomLink />}
 					</div>
+					{!!constants?.google_oauth?.client_id && (
+						<div className="google-oauth-button-wrapper mt-5">
+							<EditWrapper stringId="LOGIN.GOOGLE_LOGIN">
+								<span>
+									{STRINGS.formatString(
+										STRINGS['LOGIN.GOOGLE_LOGIN'],
+										STRINGS['LOGIN_TEXT']
+									)}
+								</span>
+							</EditWrapper>
+							<GoogleOAuthLogin
+								onLoginSuccess={this.handleGoogleLogin}
+								googleOAuth={constants?.google_oauth}
+							/>
+						</div>
+					)}
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog

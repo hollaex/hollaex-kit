@@ -65,7 +65,7 @@ const findAndCountAllWithRows = (table, query = {}, model) => {
 	}
 };
 
- const fetchAllRecords = async (table, query, opts = null) => {
+ const fetchAllRecords = async (table, query, opts = {}) => {
 	if (table.length === 0) {
 		throw new Error(PROVIDE_TABLE_NAME);
 	}
@@ -91,7 +91,10 @@ const findAndCountAllWithRows = (table, query = {}, model) => {
 	});
 
 	const client = await sequelize.connectionManager.getConnection({ type: 'SELECT' });
-	const streamQuery = new QueryStream(sql);
+	const streamQuery = new QueryStream(sql, [], {
+		highWaterMark: (opts && opts.highWaterMark) || 1000,
+		batchSize: (opts && opts.batchSize) || 1000
+	});
 
 	return new Promise((resolve, reject) => {
 		let result = {
@@ -103,11 +106,15 @@ const findAndCountAllWithRows = (table, query = {}, model) => {
 
 		stream
 			.on('data', (data) => {
-				result.data.push(data);
+				result.count++;
+				if (opts && typeof opts.onRow === 'function') {
+					try { opts.onRow(data); } catch (e) {}
+				} else {
+					result.data.push(data);
+				}
 			})
 			.on('end', () => {
 				sequelize.connectionManager.releaseConnection(client);
-				result.count = result.data.length;
 				resolve(result);
 			})
 			.on('error', (err) => {

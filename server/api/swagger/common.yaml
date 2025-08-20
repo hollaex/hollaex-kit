@@ -129,6 +129,33 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /signup/google:
+    x-swagger-router-controller: user
+    post:
+      operationId: signUpUserWithGoogle
+      description: User sign up using Google OAuth token
+      tags:
+        - Public
+      parameters:
+        - name: signup
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/GoogleSignup"
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              oauth_signup:
+                type: boolean
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /verify:
     x-swagger-router-controller: user
     get:
@@ -224,6 +251,33 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /login/google:
+    x-swagger-router-controller: user
+    post:
+      operationId: loginWithGoogle
+      description: Login using Google OAuth token
+      tags:
+        - Public
+      parameters:
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/GoogleAuthentication"
+      responses:
+        201:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+              oauth_login:
+                type: boolean
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /verify-token:
     x-swagger-router-controller: user
     get:
@@ -259,6 +313,11 @@ paths:
           required: true
           type: string
           maxLength: 256
+        - name: version
+          in: query
+          required: false
+          type: string
+          enum: ['v2', 'v3']
       responses:
         200:
           description: Success

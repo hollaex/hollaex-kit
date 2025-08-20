@@ -875,6 +875,15 @@ table th {
     margin-top: 1rem; }
   .auth-wrapper .link_wrapper {
     margin: 1.5rem 0 0; }
+  .auth-wrapper .google-oauth-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; }
+    .auth-wrapper .google-oauth-button-wrapper span {
+      font-size: 14px; }
+    .auth-wrapper .google-oauth-button-wrapper #google-oauth-container {
+      min-width: 18rem; }
 
 .footer-wrapper {
   position: relative; }
@@ -7670,6 +7679,11 @@ table th {
 
 .confirmation-icon-popup .ant-modal-body {
   background-color: #0000ff; }
+
+.operator-control-edit-mode-warning-popup .ReactModal__Overlay {
+  z-index: 10002 !important; }
+  .operator-control-edit-mode-warning-popup .ReactModal__Overlay .ReactModal__Content {
+    width: 35rem; }
 
 .init-container {
   flex: 1;

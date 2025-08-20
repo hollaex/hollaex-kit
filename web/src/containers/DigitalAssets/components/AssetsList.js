@@ -43,6 +43,7 @@ const AssetsList = ({
 	isSelectedSort,
 	handleSelectedSort,
 	selectedButton,
+	initialLoading = false,
 }) => {
 	const [isOndDaySort, setIsOneDaySort] = useState(false);
 	// let listData = [];
@@ -266,19 +267,31 @@ const AssetsList = ({
 						</tr>
 					</thead>
 					<tbody id="market-list_tableBody">
-						{getSortedList()?.length >= 1 ? (
-							getSortedList()?.map((coinData, index) => (
-								<AssetsRow
-									index={index}
-									key={coinData.code}
-									coinData={coinData}
-									loading={loading}
-									quicktrade={quicktrade}
-									pairs={pairs}
-									icons={icons}
-									selectedButton={selectedButton}
-								/>
-							))
+						{!initialLoading ? (
+							getSortedList()?.length >= 1 ? (
+								getSortedList()?.map((coinData, index) => (
+									<AssetsRow
+										index={index}
+										key={coinData.code}
+										coinData={coinData}
+										loading={loading}
+										quicktrade={quicktrade}
+										pairs={pairs}
+										icons={icons}
+										selectedButton={selectedButton}
+									/>
+								))
+							) : (
+								<tr>
+									<td colSpan="7" className="text-center py-4">
+										<EditWrapper stringId="MORE_OPTIONS_LABEL.NO_RESULT_DESC_1">
+											<span className="secondary-text">
+												{STRINGS['MORE_OPTIONS_LABEL.NO_RESULT_DESC_1']}
+											</span>
+										</EditWrapper>
+									</td>
+								</tr>
+							)
 						) : (
 							<tr>
 								<td colSpan="7" className="text-center py-4">

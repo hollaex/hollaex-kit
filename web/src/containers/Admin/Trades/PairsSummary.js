@@ -17,6 +17,10 @@ import { setAllPairs, setCoins } from 'actions/assetActions';
 import { storePair, updateAssetPairs } from './actions';
 import { STATIC_ICONS } from 'config/icons';
 import { getAllPairs, updateExchange } from '../AdminFinancials/action';
+import {
+	setIsDisplayAddMarket,
+	setIsDisplayCreateMarket,
+} from 'actions/appActions';
 
 const { Item } = Breadcrumb;
 
@@ -203,6 +207,17 @@ class PairsSummary extends Component {
 				}
 			}
 		}
+		if (this.props.isDisplayAddMarket && !this.state.isOpen) {
+			this.handleCreateNew();
+			this.props.setIsDisplayAddMarket(false);
+		}
+		if (this.props.isDisplayCreateMarket && !this.state.isOpen) {
+			this.handleCreateNew();
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.setIsDisplayAddMarket(false);
 	}
 
 	getPairs = async () => {
@@ -786,12 +801,19 @@ const mapStateToProps = (state) => {
 		allCoins: state.asset.allCoins,
 		constants: state.app.constants,
 		user: state.user,
+		isDisplayCreateMarket: state.app.isDisplayCreateMarket || false,
+		isDisplayAddMarket: state.app.isDisplayAddMarket || false,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
+	setIsDisplayAddMarket: bindActionCreators(setIsDisplayAddMarket, dispatch),
+	setIsDisplayCreateMarket: bindActionCreators(
+		setIsDisplayCreateMarket,
+		dispatch
+	),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PairsSummary);
