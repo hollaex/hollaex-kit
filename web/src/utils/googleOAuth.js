@@ -1,54 +1,40 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { message } from 'antd';
+
 import strings from 'config/localizedStrings';
 
 const GoogleOAuthLogin = ({ onLoginSuccess, googleOAuth }) => {
 	const handleCredentialResponse = (response) => {
 		try {
-			if (onLoginSuccess) onLoginSuccess(response?.credential);
+			const credential = response?.credential;
+			if (onLoginSuccess) onLoginSuccess(credential);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 
-	useEffect(() => {
-		if (!googleOAuth?.client_id) return;
-		const script = document.createElement('script');
-		script.src = 'https://accounts.google.com/gsi/client';
-		script.async = true;
-		script.defer = true;
-		document.body.appendChild(script);
+	const handleError = (error) => {
+		message.error(
+			error?.error || error?.message || error || strings['P2P.ERROR_MESSAGE']
+		);
+	};
 
-		script.onload = () => {
-			if (window.google?.accounts?.id) {
-				window.google.accounts.id.initialize({
-					client_id: googleOAuth?.client_id,
-					callback: handleCredentialResponse,
-				});
+	if (!googleOAuth?.client_id) return null;
 
-				window.google.accounts.id.renderButton(
-					document.getElementById('google-oauth-container'),
-					{
-						theme: 'outline',
-						size: 'large',
-						text: 'signin_with',
-						shape: 'rectangular',
-					}
-				);
-
-				const btn = document.querySelector(
-					'#google-oauth-container div div span'
-				);
-				if (btn) btn.innerText = strings['LOGIN.CONTINUE_WITH_GOOGLE'];
-			}
-		};
-
-		return () => {
-			document.body.removeChild(script);
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [googleOAuth?.client_id]);
-
-	return <div id="google-oauth-container"></div>;
+	return (
+		<GoogleOAuthProvider clientId={googleOAuth?.client_id}>
+			<div id="google-oauth-container">
+				<GoogleLogin
+					onSuccess={handleCredentialResponse}
+					onError={handleError}
+					text="continue_with"
+					size="large"
+					theme="outline"
+				/>
+			</div>
+		</GoogleOAuthProvider>
+	);
 };
 
 export default GoogleOAuthLogin;

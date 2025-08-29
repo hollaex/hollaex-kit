@@ -191,11 +191,15 @@ const Referrals = ({
 	};
 
 	useEffect(() => {
-		getUserReferer(userId).then(({ email }) => {
-			setInvitedBy(email);
-			setLoading(false);
-			requestAffiliations(1, LIMIT);
-		});
+		getUserReferer(userId)
+			.then(({ email }) => {
+				setInvitedBy(email);
+				setLoading(false);
+				requestAffiliations(1, LIMIT);
+			})
+			.catch((error) => {
+				console.error('error', error);
+			});
 	}, [userId, requestAffiliations]);
 
 	const generateUniqueCode = () => {

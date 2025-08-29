@@ -72,6 +72,8 @@ const createMarginTransfer = (req, res) => {
 		}
 	};
 
+	return res.status(400).json({ message: 'not supported' });
+
 	toolsLib.order.createMarginTransferByKitId(user_id, data.balance_symbol, data.balance_amount, data.margin_to_spot, opts)
 		.then((data) => {
 			return res.json({ message: 'Success' });
@@ -99,6 +101,8 @@ const closeMarginPosition = (req, res) => {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	};
+
+	return res.status(400).json({ message: 'not supported' });
 
 	toolsLib.order.closeMarginPositionByKitId(user_id, data.target_asset, data.position_id, opts)
 		.then((data) => {
@@ -128,6 +132,9 @@ const getUserMarginPosition = (req, res) => {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	};
+
+	return res.status(400).json({ message: 'not supported' });
+	
 	toolsLib.order.getUserMarginPositionByKitId(user_id, opts)
 		.then((data) => {
 			return res.json(data);
@@ -224,7 +231,7 @@ const getQuickTrade = (req, res) => {
 const executeHedging = async (symbol, side, size, price) => {
 	await toolsLib.sleep(1000);
 	toolsLib.broker.reverseTransaction({ symbol, side, size, price });
-}
+};
 
 const orderExecute = (req, res) => {
 	loggerOrders.verbose(

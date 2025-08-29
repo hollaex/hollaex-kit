@@ -141,7 +141,8 @@ const Dashboard = ({ constants = {}, setEditMode = () => {} }) => {
 							<div className="card-link">
 								<span
 									onClick={() => {
-										setEditMode(true);
+										list?.title === 'Customize your exchange' &&
+											setEditMode(true);
 									}}
 								>
 									<Link to={list.path}>View more</Link>

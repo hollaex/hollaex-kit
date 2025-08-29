@@ -282,6 +282,17 @@ export const pathToPermissionMap = {
 		'/admin/burn:',
 		'/admin/transfer:',
 		'/admin/user/wallet:',
+		'/admin/orders:get',
+		'/admin/trades:get',
+		'/admin/deposits:get',
+		'/admin/withdrawals:get',
+		'/admin/fees:get',
+		'/admin/transfer:post',
+		'/admin/transaction/limit:get',
+		'/admin/kit:get',
+		'admin/balance:get',
+		'/admin/user/wallet:get',
+		'/admin/balances:get',
 	],
 	'/admin/trade': [
 		'/admin/trade:',
@@ -294,6 +305,11 @@ export const pathToPermissionMap = {
 		'/admin/orders:',
 		'/admin/order:',
 		'/admin/trades:',
+		'/admin/pairs/network:get',
+		'/admin/orders:get',
+		'/admin/broker:get',
+		'/admin/p2p/dispute:get',
+		'/admin/exchange:put',
 	],
 	'/admin/fiat': [
 		'/admin/bank:',
@@ -302,6 +318,7 @@ export const pathToPermissionMap = {
 		'/admin/bank/revoke:',
 		'/admin/deposits:',
 		'/admin/withdrawals:',
+		'/admin/exchange:',
 	],
 	'/admin/stakes': [
 		'/admin/stake:',
@@ -316,4 +333,68 @@ export const pathToPermissionMap = {
 	'/admin/audits': ['/admin/audits:'],
 	'/admin/roles': ['/admin/role:', '/admin/role/assign:'],
 	'/admin/chat': ['/admin/send-email:', '/admin/send-email/raw:'],
+};
+
+export const ADMIN_TABS_PERMISSIONS = {
+	'/admin/general': {
+		0: 'api_name defaults',
+		1: 'description',
+		2: 'security',
+		3: 'features',
+		4: 'new_user_is_activated',
+		5: 'emails',
+		6: 'defaults',
+		7: 'links',
+		8: 'apps',
+	},
+	'/admin/financials': {
+		0: '/admin/balance:get',
+		1: '/admin/kit:get',
+		2: '/admin/transaction/limit:get',
+		3: '/admin/balance:get',
+		4: '/admin/user/wallet:get',
+		5: '/admin/balances:get',
+		6: '/admin/orders:get',
+		7: '/admin/trades:get',
+		8: '/admin/deposits:get',
+		9: '/admin/withdrawals:get',
+		10: '/admin/fees:get',
+		11: '/admin/transfer:post',
+		12: '/admin/transfer:post',
+	},
+	'/admin/trade': {
+		0: '/admin/pairs/network:get',
+		1: '/admin/orders:get',
+		2: '/admin/broker:get',
+		3: '/admin/p2p/dispute:get',
+		4: '/admin/exchange:put',
+	},
+};
+
+export const canAccessPath = (path, userPermissions = []) => {
+	const requiredPrefixes = pathToPermissionMap[path] || [`${path}:`];
+	return requiredPrefixes?.some((prefix) =>
+		userPermissions?.some((p) => typeof p === 'string' && p?.startsWith(prefix))
+	);
+};
+
+export const getVisibleTabKeys = (routePath, userPermissions = []) => {
+	const rules = ADMIN_TABS_PERMISSIONS[routePath] || {};
+	return Object.keys(rules)?.filter((key) => {
+		const perm = rules[key];
+		return userPermissions?.includes(perm);
+	});
+};
+
+export const getFirstEnabledTabKey = (routePath, userPermissions = []) => {
+	const keys = getVisibleTabKeys(routePath, userPermissions);
+	return keys?.length ? keys[0] : undefined;
+};
+
+export const checkTabAvailable = (
+	tabIndex,
+	routePath,
+	userPermissions = []
+) => {
+	return userPermissions?.includes(ADMIN_TABS_PERMISSIONS[routePath][tabIndex]);
 };

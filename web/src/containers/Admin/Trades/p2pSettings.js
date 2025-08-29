@@ -113,17 +113,21 @@ const P2PSettings = ({
 		setUserFee(p2p_config?.user_fee);
 		setSourceAccount(p2p_config?.source_account);
 		if (p2p_config?.source_account) {
-			getAllUserData({ id: p2p_config?.source_account }).then((res) => {
-				let emailData = {};
-				res &&
-					res?.forEach((item) => {
-						if (item.value === p2p_config?.source_account) {
-							emailData = item;
-						}
-					});
-				setSelectedEmailData(emailData);
-				setSourceAccount(Number(p2p_config?.source_account));
-			});
+			getAllUserData({ id: p2p_config?.source_account })
+				.then((res) => {
+					let emailData = {};
+					res &&
+						res?.forEach((item) => {
+							if (item.value === p2p_config?.source_account) {
+								emailData = item;
+							}
+						});
+					setSelectedEmailData(emailData);
+					setSourceAccount(Number(p2p_config?.source_account));
+				})
+				.catch((err) => {
+					console.error('error', err);
+				});
 		}
 		setP2pConfig(p2p_config);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import {
 	message,
@@ -51,6 +51,9 @@ const Transfer = ({ coins = {}, assets }) => {
 		totalBalance: null,
 	});
 
+	const senderRef = useRef(null);
+	const receiverRef = useRef(null);
+
 	const toggleMode = (mode) => {
 		setEmailMode(mode === 'email');
 		setSenderData([]);
@@ -98,6 +101,46 @@ const Transfer = ({ coins = {}, assets }) => {
 				} else {
 					setSenderData(userData);
 					setReceiverData(userData);
+				}
+				if (!isEmailMode && userData?.length > 0) {
+					const [filteredUser] = userData || [];
+					const { value = 0, label = '', balance = [] } = filteredUser || {};
+					const userID =
+						type === 'sender'
+							? confirmData?.receiver_id
+							: confirmData?.sender_id;
+					const isValidUser = !userID || userID !== value;
+
+					const updateFields = {
+						sender: isValidUser
+							? {
+									sender_id: value,
+									sender_email: label,
+									sender_balance: balance,
+							  }
+							: { sender_id: '', sender_email: params?.id, sender_balance: [] },
+
+						receiver: isValidUser
+							? { receiver_id: value, receiver_email: label }
+							: { receiver_id: '', receiver_email: params?.id },
+
+						currency: isValidUser ? { currency: value } : { currency: '' },
+					};
+					setConfirmData((prev) => ({
+						...prev,
+						...(updateFields[type] || {}),
+					}));
+					if (type === 'sender' && senderRef?.current) {
+						senderRef.current.blur();
+					} else if (type === 'receiver' && receiverRef?.current) {
+						receiverRef.current.blur();
+					}
+
+					if (!isValidUser) {
+						message.error(
+							`Sender and Receiver ID are the same. Please try a different ${type} ID.`
+						);
+					}
 				}
 			}
 		} catch (error) {
@@ -380,7 +423,7 @@ const Transfer = ({ coins = {}, assets }) => {
 									placeholder={
 										isEmailMode ? 'Sender User Email' : 'Sender User ID'
 									}
-									onSearch={(text) => handleSearch(text, 'sender')}
+									onSearch={(text) => text && handleSearch(text, 'sender')}
 									className="blue-admin-select-dropdown mt-2"
 									showSearch
 									filterOption={false}
@@ -391,14 +434,18 @@ const Transfer = ({ coins = {}, assets }) => {
 									onSelect={(value) => onHandleSelect(value, 'sender')}
 									getPopupContainer={(triggerNode) => triggerNode.parentNode}
 									onClear={() => onHandleClear('sender')}
+									ref={senderRef}
 								>
-									{senderData
-										?.filter((data) => data?.value !== confirmData?.receiver_id)
-										?.map((data) => (
-											<Select.Option key={data?.value} value={data?.value}>
-												{data?.label}
-											</Select.Option>
-										))}
+									{isEmailMode &&
+										senderData
+											?.filter(
+												(data) => data?.value !== confirmData?.receiver_id
+											)
+											?.map((data) => (
+												<Select.Option key={data?.value} value={data?.value}>
+													{data?.label}
+												</Select.Option>
+											))}
 								</Select>
 								{isLoading && selectedUserType === 'sender' && (
 									<Spin spinning={isLoading} size="medium" className="ml-2" />
@@ -415,7 +462,7 @@ const Transfer = ({ coins = {}, assets }) => {
 									placeholder={
 										isEmailMode ? 'Receiver User Email' : 'Receiver User ID'
 									}
-									onSearch={(text) => handleSearch(text, 'receiver')}
+									onSearch={(text) => text && handleSearch(text, 'receiver')}
 									className="blue-admin-select-dropdown mt-2"
 									showSearch
 									filterOption={false}
@@ -426,14 +473,16 @@ const Transfer = ({ coins = {}, assets }) => {
 									onSelect={(value) => onHandleSelect(value, 'receiver')}
 									getPopupContainer={(triggerNode) => triggerNode.parentNode}
 									onClear={() => onHandleClear('receiver')}
+									ref={receiverRef}
 								>
-									{receiverData
-										?.filter((data) => data?.value !== confirmData?.sender_id)
-										?.map((data) => (
-											<Select.Option key={data?.value} value={data?.value}>
-												{data?.label}
-											</Select.Option>
-										))}
+									{isEmailMode &&
+										receiverData
+											?.filter((data) => data?.value !== confirmData?.sender_id)
+											?.map((data) => (
+												<Select.Option key={data?.value} value={data?.value}>
+													{data?.label}
+												</Select.Option>
+											))}
 								</Select>
 								{isLoading && selectedUserType === 'receiver' && (
 									<Spin spinning={isLoading} size="medium" className="ml-2" />

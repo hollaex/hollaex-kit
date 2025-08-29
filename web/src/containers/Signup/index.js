@@ -218,16 +218,15 @@ class Signup extends Component {
 						...FLEX_CENTER_CLASSES,
 						'flex-column',
 						'auth_wrapper',
+						'signup-wrapper',
 						'w-100'
 					)}
 				>
 					<IconTitle
-						iconId="EXCHANGE_LOGO"
-						iconPath={ICONS['EXCHANGE_LOGO']}
 						text={STRINGS['SIGNUP_TEXT']}
 						textType="title"
 						underline={true}
-						className="w-100 holla-logo"
+						className="w-100 holla-logo signup-title"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS['SIGN_UP.SIGNUP_TO'],
@@ -258,8 +257,8 @@ class Signup extends Component {
 							<div
 								className={
 									isMobile
-										? 'mt-5 mb-4 google-oauth-button-wrapper'
-										: 'mt-5 google-oauth-button-wrapper'
+										? 'mb-4 google-oauth-button-wrapper'
+										: 'google-oauth-button-wrapper'
 								}
 							>
 								<EditWrapper stringId="LOGIN.GOOGLE_LOGIN">

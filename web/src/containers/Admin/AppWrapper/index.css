@@ -230,15 +230,20 @@
 	padding: 25px;
 	border-bottom: 1px solid #f0f0f0;
 }
+.role-section .role-details {
+	position: relative;
+	left: 2rem;
+}
+.role-section .role-icon svg {
+	position: relative;
+	top: 1.2rem;
+}
 .main-label {
-	margin: 0rem 9rem;
 	font-size: 18px;
 	font-weight: bold;
 }
 .sub-label {
 	position: absolute;
-	top: 6rem;
-	left: 11.2rem;
 	line-height: 20px;
 }
 .sider-icons {

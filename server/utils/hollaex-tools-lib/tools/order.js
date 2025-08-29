@@ -37,7 +37,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 
 	if (opts.stop && isNaN(Number(opts.stop))) {
 		return reject(new Error(INVALID_NUMBER));
-	};
+	}
 
 	const convertScientificToDecimal = (input) => {
 		const num = parseFloat(input);
@@ -62,7 +62,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 
 	if (opts.stop) {
 		opts.stop = convertScientificToDecimal(opts.stop);
-	};
+	}
 
 
 	return getUserByKitId(userKitId)

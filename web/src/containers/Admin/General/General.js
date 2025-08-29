@@ -1126,10 +1126,10 @@ class GeneralContent extends Component {
 									buttonSubmitting={buttonSubmitting}
 								/>
 							</div>
-							<div className="divider"></div>
 
 							{this.props.user?.configs?.includes('timezone') && (
 								<>
+									<div className="divider"></div>
 									<div>
 										<div className="sub-title" id="timezone">
 											Timezone
@@ -1163,10 +1163,10 @@ class GeneralContent extends Component {
 									</Button>
 								</>
 							)}
-							<div className="divider"></div>
 
 							{this.props.user?.configs?.includes('valid_languages') && (
 								<div>
+									<div className="divider"></div>
 									<div className="sub-title" id="language">
 										Language
 									</div>
@@ -1200,9 +1200,9 @@ class GeneralContent extends Component {
 									/>
 								</div>
 							)}
-							<div className="divider" />
 							{this.props.user?.configs?.includes('strings') && (
 								<div>
+									<div className="divider" />
 									<div className="sub-title" id="theme">
 										Theme
 									</div>
@@ -1236,11 +1236,11 @@ class GeneralContent extends Component {
 									/>
 								</div>
 							)}
-							<div className="divider"></div>
 							{this.props.user?.configs?.includes(
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
+									<div className="divider"></div>
 									<div className="sub-title" id="native-currency">
 										Native currency
 									</div>
@@ -1262,11 +1262,11 @@ class GeneralContent extends Component {
 									</div>
 								</div>
 							)}
-							<div className="divider"></div>
 							{this.props.user?.configs?.includes(
 								'selectable_native_currencies'
 							) && (
 								<div className="mb-5">
+									<div className="divider"></div>
 									<div className="sub-title" id="other-currency-display-option">
 										Other currency display options
 									</div>

@@ -17,6 +17,7 @@ import CoinConfiguration from './CoinConfiguration';
 import TransactionLimits from './TransactionLimits';
 //import { getPermissions } from 'utils/token';
 import { connect } from 'react-redux';
+import { getFirstEnabledTabKey, checkTabAvailable } from '../paths';
 
 const TabPane = Tabs.TabPane;
 
@@ -46,19 +47,27 @@ const AdminFinancials = ({ router, location, user, authUser }) => {
 		const params = new URLSearchParams(window.location.search);
 		const tab = tabList?.find((data) => params.has(data));
 		const tabIndex = tabList?.indexOf(tab);
-
+		const firstKey = getFirstEnabledTabKey(
+			location?.pathname,
+			authUser?.permissions || []
+		);
+		const isTabAvailable =
+			tabIndex !== -1 &&
+			!checkTabAvailable(tabIndex, location?.pathname, authUser?.permissions) &&
+			authUser?.permissions?.length;
 		if (tabParams?.tab) {
-			tabList?.length > tabParams?.tab
+			tabList?.length > tabParams?.tab && isTabAvailable
 				? setActiveTab(tabParams?.tab)
-				: setActiveTab('0');
+				: setActiveTab(String(firstKey));
 		} else if (tab && tabIndex !== -1 && String(tabIndex) !== activeTab) {
 			setActiveTab(String(tabIndex));
-		} else if (!tab) {
-			setActiveTab('0');
+		} else if (!tab || isTabAvailable) {
+			setActiveTab(String(firstKey));
 			const url = new URL(window.location.href);
-			url.search = tabList[0] ? `?${tabList[0]}` : '';
+			url.search = tabList[firstKey] ? `?${tabList[firstKey]}` : '';
 			window.history.replaceState(null, '', url.toString());
 		}
+		// eslint-disable-next-line
 	}, [tabParams, activeTab]);
 
 	const handleTabChange = (key, selectedAsset = {}) => {

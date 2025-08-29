@@ -54,8 +54,8 @@ class Logins extends Component {
 			.then((res) => {
 				if (res) {
 					this.setState({
-						logins: res.data,
-						total: res.count,
+						logins: res?.data || [],
+						total: res?.count || 0,
 						loading: false,
 					});
 				}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { requestTrades, requestTradesDownload } from './actions';
-import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
@@ -75,7 +74,7 @@ class TradeHistory extends Component {
 				if (err.status === 403) {
 					this.setState({ loading: false });
 				}
-				throw new SubmissionError({ _error: err.data.message });
+				console.error('error', err);
 			});
 	};
 

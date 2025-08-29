@@ -49,6 +49,7 @@ $container--padding-sm: 3rem;
 				}
 			}
 			.icon_title-wrapper {
+				margin-left: unset !important;
 				.icon_title-text.title {
 					font-size: 5rem;
 				}
@@ -63,6 +64,21 @@ $container--padding-sm: 3rem;
 					.field-label,
 					.input_field-input {
 						font-size: $regular--font-size;
+					}
+				}
+			}
+		}
+		.google-oauth-button-wrapper {
+			#google-oauth-container {
+				min-width: 18rem;
+				div[role='button'] {
+					height: 4rem;
+					div:nth-child(2) {
+						div:first-child {
+							svg {
+								width: 1.5rem;
+							}
+						}
 					}
 				}
 			}
@@ -96,11 +112,27 @@ $container--padding-sm: 3rem;
 			background-color: $auth-container-background;
 			padding: $container--padding $container--padding $container--padding * 1.5;
 
+			.signup-title,
+			.login-text {
+				.edit-wrapper__container {
+					.icon_title-text {
+						font-family: $raleway-medium--font-family;
+						padding: unset !important;
+						margin-top: unset !important;
+					}
+				}
+			}
+
 			.icon_title-svg {
 				.hollaEX_logo_gray {
 					fill: $colors-black;
 				}
 			}
+		}
+
+		.login-wrapper,
+		.signup-wrapper {
+			padding: $container--padding $container--padding !important;
 		}
 
 		.auth_form-wrapper {
@@ -180,13 +212,32 @@ $container--padding-sm: 3rem;
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
+		margin-top: 2rem;
 
 		span {
-			font-size: 14px;
+			font-size: 1.1rem;
 		}
 
 		#google-oauth-container {
-			min-width: 18rem;
+			min-width: 16rem;
+			div[role='button'] {
+				height: 3rem;
+				width: 100%;
+				div:nth-child(2) {
+					justify-content: center !important;
+					div:first-child {
+						width: unset;
+						min-width: unset;
+						margin-right: unset;
+						height: unset;
+						position: relative;
+						bottom: 1px;
+						svg {
+							width: 1.2rem;
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -202,7 +253,7 @@ $container--padding-sm: 3rem;
 
 			.auth_wrapper {
 				padding: $container--padding-sm $container--padding
-					$container--padding-sm;
+					$container--padding-sm !important;
 			}
 			.auth_form-wrapper {
 				margin-top: 1rem;

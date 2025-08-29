@@ -81,7 +81,7 @@ const Onramp = ({
 	useEffect(() => {
 		let filteredFiatCoins = [];
 		const FiatCoinData = allCoins.filter((item) =>
-			exchange?.coins.includes(item?.symbol)
+			exchange?.coins?.includes(item?.symbol)
 		);
 		FiatCoinData &&
 			FiatCoinData.forEach((item) => {

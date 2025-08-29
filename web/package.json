@@ -8,6 +8,7 @@
 		"@elastic/apm-rum": "^5.17.0",
 		"@material/button": "0.7.0",
 		"@paciolan/remote-component": "2.11.0",
+		"@react-oauth/google": "^0.12.2",
 		"@simonwep/pickr": "1.8.1",
 		"antd": "4.6.2",
 		"array-move": "3.0.1",

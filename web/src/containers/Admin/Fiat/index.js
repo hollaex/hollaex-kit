@@ -31,6 +31,7 @@ const Fiatmarkets = ({
 	constants = {},
 	setConfig,
 	ultimate_fiat,
+	permissions = [],
 }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [isUpgrade, setIsUpgrade] = useState(false);
@@ -41,6 +42,10 @@ const Fiatmarkets = ({
 	const [onrampData, setOnRamp] = useState(onramp);
 	const [userPaymentsData, setOnuserPaymentsData] = useState([]);
 	const [featureEnable, setFeatureEnable] = useState(ultimate_fiat);
+
+	const isSummaryActive = permissions?.some((data) =>
+		data?.includes('/admin/exchange:')
+	);
 
 	useEffect(() => {
 		if (exchange && Object.keys(exchange).length) {
@@ -60,15 +65,19 @@ const Fiatmarkets = ({
 		if (tabParams && tabParams?.tab) {
 			tabList?.length > tabParams?.tab
 				? setActiveTab(tabParams?.tab)
-				: setActiveTab('0');
+				: setActiveTab(isSummaryActive ? '0' : '1');
 		} else if (tabIndex >= 0 && String(tabIndex) !== activeTab) {
 			setActiveTab(String(tabIndex));
-		} else if (tabIndex === -1) {
-			setActiveTab('0');
+		} else if (
+			(tabIndex === -1 && permissions?.length) ||
+			(!isSummaryActive && permissions?.length && tabIndex === 0)
+		) {
+			setActiveTab(isSummaryActive ? '0' : '1');
 			const url = new URL(window.location.href);
-			url.search = `?${tabList[0]}`;
+			url.search = isSummaryActive ? `?${tabList[0]}` : `?${tabList[1]}`;
 			window.history.replaceState(null, '', url.toString());
 		}
+		// eslint-disable-next-line
 	}, [tabParams, activeTab]);
 
 	useEffect(() => {
@@ -101,21 +110,23 @@ const Fiatmarkets = ({
 				onChange={handleTabChange}
 				renderTabBar={renderTabBar}
 			>
-				<TabPane tab="Summary" key="0">
-					<Summarycontent
-						handleTabChange={handleTabChange}
-						coins={coins}
-						isUpgrade={isUpgrade}
-						user_payments={user_payments}
-						exchange={exchange}
-						onramp={onrampData}
-						offramp={offRampData}
-						isGetExchange={isGetExchange}
-						ultimateFiat={ultimate_fiat}
-						constants={constants}
-						setFeatureEnable={setFeatureEnable}
-					/>
-				</TabPane>
+				{isSummaryActive && (
+					<TabPane tab="Summary" key="0">
+						<Summarycontent
+							handleTabChange={handleTabChange}
+							coins={coins}
+							isUpgrade={isUpgrade}
+							user_payments={user_payments}
+							exchange={exchange}
+							onramp={onrampData}
+							offramp={offRampData}
+							isGetExchange={isGetExchange}
+							ultimateFiat={ultimate_fiat}
+							constants={constants}
+							setFeatureEnable={setFeatureEnable}
+						/>
+					</TabPane>
+				)}
 				{featureEnable && (
 					<>
 						<TabPane tab="Payment accounts" key="1">
@@ -183,6 +194,7 @@ const mapStateToProps = (state) => {
 		coins: state.asset.allCoins,
 		constants: state.app.constants,
 		ultimate_fiat: state.app.constants.features.ultimate_fiat,
+		permissions: state?.user?.permissions,
 	};
 };
 

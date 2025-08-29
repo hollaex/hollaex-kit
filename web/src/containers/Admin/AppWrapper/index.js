@@ -24,8 +24,8 @@ import {
 	ADMIN_PATHS,
 	// eslint-disable-next-line
 	SUPERVISOR_PATH,
-	// eslint-disable-next-line
-	pathToPermissionMap,
+	canAccessPath,
+	ADMIN_TABS_PERMISSIONS,
 } from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
@@ -78,6 +78,7 @@ import { getTabParams } from '../AdminFinancials/Assets';
 import { roleStyles } from '../Roles/RoleManagement';
 import { fetchRoles } from '../Roles/action';
 import { isColorDark } from '../Roles/Utils';
+import { renderRoleImage } from '../Roles/ModalForm';
 import OperatorControlSearch from './OperatorControlSearch';
 
 const md = new MobileDetect(window.navigator.userAgent);
@@ -501,17 +502,8 @@ class AppWrapper extends React.Component {
 				className={isRoleDark}
 				style={{ backgroundColor: selectedRole?.color }}
 			>
-				<div>
-					<ReactSVG
-						src={
-							roleStyles[getRole()]?.rolesImage ||
-							STATIC_ICONS.BLUE_SCREEN_EYE_ICON
-						}
-						className="sider-icons slider-role-badge"
-						alt="EyeIcon"
-					/>
-				</div>
-				<div>
+				{renderRoleImage()}
+				<div className="role-details">
 					<div className="main-label">Role:</div>
 					<div className="sub-label text-capitalize">{getRole()}</div>
 				</div>
@@ -549,6 +541,9 @@ class AppWrapper extends React.Component {
 			router,
 			user,
 			constants: { features },
+			router: {
+				location: { pathname },
+			},
 		} = this.props;
 		const logout = () => {
 			removeToken();
@@ -564,16 +559,31 @@ class AppWrapper extends React.Component {
 		} = this.state;
 		let pathNames = [];
 
-		const userPermissions = this.props?.user?.permissions || [];
+		const { permissions = [], configs = [] } = user;
+		const isEnabled = permissions?.some((data) =>
+			data?.includes('/admin/announcements:')
+		);
 
 		pathNames = ADMIN_PATHS.filter((item) => {
 			if (item.path === '/admin') return true;
-			const requiredPrefixes = pathToPermissionMap[item.path] || [
-				`${item.path}:`,
-			];
-			return requiredPrefixes.some((prefix) =>
-				userPermissions.some((p) => p.startsWith(prefix))
+			const hasPathPermission = canAccessPath(item?.path, permissions);
+			const hasCustomPermission = Object.keys(ADMIN_TABS_PERMISSIONS)?.includes(
+				item?.path
 			);
+			const adminPaths = hasCustomPermission
+				? Object.values(ADMIN_TABS_PERMISSIONS[item?.path])
+				: [];
+			const allowedPath =
+				hasCustomPermission &&
+				adminPaths?.length !== 0 &&
+				(configs?.some((data) =>
+					adminPaths?.some((config) => config?.includes(data))
+				) ||
+					permissions?.some((data) => adminPaths?.includes(data)));
+
+			return hasCustomPermission
+				? hasPathPermission && allowedPath
+				: hasPathPermission;
 		});
 
 		if (checkRole() === 'admin') {
@@ -603,7 +613,7 @@ class AppWrapper extends React.Component {
 			];
 		}
 
-		if (features.announcement) {
+		if (features?.announcement && isEnabled) {
 			pathNames = [
 				...pathNames,
 				{
@@ -626,6 +636,15 @@ class AppWrapper extends React.Component {
 				];
 			}
 		});
+
+		if ((permissions?.length || configs?.length) && pathNames?.length > 0) {
+			const isPathAvailable = pathNames?.some((data) =>
+				data?.path?.includes(pathname)
+			);
+			if (!isPathAvailable && pathname !== '/admin/resources') {
+				this.props.router.push('/account');
+			}
+		}
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {

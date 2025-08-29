@@ -7,13 +7,7 @@ import { PATHS } from './containers';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 import { SmartTarget, NotLoggedIn } from 'components';
-import {
-	isLoggedIn,
-	getToken,
-	removeToken,
-	isAdmin,
-	checkRole,
-} from './utils/token';
+import { isLoggedIn, getToken, removeToken, isAdmin } from './utils/token';
 import {
 	getLanguage,
 	getInterfaceLanguage,
@@ -488,15 +482,6 @@ const noLoggedUserCommonProps = {
 
 function withAdminProps(Component, key) {
 	let adminProps = {};
-	let restrictedPaths = [
-		'general',
-		'financials',
-		'trade',
-		'plugins',
-		'tiers',
-		'roles',
-		'billing',
-	];
 
 	PATHS.map((data) => {
 		const { pathProps = {}, routeKey, ...rest } = data;
@@ -506,15 +491,7 @@ function withAdminProps(Component, key) {
 		return 0;
 	});
 	return function (matchProps) {
-		if (
-			checkRole() !== 'admin' &&
-			restrictedPaths.includes(key) &&
-			!(checkRole() === 'supervisor' && key === 'financials')
-		) {
-			return <NotFound {...matchProps} />;
-		} else {
-			return <Component {...adminProps} {...matchProps} />;
-		}
+		return <Component {...adminProps} {...matchProps} />;
 	};
 }
 
