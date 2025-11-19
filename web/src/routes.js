@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
+import { startRouteTrace } from 'config/firebase';
 
 import { PATHS } from './containers';
 import { verifyToken } from './actions/authAction';
@@ -336,6 +337,12 @@ const AccountSharing = Loadable({
 });
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
+
+// Start trace for initial page load
+if (typeof window !== 'undefined') {
+	startRouteTrace(window.location.pathname);
+}
+
 browserHistory.listen((location) => {
 	if (window) {
 		window.scroll({
@@ -346,6 +353,9 @@ browserHistory.listen((location) => {
 	}
 	ReactGA.set({ page: window.location.pathname });
 	ReactGA.pageview(window.location.pathname);
+
+	// Start Firebase Performance trace for route change
+	startRouteTrace(window.location.pathname);
 });
 
 let lang = getLanguage();

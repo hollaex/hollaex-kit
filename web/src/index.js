@@ -12,6 +12,7 @@ import EditProvider from 'components/EditProvider';
 import ElasticRumProvider from 'components/ElasticRumProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
+import './config/firebase'; // Initialize Firebase
 import { addElements, injectHTML } from 'utils/script';
 
 import 'flag-icon-css/css/flag-icon.min.css';
