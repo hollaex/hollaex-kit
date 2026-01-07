@@ -19,11 +19,14 @@ const {
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE,
 	setEndpoints,
-	setPermissionDescription
+	setPermissionDescription,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS
 } = require('./constants');
 const { isNumber, difference } = require('lodash');
 const yaml = require('js-yaml');
 const fs = require('fs');
+const path = require('path');
 
 let nodeLib;
 
@@ -74,6 +77,7 @@ const checkStatus = () => {
 			links: {},
 			strings: {},
 			captcha: {},
+			cloudflare_turnstile: {},
 			defaults: {},
 			features: {},
 			meta: {},
@@ -85,7 +89,10 @@ const checkStatus = () => {
 			offramp: {},
 			user_payments: {},
 			dust: {},
-			google_oauth: {}
+			google_oauth: {},
+			auto_deposit: {},
+			auto_withdrawal: {},
+			force_two_factor_authentication_withdrawal: {}
 		},
 		email: {}
 	};
@@ -94,6 +101,7 @@ const checkStatus = () => {
 		security: {},
 		accounts: {},
 		captcha: {},
+		cloudflare_turnstile: {},
 		emails: {},
 		smtp: {}
 	};
@@ -127,9 +135,30 @@ const checkStatus = () => {
 				}
 				secrets = status.secrets;
 				configuration.kit = status.kit;
-				configuration.email = status.email;
+
+				// Sync missing email template keys from static files into status.email
+				try {
+					const staticEmailTemplates = loadStaticEmailTemplates();
+					const { updatedEmails, changed } = mergeStatusEmailsWithStatic(status.email || {}, staticEmailTemplates);
+					if (changed) {
+						configuration.email = updatedEmails;
+						// Persist the update so migrations are not required for future runs
+						Status.update(
+							{ email: updatedEmails },
+							{ where: { id: status.id } }
+						);
+						loggerInit.info('init/checkStatus/emailSync applied missing email templates from static files');
+					} else {
+						configuration.email = status.email;
+					}
+				} catch (e) {
+					loggerInit.error('init/checkStatus/emailSync error', e.message);
+					configuration.email = status.email;
+				}
 
 				status.constants.fee_markups = status.kit.coin_customizations;
+				status.constants.auto_deposit = status.kit.auto_deposit;
+				status.constants.auto_withdrawal = status.kit.auto_withdrawal;
 				return all([
 					checkActivation(
 						status.name,
@@ -204,6 +233,54 @@ const checkStatus = () => {
 			const endpointDescriptions = extractEndpointDescriptions(swaggerObj);
 			setEndpoints(endpoints);
 			setPermissionDescription(endpointDescriptions);
+
+			// Sync: ensure admin role has all admin endpoints from swagger
+			try {
+				const adminEndpointsList = [];
+				if (swaggerObj && swaggerObj.paths) {
+					for (const [p, methods] of Object.entries(swaggerObj.paths)) {
+						if (p.startsWith('/admin')) {
+							for (const [m, details] of Object.entries(methods)) {
+								if (!m.startsWith('x-')) {
+									adminEndpointsList.push(`${p}:${m.toLowerCase()}`);
+								}
+							}
+						}
+					}
+				}
+
+				const adminRole = roles.find((r) => r.role_name === 'admin');
+				if (adminRole) {
+					const existingPermissions = Array.isArray(adminRole.permissions) ? adminRole.permissions : [];
+					const missingPermissions = adminEndpointsList.filter((ep) => !existingPermissions.includes(ep));
+
+					// Ensure required admin configs exist based on constants configuration.kit and secrets keys
+					const configKeys = Array.isArray(KIT_CONFIG_KEYS) ? KIT_CONFIG_KEYS : [];
+					const secretKeys = Array.isArray(KIT_SECRETS_KEYS) ? KIT_SECRETS_KEYS : [];
+					const requiredAdminConfigs = Array.from(new Set([...configKeys, ...secretKeys]));
+					const existingConfigs = Array.isArray(adminRole.configs) ? adminRole.configs : [];
+					const missingConfigs = requiredAdminConfigs.filter((c) => !existingConfigs.includes(c));
+
+					let changed = false;
+					if (missingPermissions.length > 0) {
+						adminRole.set('permissions', [...existingPermissions, ...missingPermissions]);
+						loggerInit.info('init/checkStatus/permissions', `added ${missingPermissions.length} new admin permissions`);
+						changed = true;
+					}
+
+					if (missingConfigs.length > 0) {
+						adminRole.set('configs', [...existingConfigs, ...missingConfigs]);
+						loggerInit.info('init/checkStatus/configs', `added ${missingConfigs.length} new admin configs`);
+						changed = true;
+					}
+
+					if (changed) {
+						await adminRole.save();
+					}
+				}
+			} catch (e) {
+				loggerInit.error('init/checkStatus/permissions sync error', e.message);
+			}
 
 			configuration.transaction_limits = transactionLimits;
 			configuration.roles = roles;
@@ -462,6 +539,55 @@ const extractEndpointDescriptions = (swaggerObj) => {
 	}
 
 	return descriptions;
+};
+
+// Loads static email templates from server/mail/strings/*.json
+function loadStaticEmailTemplates() {
+	const stringsDir = path.join(__dirname, 'mail', 'strings');
+	const result = {};
+
+	try {
+		const files = fs.readdirSync(stringsDir).filter((f) => f.endsWith('.json'));
+		for (const file of files) {
+			try {
+				const fullPath = path.join(stringsDir, file);
+				const raw = fs.readFileSync(fullPath, 'utf8');
+				const parsed = JSON.parse(raw);
+				const lang = Object.keys(parsed)[0];
+				if (lang && parsed[lang] && typeof parsed[lang] === 'object') {
+					result[lang] = parsed[lang];
+				}
+			} catch (e) {
+				loggerInit.error('init/loadStaticEmailTemplates read/parse error', `${file} ${e.message}`);
+			}
+		}
+	} catch (e) {
+		loggerInit.error('init/loadStaticEmailTemplates readdir error', e.message);
+	}
+	return result;
+}
+
+// Merges missing keys from static templates into existing status emails without overriding existing keys
+function mergeStatusEmailsWithStatic(existingEmails = {}, staticTemplates = {}) {
+	const updatedEmails = { ...existingEmails };
+	let changed = false;
+
+	for (const lang of Object.keys(existingEmails)) {
+		const current = { ...(existingEmails[lang] || {}) };
+		const staticForLang = staticTemplates[lang] || staticTemplates['en'] || {};
+
+		for (const key of Object.keys(staticForLang)) {
+			if (!Object.prototype.hasOwnProperty.call(current, key)) {
+				loggerInit.info('init/emailSync/missing_template', `lang=${lang} key=${key}`);
+				current[key] = staticForLang[key];
+				changed = true;
+			}
+		}
+
+		updatedEmails[lang] = current;
+	}
+
+	return { updatedEmails, changed };
 }
 
 

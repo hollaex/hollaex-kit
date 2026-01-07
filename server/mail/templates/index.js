@@ -119,6 +119,13 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{link\}/g, `${domain}/confirm-change-password/${data.code}`);
 
 	}
+	else if (type === MAILTYPE.CHANGE_PASSWORD_CODE) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{ip\}/g, data.ip || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{confirmation_code\}/g, data.code);
+		html = html.replace(/\$\{freeze_account_link\}/g, data.freeze_account_link || `${domain}/confirm-login?token=${data.code}&prompt=false&freeze_account=true`);
+	}
 	else if (type === MAILTYPE.PASSWORD_CHANGED) { // ok
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
@@ -498,6 +505,11 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.USER_DELETED) {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+	}
+	else if (type === MAILTYPE.SUBACCOUNT_REMOVED) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{sub_email\}/g, data.sub_email || '');
 	}
 	else if (type === MAILTYPE.OTP_DISABLED) {
 		html = html.replace(/\$\{time\}/g, data.time || '');

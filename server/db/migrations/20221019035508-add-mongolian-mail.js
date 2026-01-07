@@ -8,8 +8,13 @@ module.exports = {
 	async up(queryInterface) {
 		await queryInterface.sequelize.query(
 			`UPDATE public."${TABLE}"
-      SET ${COLUMN} = ${COLUMN} || '${mongolian}'
-      `);
+				SET ${COLUMN} = ${COLUMN} || CAST(:mongolian AS jsonb)`,
+				{
+					replacements: {
+						mongolian
+					}
+				}
+			);
 	},
 
 	down: () => {

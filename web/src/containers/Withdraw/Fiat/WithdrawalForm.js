@@ -217,10 +217,27 @@ class Index extends Component {
 			router,
 			user: { id_data = {} } = {},
 			banks,
+			ultimate_fiat,
 		} = this.props;
 
 		const is_verified = id_data.status === 3;
 		const has_verified_bank_account = !!banks.length;
+
+		const goToVerification = () => {
+			// Be explicit about which verification step to open.
+			// Also include the legacy token (without a key) for backward-compat.
+			if (!is_verified) {
+				return router.push('/verification?identity&initial_tab=kyc');
+			}
+
+			if (!has_verified_bank_account) {
+				return ultimate_fiat
+					? router.push(
+							'/verification?payment-accounts&initial_tab=user_payments'
+					  )
+					: router.push('/verification?banks&initial_tab=bank');
+			}
+		};
 
 		return (
 			<Fragment>
@@ -228,7 +245,7 @@ class Index extends Component {
 					<Button
 						label={STRINGS['PROCEED']}
 						stringId="PROCEED"
-						onClick={() => router.push('/verification?banks')}
+						onClick={goToVerification}
 						className="mb-3"
 					/>
 				)}

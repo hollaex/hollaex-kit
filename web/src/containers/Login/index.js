@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { SubmissionError, change } from 'redux-form';
+import { SubmissionError, change, stopSubmit, reset } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
@@ -13,7 +13,7 @@ import {
 	setLogoutMessage,
 	performGoogleLogin,
 } from 'actions/authAction';
-import LoginForm from './LoginForm';
+import LoginForm, { FORM_NAME } from './LoginForm';
 import {
 	Dialog,
 	OtpForm,
@@ -28,6 +28,7 @@ import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import GoogleOAuthLogin from 'utils/googleOAuth';
+import CloudflareTurnstile from 'components/CloudflareTurnstile';
 
 let errorTimeOut = null;
 
@@ -57,6 +58,8 @@ class Login extends Component {
 		termsDialogIsOpen: false,
 		depositDialogIsOpen: false,
 		token: '',
+		turnstileNonce: 0,
+		captchaToken: '',
 	};
 
 	componentDidMount() {
@@ -92,6 +95,15 @@ class Login extends Component {
 		window.location.href = `https://${url}`;
 	};
 
+	resetCaptcha = () => {
+		// Clear the stored captcha token and remount the Turnstile widget to force a fresh token
+		this.props.change(FORM_NAME, 'captcha', '');
+		this.setState({ captchaToken: '' });
+		this.setState((prevState) => ({
+			turnstileNonce: (prevState.turnstileNonce || 0) + 1,
+		}));
+	};
+
 	getServiceParam = () => {
 		let service = '';
 		if (
@@ -120,6 +132,13 @@ class Login extends Component {
 	// };
 
 	onSubmitLogin = (values) => {
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+		if (turnstileEnabled && !values?.captcha) {
+			throw new SubmissionError({ _error: STRINGS['INVALID_CAPTCHA'] });
+		}
+
 		const service = this.getServiceParam();
 		if (service) {
 			values.service = service;
@@ -146,9 +165,17 @@ class Login extends Component {
 				let error = {};
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
-					this.setState({ values, otpDialogIsOpen: true });
+					// A POST /login was made, always refresh captcha token for the next request
+					this.resetCaptcha();
+					// Ensure OTP form opens in a clean state (no stale error message)
+					this.props.reset('OtpForm');
+					this.props.stopSubmit('OtpForm', {});
+					const { captcha, ...rest } = values || {};
+					this.setState({ values: rest, otpDialogIsOpen: true });
 					error._error = STRINGS['VALIDATIONS.OTP_LOGIN'];
 				} else {
+					// For any non-OTP error, force a fresh Turnstile token for the next attempt
+					this.resetCaptcha();
 					if (_error === 'User is not activated') {
 						error._error = STRINGS['VALIDATIONS.FROZEN_ACCOUNT'];
 					} else {
@@ -168,7 +195,10 @@ class Login extends Component {
 
 	onSubmitLoginOtp = (values) => {
 		return performLogin(
-			Object.assign({ otp_code: values.otp_code }, this.state.values)
+			Object.assign(
+				{ otp_code: values.otp_code, captcha: this.state.captchaToken },
+				this.state.values
+			)
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
@@ -183,7 +213,54 @@ class Login extends Component {
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
-			.catch(errorHandler);
+			.catch((err) => {
+				const data = err?.response?.data || {};
+				const code = data?.code;
+				const _error = data?.message || err?.message;
+				const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+					?.site_key;
+				const turnstileEnabled =
+					!!turnstileSiteKey && turnstileSiteKey !== 'null';
+
+				// A POST /login was made, always refresh captcha token for the next request
+				this.resetCaptcha();
+
+				// Wrong OTP: keep the OTP dialog open and show the error there.
+				// (Do not close the dialog for code 52.)
+				if (Number(code) === 52) {
+					return errorHandler(err);
+				}
+
+				// If credentials are wrong (even if OTP was correct), take user back to login form.
+				const credentialErrorCodes = new Set([22, 23, 24, 25, 26, 27]);
+				const isCaptchaError =
+					typeof _error === 'string' &&
+					_error.toLowerCase().includes('captcha');
+
+				if (credentialErrorCodes.has(Number(code)) || isCaptchaError) {
+					this.setState({ otpDialogIsOpen: false, values: {} });
+					// Clear OTP inputs + login password field so user can re-enter safely
+					this.props.reset('OtpForm');
+					this.props.stopSubmit('OtpForm', {});
+					this.props.change(FORM_NAME, 'password', '');
+					this.resetCaptcha();
+					this.props.stopSubmit(FORM_NAME, { _error });
+					throw new SubmissionError({ _error });
+				}
+
+				// When Turnstile is enabled, tokens are effectively single-use. Any server error
+				// during OTP submit should force a fresh captcha token for the next attempt.
+				if (turnstileEnabled) {
+					this.setState({ otpDialogIsOpen: false });
+					this.props.reset('OtpForm');
+					this.props.stopSubmit('OtpForm', {});
+					this.resetCaptcha();
+					this.props.stopSubmit(FORM_NAME, { _error });
+					throw new SubmissionError({ _error });
+				}
+
+				return errorHandler(err);
+			});
 	};
 
 	onAcceptTerms = () => {
@@ -195,6 +272,8 @@ class Login extends Component {
 
 	onCloseDialog = () => {
 		this.setState({ otpDialogIsOpen: false });
+		this.props.reset('OtpForm');
+		this.props.stopSubmit('OtpForm', {});
 	};
 
 	onCloseLogoutDialog = () => {
@@ -251,6 +330,8 @@ class Login extends Component {
 			icons: ICONS,
 		} = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
+		const turnstileSiteKey = constants?.cloudflare_turnstile?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -292,7 +373,24 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						<LoginForm
+							onSubmit={this.onSubmitLogin}
+							theme={activeTheme}
+							turnstileEnabled={turnstileEnabled}
+							extraContent={
+								turnstileEnabled ? (
+									<CloudflareTurnstile
+										key={`turnstile-${this.state.turnstileNonce}`}
+										siteKey={turnstileSiteKey}
+										theme={activeTheme}
+										onToken={(token) => {
+											this.setState({ captchaToken: token });
+											this.props.change(FORM_NAME, 'captcha', token);
+										}}
+									/>
+								) : null
+							}
+						/>
 						{isMobile && <BottomLink />}
 					</div>
 					{!!constants?.google_oauth?.client_id && (
@@ -349,6 +447,8 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch),
 	change: bindActionCreators(change, dispatch),
+	stopSubmit: bindActionCreators(stopSubmit, dispatch),
+	reset: bindActionCreators(reset, dispatch),
 	setPricesAndAssetPending: bindActionCreators(
 		setPricesAndAssetPending,
 		dispatch

@@ -12,6 +12,7 @@ import STRINGS from 'config/localizedStrings';
 export const FORM_NAME = 'LoginForm';
 
 const Form = (props) => {
+	const { turnstileEnabled } = props;
 	const FormFields = {
 		email: {
 			type: 'email',
@@ -27,7 +28,15 @@ const Form = (props) => {
 			fullWidth: true,
 			label: STRINGS['FORM_FIELDS.PASSWORD_LABEL'],
 			placeholder: STRINGS['FORM_FIELDS.PASSWORD_PLACEHOLDER'],
-		}
+		},
+		...(turnstileEnabled
+			? {
+					captcha: {
+						type: 'hidden',
+						validate: [required],
+					},
+			  }
+			: {}),
 	};
 
 	return (

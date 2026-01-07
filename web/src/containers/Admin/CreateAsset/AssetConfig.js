@@ -277,32 +277,36 @@ const AssetConfig = (props) => {
 							</Form.Item>
 						</div>
 					) : null}
-					<div className="sub-title">
-						Contract(
-						<a href={CONTACT_DESCRIPTION_LINK}>
-							<span className="link">what's this?</span>
-						</a>
-						)
-					</div>
-					<Form.Item
-						name="contract"
-						rules={[
-							{
-								required: true,
-								message: 'This field is required!',
-							},
-						]}
-					>
-						<Input
-							enterButton="Search"
-							name="contract"
-							onChange={(e) => {
-								handleMetaChange(e.target.value, 'contract');
-							}}
-							onSearch={handleSearch}
-							value={coinFormData.meta ? coinFormData.meta.contract : ''}
-						/>
-					</Form.Item>
+					{coinFormData.network !== 'other' ? (
+						<Fragment>
+							<div className="sub-title">
+								Contract(
+								<a href={CONTACT_DESCRIPTION_LINK}>
+									<span className="link">what's this?</span>
+								</a>
+								)
+							</div>
+							<Form.Item
+								name="contract"
+								rules={[
+									{
+										required: true,
+										message: 'This field is required!',
+									},
+								]}
+							>
+								<Input
+									enterButton="Search"
+									name="contract"
+									onChange={(e) => {
+										handleMetaChange(e.target.value, 'contract');
+									}}
+									onSearch={handleSearch}
+									value={coinFormData.meta ? coinFormData.meta.contract : ''}
+								/>
+							</Form.Item>
+						</Fragment>
+					) : null}
 				</div>
 			);
 		}

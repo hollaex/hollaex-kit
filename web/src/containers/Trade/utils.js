@@ -98,6 +98,8 @@ const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
 export const getKitInfo = (state) => state.app.info;
 export const getPinnedMarkets = (state) => state.app.pinned_markets;
+const getDisplayCurrency = (state) =>
+	state.user.settings.interface.display_currency;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -271,8 +273,17 @@ export const unsortedMarketsSelector = createSelector(
 		getCoins,
 		getPrices,
 		getNativeCurrency,
+		getDisplayCurrency,
 	],
-	(pairKeys, pairs, tickers, coins, prices, native_currency) => {
+	(
+		pairKeys,
+		pairs,
+		tickers,
+		coins,
+		prices,
+		native_currency,
+		display_currency
+	) => {
 		const markets = pairKeys.map((key) => {
 			const {
 				pair_base,
@@ -288,7 +299,8 @@ export const unsortedMarketsSelector = createSelector(
 			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 			const { volume = 0, open, close } = tickers[key] || {};
 			const { [pair_base]: price = 0 } = prices;
-			const baseCoin = coins[native_currency] || DEFAULT_COIN_DATA;
+			const baseCoin =
+				coins[display_currency || native_currency] ?? DEFAULT_COIN_DATA;
 
 			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
 

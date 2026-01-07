@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
 const cors = require('cors');
-const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
+const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('../config/middleware');
 const routes = require('./routes');
 const { Plugin } = require('../db/models');
 const path = require('path');
@@ -174,6 +174,9 @@ checkStatus()
 		app.use(cors());
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
+		if (process.env.NODE_ENV !== 'test') {
+			rateLimitMiddleware(app);
+		}
 		helmetMiddleware(app);
 		app.use(express.urlencoded({ extended: true }));
 		app.use(express.json({ limit: '20mb' }));

@@ -81,7 +81,7 @@ export const getFormat = (min = 0, fullFormat, amount) => {
 
 export const countDecimals = (val) => {
 	if (Math.floor(val) === val) return 0;
-	return val.toString().split('.')[1].length || 0;
+	return val?.toString()?.split('.')[1]?.length || 0;
 };
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {

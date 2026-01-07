@@ -2,6 +2,7 @@
 
 const { loggerFiat } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { WITHDRAWAL_DISABLED } = require('../../messages');
 
 const createDepositRequest = (req, res) => {
 	loggerFiat.verbose(
@@ -126,6 +127,10 @@ const createWithdrawalRequest = (req, res) => {
 		.then(async (user) => {
 			if (!user) {
 				throw new Error('User not found');
+			}
+
+			if (user.is_subaccount) {
+				throw new Error(WITHDRAWAL_DISABLED);
 			}
 
 			const bank = user.bank_account.find((bank) => {

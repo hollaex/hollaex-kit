@@ -139,6 +139,7 @@ const INITIAL_STATE = {
 	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT,
 	affiliation: {},
 	is_hap: false,
+	is_subaccount: false,
 	meta: {},
 	configs: [],
 	permissions: [],
@@ -179,6 +180,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				configs,
 				permissions,
 				restrictions,
+				is_subaccount,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -222,6 +224,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				configs,
 				permissions,
 				restrictions,
+				is_subaccount,
 			};
 		}
 		case 'SET_USER_DATA': {

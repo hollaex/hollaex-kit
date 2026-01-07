@@ -31,6 +31,227 @@
 	color: $colors-deactivate;
 }
 
+.account-share-tab {
+	.settings-form {
+		.icon_title-svg {
+			width: 5rem;
+			height: 4rem;
+
+			svg {
+				width: 4rem;
+				height: 4rem;
+			}
+		}
+
+		.danger-zone {
+			.danger-zone-title {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+		}
+	}
+}
+
+.account-share-warning-dialog {
+	.ReactModal__Content {
+		max-width: 40rem;
+
+		.icon_title-wrapper {
+			margin-top: 0;
+		}
+
+		.account-share-warning-box {
+			background-color: $app-light-background;
+			padding: 4%;
+
+			.warning-text {
+				color: $medium-intensity;
+				font-size: 14px;
+			}
+		}
+
+		.ant-checkbox-wrapper {
+			.ant-checkbox {
+				.ant-checkbox-inner {
+					background-color: $base_footer_text;
+					border-color: $app-bar-background-color;
+				}
+
+				&.ant-checkbox-checked .ant-checkbox-inner {
+					background-color: $base_footer_text;
+					border-color: $app-bar-background-color;
+
+					&::after {
+						border-color: $app-bar-background-color;
+					}
+				}
+
+				&:hover .ant-checkbox-inner,
+				.ant-checkbox-input:focus + .ant-checkbox-inner {
+					border-color: $app-bar-background-color !important;
+					box-shadow: none !important;
+					outline: none !important;
+				}
+
+				&.ant-checkbox-checked:not(.ant-checkbox-disabled):hover
+					.ant-checkbox-inner {
+					border-color: $app-bar-background-color !important;
+					background-color: $base_footer_text !important;
+					box-shadow: none !important;
+				}
+
+				.ant-checkbox-input:focus {
+					outline: none !important;
+					box-shadow: none !important;
+				}
+			}
+		}
+	}
+}
+
+.account-share-info-dialog {
+	.ReactModal__Content {
+		width: 37rem;
+
+		.account-share-info {
+			max-width: 32rem;
+
+			.icon_title-wrapper {
+				flex-direction: inherit;
+			}
+
+			.icon_title-svg {
+				width: 3rem;
+				height: 3rem;
+
+				svg {
+					width: 3rem;
+					height: 3rem;
+				}
+			}
+
+			.account-info-name-tooltip {
+				svg {
+					height: 12px;
+					width: auto;
+					vertical-align: bottom;
+				}
+			}
+
+			.box-header {
+				color: $form-color-underline-focus;
+
+				.icon_title-wrapper {
+					justify-content: inherit;
+					margin-top: 0px;
+				}
+
+				.header-text {
+					font-size: 3rem;
+				}
+			}
+
+			.ant-input {
+				background-color: transparent;
+				color: $form-color-underline-focus;
+				border: 1px solid $form-color-underline-focus;
+			}
+
+			.ant-input:focus,
+			.ant-input-focused,
+			.ant-input:hover {
+				border-color: $form-color-underline-focus;
+				box-shadow: none !important;
+			}
+		}
+	}
+}
+
+.account-tab-options-tooltip {
+	max-width: 22.7rem;
+	font-size: 10px;
+
+	.rc-tooltip-content {
+		.rc-tooltip-arrow {
+			background-color: transparent;
+			border-right-color: $chat-message-background-even;
+		}
+
+		.rc-tooltip-inner {
+			font-size: 11px;
+			background-color: $chat-message-background-even;
+			color: $form-color-underline-focus;
+			padding: 1% 4%;
+			border: transparent;
+		}
+	}
+}
+
+.account-share-verification-dialog {
+	.ReactModal__Content {
+		.email-verification-wrapper {
+			width: 37rem;
+		}
+
+		.verify-code-wrapper {
+			max-width: 36rem;
+
+			.timer-divider {
+				width: 100%;
+				height: 2px;
+				background-color: $colors-black;
+			}
+
+			.timer-text {
+				font-size: 1.2rem;
+			}
+
+			.verification-code-title {
+				font-size: 2.2rem;
+			}
+
+			.expired-message-wrapper {
+				.expired-message {
+					margin: 1.5rem 0;
+				}
+			}
+
+			.verification-code-fields {
+				.verification-field-divider {
+					width: 1rem;
+					height: 2px;
+					background-color: $colors-black;
+					margin-right: 1rem;
+				}
+
+				.verification-code-input {
+					width: 3.5rem;
+					height: 3.5rem;
+					text-align: center;
+					font-size: 1.8rem;
+					border-radius: 5px;
+					margin-right: 0.5rem;
+					background-color: $app-background-color;
+					border: 1px solid $colors-border;
+				}
+
+				.verification-code-input:focus {
+					border: 1px solid $colors-black;
+					box-shadow: none;
+					outline: none;
+				}
+			}
+
+			.verification-code-error {
+				display: flex;
+				justify-content: center;
+				color: $sell;
+			}
+		}
+	}
+}
+
 .settings_container {
 	.icon_title-wrapper {
 		flex-direction: row;
@@ -62,9 +283,490 @@
 					margin: 0;
 				}
 			}
+
+			.sub-account-system-container {
+				.icon_title-svg {
+					width: 3rem;
+					height: 3rem;
+
+					svg {
+						width: 2rem;
+						height: 3rem;
+					}
+				}
+
+				.sub-account-button-wrapper {
+					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
+					gap: 0.5rem;
+				}
+
+				.divider {
+					height: 1rem;
+					border-left: 1px solid $colors-black;
+					margin: 0 1rem;
+				}
+
+				.sub-account-table-wrapper {
+					margin-top: 2rem;
+					overflow-x: auto;
+
+					.table_container {
+						min-width: 600px;
+					}
+				}
+
+				.active-indicator {
+					display: flex;
+					align-items: center;
+					gap: 1%;
+
+					.green-dot {
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						background-color: $colors-notifications-green;
+						display: inline-block;
+					}
+				}
+
+				.inactive-indicator {
+					display: flex;
+					align-items: center;
+					gap: 1%;
+					color: var(--labels_secondary-inactive-label);
+
+					.red-dot {
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						background-color: $colors-notifications-red;
+						display: inline-block;
+					}
+				}
+
+				.switch-account-link {
+					color: $colors-notifications-blue !important;
+					font-size: 0.875rem;
+					padding: 0 !important;
+					height: auto !important;
+					text-decoration: underline;
+
+					&:hover {
+						opacity: 0.8;
+					}
+				}
+
+				.color-code-badge {
+					width: 20px;
+					height: 20px;
+					border-radius: 3px;
+					border: 1px solid $colors-border;
+					flex-shrink: 0;
+				}
+
+				.transfer-btn {
+					color: $colors-notifications-blue !important;
+					font-size: 12px;
+					height: fit-content !important;
+					padding: 0.25rem 0.75rem !important;
+					white-space: nowrap;
+					transition: all 0.3s ease;
+					border: 1px solid $colors-notifications-blue !important;
+					border-radius: 4px;
+
+					&:hover,
+					&:focus {
+						background-color: $colors-notifications-blue !important;
+						color: $colors-main-black !important;
+						border-color: $colors-notifications-blue !important;
+						opacity: 0.9;
+					}
+
+					&:active {
+						transform: scale(0.98);
+					}
+				}
+			}
+
+			.account-share-table {
+				overflow-x: auto;
+				.account-sharing-btn {
+					width: max-content;
+					background: transparent !important;
+					border: 1px solid $colors-notifications-blue;
+					color: $colors-notifications-blue;
+					font-size: 1rem;
+				}
+				.share-inactive {
+					opacity: 0.5;
+				}
+				.sharing-status-active {
+					width: 8px;
+					height: 8px;
+					background-color: $colors-notifications-red;
+					border-radius: 50%;
+					display: inline-block;
+				}
+				.sharing-status-inactive {
+					color: $colors-notification-pending;
+					font-weight: bolder;
+					font-size: 1.2rem;
+				}
+				.account-no-data-wrapper {
+					margin-bottom: 5%;
+
+					.icon_title-svg {
+						height: 4rem;
+
+						svg {
+							width: 3rem;
+							height: 3rem;
+						}
+					}
+				}
+			}
 		}
+
 		.holla-button {
 			width: 300px;
+		}
+	}
+}
+
+.create-sub-account-popup {
+	.ReactModal__Content {
+		width: 35rem;
+		max-width: 95vw;
+		max-height: 90vh;
+		overflow-y: auto;
+
+		.create-sub-account-wrapper {
+			.create-sub-account-icon {
+				text-align: center;
+				width: 3rem;
+				height: 4rem;
+
+				svg {
+					width: 3rem;
+					height: 4rem;
+				}
+			}
+
+			.create-sub-account-title {
+				font-size: 2rem;
+				font-weight: 600;
+			}
+
+			.create-sub-account-desc {
+				font-size: 1.1rem;
+				color: $colors-main-black;
+			}
+
+			.ant-input,
+			.ant-input-password,
+			.ant-select {
+				border-radius: 4px;
+				background-color: transparent !important;
+				border-color: $colors-border;
+				color: $colors-main-black;
+
+				&:hover,
+				&:focus {
+					border-color: $colors-notifications-blue;
+					background-color: transparent !important;
+				}
+			}
+
+			.ant-select-selector {
+				background-color: transparent !important;
+				border-color: $colors-border !important;
+				color: $colors-main-black !important;
+
+				&:hover {
+					border-color: $colors-border !important;
+				}
+			}
+
+			.ant-input-affix-wrapper {
+				background-color: transparent !important;
+				border-color: $colors-border;
+
+				&:hover,
+				&:focus {
+					border-color: $colors-border;
+					background-color: transparent !important;
+				}
+			}
+
+			.ant-input-suffix,
+			.ant-select-arrow {
+				svg {
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+
+			.color-picker-wrapper {
+				.color_picker-container {
+					width: 100%;
+
+					.picker-wrapper {
+						display: flex;
+						align-items: center;
+						gap: 1rem;
+						padding: 0.8rem 1.2rem;
+						border: 1px solid $colors-border;
+						border-radius: 4px;
+						background-color: transparent !important;
+						cursor: pointer;
+						transition: border-color 0.3s ease;
+
+						&:hover {
+							border-color: $colors-notifications-blue;
+						}
+
+						.color-picker {
+							width: 2rem;
+							height: 2rem;
+							border-radius: 50%;
+							border: 2px solid $colors-border;
+							flex-shrink: 0;
+							box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+						}
+
+						div:last-child {
+							font-size: 1.4rem;
+							color: $colors-main-black;
+							text-transform: uppercase;
+							user-select: none;
+						}
+					}
+				}
+			}
+
+			.create-sub-account-button-wrapper {
+				margin-top: 3rem;
+				display: flex;
+				gap: 5%;
+				width: 100%;
+				justify-content: space-between;
+
+				.create-sub-account-next-btn,
+				.create-sub-account-cancel-btn {
+					width: 50%;
+					background-color: $link;
+					border-color: $link;
+					color: $colors-main-black;
+				}
+			}
+		}
+	}
+}
+
+.transfer-funds-popup {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.transfer-funds-wrapper {
+			.transfer-funds-icon {
+				text-align: center;
+				margin-bottom: 1rem;
+			}
+
+			.transfer-funds-title {
+				font-size: 1.6rem;
+				font-weight: 600;
+				margin-bottom: 0.5rem;
+			}
+
+			.transfer-funds-desc {
+				font-size: 1.1rem;
+				color: $colors-main-black;
+			}
+
+			.ant-input,
+			.ant-input-password,
+			.ant-select {
+				border-radius: 4px;
+				background-color: transparent !important;
+				border-color: $colors-border;
+				color: $colors-main-black;
+
+				&:hover,
+				&:focus {
+					border-color: $colors-notifications-blue;
+					background-color: transparent !important;
+				}
+			}
+
+			.ant-select-selector {
+				background-color: transparent !important;
+				border-color: $colors-border !important;
+				color: $colors-main-black !important;
+
+				&:hover {
+					border-color: $colors-border !important;
+				}
+			}
+
+			.ant-input-affix-wrapper {
+				background-color: transparent !important;
+				border-color: $colors-border;
+
+				&:hover,
+				&:focus {
+					border-color: $colors-border;
+					background-color: transparent !important;
+				}
+			}
+
+			.ant-input-suffix,
+			.ant-select-arrow {
+				svg {
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+
+			.transfer-asset-field {
+				.ant-select-selection-item {
+					display: flex;
+					align-items: center;
+					gap: 2%;
+
+					.coin-icon {
+						position: relative;
+						top: 10%;
+					}
+				}
+			}
+
+			.transfer-account-input {
+				.ant-input-prefix {
+					display: flex;
+					align-items: center;
+				}
+
+				.color-code-badge {
+					width: 20px;
+					height: 20px;
+					border-radius: 25px;
+					border: 1px solid $colors-border;
+				}
+			}
+
+			.transfer-arrow-container {
+				display: flex;
+				align-items: center;
+				margin: 3%;
+
+				.transfer-arrow-icon {
+					font-size: 1.5rem;
+					color: $colors-main-black;
+				}
+			}
+
+			.transfer-funds-button-wrapper {
+				margin-top: 3rem;
+				display: flex;
+				gap: 5%;
+				width: 100%;
+				justify-content: space-between;
+
+				.transfer-funds-submit-btn,
+				.transfer-funds-cancel-btn {
+					width: 50%;
+					background-color: $link;
+					border-color: $link;
+					color: $colors-main-black;
+				}
+			}
+
+			.secondary-text {
+				font-size: 0.9rem;
+				color: $colors-deactivate;
+			}
+		}
+	}
+}
+
+.transfer-select-dropdown {
+	.ant-select-item-option-content {
+		display: flex;
+		align-items: center;
+		gap: 2%;
+
+		.coin-icon {
+			position: relative;
+			top: 10%;
+		}
+	}
+
+	.transfer-asset-option {
+		.ant-select-item-option-content {
+			width: 100%;
+		}
+
+		.transfer-asset-balance {
+			font-size: 0.9rem;
+			white-space: nowrap;
+			margin-left: auto;
+		}
+	}
+}
+
+.transfer-success-popup {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.transfer-success-wrapper {
+			padding-top: 5%;
+
+			.transfer-success-title {
+				font-size: 1.9rem;
+				font-weight: 600;
+				margin-bottom: 1.5rem;
+				text-align: center;
+			}
+
+			.transfer-success-desc {
+				padding-top: 2%;
+				font-size: 1.2rem;
+				color: $colors-main-black;
+				text-align: center;
+				.coin-icon {
+					position: relative;
+					top: 4px;
+				}
+			}
+
+			.transfer-success-button-wrapper {
+				display: flex;
+				gap: 1rem;
+				width: 100%;
+				justify-content: center;
+				margin-top: 2rem;
+
+				.transfer-success-okay-btn,
+				.transfer-success-history-btn {
+					flex: 1;
+					background-color: $link;
+					border-color: $link;
+					color: $colors-main-black;
+					height: 2.5rem;
+					font-weight: 500;
+				}
+
+				.transfer-success-history-btn {
+					background-color: transparent;
+					border: 1px solid $link;
+					color: $link;
+				}
+			}
 		}
 	}
 }
@@ -131,6 +833,154 @@
 	}
 }
 
+.deactivate-account-popup,
+.deactivated-success-popup,
+.remaining-funds-popup,
+.account-share-success-dialog,
+.account-share-login-dialog {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.deactivate-account-wrapper,
+		.deactivated-success-wrapper,
+		.remaining-funds-wrapper,
+		.account-share-success-wrapper,
+		.account-share-login-wrapper {
+			.sharing-complete-title-wrapper {
+				display: flex;
+				gap: 1rem;
+				align-items: flex-end;
+			}
+
+			.deactivate-account-icon,
+			.deactivated-success-icon,
+			.account-share-icon {
+				svg {
+					width: 5rem;
+					height: 5rem;
+				}
+			}
+
+			.deactivate-account-title,
+			.deactivated-success-title,
+			.account-share-title,
+			.account-share-title {
+				font-size: 1.9rem;
+				font-weight: 600;
+			}
+
+			.deactivate-account-info-box {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+
+				.color-icon {
+					width: 1.5rem;
+					height: 1.5rem;
+					border-radius: 50%;
+				}
+			}
+
+			.deactivate-account-warning {
+				padding: 2%;
+				background-color: $app-background-color;
+				color: $colors-notification-pending;
+			}
+
+			.deactivate-account-button-wrapper,
+			.deactivated-success-button-wrapper,
+			.remaining-funds-button-wrapper {
+				display: flex;
+
+				button {
+					background-color: $link !important;
+					color: $colors-main-black;
+				}
+			}
+
+			.deactivate-account-button-wrapper {
+				gap: 2%;
+
+				.deactivate-account-cancel-btn,
+				.deactivate-account-submit-btn {
+					width: 50%;
+				}
+			}
+
+			.deactivated-success-button-wrapper {
+				justify-content: center;
+
+				.deactivated-success-btn {
+					width: 85%;
+				}
+			}
+		}
+	}
+}
+
+.remaining-funds-popup {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.remaining-funds-wrapper {
+			.remaining-funds-title {
+				font-size: 1.9rem;
+				font-weight: 600;
+				text-align: center;
+				width: 100%;
+				display: block;
+				margin-top: 1.5rem;
+			}
+
+			.remaining-funds-account-info {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1.5rem;
+
+				.color-code-badge {
+					width: 14px;
+					height: 14px;
+					border-radius: 25px;
+					border: 1px solid $colors-border;
+					margin-right: 0.5rem;
+				}
+
+				.account-email-text {
+					font-size: 1.2rem;
+					font-weight: 500;
+				}
+			}
+
+			.remaining-funds-desc {
+				text-align: center;
+			}
+
+			.remaining-funds-button-wrapper {
+				margin-top: 3rem;
+				display: flex;
+				gap: 1rem;
+				justify-content: space-between;
+
+				.remaining-funds-back-btn,
+				.remaining-funds-transfer-btn {
+					font-weight: 500;
+					width: 50%;
+				}
+
+				.remaining-funds-transfer-btn {
+					background-color: $link !important;
+					border-color: $link !important;
+					color: $colors-main-black !important;
+				}
+			}
+		}
+	}
+}
+
 @media (max-width: 1060px) {
 	.settings_container {
 		.settings-form-wrapper {
@@ -144,6 +994,13 @@
 				.field-wrapper {
 					.field-label {
 						font-size: 12px;
+					}
+				}
+
+				.sub-account-system-container {
+					.transfer-btn {
+						font-size: 11px;
+						padding: 0.2rem 0.5rem;
 					}
 				}
 			}
@@ -161,6 +1018,262 @@
 		.header_title-wrapper {
 			.action_notification-wrapper {
 				top: 30px;
+			}
+		}
+	}
+}
+
+.switch-account-popup,
+.confirm-switch-account-popup {
+	.ReactModal__Content {
+		width: 35rem;
+
+		.switch-account-wrapper,
+		.confirm-switch-wrapper {
+			.switch-account-icon,
+			.confirm-switch-icon {
+				width: 3rem;
+				height: 3rem;
+
+				svg {
+					width: 3rem;
+					height: 3rem;
+				}
+			}
+
+			.switch-account-title,
+			.confirm-switch-title {
+				font-size: 2rem;
+				font-weight: 600;
+			}
+
+			.switch-account-desc,
+			.confirm-switch-desc {
+				color: var(--labels_secondary-inactive-label);
+				font-size: 1.2rem;
+			}
+
+			.current-account-info {
+				display: flex;
+				align-items: center;
+				gap: 1.5%;
+				margin-bottom: 1.5rem;
+
+				.green-dot {
+					padding: 1.2%;
+					background: $colors-notifications-green;
+					border-radius: 50%;
+					display: inline-block;
+				}
+
+				.sub-account-badge {
+					color: $colors-black !important;
+					font-size: 1rem;
+				}
+			}
+
+			.switch-note {
+				.secondary-text {
+					font-size: 1rem;
+				}
+			}
+
+			.switch-account-field {
+				width: 100%;
+				position: relative;
+
+				.ant-select-selector {
+					background-color: transparent;
+					color: $colors-main-black !important;
+				}
+
+				.ant-select-arrow {
+					svg {
+						path {
+							fill: $colors-main-black;
+						}
+					}
+				}
+			}
+
+			.confirm-account-info {
+				.font-weight-bold {
+					font-weight: 600;
+				}
+
+				.color-code-badge {
+					padding: 3%;
+					border-radius: 50%;
+					display: inline-block;
+				}
+
+				.account-type-text {
+					font-size: 1rem;
+					margin-bottom: 0.25rem;
+				}
+			}
+
+			.switch-account-button-wrapper,
+			.confirm-switch-button-wrapper {
+				display: flex;
+				gap: 1rem;
+				margin-top: 2rem;
+				justify-content: space-between;
+
+				.switch-account-cancel-btn,
+				.confirm-switch-cancel-btn,
+				.switch-account-next-btn,
+				.confirm-switch-submit-btn {
+					width: 50%;
+					color: $colors-main-black !important;
+					height: fit-content !important;
+					white-space: nowrap;
+					transition: all 0.3s ease;
+					border: 1px solid $colors-notifications-blue !important;
+					background-color: $colors-notifications-blue !important;
+				}
+			}
+		}
+	}
+}
+
+.switch-account-dropdown {
+	height: 10rem;
+	scrollbar-width: auto;
+	scrollbar-color: $colors-black $app-background-color;
+
+	.ant-select-item-option-content {
+		.color-code-badge {
+			width: 14px;
+			height: 14px;
+			border-radius: 25px;
+			border: 1px solid $colors-border;
+			flex-shrink: 0;
+			margin-right: 0.75rem;
+		}
+	}
+}
+
+.switch-account-field {
+	.ant-select-selector {
+		.color-code-badge {
+			width: 14px;
+			height: 14px;
+			border-radius: 25px;
+			border: 1px solid $colors-border;
+			flex-shrink: 0;
+			margin-right: 0.75rem;
+		}
+	}
+}
+
+.sub-account-confirmation-popup {
+	.ReactModal__Content {
+		width: 35rem;
+	}
+
+	.sub-account-confirmation-wrapper {
+		text-align: center;
+		padding: 1rem;
+
+		.sub-account-confirmation-icon-container {
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 6rem;
+			height: 6rem;
+			border-radius: 8px;
+
+			.sub-account-confirmation-icon {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				svg {
+					height: 5rem;
+				}
+			}
+
+			.success-icon {
+				position: absolute;
+				top: 10%;
+				right: 2%;
+
+				svg {
+					width: 1.5rem;
+				}
+			}
+		}
+
+		.sub-account-confirmation-title {
+			font-size: 2rem;
+			font-weight: 600;
+			color: $colors-main-black;
+		}
+
+		.sub-account-confirmation-desc {
+			color: $colors-black;
+			margin: 0 auto;
+			font-size: 1rem;
+		}
+
+		.created-account-info-box {
+			padding: 1.5rem 1rem;
+			text-align: center;
+
+			.account-type-label {
+				font-weight: 700;
+				color: $colors-main-black;
+				letter-spacing: 0.5px;
+				line-height: 1.3;
+			}
+
+			.color-indicator-dot {
+				width: 1rem;
+				height: 1rem;
+				border-radius: 50%;
+				margin-right: 0.5rem;
+				flex-shrink: 0;
+			}
+
+			.account-details {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.25rem;
+
+				.account-email-text {
+					color: $colors-main-black;
+					font-weight: 500;
+					line-height: 1.4;
+				}
+
+				.account-label-text {
+					color: $colors-black;
+					line-height: 1.4;
+				}
+			}
+		}
+
+		.sub-account-confirmation-button-wrapper {
+			display: flex;
+			justify-content: center;
+			margin-top: 2rem;
+
+			.sub-account-confirmation-done-btn {
+				width: 100%;
+				max-width: 85%;
+				color: $colors-main-black !important;
+				background-color: $colors-notifications-blue !important;
+				text-transform: uppercase;
+				white-space: nowrap;
+				letter-spacing: 0.5px;
+				transition: all 0.3s ease;
+
+				&:hover {
+					opacity: 0.9;
+				}
 			}
 		}
 	}

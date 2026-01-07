@@ -61,6 +61,44 @@ const rateLimitMiddleware = (app) => {
 	var limiter = require('express-limiter')(app, redis);
 
 	limiter({
+		path: '/plugins/*',
+		method: 'all',
+		total: 8,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			// scope limit per plugin endpoint (without query string)
+			req.rateLimitEndpoint = `${req.baseUrl || ''}${req.path || ''}`;
+			const hasBearer = req.headers && req.headers.authorization && req.headers.authorization.indexOf('Bearer ') === 0;
+			if (hasBearer) {
+				toolsLib.security
+					.verifyBearerTokenPromise(req.headers.authorization, req.headers['x-forwarded-for'])
+					.then((decoded) => {
+						if (decoded && decoded.sub && decoded.sub.id) {
+							req.rateLimitUserId = decoded.sub.id;
+							// per-user per-endpoint key
+							opts.lookup = ['rateLimitUserId', 'rateLimitEndpoint'];
+						} else {
+							// per-IP per-endpoint key
+							opts.lookup = [req.headers['x-forwarded-for'] ? 'headers.x-forwarded-for' : 'connection.remoteAddress', 'rateLimitEndpoint'];
+						}
+						return next();
+					})
+					.catch(() => {
+						opts.lookup = [req.headers['x-forwarded-for'] ? 'headers.x-forwarded-for' : 'connection.remoteAddress', 'rateLimitEndpoint'];
+						return next();
+					});
+			} else {
+				opts.lookup = [req.headers['x-forwarded-for'] ? 'headers.x-forwarded-for' : 'connection.remoteAddress', 'rateLimitEndpoint'];
+				return next();
+			}
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', req.method, req.originalUrl || req.path);
+			return res.status(429).json({ message: 'Too many requests. Please try again later.' });
+		}
+	});
+
+	limiter({
 		path: '/v2/user/request-withdrawal',
 		method: 'post',
 		total: 10,
@@ -162,6 +200,25 @@ const rateLimitMiddleware = (app) => {
 		},
 		onRateLimited: function (req, res, next) {
 			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'change-password');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	limiter({
+		path: '/v2/user/request-email-confirmation',
+		method: 'get',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
+				opts.lookup = 'headers.authorization';
+			} else {
+				opts.lookup = 'headers.x-forwarded-for';
+			}
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'request-email-confirmation');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});

@@ -277,12 +277,18 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				if (!err.response) {
+				const reason = err?.reason || err;
+				const status = reason?.response?.status;
+
+				if (status === 401) {
 					this.props.logout(ERROR_TOKEN_EXPIRED);
-				} else if (err.response && err.response.status === 400) {
+				} else if (status === 400) {
 					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
-					const message = err.message || JSON.stringify(err);
+					const message =
+						reason?.response?.data?.message ||
+						reason?.message ||
+						JSON.stringify(reason);
 					this.props.setNotification(NOTIFICATIONS.ERROR, message);
 				}
 			})
@@ -594,9 +600,9 @@ class Container extends Component {
 						}
 					}
 					break;
-				case 'usertrade':
-					this.props.addUserTrades(data.data);
-					break;
+				// case 'usertrade':
+				// 	this.props.addUserTrades(data.data);
+				// 	break;
 				case 'wallet':
 					this.props.setBalance(data.data);
 					break;

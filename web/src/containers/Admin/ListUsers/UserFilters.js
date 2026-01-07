@@ -313,7 +313,9 @@ const UseFilters = ({
 									});
 								}
 							}}
-							getPopupContainer={(trigger) => trigger?.parentNode}
+							getPopupContainer={(trigger) =>
+								trigger?.parentNode ?? document.body
+							}
 						>
 							{Object.keys(fieldKeyValue)
 								.filter(

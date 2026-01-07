@@ -2,7 +2,8 @@
 
 let publicData = {
 	orderbook: {},
-	trade: {}
+	trade: {},
+	price: { data: {}, time: null }
 };
 
 const getPublicData = () => publicData;
@@ -10,7 +11,8 @@ const getPublicData = () => publicData;
 const resetPublicData = () => {
 	publicData = {
 		orderbook: {},
-		trade: {}
+		trade: {},
+		price: { data: {}, time: null }
 	};
 };
 
@@ -28,9 +30,22 @@ const updateTradeData = (data) => {
 	}
 };
 
+const updatePriceData = (data) => {
+	if (data.action === 'partial') {
+		publicData.price = { data: data.data, time: data.time };
+	} else if (data.action === 'update') {
+		const symbol = data.symbol;
+		if (publicData.price && publicData.price.data) {
+			publicData.price.data[symbol] = data.data;
+			publicData.price.time = data.time;
+		}
+	}
+};
+
 module.exports = {
 	getPublicData,
 	resetPublicData,
 	updateOrderbookData,
-	updateTradeData
+    updateTradeData,
+    updatePriceData
 };

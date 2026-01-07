@@ -48,6 +48,12 @@
 .preview-container {
 	padding: 1.5rem 1rem;
 }
+.admin-pairs-container .pairs-summary-table .ant-table-cell {
+	padding: 0.8% 2% !important;
+}
+.admin-pairs-container .pairs-summary-table tr {
+	height: 5rem !important;
+}
 .admin-pairs-container .preview-container .ant-breadcrumb {
 	margin: 1rem 0rem;
 }
@@ -86,6 +92,13 @@
 	justify-content: space-between;
 	padding: 0rem 1rem;
 	margin-bottom: 1rem;
+}
+.admin-pairs-container .pairs-filter-input {
+	height: 2.2rem !important;
+}
+.admin-pairs-container .pairs-filter-button {
+	height: 2.2rem !important;
+	width: 10rem;
 }
 .admin-pairs-container .coin-symbol-wrapper {
 	display: flex;

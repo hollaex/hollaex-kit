@@ -167,10 +167,10 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 				</div>
 			</HeaderSection>
 
-			<div>
+			<div className="session-table">
 				<Table
 					rowClassName="pt-2 pb-2"
-					headers={generateHeaders(onClickRevokeSession)}
+					headers={generateHeaders(onClickRevokeSession, ICONS)}
 					showHeaderNoData={true}
 					data={sessions.data}
 					rowKey={(data) => {
@@ -180,7 +180,9 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 					expandable={{
 						rowExpandable: () => true,
 						defaultExpanded: () => false,
-						expandedRowRender: (record) => <SessionData {...record} />,
+						expandedRowRender: (record) => (
+							<SessionData {...record} icons={ICONS} />
+						),
 					}}
 					handleNext={handleNext}
 					pageSize={RECORD_LIMIT / 2}

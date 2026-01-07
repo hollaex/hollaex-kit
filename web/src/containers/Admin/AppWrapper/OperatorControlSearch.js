@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, {
+	useEffect,
+	useMemo,
+	useState,
+	useCallback,
+	useRef,
+} from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -28,6 +34,7 @@ import {
 	setIsDisplayCreateOrder,
 	setIsDisplayCreateReferral,
 	setIsDisplayCreateTrade,
+	setIsEditEmail,
 	setIsEmailVerifiedUser,
 	setIsGraphicsEditMode,
 	setIsStringsEditMode,
@@ -36,6 +43,8 @@ import {
 	setSelectedOrdersTab,
 	setSelectedP2pTab,
 } from 'actions/appActions';
+import { ADMIN_TABS_PERMISSIONS, canAccessPath } from '../paths';
+import { checkRole } from 'utils/token';
 
 const OperatorControlSearch = ({
 	onHandleClose,
@@ -72,6 +81,7 @@ const OperatorControlSearch = ({
 	setIsDisplayCreateReferral = () => {},
 	setIsDisplayAddPlugin = () => {},
 	setIsActiveFilterUser = () => {},
+	setIsEditEmail = () => {},
 }) => {
 	const MAX_RECENT = 6;
 	let flashCount = 0;
@@ -81,6 +91,10 @@ const OperatorControlSearch = ({
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [openPanels, setOpenPanels] = useState({});
 	const [openInnerPanels, setOpenInnerPanels] = useState({});
+	const [hoveredCard, setHoveredCard] = useState(null);
+	const [activeChildTooltip, setActiveChildTooltip] = useState(null);
+
+	const childTooltipTimeoutRef = useRef(null);
 
 	const categories = [
 		'All',
@@ -92,12 +106,68 @@ const OperatorControlSearch = ({
 		'Operations',
 	];
 
+	const onCardMouseEnter = (cardDescription) => {
+		setHoveredCard(cardDescription);
+	};
+
+	const onCardMouseLeave = () => {
+		if (childTooltipTimeoutRef.current) {
+			clearTimeout(childTooltipTimeoutRef.current);
+			childTooltipTimeoutRef.current = null;
+		}
+		setHoveredCard(null);
+		setActiveChildTooltip(null);
+	};
+
+	const onChildTooltipChange = (isOpen, childKey) => {
+		if (childTooltipTimeoutRef.current) {
+			clearTimeout(childTooltipTimeoutRef.current);
+			childTooltipTimeoutRef.current = null;
+		}
+
+		if (isOpen) {
+			setActiveChildTooltip(childKey);
+		} else {
+			childTooltipTimeoutRef.current = setTimeout(() => {
+				setActiveChildTooltip(null);
+				childTooltipTimeoutRef.current = null;
+			}, 100);
+		}
+	};
+
+	const getFilteredAdminPaths = (path) => {
+		const { permissions = [], configs = [] } = user ?? {};
+
+		const hasPathPermission = canAccessPath(path, permissions);
+		const hasCustomPermission = Object.keys(ADMIN_TABS_PERMISSIONS)?.includes(
+			path
+		);
+		const adminPaths = hasCustomPermission
+			? Object.values(ADMIN_TABS_PERMISSIONS[path])
+			: [];
+		const allowedPath =
+			hasCustomPermission &&
+			adminPaths?.length !== 0 &&
+			(configs?.some((data) =>
+				adminPaths?.some((config) => config?.includes(data))
+			) ||
+				permissions?.some((data) => adminPaths?.includes(data)));
+
+		return hasCustomPermission
+			? hasPathPermission && allowedPath
+			: hasPathPermission;
+	};
+
 	const generalContent = [
 		{
 			title: 'Branding',
 			path: '/admin/general?branding',
 			description:
 				'Manage your exchange branding, including name, logo, favicon, and brand color.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				(user?.configs?.includes('defaults') ||
+					user?.configs?.includes('api_name')),
 			searchContent: [
 				'branding',
 				'brand settings',
@@ -123,6 +193,7 @@ const OperatorControlSearch = ({
 					description:
 						'The official name of your exchange, displayed across the platform.',
 					sectionId: 'exchange-name',
+					isActiveTab: user?.configs?.includes('api_name'),
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
 				},
@@ -134,6 +205,7 @@ const OperatorControlSearch = ({
 					sectionId: 'exchange-logo',
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
+					isActiveTab: user?.configs?.includes('defaults'),
 				},
 				{
 					subTitle: 'Loader (Spinner)',
@@ -143,6 +215,7 @@ const OperatorControlSearch = ({
 					sectionId: 'loader',
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
+					isActiveTab: user?.configs?.includes('defaults'),
 				},
 				{
 					subTitle: 'Favicon (Browser icon)',
@@ -151,6 +224,7 @@ const OperatorControlSearch = ({
 					sectionId: 'exchange-favicon',
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
+					isActiveTab: user?.configs?.includes('defaults'),
 				},
 				{
 					subTitle: 'Landing/Home Page',
@@ -159,6 +233,7 @@ const OperatorControlSearch = ({
 					sectionId: 'landing-page',
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
+					isActiveTab: user?.configs?.includes('defaults'),
 				},
 				{
 					subTitle: 'Onboarding Background (Login/Sign up)',
@@ -168,6 +243,7 @@ const OperatorControlSearch = ({
 					sectionId: 'onboarding-background-image',
 					docLink:
 						'https://docs.hollaex.com/how-tos/customize-exchange/browser-tools/operator-controls-visuals#branding',
+					isActiveTab: user?.configs?.includes('defaults'),
 				},
 			],
 		},
@@ -176,6 +252,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?footer',
 			description:
 				'Edit the exchange footer, including company information, copyright, contact details, and social links.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('description'),
 			searchContent: [
 				'footer',
 				'edit footer',
@@ -230,6 +309,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?security',
 			description:
 				'Configure security options including geofencing, country blacklists, and access restrictions for your exchange.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('security'),
 			searchContent: [
 				'security',
 				'geofencing',
@@ -304,6 +386,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?features',
 			description:
 				'Enable or disable core exchange features such as Pro Trade, Quick Trade, Staking, P2P, Fiat Controls, and more.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('features'),
 			searchContent: [
 				'features',
 				'enable features',
@@ -510,6 +595,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?onboarding',
 			description:
 				'Configure the exchange onboarding process, including welcome screens, custom messages, and the user sign-up flow.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('new_user_is_activated'),
 			searchContent: [
 				'user onboarding',
 				'registration',
@@ -552,6 +640,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?email',
 			description:
 				'Manage system emails, sender addresses, SMTP, verification emails, and templates.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('emails'),
 			searchContent: [
 				'email settings',
 				'smtp',
@@ -593,6 +684,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?localization',
 			description:
 				'Set up language, locale, and default currency for your exchange platform.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('defaults'),
 			searchContent: [
 				'language',
 				'locale',
@@ -618,6 +712,7 @@ const OperatorControlSearch = ({
 					path: '/admin/general?localization',
 					description: `Choose the platform’s default timezone for accurate timestamps across all user activities.`,
 					sectionId: 'timezone',
+					isActiveTab: user?.configs?.includes('timezone'),
 				},
 				{
 					subTitle: 'Language',
@@ -625,6 +720,7 @@ const OperatorControlSearch = ({
 					description:
 						'Select the default language for the user interface, with support for multiple translations.',
 					sectionId: 'language',
+					isActiveTab: user?.configs?.includes('valid_languages'),
 				},
 				{
 					subTitle: 'Theme',
@@ -632,6 +728,7 @@ const OperatorControlSearch = ({
 					description:
 						'Apply a visual theme, including colors and styles, to match your brand identity.',
 					sectionId: 'theme',
+					isActiveTab: user?.configs?.includes('strings'),
 				},
 				{
 					subTitle: 'Native Currency',
@@ -639,6 +736,7 @@ const OperatorControlSearch = ({
 					description:
 						'Define the platform’s native currency for pricing, balances, and reports.',
 					sectionId: 'native-currency',
+					isActiveTab: user?.configs?.includes('selectable_native_currencies'),
 				},
 				{
 					subTitle: 'Other Currency Display Options',
@@ -646,6 +744,7 @@ const OperatorControlSearch = ({
 					description:
 						'Adjust how other currencies are displayed, including conversion formats and decimal precision.',
 					sectionId: 'other-currency-display-option',
+					isActiveTab: user?.configs?.includes('selectable_native_currencies'),
 				},
 			],
 		},
@@ -654,6 +753,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?help_info',
 			description:
 				'Customize help links and informational resources shown to exchange users.',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('help_info'),
 			searchContent: [
 				'support',
 				'information',
@@ -688,6 +790,9 @@ const OperatorControlSearch = ({
 			path: '/admin/general?apps',
 			description:
 				'Configure app versions (current vs min version) and URLs to Google Play, Apple App store, as well as download links to desktop Window and MacOS',
+			isActiveTab:
+				getFilteredAdminPaths('/admin/general') &&
+				user?.configs?.includes('apps'),
 			searchContent: [
 				'mobile',
 				'mobile app',
@@ -707,6 +812,7 @@ const OperatorControlSearch = ({
 			title: 'Search user',
 			path: '/admin/user',
 			description: 'Search for users by name, email, or other filters.',
+			isActiveTab: getFilteredAdminPaths('/admin/users') || false,
 			searchContent: [
 				'search users',
 				'user search',
@@ -723,6 +829,7 @@ const OperatorControlSearch = ({
 			path: '/admin/user',
 			onHandleOpenPopup: () => setIsActiveAddNewUsers(true),
 			description: 'Add a new user account manually.',
+			isActiveTab: getFilteredAdminPaths('/admin/user') || false,
 			searchContent: [
 				'add user',
 				'new user',
@@ -736,6 +843,7 @@ const OperatorControlSearch = ({
 			path: '/admin/user',
 			description:
 				'Filter users by verification, KYC, balance, or activity status.',
+			isActiveTab: getFilteredAdminPaths('/admin/users') || false,
 			searchContent: [
 				'filter users',
 				'user filter',
@@ -749,6 +857,7 @@ const OperatorControlSearch = ({
 			title: 'New users',
 			path: '/admin/user',
 			description: 'View a list of newly registered users.',
+			isActiveTab: getFilteredAdminPaths('/admin/users') || false,
 			searchContent: [
 				'new users',
 				'recently registered',
@@ -761,12 +870,24 @@ const OperatorControlSearch = ({
 		{
 			title: `user profile (user ID: ${user?.id})`,
 			path: `/admin/user?id=${user?.id}&tab=about`,
+			isActiveTab: getFilteredAdminPaths('/admin/users'),
 			subContent: [
 				{
 					subTitle: 'About user (summary)',
 					path: `/admin/user?id=${user?.id}&tab=about`,
 					description:
 						"View and edit the user's main account information and summary.",
+					isActiveTab:
+						getFilteredAdminPaths('/admin/user') ||
+						getFilteredAdminPaths('/admin/user/role') ||
+						getFilteredAdminPaths('/admin/flag-user') ||
+						getFilteredAdminPaths('/admin/verify-email') ||
+						getFilteredAdminPaths('/admin/deactivate-otp') ||
+						getFilteredAdminPaths('/admin/user/note') ||
+						getFilteredAdminPaths('/admin/restore') ||
+						getFilteredAdminPaths('/admin/activate') ||
+						getFilteredAdminPaths('/admin/user/disable-withdrawal') ||
+						false,
 					searchContent: [
 						'about tab',
 						'user about',
@@ -893,6 +1014,15 @@ const OperatorControlSearch = ({
 								'restrict',
 								'withdrawal',
 							],
+							path: `/admin/user?id=${user?.id}&tab=about`,
+						},
+						{
+							innerTitle: 'Edit Email',
+							description: `Change a user's email address.`,
+							onHandleOpenPopup: () => setIsEditEmail(true),
+							searchContent: ['change email', 'edit email'],
+							docLink:
+								'https://docs.hollaex.com/how-tos/operator-control-panel/user-profile#about',
 							path: `/admin/user?id=${user?.id}&tab=about`,
 						},
 					],
@@ -1080,6 +1210,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?assets',
 			description:
 				'View and manage all digital assets available on the exchange.',
+			isActiveTab: user?.permissions?.includes('/admin/balance:get'),
 			searchContent: [
 				'listed assets',
 				'coins',
@@ -1118,6 +1249,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?summary',
 			description:
 				'Overview of total balances, asset distribution, and exchange health metrics.',
+			isActiveTab: user?.permissions?.includes('/admin/balance:get'),
 			searchContent: [
 				'exchange summary',
 				'total balance',
@@ -1132,6 +1264,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?wallet',
 			description:
 				'Search or view all user addresses associated with the exchange wallet.',
+			isActiveTab: user?.permissions?.includes('/admin/user/wallet:get'),
 			searchContent: [
 				'wallet addresses',
 				'user address',
@@ -1146,6 +1279,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?balances',
 			description:
 				'Search for a user balance by applying combination of filter such as an email, user ID and currency asset',
+			isActiveTab: user?.permissions?.includes('/admin/balances:get'),
 			searchContent: [
 				'exchange wallet',
 				'exchange balances',
@@ -1162,6 +1296,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?orders',
 			description:
 				'View, search, and manage all orders placed on the exchange.',
+			isActiveTab: user?.permissions?.includes('/admin/orders:get'),
 			searchContent: [
 				'manage orders',
 				'trading orders',
@@ -1197,6 +1332,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?trades',
 			description:
 				'View and manage all digital assets available on the exchange.',
+			isActiveTab: user?.permissions?.includes('/admin/trades:get'),
 			searchContent: [
 				'listed assets',
 				'coins',
@@ -1218,6 +1354,7 @@ const OperatorControlSearch = ({
 			title: 'Deposits',
 			path: '/admin/financials?deposits',
 			description: 'Monitor and manage all user deposits across assets.',
+			isActiveTab: user?.permissions?.includes('/admin/deposits:get'),
 			searchContent: ['user deposits', 'deposit status', 'deposit history'],
 			docLink:
 				'https://docs.hollaex.com/how-tos/operator-control-panel/assets#deposits',
@@ -1226,6 +1363,7 @@ const OperatorControlSearch = ({
 			title: 'Withdrawals',
 			path: '/admin/financials?withdrawals',
 			description: 'Monitor and manage all user withdrawals across assets.',
+			isActiveTab: user?.permissions?.includes('/admin/withdrawals:get'),
 			searchContent: [
 				'user withdrawals',
 				'withdrawal status',
@@ -1239,6 +1377,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?earnings',
 			description:
 				'Review exchange earnings from fees, spreads, and other sources.',
+			isActiveTab: user?.permissions?.includes('/admin/fees:get'),
 			searchContent: [
 				'earnings',
 				'revenue',
@@ -1254,6 +1393,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?transfers',
 			description:
 				'View and manage asset transfers between wallets or accounts.',
+			isActiveTab: user?.permissions?.includes('/admin/transfer:get'),
 			searchContent: ['asset transfers', 'move funds', 'transfer funds'],
 			docLink:
 				'https://docs.hollaex.com/how-tos/operator-control-panel/assets#transfers',
@@ -1263,6 +1403,7 @@ const OperatorControlSearch = ({
 			path: '/admin/financials?duster',
 			description:
 				'Manage and convert small balance “dust” into usable assets.',
+			isActiveTab: user?.permissions?.includes('/admin/transfer:get'),
 			searchContent: [
 				'dust',
 				'small balances',
@@ -1275,6 +1416,7 @@ const OperatorControlSearch = ({
 		{
 			title: 'Limits',
 			path: '/admin/financials?limits',
+			isActiveTab: user?.permissions?.includes('/admin/transaction/limit:get'),
 			description:
 				'Set and review limits on deposits, withdrawals, and trading for users and assets.',
 			searchContent: ['deposit limit', 'withdrawal limit', 'trading limit'],
@@ -1301,6 +1443,7 @@ const OperatorControlSearch = ({
 			title: 'Fee Markups',
 			path: '/admin/financials?fee-markups',
 			description: 'Configure fee markups on specific assets or trading pairs.',
+			isActiveTab: user?.permissions?.includes('/admin/kit:get'),
 			searchContent: ['fee adjustment', 'trading fee', 'asset fee', 'markup'],
 			docLink:
 				'https://docs.hollaex.com/how-tos/operator-control-panel/assets#fee-markup',
@@ -1312,6 +1455,7 @@ const OperatorControlSearch = ({
 			title: 'Public Markets',
 			path: '/admin/trade?public-markets',
 			description: 'Manage and configure all public trading markets.',
+			isActiveTab: user?.permissions?.includes('/admin/network:get'),
 			searchContent: [
 				'trading pairs',
 				'market management',
@@ -1344,6 +1488,7 @@ const OperatorControlSearch = ({
 			title: 'Orders',
 			path: '/admin/trade?orders',
 			description: 'Review and manage all market orders across trading pairs.',
+			isActiveTab: user?.permissions?.includes('/admin/orders:get'),
 			searchContent: [
 				'market orders',
 				'manage orders',
@@ -1379,6 +1524,7 @@ const OperatorControlSearch = ({
 			path: '/admin/trade?otc-desk',
 			description:
 				'Configure and monitor the over-the-counter (OTC) desk and services.',
+			isActiveTab: user?.permissions?.includes('/admin/broker:get'),
 			searchContent: [
 				'over the counter',
 				'otc trading',
@@ -1393,6 +1539,7 @@ const OperatorControlSearch = ({
 			path: '/admin/trade?p2p',
 			description:
 				'Set up and manage peer-to-peer (P2P) trading features, market settings and fee collection rates.',
+			isActiveTab: user?.permissions?.includes('/admin/p2p/dispute:get'),
 			searchContent: [
 				'P2P Trading',
 				'peer to peer',
@@ -1451,6 +1598,7 @@ const OperatorControlSearch = ({
 			path: '/admin/trade?quick-trade',
 			description:
 				'Manage Quick Trade (Convert) settings and connect to liquidity sources.',
+			isActiveTab: user?.permissions?.includes('/admin/exchange:put'),
 			searchContent: [
 				'quick trade',
 				'convert',
@@ -1469,6 +1617,7 @@ const OperatorControlSearch = ({
 			path: '/admin/fiat?summary',
 			description:
 				'Manage fiat currencies, banks, payment processors, and enable fiat on/off-ramps.',
+			isActiveTab: getFilteredAdminPaths('/admin/fiat'),
 			searchContent: [
 				'fiat controls',
 				'fiat summary',
@@ -1486,6 +1635,7 @@ const OperatorControlSearch = ({
 			path: '/admin/fiat?payment-accounts',
 			description:
 				'Allow users to add or edit fiat payment methods for verification and off-ramp.',
+			isActiveTab: getFilteredAdminPaths('/admin/fiat'),
 			searchContent: [
 				'payment account',
 				'payment method',
@@ -1501,6 +1651,7 @@ const OperatorControlSearch = ({
 			path: '/admin/fiat?onramp',
 			description:
 				'Configure bank and payment processor details for user fiat deposits.',
+			isActiveTab: getFilteredAdminPaths('/admin/fiat'),
 			searchContent: [
 				'on-ramp',
 				'fiat onramp',
@@ -1517,6 +1668,7 @@ const OperatorControlSearch = ({
 			path: '/admin/fiat?offramp',
 			description:
 				'Configure payment details for user fiat withdrawals (off-ramps).',
+			isActiveTab: getFilteredAdminPaths('/admin/fiat'),
 			searchContent: [
 				'off-ramp',
 				'fiat withdrawal',
@@ -1533,6 +1685,7 @@ const OperatorControlSearch = ({
 			path: '/admin/fiat?fiat-fees',
 			description:
 				'Edit or override fees, min/max amounts, and customization for fiat assets.',
+			isActiveTab: getFilteredAdminPaths('/admin/fiat'),
 			searchContent: [
 				'fiat fees',
 				'customize fees',
@@ -1554,6 +1707,7 @@ const OperatorControlSearch = ({
 			path: '/admin/plugins',
 			description:
 				'Explore, install, and manage exchange plugins for additional features.',
+			isActiveTab: getFilteredAdminPaths('/admin/plugins'),
 			searchContent: [
 				'plugins',
 				'install plugins',
@@ -1580,6 +1734,7 @@ const OperatorControlSearch = ({
 			path: '/admin/plugins/store',
 			description:
 				'Explore all the plugins apps to get additional features added to your exchange.',
+			isActiveTab: getFilteredAdminPaths('/admin/plugins'),
 			searchContent: [
 				'plugins',
 				'explore plugins',
@@ -1599,6 +1754,7 @@ const OperatorControlSearch = ({
 			path: '/account',
 			description:
 				'Inject custom code into the <HEAD> section of your exchange (for scripts, meta, etc.).',
+			isActiveTab: true,
 			searchContent: [
 				'console',
 				'head injection',
@@ -1614,6 +1770,7 @@ const OperatorControlSearch = ({
 			path: '/account',
 			description:
 				'Inject custom code into the <BODY> section of your exchange (for widgets, scripts, etc.).',
+			isActiveTab: true,
 			searchContent: [
 				'console',
 				'body injection',
@@ -1632,6 +1789,7 @@ const OperatorControlSearch = ({
 			path: '/account',
 			description:
 				'Upload and manage all visual assets, icons, and graphics for your exchange.',
+			isActiveTab: true,
 			searchContent: [
 				'graphics',
 				'images',
@@ -1652,6 +1810,7 @@ const OperatorControlSearch = ({
 			path: '/account',
 			description:
 				'Customize the look and feel of your exchange with color schemes and pre-set or custom themes.',
+			isActiveTab: true,
 			searchContent: [
 				'themes',
 				'theme settings',
@@ -1673,6 +1832,7 @@ const OperatorControlSearch = ({
 			path: '/account',
 			description:
 				'Edit and localize all text labels, strings, and system messages across the exchange platform.',
+			isActiveTab: true,
 			searchContent: [
 				'strings',
 				'edit text',
@@ -1696,6 +1856,7 @@ const OperatorControlSearch = ({
 			path: '/admin/roles?designate',
 			description:
 				'Assign roles to users for admin, operator, or custom permissions.',
+			isActiveTab: getFilteredAdminPaths('/admin/roles'),
 			searchContent: [
 				'designate role',
 				'assign role',
@@ -1710,6 +1871,7 @@ const OperatorControlSearch = ({
 			path: '/admin/roles?manage',
 			description:
 				'Create, edit, or remove custom roles for platform access and permissions.',
+			isActiveTab: getFilteredAdminPaths('/admin/roles'),
 			searchContent: [
 				'manage roles',
 				'edit roles',
@@ -1725,6 +1887,7 @@ const OperatorControlSearch = ({
 			title: 'Active User Sessions',
 			path: '/admin/sessions?active',
 			description: 'View and manage all active user sessions on the platform.',
+			isActiveTab: getFilteredAdminPaths('/admin/sessions'),
 			searchContent: [
 				'active sessions',
 				'user sessions',
@@ -1738,6 +1901,7 @@ const OperatorControlSearch = ({
 			title: 'Login Logs',
 			path: '/admin/sessions?logins',
 			description: 'Review the login history and IPs of all users.',
+			isActiveTab: getFilteredAdminPaths('/admin/sessions'),
 			searchContent: [
 				'logins',
 				'login log',
@@ -1755,6 +1919,7 @@ const OperatorControlSearch = ({
 			path: '/admin/billing',
 			description:
 				'Manage subscription plans, invoices, payment methods, and billing history.',
+			isActiveTab: checkRole() === 'admin' ? true : false,
 			searchContent: [
 				'billing',
 				'subscription',
@@ -1772,6 +1937,7 @@ const OperatorControlSearch = ({
 			title: 'Tier Trade Fees',
 			path: '/admin/tiers?fees',
 			description: 'Edit fee tiers for trading volume or user account status.',
+			isActiveTab: getFilteredAdminPaths('/admin/tier'),
 			searchContent: [
 				'trade fees',
 				'tier fees',
@@ -1786,6 +1952,7 @@ const OperatorControlSearch = ({
 			title: 'Account Tiers',
 			path: '/admin/tiers?tiers',
 			description: 'Define and manage user account tiers and upgrade criteria.',
+			isActiveTab: getFilteredAdminPaths('/admin/tier'),
 			searchContent: [
 				'account tiers',
 				'user tiers',
@@ -1803,6 +1970,7 @@ const OperatorControlSearch = ({
 			path: '/admin/stakes?cefi',
 			description:
 				'Manage centralized finance (CeFi) pools and available staking programs.',
+			isActiveTab: getFilteredAdminPaths('/admin/stakes'),
 			searchContent: [
 				'cefi',
 				'cefi pools',
@@ -1818,6 +1986,7 @@ const OperatorControlSearch = ({
 			title: `User’s Stakes`,
 			path: '/admin/stakes?user-staking',
 			description: 'View and manage user stakes in CeFi and DeFi programs.',
+			isActiveTab: getFilteredAdminPaths('/admin/stakes'),
 			searchContent: [
 				'user stakes',
 				'staking',
@@ -1833,6 +2002,7 @@ const OperatorControlSearch = ({
 			title: 'Announcements',
 			path: '/admin/announcement?activeAnnouncement',
 			description: 'Send or schedule announcements to exchange users.',
+			isActiveTab: getFilteredAdminPaths('/admin/announcements'),
 			searchContent: [
 				'announcement',
 				'send announcement',
@@ -1857,6 +2027,7 @@ const OperatorControlSearch = ({
 			path: '/admin/chat',
 			description:
 				'Monitor or participate in user chat channels on the platform.',
+			isActiveTab: getFilteredAdminPaths('/admin/chat'),
 			searchContent: ['chat', 'user chat', 'messaging', 'chat channels'],
 			docLink: 'https://docs.hollaex.com/how-tos/operator-control-panel/chat',
 		},
@@ -1868,6 +2039,7 @@ const OperatorControlSearch = ({
 			path: '/admin/audits',
 			description:
 				'Review all operator actions, system changes, and admin logs.',
+			isActiveTab: getFilteredAdminPaths('/admin/audits'),
 			searchContent: [
 				'operator logs',
 				'admin logs',
@@ -1885,6 +2057,7 @@ const OperatorControlSearch = ({
 			path: '/admin/apps',
 			description:
 				'Manage and configure extra apps, extensions or integrations on your exchange.',
+			isActiveTab: checkRole() === 'admin' ? true : false,
 			searchContent: [
 				'apps',
 				'manage apps',
@@ -1902,71 +2075,99 @@ const OperatorControlSearch = ({
 			content: generalContent,
 			icon: STATIC_ICONS.GENERAL_SETUP,
 			category: ['All', 'Common'],
+			description:
+				'Manage global settings for branding, security, features, onboarding, email, localization, footer, and apps.',
 		},
 		{
 			label: 'Users',
 			content: usersContent,
 			icon: STATIC_ICONS.USERS_SETUP,
 			category: ['All', 'Common'],
+			description:
+				'Search, add, and manage users, including profiles, balances, payment methods, orders, and referrals.',
 		},
 		{
 			label: 'Assets',
 			content: assetsContent,
 			icon: STATIC_ICONS.DIGITAL_ASSETS_ICON,
 			category: ['All', 'Trading'],
+			description:
+				'Review and manage exchange assets, balances, activity, fees, and limits.',
 		},
 		{
 			label: 'Markets',
 			content: marketsContent,
 			icon: STATIC_ICONS.MARKET_ICON,
 			category: ['All', 'Trading'],
+			description:
+				'Monitor and manage market activity, including order books, OTC, P2P, and quick trades.',
 		},
 		{
 			label: 'Fiat Controls',
 			content: fiatControlContent,
 			icon: STATIC_ICONS.FIAT_CONTROLS_ICON,
 			category: ['All', 'Advanced'],
+			description:
+				'Configure and monitor fiat deposits, payment accounts, on/off-ramps, and fiat fee settings.',
 		},
 		{
 			label: 'Plugins',
 			content: pluginsContent,
 			icon: STATIC_ICONS.ADMIN_PLUGINS,
 			category: ['All', 'Advanced'],
+			description:
+				'Manage exchange plugins, including installed, third-party, and new integrations to explore.',
 		},
 		{
 			label: 'Console',
 			content: consoleContent,
 			category: ['All', 'Advanced'],
+			description:
+				'Edit advanced site layout code for the exchange, including HEAD and BODY sections',
 		},
 		{
 			label: 'Roles',
 			content: rolesContent,
 			icon: STATIC_ICONS.ADMIN_ROLES,
 			category: ['All', 'High level'],
+			description:
+				'Define and manage user roles and their permissions across the exchange.',
 		},
 		{
 			label: 'Sessions',
 			content: sessionsContent,
 			category: ['All', 'High level'],
+			description:
+				'Monitor active user sessions and review login history for security oversight.',
 		},
 		{
 			label: 'Edit Mode',
 			content: editModeContent,
 			icon: STATIC_ICONS.ADMIN_CUSTOMIZE,
 			category: ['All', 'Common'],
+			description:
+				'Customize the exchange appearance and text, including graphics, themes, and all UI strings',
 		},
-		{ content: billingContent, category: ['All', 'Business'] },
+		{
+			content: billingContent,
+			category: ['All', 'Business'],
+			description: `View and manage your crypto platform's plans, billing, invoices, and payment details`,
+		},
 		{
 			label: 'Tiers',
 			content: tiersContent,
 			icon: STATIC_ICONS.ADMIN_TIERS,
 			category: ['All', 'Business'],
+			description:
+				'Configure account tiers and their corresponding trading fees.',
 		},
 		{
 			label: 'Stakes',
 			content: stakeContent,
 			icon: STATIC_ICONS.STAKING_ICON,
 			category: ['All', 'Business'],
+			description:
+				'Configure CeFi staking pools and monitor user stake positions.',
 		},
 		{ content: announcementContent, category: ['All', 'Operations'] },
 		{ content: chatContent, category: ['All', 'Operations'] },
@@ -2154,7 +2355,9 @@ const OperatorControlSearch = ({
 	const { categorySections, displayedCategories } = useMemo(() => {
 		const filteredSections = RAW_SECTIONS?.map((data) => ({
 			...data,
-			content: data?.content || [],
+			content: (data?.content || []).filter(
+				(item) => item?.isActiveTab !== false
+			),
 		}))?.filter(
 			(section) =>
 				Array.isArray(section?.content) && section?.content?.length > 0
@@ -2202,6 +2405,8 @@ const OperatorControlSearch = ({
 		onHandleRoute = () => {},
 		onHandleNavigate = () => {},
 	}) => {
+		const childKey = `${item?.title}-${item?.description}`;
+
 		const titleEl = (
 			<span
 				className="operator-control-search-content-title pointer"
@@ -2250,6 +2455,8 @@ const OperatorControlSearch = ({
 				}
 				placement="right"
 				overlayClassName="custom-description-tooltip"
+				visible={activeChildTooltip === childKey}
+				onVisibleChange={(open) => onChildTooltipChange(open, childKey)}
 			>
 				{titleEl}
 			</Tooltip>
@@ -2306,6 +2513,16 @@ const OperatorControlSearch = ({
 							}
 							placement="right"
 							overlayClassName="custom-description-tooltip"
+							visible={
+								activeChildTooltip ===
+								`${subItem?.subTitle}-${subItem?.description}`
+							}
+							onVisibleChange={(open) =>
+								onChildTooltipChange(
+									open,
+									`${subItem?.subTitle}-${subItem?.description}`
+								)
+							}
 						>
 							<span className="operator-control-search-content-title pointer">
 								{highlightWithOpacity(
@@ -2362,108 +2579,120 @@ const OperatorControlSearch = ({
 				{subContent?.map((subItem, subIndex) => {
 					const innerKey = `${sectionKey}-${parentKey}-${subIndex}`;
 					const shouldOpenInner = openInnerPanels?.[innerKey];
-
+					const isActiveTab = subItem?.hasOwnProperty('isActiveTab');
 					return (
 						<React.Fragment key={subIndex}>
-							<div className="d-flex gap-1 align-items-center justify-content-between">
-								{subItem?.innerContent ? (
-									<Collapse
-										expandIcon={({ isActive }) =>
-											isActive ? (
-												<MinusSquareOutlined className="toggle-icon" />
-											) : (
-												<PlusSquareOutlined className="toggle-icon" />
-											)
-										}
-										activeKey={shouldOpenInner ? ['1'] : []}
-										className="operator-control-search-toggle-wrapper"
-										onChange={() => handleInnerPanel(innerKey)}
-									>
-										<Collapse.Panel
-											header={<SubContentTitle subItem={subItem} />}
-											key="1"
+							{(isActiveTab && subItem?.isActiveTab) || !isActiveTab ? (
+								<div className="d-flex gap-1 align-items-center justify-content-between">
+									{subItem?.innerContent ? (
+										<Collapse
+											expandIcon={({ isActive }) =>
+												isActive ? (
+													<MinusSquareOutlined className="toggle-icon" />
+												) : (
+													<PlusSquareOutlined className="toggle-icon" />
+												)
+											}
+											activeKey={shouldOpenInner ? ['1'] : []}
+											className="operator-control-search-toggle-wrapper"
+											onChange={() => handleInnerPanel(innerKey)}
 										>
-											{subItem?.innerContent?.length > 0 && (
-												<div className="operator-control-search-card-details mb-3">
-													<div className="search-line search-line-feature" />
-													<div className="operator-control-search-sub-content d-flex flex-column">
-														{subItem?.innerContent?.map(
-															(innerItem, innerIndex) => (
-																<span
-																	className="operator-control-search-sub-content-title pointer"
-																	key={innerIndex}
-																	onClick={() =>
-																		onHandleRoute(
-																			innerItem?.path,
-																			innerItem?.onHandleOpenPopup,
-																			innerItem?.sectionId
-																		)
-																	}
-																>
-																	{innerItem?.description ? (
-																		<Tooltip
-																			title={
-																				<span className="custom-description-tooltip-content">
-																					<span>
-																						{innerItem?.description}
-																						{innerItem?.docLink && (
-																							<span
-																								className="underline-text pointer ml-2"
-																								onClick={(e) =>
-																									onHandleNavigate(
-																										e,
-																										innerItem?.docLink
-																									)
-																								}
-																							>
-																								Read more
-																							</span>
-																						)}
+											<Collapse.Panel
+												header={<SubContentTitle subItem={subItem} />}
+												key="1"
+											>
+												{subItem?.innerContent?.length > 0 && (
+													<div className="operator-control-search-card-details mb-3">
+														<div className="search-line search-line-feature" />
+														<div className="operator-control-search-sub-content d-flex flex-column">
+															{subItem?.innerContent?.map(
+																(innerItem, innerIndex) => (
+																	<span
+																		className="operator-control-search-sub-content-title pointer"
+																		key={innerIndex}
+																		onClick={() =>
+																			onHandleRoute(
+																				innerItem?.path,
+																				innerItem?.onHandleOpenPopup,
+																				innerItem?.sectionId
+																			)
+																		}
+																	>
+																		{innerItem?.description ? (
+																			<Tooltip
+																				title={
+																					<span className="custom-description-tooltip-content">
+																						<span>
+																							{innerItem?.description}
+																							{innerItem?.docLink && (
+																								<span
+																									className="underline-text pointer ml-2"
+																									onClick={(e) =>
+																										onHandleNavigate(
+																											e,
+																											innerItem?.docLink
+																										)
+																									}
+																								>
+																									Read more
+																								</span>
+																							)}
+																						</span>
+																						<span
+																							className="custom-description-tooltip-open-btn"
+																							onClick={() =>
+																								onHandleRoute(
+																									innerItem?.path,
+																									innerItem?.onHandleOpenPopup,
+																									innerItem?.sectionId
+																								)
+																							}
+																						>
+																							OPEN
+																						</span>
 																					</span>
-																					<span
-																						className="custom-description-tooltip-open-btn"
-																						onClick={() =>
-																							onHandleRoute(
-																								innerItem?.path,
-																								innerItem?.onHandleOpenPopup,
-																								innerItem?.sectionId
-																							)
-																						}
-																					>
-																						OPEN
-																					</span>
+																				}
+																				placement="right"
+																				overlayClassName="custom-description-tooltip"
+																				visible={
+																					activeChildTooltip ===
+																					`${innerItem?.innerTitle}-${innerItem?.description}`
+																				}
+																				onVisibleChange={(open) =>
+																					onChildTooltipChange(
+																						open,
+																						`${innerItem?.innerTitle}-${innerItem?.description}`
+																					)
+																				}
+																			>
+																				<span className="operator-control-search-content-title pointer">
+																					{highlightWithOpacity(
+																						innerItem?.innerTitle,
+																						innerItem?.searchContent
+																					)}
 																				</span>
-																			}
-																			placement="right"
-																			overlayClassName="custom-description-tooltip"
-																		>
+																			</Tooltip>
+																		) : (
 																			<span className="operator-control-search-content-title pointer">
 																				{highlightWithOpacity(
 																					innerItem?.innerTitle,
 																					innerItem?.searchContent
 																				)}
 																			</span>
-																		</Tooltip>
-																	) : (
-																		<span className="operator-control-search-content-title pointer">
-																			{highlightWithOpacity(
-																				innerItem?.innerTitle,
-																				innerItem?.searchContent
-																			)}
-																		</span>
-																	)}
-																</span>
-															)
-														)}
+																		)}
+																	</span>
+																)
+															)}
+														</div>
 													</div>
-												</div>
-											)}
-										</Collapse.Panel>
-									</Collapse>
-								) : (
-									<SubContentTitle subItem={subItem} />
-								)}
-							</div>
+												)}
+											</Collapse.Panel>
+										</Collapse>
+									) : (
+										<SubContentTitle subItem={subItem} />
+									)}
+								</div>
+							) : null}
 						</React.Fragment>
 					);
 				})}
@@ -2627,11 +2856,9 @@ const OperatorControlSearch = ({
 				)}
 
 				<div
-					className={
-						selectedCategory !== 'all'
-							? 'operator-control-search-content-wrapper justify-content-center'
-							: 'operator-control-search-content-wrapper'
-					}
+					className={`operator-control-search-content-wrapper
+						${selectedCategory !== 'all' ? 'justify-content-center' : ''}
+						${!displayedCategories?.length ? 'align-items-center' : ''}`}
 				>
 					{displayedCategories?.map(({ key, label }) => {
 						const allCards = categorySections[key]?.flatMap(
@@ -2662,7 +2889,15 @@ const OperatorControlSearch = ({
 									}
 								>
 									{categorySections[key]?.map(
-										({ label: sectionLabel, content = [], icon }, idx) => {
+										(
+											{
+												label: sectionLabel,
+												content = [],
+												icon,
+												description = '',
+											},
+											idx
+										) => {
 											if (!content?.length) return null;
 											const sectionHasAnyMatch = content?.some(cardHasMatch);
 											const cardLevelInactive =
@@ -2670,94 +2905,113 @@ const OperatorControlSearch = ({
 											const sectionKey = sectionLabel || `section-${idx}`;
 											const activeKey = openPanels[sectionKey] || [];
 
-											return (
-												<div
-													className={
-														cardLevelInactive
-															? 'operator-control-search-cards inactive-text'
-															: 'operator-control-search-cards'
-													}
-													key={sectionLabel || idx}
-													{...(icon && {
-														style: { backgroundImage: `url(${icon})` },
-													})}
-												>
-													{sectionLabel && (
-														<span className="bold card-title text-lg mb-2 tracking-wide flex items-center gap-2">
-															{sectionLabel}
-														</span>
-													)}
-													<div className="operator-control-search-card-details">
-														<div className="search-line" />
-														<div className="flex flex-col gap-2">
-															<Collapse
-																activeKey={activeKey}
-																onChange={handlePanelChange(sectionKey)}
-																expandIcon={({ isActive, panelKey }) => {
-																	const panelItem = content?.find(
-																		(item, idx) =>
-																			(item?.title || idx) === panelKey
-																	);
-																	if (panelItem?.subContent?.length > 0) {
-																		return isActive ? (
-																			<MinusSquareOutlined className="toggle-icon" />
-																		) : (
-																			<PlusSquareOutlined className="toggle-icon" />
-																		);
-																	}
-																}}
-																className="operator-control-search-toggle-wrapper"
-															>
-																{content?.map((item, index) => {
-																	const hasMatch = cardHasMatch(item);
-																	const cardInactive =
-																		search &&
-																		categoryHasAnyMatch &&
-																		sectionHasAnyMatch &&
-																		!hasMatch;
-																	const panelKey = item?.title || index;
-																	return (
-																		<Collapse.Panel
-																			key={panelKey}
-																			header={
-																				<ContentTitle
-																					item={item}
-																					onHandleRoute={onHandleRoute}
-																					onHandleNavigate={onHandleNavigate}
-																					highlightWithOpacity={getHighlight(
-																						cardLevelInactive || cardInactive
-																					)}
-																				/>
-																			}
-																			className={
-																				!item?.subContent?.length > 0
-																					? 'operator-control-search-collapse-panel'
-																					: ''
-																			}
-																		>
-																			{item?.subContent?.length > 0 && (
-																				<SubContentList
-																					subContent={item?.subContent}
-																					onHandleRoute={onHandleRoute}
-																					onHandleNavigate={onHandleNavigate}
-																					openInnerPanels={openInnerPanels}
-																					sectionKey={sectionKey}
-																					parentKey={item?.title || idx}
-																				/>
-																			)}
-																		</Collapse.Panel>
-																	);
-																})}
-															</Collapse>
+											const filteredContent = content?.filter(
+												(item) => item?.isActiveTab
+											);
 
-															{!content?.length && (
-																<span className="operator-control-search-no-result">
-																	No results found.
-																</span>
-															)}
+											if (!filteredContent?.length) return null;
+
+											return (
+												<Tooltip
+													title={description}
+													placement="top"
+													visible={
+														hoveredCard === description &&
+														activeChildTooltip === null &&
+														!!description
+													}
+												>
+													<div
+														className={
+															cardLevelInactive
+																? 'operator-control-search-cards inactive-text'
+																: 'operator-control-search-cards'
+														}
+														key={sectionLabel || idx}
+														onMouseEnter={() => onCardMouseEnter(description)}
+														onMouseLeave={() => onCardMouseLeave()}
+														{...(icon && {
+															style: { backgroundImage: `url(${icon})` },
+														})}
+													>
+														{sectionLabel && (
+															<span className="bold card-title text-lg mb-2 tracking-wide flex items-center gap-2">
+																{sectionLabel}
+															</span>
+														)}
+														<div className="operator-control-search-card-details">
+															<div className="search-line" />
+															<div className="flex flex-col gap-2">
+																<Collapse
+																	activeKey={activeKey}
+																	onChange={handlePanelChange(sectionKey)}
+																	expandIcon={({ isActive, panelKey }) => {
+																		const panelItem = content?.find(
+																			(item, idx) =>
+																				(item?.title || idx) === panelKey
+																		);
+																		if (panelItem?.subContent?.length > 0) {
+																			return isActive ? (
+																				<MinusSquareOutlined className="toggle-icon" />
+																			) : (
+																				<PlusSquareOutlined className="toggle-icon" />
+																			);
+																		}
+																	}}
+																	className="operator-control-search-toggle-wrapper"
+																>
+																	{filteredContent?.map((item, index) => {
+																		const hasMatch = cardHasMatch(item);
+																		const cardInactive =
+																			search &&
+																			categoryHasAnyMatch &&
+																			sectionHasAnyMatch &&
+																			!hasMatch;
+																		const panelKey = item?.title || index;
+																		if (!item?.isActiveTab) return null;
+																		return (
+																			<Collapse.Panel
+																				key={panelKey}
+																				header={
+																					<ContentTitle
+																						item={item}
+																						onHandleRoute={onHandleRoute}
+																						onHandleNavigate={onHandleNavigate}
+																						highlightWithOpacity={getHighlight(
+																							cardLevelInactive || cardInactive
+																						)}
+																					/>
+																				}
+																				className={
+																					!item?.subContent?.length > 0
+																						? 'operator-control-search-collapse-panel'
+																						: ''
+																				}
+																			>
+																				{item?.subContent?.length > 0 && (
+																					<SubContentList
+																						subContent={item?.subContent}
+																						onHandleRoute={onHandleRoute}
+																						onHandleNavigate={onHandleNavigate}
+																						openInnerPanels={openInnerPanels}
+																						sectionKey={sectionKey}
+																						parentKey={item?.title || idx}
+																					/>
+																				)}
+																			</Collapse.Panel>
+																		);
+																	})}
+																</Collapse>
+
+																{!filteredContent?.length && (
+																	<span className="operator-control-search-no-result">
+																		No results found.
+																	</span>
+																)}
+															</div>
 														</div>
 													</div>
-												</div>
+												</Tooltip>
 											);
 										}
 									)}
@@ -2765,6 +3019,11 @@ const OperatorControlSearch = ({
 							</div>
 						);
 					})}
+					{!displayedCategories?.length && (
+						<span className="operator-control-search-no-result category-cards p-5">
+							No results found.
+						</span>
+					)}
 				</div>
 			</div>
 		</div>
@@ -2837,6 +3096,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setIsDisplayAddPlugin: bindActionCreators(setIsDisplayAddPlugin, dispatch),
 	setIsActiveFilterUser: bindActionCreators(setIsActiveFilterUser, dispatch),
 	setRecentSearches: bindActionCreators(setRecentSearches, dispatch),
+	setIsEditEmail: bindActionCreators(setIsEditEmail, dispatch),
 });
 
 export default connect(

@@ -12,11 +12,13 @@ const Form = (props) => {
 		valid,
 		formFields,
 		buttonLabel,
+		extraContent,
 	} = props;
 	return (
 		<form onSubmit={handleSubmit} autoComplete="off" className="w-100">
 			<div className="w-100">
 				{renderFields(formFields)}
+				{extraContent}
 				{error && (
 					<div className="warning_text error_text">
 						{getErrorLocalized(error)}

@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
-import { Tabs, Row, Col, Table, Tooltip, Button, Spin } from 'antd';
+import {
+	Tabs,
+	Row,
+	Col,
+	Table,
+	Tooltip,
+	Button,
+	Spin,
+	Modal,
+	Dropdown,
+	Menu,
+	Input,
+	InputNumber,
+} from 'antd';
 import { CSVLink } from 'react-csv';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,7 +21,12 @@ import Moment from 'react-moment';
 import debounce from 'lodash.debounce';
 
 import { formatCurrency } from '../../../utils/index';
-import { requestActiveOrders, requestCancelOrders } from './action';
+import {
+	requestActiveOrders,
+	requestCancelOrders,
+	requestMatchOrder,
+} from './action';
+import { MoreOutlined } from '@ant-design/icons';
 import { setSelectedOrdersTab } from 'actions/appActions';
 
 const TabPane = Tabs.TabPane;
@@ -35,11 +53,10 @@ const renderExchangeUser = (user) => (
 				<Link to={`/admin/user?id=${user?.id}`}>{user?.id}</Link>
 			</Button>
 		</Tooltip>
-		<p className="pl-3 mb-0">{user?.email}</p>
 	</div>
 );
 
-const getColumns = (userId, onCancel) => {
+const getColumns = (userId, onCancel, onOpen, renderActions) => {
 	let columns = [];
 	if (!userId) {
 		columns = [
@@ -57,6 +74,13 @@ const getColumns = (userId, onCancel) => {
 		{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 		{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
 		{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
+		{ title: 'Stop', dataIndex: 'stop', key: 'stop', render: formatNum },
+		{
+			title: 'Average',
+			dataIndex: 'average',
+			key: 'average',
+			render: formatNum,
+		},
 		{ title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
 		{
 			title: 'Time',
@@ -64,32 +88,37 @@ const getColumns = (userId, onCancel) => {
 			key: 'updated_at',
 			render: formatDate,
 		},
+		{
+			title: 'Details',
+			dataIndex: 'id',
+			key: 'details',
+			render: (v, record) => (
+				<Button
+					type="link"
+					style={{ color: 'white' }}
+					onClick={(ev) => {
+						ev.stopPropagation();
+						onOpen(record);
+					}}
+				>
+					View
+				</Button>
+			),
+		},
 	];
-	if (userId) {
-		columns = [
-			...columns,
-			{
-				title: 'Cancel order',
-				dataIndex: '',
-				key: '',
-				render: (e) => (
-					<Tooltip placement="bottom" title={`Cancel order`}>
-						<Button
-							type="primary"
-							onClick={() => onCancel(e, userId)}
-							className="green-btn"
-						>
-							Cancel
-						</Button>
-					</Tooltip>
-				),
-			},
-		];
-	}
+	// actions column
+	columns = [
+		...columns,
+		{
+			title: 'Actions',
+			key: 'actions',
+			render: (record) => renderActions(record),
+		},
+	];
 	return columns;
 };
 
-const getThisExchangeOrders = (onCancel) => {
+const getThisExchangeOrders = (onCancel, onOpen, renderActions) => {
 	let columns = [];
 
 	columns = [
@@ -97,6 +126,13 @@ const getThisExchangeOrders = (onCancel) => {
 		{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 		{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
 		{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
+		{ title: 'Stop', dataIndex: 'stop', key: 'stop', render: formatNum },
+		{
+			title: 'Average',
+			dataIndex: 'average',
+			key: 'average',
+			render: formatNum,
+		},
 		{ title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
 		{
 			title: 'Time',
@@ -111,20 +147,26 @@ const getThisExchangeOrders = (onCancel) => {
 			render: (v, data) => renderExchangeUser(data.User),
 		},
 		{
-			title: 'Cancel order',
-			dataIndex: '',
-			key: '',
-			render: (e) => (
-				<Tooltip placement="bottom" title={`Cancel order`}>
-					<Button
-						type="primary"
-						onClick={() => onCancel(e, e?.User?.id)}
-						className="green-btn"
-					>
-						Cancel
-					</Button>
-				</Tooltip>
+			title: 'Details',
+			dataIndex: 'id',
+			key: 'details',
+			render: (v, record) => (
+				<Button
+					type="link"
+					style={{ color: 'white' }}
+					onClick={(ev) => {
+						ev.stopPropagation();
+						onOpen(record);
+					}}
+				>
+					View
+				</Button>
 			),
+		},
+		{
+			title: 'Actions',
+			key: 'actions',
+			render: (record) => renderActions(record),
 		},
 	];
 
@@ -136,6 +178,8 @@ const SCV_COLUMNS = [
 	{ label: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 	{ label: 'Size', dataIndex: 'size', key: 'size' },
 	{ label: 'Price', dataIndex: 'price', key: 'price' },
+	{ label: 'Stop', dataIndex: 'stop', key: 'stop' },
+	{ label: 'Average', dataIndex: 'average', key: 'average' },
 	{ label: 'Filled', dataIndex: 'filled', key: 'filled' },
 	{ label: 'Time', dataIndex: 'updated_at', key: 'updated_at' },
 ];
@@ -163,6 +207,13 @@ class PairsSection extends Component {
 			buyCurrentTablePage: 1,
 			sellCurrentTablePage: 1,
 			activeTab: 'buy',
+			orderModalVisible: false,
+			selectedOrder: null,
+			matchModalVisible: false,
+			matchOrderRecord: null,
+			matchSize: null,
+			matchUserId: null,
+			matchLoading: false,
 		};
 	}
 
@@ -258,6 +309,128 @@ class PairsSection extends Component {
 			});
 	};
 
+	openOrderModal = (order) => {
+		this.setState({ orderModalVisible: true, selectedOrder: order });
+	};
+
+	closeOrderModal = () => {
+		this.setState({ orderModalVisible: false, selectedOrder: null });
+	};
+
+	deriveUserId = (order) => {
+		return order?.User?.id || order?.created_by || this.props.userId;
+	};
+
+	renderActionMenu = (record) => (
+		<Menu>
+			<Menu.Item
+				key="cancel"
+				onClick={({ domEvent }) => {
+					domEvent.stopPropagation();
+					this.confirmCancel(record);
+				}}
+			>
+				Cancel
+			</Menu.Item>
+			<Menu.Item
+				key="match"
+				onClick={({ domEvent }) => {
+					domEvent.stopPropagation();
+					this.openMatchModal(record);
+				}}
+			>
+				Match order
+			</Menu.Item>
+		</Menu>
+	);
+
+	renderActions = (record) => (
+		<Dropdown overlay={this.renderActionMenu(record)} trigger={['click']}>
+			<Button
+				type="link"
+				style={{ color: 'white' }}
+				onClick={(ev) => ev.stopPropagation()}
+			>
+				<MoreOutlined />
+			</Button>
+		</Dropdown>
+	);
+
+	confirmCancel = (order) => {
+		Modal.confirm({
+			title: 'Cancel this order?',
+			okText: 'Cancel order',
+			okType: 'danger',
+			onOk: () => this.onCancelOrder(order, this.deriveUserId(order)),
+		});
+	};
+
+	openMatchModal = (order) => {
+		this.setState({
+			matchModalVisible: true,
+			matchOrderRecord: order,
+			matchUserId: this.deriveUserId(order),
+			matchSize: null,
+		});
+	};
+
+	closeMatchModal = () => {
+		this.setState({
+			matchModalVisible: false,
+			matchOrderRecord: null,
+			matchSize: null,
+			matchUserId: null,
+			matchLoading: false,
+		});
+	};
+
+	submitMatch = async () => {
+		const { matchOrderRecord, matchSize, matchUserId } = this.state;
+		if (!matchOrderRecord || !matchUserId || !matchSize) return;
+		this.setState({ matchLoading: true });
+		try {
+			await requestMatchOrder({
+				user_id: Number(matchUserId),
+				order_id: matchOrderRecord.id,
+				symbol: matchOrderRecord.symbol,
+				size: Number(matchSize),
+			});
+			this.closeMatchModal();
+			this.refreshOrders();
+		} catch (e) {
+			this.setState({ matchLoading: false });
+		}
+	};
+
+	refreshOrders = () => {
+		this.setState(
+			{
+				buyOrders: {
+					data: [],
+					loading: true,
+					total: 0,
+					page: 1,
+					isRemaining: true,
+				},
+				sellOrders: {
+					data: [],
+					loading: true,
+					total: 0,
+					page: 1,
+					isRemaining: true,
+				},
+				buyCurrentTablePage: 1,
+				sellCurrentTablePage: 1,
+			},
+			() => {
+				this.handleTrades('buy');
+				this.handleTrades('sell');
+			}
+		);
+	};
+
+	// no modal actions; read-only details
+
 	pageChange = (count, pageSize) => {
 		const { buyOrders = {}, sellOrders = {}, limit } = this.state;
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
@@ -335,8 +508,17 @@ class PairsSection extends Component {
 		} = this.state;
 
 		const COLUMNS = this.props.getThisExchangeOrder
-			? getThisExchangeOrders(this.onCancelOrder)
-			: getColumns(this.props.userId, this.onCancelOrder);
+			? getThisExchangeOrders(
+					this.onCancelOrder,
+					this.openOrderModal,
+					this.renderActions
+			  )
+			: getColumns(
+					this.props.userId,
+					this.onCancelOrder,
+					this.openOrderModal,
+					this.renderActions
+			  );
 		return (
 			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange} activeKey={this.state.activeTab}>
@@ -361,6 +543,10 @@ class PairsSection extends Component {
 												return data.id;
 											}}
 											dataSource={buyOrders.data}
+											onRow={(record) => ({
+												onClick: () => this.openOrderModal(record),
+												style: { cursor: 'pointer' },
+											})}
 											pagination={{
 												current: buyCurrentTablePage,
 												onChange: this.pageChange,
@@ -392,6 +578,10 @@ class PairsSection extends Component {
 												return data.id;
 											}}
 											dataSource={sellOrders.data}
+											onRow={(record) => ({
+												onClick: () => this.openOrderModal(record),
+												style: { cursor: 'pointer' },
+											})}
 											pagination={{
 												current: sellCurrentTablePage,
 												onChange: this.pageChange,
@@ -403,6 +593,92 @@ class PairsSection extends Component {
 						</Row>
 					</TabPane>
 				</Tabs>
+				<Modal
+					title={<span style={{ color: 'white' }}>Order details</span>}
+					visible={this.state.orderModalVisible}
+					onCancel={this.closeOrderModal}
+					footer={null}
+				>
+					{this.state.selectedOrder && (
+						<div>
+							<div className="d-flex flex-column mb-3">
+								<div>
+									<strong>ID:</strong> {this.state.selectedOrder.id}
+								</div>
+								<div>
+									<strong>User ID:</strong>{' '}
+									{this.deriveUserId(this.state.selectedOrder)}
+									{this.state.selectedOrder?.User?.email
+										? ` (${this.state.selectedOrder.User.email})`
+										: ''}
+								</div>
+								<div>
+									<strong>Symbol:</strong> {this.state.selectedOrder.symbol}
+								</div>
+								<div>
+									<strong>Side:</strong> {this.state.selectedOrder.side}
+								</div>
+								<div>
+									<strong>Type:</strong> {this.state.selectedOrder.type}
+								</div>
+								<div>
+									<strong>Price:</strong> {this.state.selectedOrder.price}
+								</div>
+								<div>
+									<strong>Size:</strong> {this.state.selectedOrder.size}
+								</div>
+								<div>
+									<strong>Filled:</strong> {this.state.selectedOrder.filled}
+								</div>
+								<div>
+									<strong>Stop:</strong> {this.state.selectedOrder.stop || ''}
+								</div>
+								<div>
+									<strong>Average:</strong>{' '}
+									{this.state.selectedOrder.average || ''}
+								</div>
+								<div>
+									<strong>Status:</strong> {this.state.selectedOrder.status}
+								</div>
+								<div>
+									<strong>Updated:</strong>{' '}
+									{this.state.selectedOrder.updated_at}
+								</div>
+								<div>
+									<strong>Created:</strong>{' '}
+									{this.state.selectedOrder.created_at}
+								</div>
+							</div>
+						</div>
+					)}
+				</Modal>
+				<Modal
+					title={<span style={{ color: 'white' }}>Match order</span>}
+					visible={this.state.matchModalVisible}
+					onCancel={this.closeMatchModal}
+					onOk={this.submitMatch}
+					confirmLoading={this.state.matchLoading}
+					okText="Match"
+				>
+					<div className="d-flex flex-column">
+						<div className="mb-2">
+							<div className="mb-1">User ID</div>
+							<Input
+								value={this.state.matchUserId}
+								onChange={(e) => this.setState({ matchUserId: e.target.value })}
+							/>
+						</div>
+						<div>
+							<div className="mb-1">Size</div>
+							<InputNumber
+								value={this.state.matchSize}
+								onChange={(v) => this.setState({ matchSize: v })}
+								min={0}
+								style={{ width: '100%' }}
+							/>
+						</div>
+					</div>
+				</Modal>
 			</div>
 		);
 	}

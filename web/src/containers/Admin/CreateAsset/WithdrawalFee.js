@@ -53,24 +53,15 @@ const WithdrawalFee = ({
 	}, []);
 
 	useEffect(() => {
+		// Always derive from the provided fees prop which is constructed
+		// from the current coinFormData.network list in the parent.
 		if (
-			coinFormData.withdrawal_fees &&
-			JSON.stringify(coinFormData.withdrawal_fees) !==
-				JSON.stringify(withdrawalFees) &&
-			assetType &&
-			assetType !== 'deposit'
+			withdrawalFees &&
+			JSON.stringify(withdrawalFees) !== JSON.stringify(withdrawal_fees)
 		) {
-			setWithdrawalFees(coinFormData.withdrawal_fees);
-		} else if (
-			coinFormData.deposit_fees &&
-			JSON.stringify(coinFormData.deposit_fees) !==
-				JSON.stringify(withdrawalFees) &&
-			assetType &&
-			assetType === 'deposit'
-		) {
-			setWithdrawalFees(coinFormData.deposit_fees);
+			setWithdrawalFees(withdrawalFees);
 		}
-	}, [coinFormData, withdrawalFees, assetType]);
+	}, [withdrawalFees]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	let tempArr = [];
 	coins.map((data) => {

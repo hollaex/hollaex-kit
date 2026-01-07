@@ -34,11 +34,9 @@ import {
 	calculateFee,
 	calculateFeeCoin,
 	calculateFeeMarkup,
-	networkList,
 	onHandleSymbol,
 	renderEstimatedValueAndFee,
 	renderLabel,
-	renderNetworkField,
 	renderNetworkWithLabel,
 	renderScanIcon,
 } from './utils';
@@ -48,6 +46,7 @@ import { getDecimals, handlePopupContainer } from 'utils/utils';
 import { roundNumber, toFixed } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setScannedAddress } from 'actions/walletActions';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const RenderWithdraw = ({
 	coins,
@@ -77,6 +76,7 @@ const RenderWithdraw = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState([]);
 	const [prices, setPrices] = useState({});
+	const [withdrawalLimitError, setWithdrawalLimitError] = useState(null);
 	const [selectedAsset, setSelectedAsset] = useState({
 		selectedCurrency: null,
 		networkData: null,
@@ -333,6 +333,7 @@ const RenderWithdraw = ({
 
 	const getWithdrawMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
+			setWithdrawalLimitError();
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
 				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
@@ -346,7 +347,7 @@ const RenderWithdraw = ({
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
 		} catch (error) {
-			console.error(error);
+			setWithdrawalLimitError(error?.response?.data?.message);
 		}
 	};
 
@@ -444,7 +445,7 @@ const RenderWithdraw = ({
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: true }));
-			setWithdrawNetworkOptions(renderNetworkField(val));
+			setWithdrawNetworkOptions(val);
 			setSelectedAsset((prev) => ({ ...prev, networkData: val }));
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
@@ -455,6 +456,25 @@ const RenderWithdraw = ({
 		setWithdrawOptionaltag(null);
 		setSelectedAsset((prev) => ({ ...prev, addressField: null }));
 		setIsValidField((prev) => ({ ...prev, isOptionalTag: false }));
+	};
+
+	const filterNetworkOptions = (input, option) => {
+		const searchValue = input?.toLowerCase();
+		const networkKey = option?.value?.toLowerCase() || '';
+		const networkDisplayName =
+			getNetworkNameByKey(option?.value)?.toLowerCase() || '';
+
+		return (
+			networkKey?.includes(searchValue) ||
+			networkDisplayName?.includes(searchValue)
+		);
+	};
+
+	const filterCoinOptions = (input, option) => {
+		const searchValue = input?.toLowerCase();
+		const optionValue = option?.value?.toLowerCase() || '';
+
+		return optionValue?.includes(searchValue);
 	};
 
 	const onHandleAddress = (val, method) => {
@@ -701,7 +721,7 @@ const RenderWithdraw = ({
 					coinLength.length > 1 &&
 					getWithdrawNetworkOptions &&
 					getWithdrawNetworkOptions
-					? renderNetworkField(selectedAsset?.networkData)
+					? selectedAsset?.networkData
 					: network
 			)) &&
 		selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'];
@@ -796,9 +816,7 @@ const RenderWithdraw = ({
 	};
 
 	const selectedAssetNetwork =
-		coinLength?.length > 1
-			? renderNetworkField(selectedAsset?.networkData)
-			: network;
+		coinLength?.length > 1 ? selectedAsset?.networkData : network;
 	const isActiveWithdrawNetwork = currencyNetwork(selectedAssetNetwork);
 
 	const getActiveWithdraw =
@@ -928,6 +946,7 @@ const RenderWithdraw = ({
 									<div className="d-flex">
 										<Select
 											showSearch={true}
+											filterOption={filterCoinOptions}
 											className="custom-select-input-style elevated select-field"
 											dropdownClassName="custom-select-style"
 											suffixIcon={<CaretDownOutlined />}
@@ -1040,6 +1059,7 @@ const RenderWithdraw = ({
 									>
 										<Select
 											showSearch={true}
+											filterOption={filterNetworkOptions}
 											placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
 											className={`custom-select-input-style elevated ${
 												coinLength && coinLength.length > 1
@@ -1054,52 +1074,58 @@ const RenderWithdraw = ({
 												defaultCurrency &&
 												!isValidField?.isPinnedAssets &&
 												coinLength?.length < 1 ? (
-													defaultNetwork
+													renderNetworkWithLabel(
+														coins[defaultNetwork]?.icon_id,
+														defaultNetwork
+													)
 												) : coinLength && coinLength.length <= 1 ? (
-													getWithdrawNetworkOptions &&
+													<span className="d-flex">
+														{renderNetworkWithLabel(networkIcon, network)}
+														{coins[network] &&
+														currencyNetwork(network)?.active !== false ? (
+															<span className="ml-1 secondary-text">
+																(
+																<span>
+																	{calculateFeeMarkup(
+																		selectedAsset?.selectedCurrency,
+																		network,
+																		coins,
+																		coin_customizations
+																	)}
+																</span>
+																<span className="ml-1">
+																	{calculateFeeCoin(
+																		selectedAsset?.selectedCurrency,
+																		network,
+																		coins
+																	)?.toUpperCase()}
+																</span>
+																)
+															</span>
+														) : (
+															<EditWrapper stringId="LEVELS.BLOCKED">
+																<span className="ml-1 secondary-text">
+																	({STRINGS['LEVELS.BLOCKED']})
+																</span>
+															</EditWrapper>
+														)}
+													</span>
+												) : coinLength && coinLength.length > 1 ? (
 													getWithdrawNetworkOptions ? (
 														<span className="d-flex">
-															{selectedAsset?.networkData}
-															{coins[network] &&
-															currencyNetwork(selectedAsset?.networkData)
-																?.active !== false ? (
-																<span className="ml-1 secondary-text">
-																	(
-																	<span>
-																		{calculateFee(
-																			selectedAsset?.selectedCurrency,
-																			selectedAsset?.networkData,
-																			coins
-																		)}
-																	</span>
-																	<span className="ml-1">
-																		{calculateFeeCoin(
-																			selectedAsset?.selectedCurrency,
-																			selectedAsset?.networkData,
-																			coins
-																		)?.toUpperCase()}
-																	</span>
-																	)
-																</span>
-															) : (
-																<EditWrapper stringId="LEVELS.BLOCKED">
-																	<span className="ml-1 secondary-text">
-																		({STRINGS['LEVELS.BLOCKED']})
-																	</span>
-																</EditWrapper>
+															{renderNetworkWithLabel(
+																networkOptionsIcon,
+																getWithdrawNetworkOptions
 															)}
-														</span>
-													) : (
-														<span className="d-flex">
-															{renderNetworkWithLabel(networkIcon, network)}
-															{coins[network] &&
-															currencyNetwork(network)?.active !== false ? (
+															{coins[getWithdrawNetworkOptions] &&
+															currencyNetwork(getWithdrawNetworkOptions)
+																?.active !== false ? (
 																<span className="ml-1 secondary-text">
 																	(
 																	<span>
 																		{calculateFeeMarkup(
 																			selectedAsset?.selectedCurrency,
-																			network,
+																			getWithdrawNetworkOptions,
 																			coins,
 																			coin_customizations
 																		)}
@@ -1107,7 +1133,7 @@ const RenderWithdraw = ({
 																	<span className="ml-1">
 																		{calculateFeeCoin(
 																			selectedAsset?.selectedCurrency,
-																			network,
+																			getWithdrawNetworkOptions,
 																			coins
 																		)?.toUpperCase()}
 																	</span>
@@ -1121,17 +1147,7 @@ const RenderWithdraw = ({
 																</EditWrapper>
 															)}
 														</span>
-													)
-												) : coinLength && coinLength.length > 1 ? (
-													getWithdrawNetworkOptions &&
-													getWithdrawNetworkOptions ? (
-														selectedAsset?.networkData
-													) : (
-														renderNetworkWithLabel(
-															networkOptionsIcon,
-															getWithdrawNetworkOptions
-														)
-													)
+													) : null
 												) : (
 													coins[getWithdrawCurrency]?.symbol.toUpperCase()
 												)
@@ -1143,120 +1159,50 @@ const RenderWithdraw = ({
 											onClear={() => onHandleClear('network')}
 											getPopupContainer={handlePopupContainer}
 										>
-											{coinLength?.length === 1 &&
-												coinLength &&
-												coinLength.map((data, inx) => {
-													const getSelectedSymbol = renderNetworkField(
-														data?.network
-													);
-													const isActiveNetwork =
-														currencyNetwork(getSelectedSymbol)?.active !==
-														false;
-													return (
-														<Option
-															key={inx}
-															value={data}
-															disabled={!isActiveNetwork}
-														>
-															<div className="d-flex withdraw-network-options">
-																<div>
-																	{renderNetworkWithLabel(
-																		coins[data]?.icon_id,
-																		data
+											{coinLength?.map((data, inx) => {
+												const getSelectedSymbol = data;
+												const isActiveNetwork =
+													currencyNetwork(getSelectedSymbol)?.active !== false;
+												return (
+													<Option
+														key={inx}
+														value={data}
+														disabled={!isActiveNetwork}
+													>
+														<div className="d-flex withdraw-network-options">
+															<div>
+																{renderNetworkWithLabel(
+																	coins[data]?.icon_id,
+																	data
+																)}
+															</div>
+															{isActiveNetwork ? (
+																<span className="secondary-text">
+																	{calculateFeeMarkup(
+																		selectedAsset?.selectedCurrency,
+																		data,
+																		coins,
+																		coin_customizations
 																	)}
-																</div>
-																{isActiveNetwork ? (
-																	<span className="secondary-text">
-																		{calculateFee(
+																	<span className="ml-1">
+																		{calculateFeeCoin(
 																			selectedAsset?.selectedCurrency,
 																			data,
 																			coins
-																		)}
-																		<span className="ml-1">
-																			{calculateFeeCoin(
-																				selectedAsset?.selectedCurrency,
-																				data,
-																				coins
-																			)?.toUpperCase()}
-																		</span>
+																		)?.toUpperCase()}
 																	</span>
-																) : (
-																	<EditWrapper stringId="LEVELS.BLOCKED">
-																		<span className="ml-1 secondary-text">
-																			({STRINGS['LEVELS.BLOCKED']})
-																		</span>
-																	</EditWrapper>
-																)}
-															</div>
-														</Option>
-													);
-												})}
-											{coinLength &&
-												coinLength?.length > 1 &&
-												networkList.map((data, inx) => {
-													const coin = data.iconId.split('_');
-													const getSelectedSymbol = renderNetworkField(
-														data?.network
-													);
-													const isActiveNetwork =
-														currencyNetwork(getSelectedSymbol)?.active !==
-														false;
-
-													return coinLength.map((coinData, coinInx) => {
-														if (coinData === coin[0]?.toLowerCase()) {
-															return (
-																<Option
-																	key={`${inx}-${coinInx}`}
-																	value={data?.network}
-																	disabled={!isActiveNetwork}
-																>
-																	<div className="d-flex withdraw-network-options w-100">
-																		<div
-																			className={
-																				isActiveNetwork
-																					? 'd-flex important-text'
-																					: 'd-flex secondary-text'
-																			}
-																		>
-																			{data?.network}
-																			<div className="ml-2 mt-1">
-																				<Coin
-																					iconId={data.iconId}
-																					type="CS2"
-																					className="mt-2 withdraw-network-icon"
-																				/>
-																			</div>
-																		</div>
-																		{isActiveNetwork ? (
-																			<span className="secondary-text">
-																				{calculateFeeMarkup(
-																					selectedAsset?.selectedCurrency,
-																					getSelectedSymbol,
-																					coins,
-																					coin_customizations
-																				)}
-																				<span className="ml-1">
-																					{calculateFeeCoin(
-																						selectedAsset?.selectedCurrency,
-																						getSelectedSymbol,
-																						coins
-																					)?.toUpperCase()}
-																				</span>
-																			</span>
-																		) : (
-																			<EditWrapper stringId="LEVELS.BLOCKED">
-																				<span className="ml-1 secondary-text">
-																					({STRINGS['LEVELS.BLOCKED']})
-																				</span>
-																			</EditWrapper>
-																		)}
-																	</div>
-																</Option>
-															);
-														}
-														return null;
-													});
-												})}
+																</span>
+															) : (
+																<EditWrapper stringId="LEVELS.BLOCKED">
+																	<span className="ml-1 secondary-text">
+																		({STRINGS['LEVELS.BLOCKED']})
+																	</span>
+																</EditWrapper>
+															)}
+														</div>
+													</Option>
+												);
+											})}
 										</Select>
 										{selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 										isEmailAndAddress &&
@@ -1635,12 +1581,19 @@ const RenderWithdraw = ({
 										)}
 									</div>
 								) : null}
-								{!maxAmount && maxAmount === 0 && (
+								{!maxAmount && !withdrawalLimitError && maxAmount === 0 && (
 									<div className="d-flex mt-2 warning-text">
 										<ExclamationCircleFilled className="mt-1 mr-1" />
 										{renderLabel('WITHDRAW_PAGE.ZERO_BALANCE')}
 									</div>
 								)}
+								{withdrawalLimitError && (
+									<div className="d-flex mt-2 warning_text">
+										<ExclamationCircleFilled className="mt-1 mr-1" />
+										{withdrawalLimitError}
+									</div>
+								)}
+
 								{currStep.stepFive && (
 									<div
 										className={`d-flex h-25 ${

@@ -31,6 +31,7 @@ import {
 import PublicInfo from './components/PublicInfo';
 import Distributions from './components/Distributions';
 import MyStaking from './components/MyStaking';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const { TabPane } = Tabs;
 export const TABS = {
@@ -153,15 +154,13 @@ class StakeDetails extends Component {
 	};
 
 	goToPOT = () => {
-		const {
-			contracts: {
-				[STAKING_INDEX_COIN]: { network, token },
-			},
-			pots,
-		} = this.props;
-		const address = pots[STAKING_INDEX_COIN]
-			? pots[STAKING_INDEX_COIN].address
-			: '';
+		const { contracts, pots } = this.props;
+		const contract = contracts?.[STAKING_INDEX_COIN];
+
+		if (!contract?.network || !contract?.token) return;
+
+		const address = pots?.[STAKING_INDEX_COIN]?.address || '';
+		const { network, token } = contract;
 
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
@@ -170,11 +169,11 @@ class StakeDetails extends Component {
 	};
 
 	goToBlocks = () => {
-		const {
-			contracts: {
-				[STAKING_INDEX_COIN]: { network },
-			},
-		} = this.props;
+		const { contracts } = this.props;
+		const network = contracts?.[STAKING_INDEX_COIN]?.network;
+
+		if (!network) return;
+
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
 		}etherscan.io/blocks`;
@@ -192,7 +191,7 @@ class StakeDetails extends Component {
 			totalUserEarnings,
 		} = this.props;
 
-		const { fullname } = coins[token];
+		const { fullname } = coins[token] || DEFAULT_COIN_DATA;
 
 		switch (key) {
 			case TABS.PUBLIC_INFO.key:
@@ -243,11 +242,11 @@ class StakeDetails extends Component {
 	};
 
 	openContract = (token) => {
-		const {
-			contracts: {
-				[STAKING_INDEX_COIN]: { network },
-			},
-		} = this.props;
+		const { contracts } = this.props;
+		const contract = contracts?.[STAKING_INDEX_COIN] || {};
+		if (!contract?.network || !token) return;
+
+		const network = contract?.network;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
 		}etherscan.io/token/${token}`;
@@ -266,7 +265,7 @@ class StakeDetails extends Component {
 
 		const { activeKey } = this.state;
 
-		const { fullname, icon_id } = coins[token];
+		const { fullname, icon_id } = coins[token] || DEFAULT_COIN_DATA;
 
 		const __html = `.stake-panel-bg:before { background-image: url(${ICONS['STAKING_PANEL_BACKGROUND']}) }`;
 
@@ -293,18 +292,22 @@ class StakeDetails extends Component {
 								imageWrapperClassName="currency-ball"
 							/>
 							<div>
-								{STRINGS.formatString(
-									STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
-									<span
-										className="pointer blue-link"
-										onClick={() =>
-											this.openContract(CONTRACT_ADDRESSES()[token].token)
-										}
-									>
-										{CONTRACT_ADDRESSES()[token].token}
-									</span>
+								{CONTRACT_ADDRESSES()[token]?.token && (
+									<>
+										{STRINGS.formatString(
+											STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
+											<span
+												className="pointer blue-link"
+												onClick={() =>
+													this.openContract(CONTRACT_ADDRESSES()[token].token)
+												}
+											>
+												{CONTRACT_ADDRESSES()[token].token}
+											</span>
+										)}
+										<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
+									</>
 								)}
-								<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
 							</div>
 							<div>
 								{STRINGS.formatString(

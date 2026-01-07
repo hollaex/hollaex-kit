@@ -87,9 +87,61 @@ const checkIp = async (remoteip = '') => {
 	return;
 };
 
-const checkCaptcha = (captcha = '', remoteip = '') => {
-	// Google Recaptcha is deprecated feature from v2.10.3.
-	return;
+const checkCaptcha = (captcha = '', remoteip = '', headers = {}) => {
+	// Backward-compatible bypass for legacy mobile clients:
+	// if they send the custom header `custom-device`, skip captcha verification.
+	// Note: Node lower-cases incoming header keys.
+	try {
+		const headerObj = headers?.headers ? headers.headers : headers;
+		if (headerObj && headerObj['custom-device']) {
+			loggerAuth.info('helpers/auth/checkCaptcha skipped due to custom-device header', remoteip);
+			return;
+		}
+	} catch (err) {
+		loggerAuth.error('helpers/auth/checkCaptcha cutom-header catch ALERT', err.message);
+	}
+
+	// Cloudflare Turnstile verification (server-side).
+	const turnstileSecret = getKitSecrets()?.cloudflare_turnstile?.secret_key;
+	const turnstileSiteKey = getKitConfig()?.cloudflare_turnstile?.site_key;
+
+	if (!turnstileSiteKey || !turnstileSecret) {
+		loggerAuth.error('helpers/auth/checkCaptcha turnstile not set so skipped', remoteip);
+		return;
+	}
+
+	if (!captcha || typeof captcha !== 'string') {
+		loggerAuth.error('helpers/auth/checkCaptcha turnstile not found', captcha,remoteip);
+		throw new Error(INVALID_CAPTCHA);
+	}
+
+	return rp({
+		method: 'POST',
+		uri: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+		form: {
+			secret: turnstileSecret,
+			response: captcha,
+			...(remoteip ? { remoteip } : {})
+		},
+		json: true,
+		timeout: 10000
+	})
+		.then((result) => {
+			if (!result || result.success !== true) {
+				loggerAuth.error(
+					'helpers/auth/checkCaptcha turnstile failed',
+					remoteip,
+					result?.['error-codes'] || result
+				);
+				throw new Error(INVALID_CAPTCHA);
+			}
+			loggerAuth.info('helpers/auth/checkCaptcha turnstile success', remoteip);
+			return;
+		})
+		.catch((err) => {
+			loggerAuth.error('helpers/auth/checkCaptcha turnstile error', remoteip, err?.message);
+			throw new Error(INVALID_CAPTCHA);
+		});
 };
 
 const validatePassword = (userPassword, inputPassword) => {
@@ -167,9 +219,10 @@ const confirmChangeUserPassword = (code, domain) => {
 			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
 		.then(async (user) => {
-			const { revokeAllUserSessions } = require('./user');
+			const { revokeAllUserSessions, disableUserWithdrawal } = require('./user');
 
 			await revokeAllUserSessions(user.id);
+			await disableUserWithdrawal(user.id, { expiry_date: moment().add(24, 'hours').toISOString() });
 			sendEmail(
 				MAILTYPE.PASSWORD_CHANGED,
 				user.email,
@@ -181,7 +234,7 @@ const confirmChangeUserPassword = (code, domain) => {
 		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode) => {
+const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode, version) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -202,13 +255,29 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
-			return all([createChangePasswordCode(user.id, newPassword), user]);
+			return all([createChangePasswordCode(user.id, newPassword, version), user]);
 		})
-		.then(([code, user]) => {
+		.then(async ([code, user]) => {
+			if (version === 'v3') {
+				await client.setexAsync(
+					`user:freeze-account:${code}`,
+					60 * 60 * 6,
+					JSON.stringify({
+						id: code,
+						user_id: user.id,
+						email: user.email,
+						verification_code: code,
+						ip,
+						time: new Date().toISOString()
+					})
+				);
+			}
 			sendEmail(
-				MAILTYPE.CHANGE_PASSWORD,
+				version === 'v3' ? MAILTYPE.CHANGE_PASSWORD_CODE : MAILTYPE.CHANGE_PASSWORD,
 				email,
-				{ code, ip },
+				version === 'v3'
+					? { code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` }
+					: { code, ip },
 				user.settings,
 				domain
 			);
@@ -228,9 +297,18 @@ const getChangePasswordCode = (code) => {
 		});
 };
 
-const createChangePasswordCode = (userId, newPassword) => {
+const createChangePasswordCode = (userId, newPassword, version) => {
 	//Generate new random code
-	const code = crypto.randomBytes(20).toString('hex');
+	let code;
+	if (version === 'v3') {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		code = `${letters}-${numbers}`;
+	} else {
+		code = crypto.randomBytes(20).toString('hex');
+	}
 	//Code is expire in 5 mins
 	return generateHash(newPassword)
 		.then((hashedPassword) => {
@@ -277,7 +355,7 @@ const createResetPasswordCode = (userId, version) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
+const sendResetPasswordCode = (email, captcha, ip, domain, version, headers = {}) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -287,7 +365,11 @@ const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([createResetPasswordCode(user.id, version), user, checkCaptcha(captcha, ip)]);
+			return all([
+				createResetPasswordCode(user.id, version),
+				user,
+				checkCaptcha(captcha, ip, headers)
+			]);
 		})
 		.then(([code, user]) => {
 			// Create a freeze-account token (valid for 6 hours) tied to the reset code
@@ -863,7 +945,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 				} else if (!permissions.every((permission) => token[permission] === true)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
-						apiKey
+						apiKey,
+						permissions,
+						token
 					);
 					throw new Error(API_KEY_NOT_PERMITTED);
 				} else {
@@ -886,7 +970,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 };
 
 
-const createSession = async (token, loginId, userId) => {
+const createSession = async (token, loginId, userId, expiry = null, meta = {}) => {
 
 	const user = await dbQuery.findOne('user', { where: { id: userId } });
 	const userRole = user.role || 'user';
@@ -902,7 +986,8 @@ const createSession = async (token, loginId, userId) => {
 		login_id: loginId,
 		status: true,
 		last_seen: new Date(),
-		expiry_date: new Date(decoded.exp * 1000)
+		expiry_date: new Date(decoded.exp * 1000),
+		meta
 	});
 };
 
@@ -1031,14 +1116,18 @@ const issueToken = (
 	lang = 'en',
 	permissions = [],
 	configs = [],
-	role = 'user'
+	role = 'user',
+	extra = {}
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
 
+	// Normalize role to 'user' if null/undefined/empty
+	const normalizedRole = role || 'user';
+
 	if (checkAdminIp(getKitSecrets().admin_whitelist, ip)) {
-		if (role) {
-			scopes.push(role);
+		if (normalizedRole && !scopes.includes(normalizedRole)) {
+			scopes.push(normalizedRole);
 		}
 	}
 
@@ -1049,11 +1138,12 @@ const issueToken = (
 				email,
 				networkId,
 				lang,
-				role
+				role: normalizedRole
 			},
 			scopes,
 			ip,
-			iss: ISSUER
+			iss: ISSUER,
+			...extra
 		},
 		SECRET,
 		{

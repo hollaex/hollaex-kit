@@ -125,6 +125,7 @@ import {
 	SET_IS_DISPLAY_ADD_PLUGIN,
 	SET_IS_ACTIVE_FILTER_USER,
 	SET_RECENT_SEARCHES,
+	SET_IS_EDIT_EMAIL,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -304,6 +305,7 @@ const INITIAL_STATE = {
 	isDisplayAddPlugin: false,
 	isActiveFilterUser: false,
 	recentSearches: [],
+	isEditEmail: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -1238,6 +1240,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				recentSearches: payload.recentSearches,
+			};
+		}
+		case SET_IS_EDIT_EMAIL: {
+			return {
+				...state,
+				isEditEmail: payload.isEditEmail,
 			};
 		}
 		default:

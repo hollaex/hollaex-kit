@@ -6,6 +6,16 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	background-color: $app-background-color;
 	color: $colors-main-black;
 
+	.shared-account-notification-bar {
+		.notification-link {
+			transition: opacity 0.2s;
+
+			&:hover {
+				opacity: 0.7;
+			}
+		}
+	}
+
 	&.layout-desktop {
 		.app_container-content {
 			height: auto;
@@ -581,6 +591,17 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 					font-size: 12px;
 				}
 			}
+		}
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.app_container {
+		.shared-account-notification-bar {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
 		}
 	}
 }

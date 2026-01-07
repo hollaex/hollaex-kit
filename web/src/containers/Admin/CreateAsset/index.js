@@ -110,23 +110,54 @@ class CreateAsset extends Component {
 	}
 
 	componentDidUpdate(prevState) {
+		const { currentScreen } = this.props;
+		const { searchValue } = this.state;
 		if (this.state.withdrawalFees !== prevState.withdrawalFees) {
 			this.props.updateFormData(
 				this.props.assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
 				this.state.withdrawalFees
 			);
 		}
+		if (currentScreen === 'step1' && searchValue?.trim()?.length) {
+			this.handleSearch();
+		}
 	}
 
 	generateInitialFees = () => {
 		const { editAsset } = this.props;
+		return this.generateFeesFromCoin(editAsset);
+	};
+
+	generateFeesFromCoin = (coin, feeKind = 'withdrawal') => {
 		const initialFees = {};
-		const { network, symbol } = editAsset;
-		const networks = network ? network.split(',') : [symbol];
-		networks.forEach((key) => {
+		if (!coin) return initialFees;
+		const { network, symbol } = coin;
+		// Build networks from coin.network, trimming spaces and normalizing case
+		const networks = network
+			? Array.from(
+					new Set(
+						network
+							.split(',')
+							.map((n) => (n || '').trim().toLowerCase())
+							.filter(Boolean)
+					)
+			  )
+			: [symbol];
+		const existingFees =
+			feeKind === 'deposit'
+				? coin?.deposit_fees || {}
+				: coin?.withdrawal_fees || {};
+
+		networks.forEach((rawKey) => {
+			const key = (rawKey || '').trim().toLowerCase();
+			const existing = existingFees[key] || {};
 			initialFees[key] = {
-				value: 0,
-				symbol: editAsset?.symbol,
+				value: existing.value || 0,
+				symbol: existing.symbol || coin?.symbol,
+				max: existing.max,
+				min: existing.min,
+				type: existing.type || 'static',
+				active: existing.active,
 			};
 		});
 		return initialFees;
@@ -145,7 +176,7 @@ class CreateAsset extends Component {
 	};
 
 	setCurrentPageAssets = (activeKey) => {
-		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
+		const coinKeys = this.props?.assetsCoins?.map((data) => data?.symbol);
 		// const coinKeys = exchangeCoins.map((data) => data.symbol);
 		let coins = this.props.coins.filter(
 			// let coins = allCoins.filter(
@@ -408,18 +439,10 @@ class CreateAsset extends Component {
 		this.props.handleEditDataCallback(coinFormData);
 	};
 
-	handleSelectCoin = (coin) => {
-		this.setState({
-			selectedCoin: coin.symbol,
-			selectedCoinData: coin,
-		});
-		this.props.updateCurrentScreen('step1');
-	};
-
 	handleSearch = (e) => {
-		const searchValue = e.target.value ? e.target.value.toLowerCase() : '';
+		const searchValue = e?.target?.value ? e?.target?.value?.toLowerCase() : '';
 		let coinData = [];
-		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
+		const coinKeys = this.props?.assetsCoins?.map((data) => data?.symbol);
 		if (this.state.activeTab === '0') {
 			let hollaexCoins = this.props.coins.filter(
 				(val) =>
@@ -670,14 +693,15 @@ class CreateAsset extends Component {
 				return (
 					<Step2
 						coins={coins}
-						exchangeCoins={this.props.exchangeCoins}
-						// exchangeCoins={exchangeCoins}
+						exchangeCoins={this.props?.assetsCoins}
+						exchangeData={this.props?.exchangeData}
+						assetsCoins={this.props?.assetsCoins || []}
 						handleSearch={this.handleSearch}
-						handleSelectCoin={this.handleSelectCoin}
 						handleScreenChange={this.handleScreenChange}
 						activeTab={activeTab}
 						handleResetAsset={this.handleResetAsset}
 						onClose={this.props.onClose}
+						handleModalClose={this.props?.handleModalClose}
 					/>
 				);
 			case 'step3':
@@ -866,10 +890,14 @@ class CreateAsset extends Component {
 						handleNext={this.handleNext}
 					/>
 				);
-			case 'edit_withdrawal_fees':
+			case 'edit_withdrawal_fees': {
+				const feeSource =
+					(this.props.editAsset && Object.keys(this.props.editAsset).length
+						? this.props.editAsset
+						: coinFormData) || {};
 				return (
 					<WithdrawalFee
-						coinFormData={coinFormData}
+						coinFormData={feeSource}
 						updateFormData={this.props.updateFormData}
 						handleClose={this.props.onClose}
 						coins={this.props.exchangeCoins}
@@ -879,10 +907,14 @@ class CreateAsset extends Component {
 						handleSymbolChange={this.handleSymbolChange}
 						tierValues={currentCoins}
 						assetType={this.props.assetType}
-						withdrawalFees={this.state.withdrawalFees}
+						withdrawalFees={this.generateFeesFromCoin(
+							feeSource,
+							this.props.assetType === 'deposit' ? 'deposit' : 'withdrawal'
+						)}
 						handleInitialValues={this.handleInitialValues}
 					/>
 				);
+			}
 			case 'update_confirm':
 				return (
 					<div>
@@ -927,7 +959,7 @@ class CreateAsset extends Component {
 						coins={coins}
 						coinFormData={coinFormData}
 						selectedCoinData={selectedCoinData}
-						exchangeCoins={this.props.exchangeCoins}
+						exchangeCoins={this.props?.assetsCoins}
 						onClose={this.props.onClose}
 						handleNext={this.handleNext}
 						// handleChange={this.handleAssetType}

@@ -36,7 +36,8 @@ class CreatePair extends Component {
 			currentPresetPair: {},
 			pairsRemaining: [],
 			activeTab: '0',
-			isExistPair: false
+			isExistPair: false,
+			searchValue: '',
 		};
 	}
 
@@ -72,8 +73,8 @@ class CreatePair extends Component {
 					...this.state.formData,
 					estimated_price: 1,
 					pair_base: pairs[0],
-					pair_2: pairs[1]
-				}
+					pair_2: pairs[1],
+				},
 			});
 		}
 	}
@@ -84,6 +85,18 @@ class CreatePair extends Component {
 			!this.props.isEdit
 		) {
 			this.setPresetPair();
+		}
+		const { currentStep, searchValue, activeTab } = this.state;
+		if (currentStep === 'step1' && prevState.currentStep !== 'step1') {
+			this.handleTabs(activeTab);
+		}
+		if (
+			currentStep !== 'step1' &&
+			searchValue?.trim()?.length &&
+			currentStep !== prevState.currentStep
+		) {
+			this.handleSearch();
+			this.handleTabs(activeTab);
 		}
 	}
 
@@ -113,7 +126,7 @@ class CreatePair extends Component {
 			if (typeof coin === 'string') return coin;
 			return coin.symbol;
 		});
-		const pairData = allPairs.filter(data => pairs.includes(data.name));
+		const pairData = allPairs.filter((data) => pairs.includes(data.name));
 		const pairKeys = pairData.map((pair) => pair.name);
 		const totalRemaining = allPairs.filter((pair) => {
 			return (
@@ -214,7 +227,9 @@ class CreatePair extends Component {
 	};
 
 	handleChange = (value, name) => {
-		let coinsData = this.props.allCoins.filter((val) => this.props.coins.includes(val.symbol));
+		let coinsData = this.props.allCoins.filter((val) =>
+			this.props.coins.includes(val.symbol)
+		);
 		let coinSecondary = this.state.coinSecondary;
 		let formData = {
 			...this.state.formData,
@@ -267,8 +282,8 @@ class CreatePair extends Component {
 	};
 
 	handleSearch = (e) => {
-		const pairsRemaining = this.constructPresetData();
-		const searchValue = e.target.value ? e.target.value.toLowerCase() : '';
+		const pairsRemaining = this.constructPresetData(this.state.activeTab);
+		const searchValue = e?.target?.value ? e.target.value?.toLowerCase() : '';
 		const filteredData = pairsRemaining.filter((pair) => {
 			return (
 				pair.name.includes(searchValue) ||
@@ -276,7 +291,7 @@ class CreatePair extends Component {
 				pair.pair_2.includes(searchValue)
 			);
 		});
-		this.setState({ pairsRemaining: filteredData });
+		this.setState({ pairsRemaining: filteredData, searchValue });
 	};
 
 	handleTabs = (activeTab) => {
@@ -285,7 +300,7 @@ class CreatePair extends Component {
 	};
 
 	handleExistPair = (value) => {
-		this.setState({ isExistPair: value })
+		this.setState({ isExistPair: value });
 	};
 
 	renderSection = () => {
@@ -296,7 +311,7 @@ class CreatePair extends Component {
 			currentPresetPair,
 			pairsRemaining,
 			activeTab,
-			isExistPair
+			isExistPair,
 		} = this.state;
 		const {
 			coins,
@@ -309,7 +324,7 @@ class CreatePair extends Component {
 			onClose,
 			exchange,
 			getMyExchange,
-			constants
+			constants,
 		} = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
@@ -344,6 +359,10 @@ class CreatePair extends Component {
 						moveToStep={this.moveToStep}
 						activeTab={activeTab}
 						handleSelectType={this.handleSelectType}
+						currentPresetPair={currentPresetPair}
+						exchange={exchange}
+						pairs={pairs}
+						handleModalClose={this.props.handleMoadalClose}
 					/>
 				);
 			case 'step2':
@@ -433,8 +452,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 CreatePair.defaultProps = {
-	handleWidth: () => { },
-	editDataCallback: () => { },
+	handleWidth: () => {},
+	editDataCallback: () => {},
 };
 
 export default connect(mapStateToProps)(CreatePair);

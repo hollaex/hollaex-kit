@@ -187,7 +187,7 @@ class Markets extends Component {
 				)}
 
 				<MarketList
-					loading={this.state.isLoading}
+					loading={this.state.isLoading || this.props.isFetching}
 					markets={data}
 					chartData={sparkLineChartData}
 					handleClick={this.handleClick}
@@ -240,6 +240,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	markets: MarketsSelector(state),
 	sparkLineChartData: state.app.sparkLineChartData,
+	isFetching: state.asset.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) => ({

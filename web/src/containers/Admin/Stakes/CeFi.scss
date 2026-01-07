@@ -33,3 +33,13 @@
 .ant-table-tbody > tr.ant-table-row:hover > td {
 	background-color: var(--admin_panel_table_tbody_hover);
 }
+
+.stake-pool-modal {
+	.stake-pool-modal-content {
+		.otc-Container {
+			.ant-select-disabled .ant-select-selector {
+				color: #fff !important;
+			}
+		}
+	}
+}

@@ -78,6 +78,10 @@ const VerificationEmailCode = Loadable({
 	loader: () => import('./containers/VerificationEmailCode'),
 	loading: LoadingComponent,
 });
+const Turnstile = Loadable({
+	loader: () => import('./containers/Turnstile'),
+	loading: LoadingComponent,
+});
 const Home = Loadable({
 	loader: () => import('./containers/Home'),
 	loading: LoadingComponent,
@@ -330,6 +334,11 @@ const MarginTrading = Loadable({
 	loading: LoadingComponent,
 });
 
+const AccountSharing = Loadable({
+	loader: () => import('./containers/UserSettings/AccountSharingForm'),
+	loading: LoadingComponent,
+});
+
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
 	if (window) {
@@ -450,6 +459,7 @@ const checkLanding = (nextState, replace) => {
 
 const logOutUser = () => {
 	if (getToken()) {
+		// Only log out this tab so we don't affect other active tabs.
 		removeToken();
 	}
 };
@@ -535,6 +545,7 @@ export const generateRoutes = (routes = []) => {
 	return (
 		<Router history={browserHistory}>
 			<Route path="lang/:locale" component={createLocalizedRoutes} />
+			<Route path="turnstile" name="Turnstile" component={Turnstile} />
 			<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 				<Route path="login" name="Login" component={Login} />
 				<Route path="signup" name="signup" component={Signup} />
@@ -605,6 +616,12 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route path="settings" name="Settings" component={Account} />
+				<Route
+					path="/account-sharing"
+					name="account-sharing"
+					component={AccountSharing}
+					onEnter={requireAuth}
+				/>
 				<Route path="apps" name="Apps" component={Apps} />
 				<Route
 					path="apps/details/:app"

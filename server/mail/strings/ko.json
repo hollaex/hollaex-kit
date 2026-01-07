@@ -33,7 +33,7 @@
 			"title": "${currency} 출금 거절됨"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p> ${name}님 </p><p>회원님은 ${address} 로 ${amount} 의 ${currency}을 출금요청하였습니다.<br /><br />금액: ${amount}<br />수수료: ${fee} ${currency}<br />주소: ${address}<br /><span id='network'>회로망: ${network}</span><br /><br />출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">나의 계정 활성화</Button></a></div><p>만약 이 요청을 원하지 않는다면, 회원님의 계정에는 변경사항이 없으니 본 메일을 무시해 주시기 바랍니다.</p><p>요청하신곳: ${ip}</p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><p> ${name}님 </p><p>회원님은 ${address} 로 ${amount} 의 ${currency}을 출금요청하였습니다.<br /><br />금액: ${amount}<br />수수료: ${fee} ${currency}<br /><div id='address'>주소: ${address}<br /></div><div id='network'>회로망: ${network}<br /></div><br />출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">나의 계정 활성화</Button></a></div><p>만약 이 요청을 원하지 않는다면, 회원님의 계정에는 변경사항이 없으니 본 메일을 무시해 주시기 바랍니다.</p><p>요청하신곳: ${ip}</p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 출금 요청"
 		},
 		"USER_VERIFICATION": {
@@ -80,20 +80,24 @@
 			"html": "<div><p> ${name}님 </p><p>계정의 비밀번호 변경을 요청하셨습니다.<br />비밀번호 변경을 확인하려면 아래 링크를 클릭하세요.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">내 비밀번호 변경 확인</Button></a></div><p>이 요청이 오류로 이루어진 경우 무시해도 됩니다. 귀하의 계정은 변경되지 않습니다.</p><p>요청 시작: ${ip}</p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "비밀번호 변경 확인"
 		},
+		"CHANGE_PASSWORD_CODE": {
+			"html": "<div><p> ${name}님 </p><p>계정의 <strong>비밀번호 변경</strong>을 요청하셨습니다.<br />아래 인증 코드를 사용하여 변경을 확인해 주세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>해당 코드를 비밀번호 변경 확인 화면에 입력하십시오. 코드는 제한된 시간 동안만 유효합니다.</p><p><strong>본인이 아니라면</strong> 즉시 <a href=\"${freeze_account_link}\">계정을 동결</a>하고 지원팀에 연락해 주세요.</p><p><strong>참고:</strong> 보안을 위해 비밀번호 변경 후 24시간 동안 출금이 제한됩니다.</p><p>요청 발신: ${ip}</p><p>감사합니다.<br />${api_name} 팀</p></div>",
+			"title": "비밀번호 변경 인증 코드"
+		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> ${name}님 </p><p> 회원님의 ${api_name} 지갑으로 ${amount} ${currency} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다. </p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><span id='network'>회로망: ${network}</span><br />수수료: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><div><p> ${name}님 </p><p> 회원님의 ${api_name} 지갑으로 ${amount} ${currency} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다. </p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br /><div id='address'>주소: ${address}<br /></div>거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}<br /></div>수수료: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 입금 보류 중"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}님} </p><p> 회원님의 ${amount} ${currency} 입금이 완료되었습니다. 회원님의 ${currency} 지갑에서 확인 및 이용하실 수 있습니다.</p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}</div><br />수수료: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><div><p> ${name}님} </p><p> 회원님의 ${amount} ${currency} 입금이 완료되었습니다. 회원님의 ${currency} 지갑에서 확인 및 이용하실 수 있습니다.</p><p>금액: ${amount} ${currency}<br />입금 상태: ${status}<br /><div id='address'>주소: ${address}<br /></div>거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}<br /></div>수수료: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 입금 완료"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> ${name}님 </p><p>회원님의 ${amount} ${currency} 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.</p><p>금액: ${amount} ${currency}<br />수수료: ${fee} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><span id='network'>회로망: ${network}</span><br /><ul>${explorers}</ul><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><p> ${name}님 </p><p>회원님의 ${amount} ${currency} 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.</p><p>금액: ${amount} ${currency}<br />수수료: ${fee} ${currency}<br />입금 상태: ${status}<br /><div id='address'>주소: ${address}<br /></div>거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 출금 보류 중"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> ${name}님 </p><p>회원님의 ${amount} ${currency}를 출금이 완료되어 회원님의 계좌로 이체되었습니다.</p><p>금액: ${amount} ${currency}<br />수수료: ${fee} ${currency}<br />입금 상태: ${status}<br />주소: ${address}<br />거래 ID 확인: ${transaction_id}<br /><span id='network'>회로망: ${network}</span>>br /><ul>${explorers}</ul><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"html": "<div><p> ${name}님 </p><p>회원님의 ${amount} ${currency}를 출금이 완료되어 회원님의 계좌로 이체되었습니다.</p><p>금액: ${amount} ${currency}<br />수수료: ${fee} ${currency}<br />입금 상태: ${status}<br /><div id='address'>주소: ${address}<br /></div>거래 ID 확인: ${transaction_id}<br /><div id='network'>회로망: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 출금 완료"
 		},
 		"DOC_REJECTED": {
@@ -115,6 +119,10 @@
 		"USER_DELETED": {
 			"html": "<div><p><p>${name}님, 친애하는 </p></p><p>계정 삭제 요청이 진행 중입니다. 귀하의 계정 정보는 서비스 약관에 따라 삭제됩니다.</p><p> 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "계정 삭제 요청"
+		},
+		"SUBACCOUNT_REMOVED": {
+			"html": "<div><p>${name} 님</p><p>서브계정 <strong>${sub_email}</strong> 이(가) 귀하의 계정에서 제거되었습니다.</p><p>참고: 해당 서브계정은 비활성화되었으며 더 이상 플랫폼에 접근할 수 없습니다. 의도하지 않은 경우, 지원팀에 연락해 주십시오.</p><p> 감사합니다<br> ${api_name} 팀 </p></div>",
+			"title": "서브계정 제거됨"
 		},
 		"OTP_DISABLED": {
 			"html": "<div> <p> ${name} 님 </p> <p> 귀하의 계정에서 <b>이중 인증 (2FA)이 해제되었다는 것을 기록했습니다</b>. 귀하의 계정을 보호하기 위해 2FA를 다시 활성화하는 것이 강력히 권장됩니다.</p> <div> <div>시간: ${time}</div> <div>국가: ${country}</div> <div>IP 주소: ${ip}</div> </div> <p> 만약 귀하가 아니라면 즉시 저희에게 연락해주십시오. </p> <p> 성의를 다하여<br> ${api_name} 팀 </p> </div>",
@@ -181,7 +189,7 @@
 			"html": "<div><p>${name} 님,</p><p>새로운 기기 또는 위치에서 귀하의 계정에 대한 로그인 시도가 감지되었습니다. 본인이 맞다면 아래 코드를 사용하여 로그인을 확인해주세요. 아니라면 즉시 계정을 보호하기 위한 조치를 취하시기 바랍니다.</p><p><strong>로그인 세부 정보:</strong><br />IP 주소: ${ip}<br />위치: ${location}<br />기기: ${device}<br />시간: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>본인이 아니라면</strong>, <a href=\"${freeze_account_link}\">즉시 계정을 동결</a>하는 것을 권장합니다.</p><p>감사합니다.<br />${api_name} 팀</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>${name}님, 안녕하세요</p><p>다음 주소로 ${amount} ${currency} 출금을 요청하셨습니다: ${address}.<br /><br />금액: ${amount} ${currency}<br />수수료: ${fee} ${fee_coin}<br />주소: ${address}<br /><span id=\"network\">네트워크: ${network}</span><br /><br />이 출금을 승인하려면 아래 인증 코드를 사용하세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>이 코드는 제한된 시간 동안만 유효합니다. 입력하여 진행하세요.</p><p>만약 이 요청을 본인이 진행하지 않았다면, <a href=\"${freeze_account_link}\">계정을 동결</a>하고 즉시 신고하시기 바랍니다.</p><p>요청 발신: ${ip}</p><p>감사합니다<br />${api_name}팀</p></div>",
+			"html": "<div><p>${name}님, 안녕하세요</p><p>다음 주소로 ${amount} ${currency} 출금을 요청하셨습니다: ${address}.<br /><br />금액: ${amount} ${currency}<br />수수료: ${fee} ${fee_coin}<br /><div id='address'>주소: ${address}<br /></div><div id='network'>네트워크: ${network}<br /></div><br />이 출금을 승인하려면 아래 인증 코드를 사용하세요.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>이 코드는 제한된 시간 동안만 유효합니다. 입력하여 진행하세요.</p><p>만약 이 요청을 본인이 진행하지 않았다면, <a href=\"${freeze_account_link}\">계정을 동결</a>하고 즉시 신고하시기 바랍니다.</p><p>요청 발신: ${ip}</p><p>감사합니다<br />${api_name}팀</p></div>",
 			"title": "${currency} 출금 요청"
 		},
 		"RESET_PASSWORD_CODE": {

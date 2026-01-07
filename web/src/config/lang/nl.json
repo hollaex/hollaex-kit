@@ -194,7 +194,10 @@
 			"INFORMATION_PENDING_2": "Dit kan 10-30 minuten duren. We sturen een e-mail zodra uw {0} is bevestigd op de blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Verzoek verzonden", "BUTTON_TEXT": "Oké" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Verzoek verzonden",
+		"BUTTON_TEXT": "Oké"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Voer uw authenticatiecode in om door te gaan",
 		"OTP_FORM_INFO": "Voer uw 6-cijferige code in om verder te gaan",
@@ -391,7 +394,10 @@
 				"FULL_NAME_PLACEHOLDER": "Typ uw volledige naam zoals deze op uw identiteitsbewijs staat",
 				"GENDER_LABEL": "Geslacht",
 				"GENDER_PLACEHOLDER": "Typ welk geslacht je bent",
-				"GENDER_OPTIONS": { "MAN": "Mannelijk", "WOMAN": "Vrouwelijk" },
+				"GENDER_OPTIONS": {
+					"MAN": "Mannelijk",
+					"WOMAN": "Vrouwelijk"
+				},
 				"NATIONALITY_LABEL": "Nationaliteit",
 				"NATIONALITY_PLACEHOLDER": "Typ welke nationaliteit op uw identiteitsbewijs staat",
 				"DOB_LABEL": "Geboortedatum",
@@ -732,7 +738,9 @@
 			"TITLE": "Inloggeschiedenis",
 			"IP_ADDRESS": "IP adres",
 			"TIME": "Datum Tijd",
-			"CONTENT": { "TITLE": "Aanmeldingsgeschiedenis" }
+			"CONTENT": {
+				"TITLE": "Aanmeldingsgeschiedenis"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "Rekening bevriezen",
@@ -1003,13 +1011,31 @@
 	},
 	"CURRENCY": "Munteenheid",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "markt", "limit": "begrenzing" },
-	"TYPES": { "MARKET": "markt", "LIMIT": "begrenzing" },
+	"TYPES_VALUES": {
+		"market": "markt",
+		"limit": "begrenzing"
+	},
+	"TYPES": {
+		"MARKET": "markt",
+		"LIMIT": "begrenzing"
+	},
 	"SIDE": "Kant",
-	"SIDES_VALUES": { "buy": "kopen", "sell": "verkopen" },
-	"SIDES_VERBS": { "buy": "gekocht", "sell": "verkocht" },
-	"SIDES": { "BUY": "kopen", "SELL": "verkopen" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "op", "OFF": "uit" },
+	"SIDES_VALUES": {
+		"buy": "kopen",
+		"sell": "verkopen"
+	},
+	"SIDES_VERBS": {
+		"buy": "gekocht",
+		"sell": "verkocht"
+	},
+	"SIDES": {
+		"BUY": "kopen",
+		"SELL": "verkopen"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "op",
+		"OFF": "uit"
+	},
 	"SIZE": "Maat",
 	"PRICE": "Prijs",
 	"AVERAGE": "Gemiddeld",
@@ -1503,7 +1529,9 @@
 	"EXPIRED_INFO_1": "Je proefperiode is afgelopen.",
 	"EXPIRED_INFO_2": "Onderpand uw uitwisseling om deze opnieuw te activeren.",
 	"EXPIRED_BUTTON_TXT": "ACTIVEER UITWISSELING",
-	"TRADE_POSTS": { "LEARN_MORE": "Kom meer te weten" },
+	"TRADE_POSTS": {
+		"LEARN_MORE": "Kom meer te weten"
+	},
 	"OPEN_WALLET": "Portemonnee openen",
 	"CUMULATIVE_AMOUNT_SYMBOL": "Totaal",
 	"POST_ONLY": "Alleen posten",
@@ -1578,7 +1606,10 @@
 	"FEE_REDUCTION": "Verlaging van de vergoeding",
 	"FEE_REDUCTION_DESCRIPTION": "*op uw account is een vergoedingskorting toegepast. De korting wordt toegepast op de handelskosten op basis van uw account.",
 	"CHANGE_PASSWORD_FAILED": "het wijzigen van het wachtwoord is mislukt",
-	"MARKET_OPTIONS": { "LIST": "Lijst", "CARD": "Kaart" },
+	"MARKET_OPTIONS": {
+		"LIST": "Lijst",
+		"CARD": "Kaart"
+	},
 	"ALL": "Alle",
 	"ASSET_TXT": "Bezit",
 	"ONE_DAY": "1 dag",
@@ -1656,7 +1687,9 @@
 	"VERIFY_BANK_WITHDRAW": "Om geld op te nemen, moet u uw verificatie voltooien, inclusief verificatie van uw bankgegevens. Klik op de onderstaande knop Doorgaan.",
 	"VERIFICATION_TITLE": "Volledige verificatie",
 	"WITHDRAW_NOTE": "Let op: U kunt alleen geld opnemen naar een rekening die op uw naam staat.",
-	"USER_PAYMENT": { "TITLE": "Betalingen" },
+	"USER_PAYMENT": {
+		"TITLE": "Betalingen"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Controleer uw bestelling en bevestig deze hieronder.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Het te ontvangen bedrag is een schatting en is exclusief de handelskosten",
 	"ORDER_EXPIRED_MSG": "Bestelling verlopen. Vernieuw alstublieft!",
@@ -1697,7 +1730,10 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Pagina met informatie over activa",
-	"MARKET_ROW": { "NATIVE": "Oorspronkelijk", "NO_NATIVE": "Geen eigen bron" },
+	"MARKET_ROW": {
+		"NATIVE": "Oorspronkelijk",
+		"NO_NATIVE": "Geen eigen bron"
+	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digitale middelen",
 		"GO_BACK": "Ga terug",

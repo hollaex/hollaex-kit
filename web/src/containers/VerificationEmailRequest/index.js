@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, change } from 'redux-form';
+import { requiredWithCustomMessage } from 'components/Form/validations';
 import { requestVerificationEmail } from 'actions/authAction';
-import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
+import EmailRequestForm, {
+	generateFormFields,
+	FORM_NAME,
+} from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog, MobileBarBack } from 'components';
 import { ContactForm } from 'containers';
@@ -14,6 +18,7 @@ import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
+import CloudflareTurnstile from 'components/CloudflareTurnstile';
 
 const BottomLink = () => (
 	<>
@@ -40,6 +45,13 @@ class VerifyEmailRequest extends Component {
 	};
 
 	onSubmitEmailRequest = (values) => {
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+		if (turnstileEnabled && !values?.captcha) {
+			throw new SubmissionError({ _error: STRINGS['INVALID_CAPTCHA'] });
+		}
+
 		return requestVerificationEmail(values)
 			.then((res) => {
 				this.setState({ success: true });
@@ -72,8 +84,29 @@ class VerifyEmailRequest extends Component {
 	};
 
 	render() {
-		const { languageClasses, icons: ICONS, openContactForm } = this.props;
-		const { success, showContactForm, formFields } = this.state;
+		const {
+			languageClasses,
+			icons: ICONS,
+			openContactForm,
+			activeTheme,
+			constants = {},
+		} = this.props;
+		const { success, showContactForm } = this.state;
+
+		const turnstileSiteKey = constants?.cloudflare_turnstile?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+
+		const formFields = {
+			...generateFormFields(),
+			...(turnstileEnabled
+				? {
+						captcha: {
+							type: 'hidden',
+							validate: [requiredWithCustomMessage(STRINGS['INVALID_CAPTCHA'])],
+						},
+				  }
+				: {}),
+		};
 
 		if (success) {
 			return (
@@ -155,6 +188,17 @@ class VerifyEmailRequest extends Component {
 						<EmailRequestForm
 							onSubmit={this.onSubmitEmailRequest}
 							formFields={formFields}
+							extraContent={
+								turnstileEnabled ? (
+									<CloudflareTurnstile
+										siteKey={turnstileSiteKey}
+										theme={activeTheme}
+										onToken={(token) =>
+											this.props.change(FORM_NAME, 'captcha', token)
+										}
+									/>
+								) : null
+							}
 						/>
 						{isMobile && <BottomLink />}
 					</div>
@@ -167,10 +211,12 @@ class VerifyEmailRequest extends Component {
 
 const mapStateToProps = (store) => ({
 	constants: store.app.constants,
+	activeTheme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	change: bindActionCreators(change, dispatch),
 });
 
 export default connect(

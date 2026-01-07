@@ -43,7 +43,7 @@ const Details = ({
 
 	const [pairBase, pair_2] = pair.split('-');
 
-	const { icon_id } = coins[pairBase];
+	const { icon_id } = coins[pairBase] || {};
 
 	const getPricingData = (price) => {
 		const firstPrice = price[0];
@@ -344,7 +344,7 @@ const Details = ({
 										`/prices/coin/${pairBase}`,
 										STRINGS.formatString(
 											STRINGS['QUICK_TRADE_COMPONENT.COIN_INFORMATION'],
-											coins[pairBase].display_name
+											coins[pairBase]?.display_name || ''
 										)
 									)}
 								</div>

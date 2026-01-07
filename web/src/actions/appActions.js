@@ -166,6 +166,7 @@ export const SET_IS_DISPLAY_CREATE_REFERRAL = 'SET_IS_DISPLAY_CREATE_REFERRAL';
 export const SET_IS_DISPLAY_ADD_PLUGIN = 'SET_IS_DISPLAY_ADD_PLUGIN';
 export const SET_IS_ACTIVE_FILTER_USER = 'SET_IS_ACTIVE_FILTER_USER';
 export const SET_RECENT_SEARCHES = 'SET_RECENT_SEARCHES';
+export const SET_IS_EDIT_EMAIL = 'SET_IS_EDIT_EMAIL';
 
 export const SORT = {
 	VOL: 'volume',
@@ -1178,5 +1179,12 @@ export const setRecentSearches = (recentSearches) => {
 	return {
 		type: SET_RECENT_SEARCHES,
 		payload: { recentSearches },
+	};
+};
+
+export const setIsEditEmail = (isEditEmail) => {
+	return {
+		type: SET_IS_EDIT_EMAIL,
+		payload: { isEditEmail },
 	};
 };

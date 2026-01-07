@@ -8,6 +8,7 @@ const moment = require('moment-timezone');
 const { Op } = require('sequelize');
 
 const { loggerPlugin } = require('../config/logger');
+const { delay } = require('bluebird');
 
 
 let kitTimezone;
@@ -35,7 +36,7 @@ const getTimezone = () => {
 const unstakingCheckRunner = () => {
 	cron.schedule('0 0 0 * * *', async () => {
 		loggerPlugin.verbose(
-			'/plugins unstaking status check start'
+			'/plugins unstakingCheckRunner status check start'
 		);
 		try {
 			const stakerModel = toolsLib.database.getModel('staker');
@@ -43,9 +44,25 @@ const unstakingCheckRunner = () => {
 			const stakerData = await stakerModel.findAll({ where: { status: 'unstaking' } });
 
 			for (const staker of stakerData) {
+				loggerPlugin.verbose(
+					'/plugins unstakingCheckRunner staker',
+					'user_id',
+					staker.user_id
+				);
 				await toolsLib.sleep(1000);
 				const user = await toolsLib.user.getUserByKitId(staker.user_id);
 				const stakePool = await stakePoolModel.findOne({ where: { id: staker.stake_id } });
+				// If automatic calculations/settlement are disabled for this pool, skip auto-settlement
+				if (stakePool?.is_automatic === false) {
+					loggerPlugin.verbose(
+						'/plugins unstakingCheckRunner skip auto settlement (is_automatic=false)',
+						'stake_id',
+						staker.stake_id,
+						'staker_id',
+						staker.id
+					);
+					continue;
+				}
 
 				const balance = await toolsLib.wallet.getUserBalanceByKitId(stakePool.account_id);
 				let symbols = {};
@@ -82,9 +99,22 @@ const unstakingCheckRunner = () => {
 					continue;
 				}
 
+				loggerPlugin.verbose(
+					'/plugins unstakingCheckRunner before staker update',
+					'id',
+					staker.id,
+					staker
+				);
+
 				await staker.update({ status: 'closed' }, {
 					fields: ['status']
 				});
+
+				loggerPlugin.verbose(
+					'/plugins unstakingCheckRunner staker updated successfully',
+					'id',
+					staker.id
+				);
 
 
 				try {
@@ -96,14 +126,37 @@ const unstakingCheckRunner = () => {
 						await toolsLib.wallet.transferAssetByKitIds(stakePool.account_id, user.id, stakePool.reward_currency, amountAfterSlash, 'Admin transfer stake', false, { category: 'stake' });
 					}
 
+					loggerPlugin.verbose(
+						'/plugins unstakingCheckRunner stake transfer completed successfully',
+						'source',
+						stakePool.account_id,
+						'user_id',
+						user.id,
+						'currency',
+						stakePool.currency,
+						'total',
+						totalAmount
+					);
+
 				} catch (error) {
+					loggerPlugin.error(
+						'/plugins unstakingCheckRunner failed',
+						'source',
+						stakePool.account_id,
+						'user_id',
+						user.id,
+						'currency',
+						stakePool.currency,
+						'total',
+						totalAmount
+					);
 					const adminAccount = await toolsLib.user.getUserByKitId(stakePool.user_id);
 					sendEmail(
 						MAILTYPE.ALERT,
 						adminAccount.email,
 						{
 							type: 'Error! Unstaking failed for an exchange user',
-							data: `Unstaking failed while transfering funds for user id ${user.id} Error message: ${error.message}`
+							data: `Unstaking failed while transfering funds from the source user id ${stakePool.account_id} to user id ${user.id} for ${totalAmount} ${stakePool.currency}. Error message: ${error.message}`
 						},
 						adminAccount.settings
 					);
@@ -205,6 +258,11 @@ const updateRewardsCheckRunner = () => {
 			const stakePools = await stakePoolModel.findAll({ where: { status: 'active' } });
 
 			for (const stakePool of stakePools) {
+				// If automatic calculations are disabled for this pool, skip reward updates
+				if (stakePool.is_automatic === false) {
+					continue;
+				}
+
 				const stakers = await stakerModel.findAll({ where: { stake_id: stakePool.id, status: 'staking' } });
 
 				for (const staker of stakers) {
@@ -513,15 +571,30 @@ const executeTrade = async (autoTradeConfig) => {
 };
 
 const statusModel = toolsLib.database.getModel('status');
-statusModel.findOne({})
-	.then(res => {
+
+// Initialize jobs; retry the status fetch after 60 seconds on failure or missing timezone
+const initializeJobsWithStatus = async () => {
+	try {
+		await delay(10 * 1000)
+		const res = await statusModel.findOne({});
+		if (!res || !res.kit || !res.kit.timezone) {
+			throw new Error('Status not ready');
+		}
 		kitTimezone = res.kit.timezone;
 		scheduleAutoTrade();
 		unstakingCheckRunner();
 		updateRewardsCheckRunner();
 		referralTradesRunner();
-	})
-	.catch(err => err);
+		// Start OTC order monitor
+		require('./otc-order-monitor');	
+	} catch (err) {
+		loggerPlugin.error('plugins/job/initializeJobsWithStatus error', err.message);
+		await delay(60 * 1000);
+		await initializeJobsWithStatus();
+	}
+};
+
+initializeJobsWithStatus();
 
 
 

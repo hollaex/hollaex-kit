@@ -1,5 +1,9 @@
 import jwtDecode from 'jwt-decode';
-import { TOKEN_KEY, DASH_TOKEN_KEY } from '../config/constants';
+import {
+	TOKEN_KEY,
+	DASH_TOKEN_KEY,
+	MAIN_ACCOUNT_TOKEN,
+} from '../config/constants';
 
 const TOKEN_TIME_KEY = 'time';
 const DASH_TOKEN_TIME_KEY = 'dashTime';
@@ -8,9 +12,20 @@ export const getToken = () => {
 	return localStorage.getItem(TOKEN_KEY);
 };
 
+export const getMainAccountToken = () => {
+	return localStorage.getItem(MAIN_ACCOUNT_TOKEN);
+};
+
 export const setToken = (token) => {
 	localStorage.setItem(TOKEN_KEY, token);
 	localStorage.setItem(TOKEN_TIME_KEY, new Date().getTime());
+	if (!getMainAccountToken()) {
+		mainAccountToken(token);
+	}
+};
+
+export const mainAccountToken = (token) => {
+	localStorage.setItem(MAIN_ACCOUNT_TOKEN, token);
 };
 
 export const removeToken = () => {
@@ -18,6 +33,7 @@ export const removeToken = () => {
 	localStorage.removeItem(TOKEN_TIME_KEY);
 	localStorage.removeItem(DASH_TOKEN_KEY);
 	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
+	localStorage.removeItem(MAIN_ACCOUNT_TOKEN);
 };
 
 export const isLoggedIn = () => {
@@ -109,4 +125,10 @@ export const removeDashToken = () => {
 
 export const getDashTokenTimestamp = () => {
 	return localStorage.getItem(DASH_TOKEN_TIME_KEY);
+};
+
+export const checkAccountStatus = (key = '') => {
+	const token = getToken();
+	if (!token || token === undefined || !key?.trim()?.length) return false;
+	return jwtDecode(token)[key] || false;
 };

@@ -52,6 +52,7 @@ import {
 	setIsActiveUserFeeDiscount,
 	setIsActiveWithdrawalBlock,
 	setIsDisabledUser2fa,
+	setIsEditEmail,
 	setIsEmailVerifiedUser,
 } from 'actions/appActions';
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
@@ -486,10 +487,12 @@ const AboutData = ({
 	isActiveFlagUser = false,
 	isActiveDeleteUser = false,
 	isActiveWithdrawalBlock = false,
+	isEditEmail = false,
 	setIsActiveUserFeeDiscount = () => {},
 	setIsActiveWithdrawalBlock = () => {},
 	setIsEmailVerifiedUser = () => {},
 	setIsDisabledUser2fa = () => {},
+	setIsEditEmail = () => {},
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -518,6 +521,7 @@ const AboutData = ({
 			: setIsDisabledUser2fa(false);
 		isActiveFlagUser && flagUser(!userData?.flagged);
 		isActiveWithdrawalBlock && setWithdrawalBlockOptions();
+		isEditEmail && handleOpenModal('email');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -557,6 +561,7 @@ const AboutData = ({
 		setApply(false);
 		setUserFields({ ...userFields, userEmail: '' });
 		setIsActiveUserFeeDiscount(false);
+		setIsEditEmail(false);
 	};
 
 	const handleApply = (key, isApply = false) => {
@@ -1247,6 +1252,7 @@ const mapStateToProps = (state) => ({
 	isDisabledUser2fa: state.app.isDisabledUser2fa,
 	isActiveFlagUser: state.app.isActiveFlagUser,
 	isActiveWithdrawalBlock: state.app.isActiveWithdrawalBlock,
+	isEditEmail: state.app.isEditEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1260,6 +1266,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	setIsEmailVerifiedUser: bindActionCreators(setIsEmailVerifiedUser, dispatch),
 	setIsDisabledUser2fa: bindActionCreators(setIsDisabledUser2fa, dispatch),
+	setIsEditEmail: bindActionCreators(setIsEditEmail, dispatch),
 });
 
 export default connect(

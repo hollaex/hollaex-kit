@@ -4,6 +4,7 @@ import QR from 'qrcode.react';
 import { STATIC_ICONS } from 'config/icons';
 import { EditOutlined } from '@ant-design/icons';
 import isEqual from 'lodash.isequal';
+import validator from 'validator';
 
 const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	const textRef = useRef(null);
@@ -49,8 +50,7 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	};
 
 	const validateIp = () => {
-		const rx = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
-		return rx.test(ipAddress);
+		return validator.isIP(ipAddress);
 	};
 
 	const onHandleSave = () => {

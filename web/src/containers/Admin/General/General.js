@@ -121,6 +121,11 @@ class GeneralContent extends Component {
 			confirmText: null,
 			googleOAuth: {},
 			isActiveOAuth: false,
+			cloudflareTurnstile: {
+				enabled: false,
+				site_key: '',
+				secret_key: '',
+			},
 		};
 		this.priceAssetTimeout = null;
 	}
@@ -266,6 +271,16 @@ class GeneralContent extends Component {
 		let initialGoogleOAuthValues = { ...this.state.initialGoogleOAuthValues };
 		const { kit = {}, secrets = { smtp: {}, emails: {} } } =
 			this.state.constants || {};
+		const normalizeTurnstileValue = (value) =>
+			value === null || value === undefined || value === 'null' ? '' : value;
+
+		const turnstileSiteKey = normalizeTurnstileValue(
+			_get(kit, 'cloudflare_turnstile.site_key')
+		);
+		const turnstileSecretKey = normalizeTurnstileValue(
+			_get(secrets, 'cloudflare_turnstile.secret_key')
+		);
+		const turnstileEnabled = !!turnstileSiteKey || !!turnstileSecretKey;
 		const {
 			api_name,
 			defaults = {},
@@ -310,6 +325,57 @@ class GeneralContent extends Component {
 			initialEmailVerificationValues,
 			initialGoogleOAuthValues,
 			showDisableSignUpsConfirmation: false,
+			cloudflareTurnstile: {
+				enabled: turnstileEnabled,
+				site_key: turnstileSiteKey,
+				secret_key: turnstileSecretKey,
+			},
+		});
+	};
+
+	onToggleCloudflareTurnstile = (enabled) => {
+		if (!enabled) {
+			this.setState({
+				cloudflareTurnstile: { enabled: false, site_key: '', secret_key: '' },
+			});
+			return this.handleSubmitGeneral({
+				kit: { cloudflare_turnstile: { site_key: '' } },
+				secrets: { cloudflare_turnstile: { secret_key: '' } },
+			});
+		}
+
+		this.setState((prevState) => ({
+			cloudflareTurnstile: {
+				...prevState.cloudflareTurnstile,
+				enabled: true,
+			},
+		}));
+	};
+
+	onChangeCloudflareTurnstileField = (key, value) => {
+		this.setState((prevState) => ({
+			cloudflareTurnstile: {
+				...prevState.cloudflareTurnstile,
+				[key]: value,
+			},
+		}));
+	};
+
+	onSaveCloudflareTurnstile = () => {
+		const { cloudflareTurnstile } = this.state;
+		const site_key = (cloudflareTurnstile.site_key || '').trim();
+		const secret_key = (cloudflareTurnstile.secret_key || '').trim();
+
+		if (!site_key || !secret_key) {
+			message.error(
+				'Cloudflare Turnstile site key and secret key are required'
+			);
+			return;
+		}
+
+		return this.handleSubmitGeneral({
+			kit: { cloudflare_turnstile: { site_key } },
+			secrets: { cloudflare_turnstile: { secret_key } },
 		});
 	};
 
@@ -416,6 +482,12 @@ class GeneralContent extends Component {
 				message.success('Updated successfully');
 				this.setState({ buttonSubmitting: false });
 				this.handleDisable(true);
+				if (!this.props?.user?.settings?.interface?.display_currency) {
+					localStorage.setItem(
+						'base_currnecy',
+						res?.kit?.native_currency || BASE_CURRENCY
+					);
+				}
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
@@ -443,24 +515,30 @@ class GeneralContent extends Component {
 		if (formKey === 'email_distribution') {
 			formValues = {};
 			let compareValues = initialEmailValues.distribution || {};
-			if (formProps.audit || formProps.send_email_to_support) {
-				if (compareValues.audit !== formProps.audit) {
-					formValues.secrets = {
-						emails: {
-							audit: formProps.audit,
-						},
-					};
-				}
-				if (
-					compareValues.send_email_to_support !==
-					formProps.send_email_to_support
-				) {
-					formValues.secrets = {
-						emails: {
-							send_email_to_support: formProps.send_email_to_support,
-						},
-					};
-				}
+			const changedEmails = {};
+			if (compareValues.audit !== formProps.audit) {
+				changedEmails.audit = formProps.audit;
+			}
+			if (compareValues.audit_enabled !== formProps.audit_enabled) {
+				changedEmails.audit_enabled = formProps.audit_enabled;
+			}
+			if (compareValues.audit_sensitive !== formProps.audit_sensitive) {
+				changedEmails.audit_sensitive = formProps.audit_sensitive;
+			}
+			if (
+				compareValues.audit_sensitive_enabled !==
+				formProps.audit_sensitive_enabled
+			) {
+				changedEmails.audit_sensitive_enabled =
+					formProps.audit_sensitive_enabled;
+			}
+			if (
+				compareValues.send_email_to_support !== formProps.send_email_to_support
+			) {
+				changedEmails.send_email_to_support = formProps.send_email_to_support;
+			}
+			if (Object.keys(changedEmails).length) {
+				formValues.secrets = { emails: changedEmails };
 			}
 		} else if (formKey === 'email_configuration') {
 			formValues = {};
@@ -1783,6 +1861,169 @@ class GeneralContent extends Component {
 							>
 								{this.renderModalContent()}
 							</Modal>
+
+							<div
+								className="divider"
+								style={{ marginTop: 24, marginBottom: 24 }}
+							/>
+
+							<div className="sub-title" id="cloudflare-turnstile">
+								Cloudflare Turnstile
+							</div>
+							<div className="description">
+								Enable Cloudflare Turnstile to protect login and sign up forms.
+							</div>
+							<div style={{ marginTop: 10 }}>
+								<Switch
+									checked={this.state.cloudflareTurnstile.enabled}
+									onChange={this.onToggleCloudflareTurnstile}
+								/>
+							</div>
+							{this.state.cloudflareTurnstile.enabled ? (
+								<div style={{ marginTop: 16 }}>
+									<div style={{ marginBottom: 12 }}>
+										<label
+											htmlFor="cloudflare_turnstile_site_key"
+											style={{ display: 'block', marginBottom: 4 }}
+										>
+											Site key
+										</label>
+										<Input
+											id="cloudflare_turnstile_site_key"
+											value={this.state.cloudflareTurnstile.site_key}
+											onChange={(e) =>
+												this.onChangeCloudflareTurnstileField(
+													'site_key',
+													e.target.value
+												)
+											}
+											placeholder="Enter Cloudflare Turnstile site key"
+											style={{ maxWidth: 360 }}
+										/>
+									</div>
+									<div style={{ marginBottom: 12 }}>
+										<label
+											htmlFor="cloudflare_turnstile_secret_key"
+											style={{ display: 'block', marginBottom: 4 }}
+										>
+											Secret key
+										</label>
+										<Input.Password
+											id="cloudflare_turnstile_secret_key"
+											value={this.state.cloudflareTurnstile.secret_key}
+											onChange={(e) =>
+												this.onChangeCloudflareTurnstileField(
+													'secret_key',
+													e.target.value
+												)
+											}
+											placeholder="Enter Cloudflare Turnstile secret key"
+											style={{ maxWidth: 360 }}
+										/>
+									</div>
+									<Button
+										type="primary"
+										onClick={this.onSaveCloudflareTurnstile}
+										disabled={
+											!this.state.cloudflareTurnstile.site_key ||
+											!this.state.cloudflareTurnstile.secret_key
+										}
+									>
+										Save
+									</Button>
+								</div>
+							) : null}
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
+							<div
+								className="sub-title"
+								id="force-two-factor-authentication-withdrawal"
+							>
+								Force 2FA on Withdrawal
+							</div>
+							<div className="description">
+								<div>
+									Require users to have two-factor authentication (OTP) enabled
+									before requesting any withdrawals.
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Switch
+										checked={_get(
+											constants,
+											'kit.force_two_factor_authentication_withdrawal.active',
+											false
+										)}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												kit: {
+													force_two_factor_authentication_withdrawal: {
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
+							<div className="sub-title" id="auto-deposit">
+								Auto Deposit
+							</div>
+							<div className="description">
+								<div>
+									Enable or disable automatic deposit processing on the
+									blockchain. Turning off this feature will cause all incoming
+									blockchain deposits to wallets to remain in a pending state
+									and require manual approval.
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Switch
+										checked={_get(constants, 'kit.auto_deposit.active', true)}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												kit: {
+													auto_deposit: {
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="general-wrapper mb-5">
+							<div className="sub-title" id="auto-withdrawal">
+								Auto Withdrawal
+							</div>
+							<div className="description">
+								<div>
+									Enable or disable automatic withdrawal processing. Turning off
+									this feature will require manual approval for all withdrawal
+									requests.
+								</div>
+								<div style={{ marginTop: 10 }}>
+									<Switch
+										checked={_get(
+											constants,
+											'kit.auto_withdrawal.active',
+											true
+										)}
+										onChange={(checked) => {
+											this.handleSubmitGeneral({
+												kit: {
+													auto_withdrawal: {
+														active: checked,
+													},
+												},
+											});
+										}}
+									/>
+								</div>
+							</div>
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5 google-oauth-wrapper">

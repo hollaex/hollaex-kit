@@ -6,7 +6,8 @@ const { subscriber, publisher } = require('../db/pubsub');
 const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL, INIT_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
-const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
+const { updateOrderbookData, updateTradeData, updatePriceData, resetPublicData } = require('./publicData');
+const { writePriceToRedis } = require('./priceStore');
 const WebSocket = require('ws');
 
 let networkNodeLib = null;
@@ -44,7 +45,7 @@ const connect = () => {
 				'ws/hub Initializing Network Websocket'
 			);
 			networkNodeLib = nodeLib;
-			networkNodeLib.connect(['orderbook', 'trade', 'coin', 'pair']);
+			networkNodeLib.connect(['orderbook', 'trade', 'coin', 'pair', 'price']);
 
 			networkNodeLib.ws.on('open', () => {
 				wsConnected = true;
@@ -124,6 +125,15 @@ const handleHubData = (data) => {
 		case 'trade':
 			updateTradeData(data);
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.symbol)], (ws) => {
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
+			});
+			break;
+		case 'price':
+			updatePriceData(data);
+			writePriceToRedis(data);
+			each(getChannels()[WEBSOCKET_CHANNEL('price')], (ws) => {
 				if (ws.readyState === WebSocket.OPEN) {
 					ws.send(JSON.stringify(data));
 				}

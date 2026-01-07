@@ -25,6 +25,16 @@ import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import { STATIC_ICONS } from 'config/icons';
 import TransactionsHistory from 'containers/TransactionsHistory';
+import {
+	flipPair,
+	quicktradePairSelector,
+} from 'containers/QuickTrade/components/utils';
+
+const TYPES = {
+	PRO: 'pro',
+	BROKER: 'broker',
+	NETWORK: 'network',
+};
 
 class Wallet extends Component {
 	state = {
@@ -128,6 +138,8 @@ class Wallet extends Component {
 			chartData,
 			contracts,
 			pairs,
+			features = {},
+			quicktradePairs = {},
 		} = this.props;
 		const hasEarn = !isStakingAvailable(currency, contracts);
 		const markets = this.getAllAvailableMarkets(currency);
@@ -160,6 +172,35 @@ class Wallet extends Component {
 							baseCoin.increment_unit
 					  )
 				: null;
+
+		const handleNavigate = (coin = '') => {
+			const selectedPair = Object.keys(quicktradePairs)?.find((pair) =>
+				pair?.split('-')?.includes(coin)
+			);
+
+			if (!selectedPair) {
+				return `/prices/coin/${coin}`;
+			}
+
+			const pairInfo =
+				quicktradePairs[selectedPair] ||
+				quicktradePairs[flipPair(selectedPair)];
+			const type = pairInfo?.type;
+
+			const isBroker = type === TYPES.BROKER;
+			const isNetwork = type === TYPES.NETWORK;
+
+			if (!isNetwork && !isBroker && features?.pro_trade) {
+				return `/trade/${selectedPair}`;
+			}
+
+			if (features?.quick_trade) {
+				return `/quick-trade/${selectedPair}`;
+			}
+
+			return `/prices/coin/${coin}`;
+		};
+
 		return (
 			<div className="currency-wallet-wrapper">
 				<div className="d-flex mt-5 mb-5">
@@ -363,14 +404,11 @@ class Wallet extends Component {
 											STRINGS['CURRENCY_WALLET.WALLET_DEPOSIT'],
 											<Link
 												className="deposit-link"
-												to={`/wallet/${currency}/withdraw`}
+												to={`/wallet/${currency}/deposit`}
 											>
 												{currency.toUpperCase()}
 											</Link>,
-											<Link
-												className="buy-link"
-												to={`/prices/coin/${currency}`}
-											>
+											<Link className="buy-link" to={handleNavigate(currency)}>
 												here
 											</Link>
 										)}
@@ -424,7 +462,9 @@ const mapStateToProps = (store) => {
 		pairs: app.pairs,
 		pair: app.pair,
 		chartData,
+		features: app.features,
 		assets: assetsSelector(store),
+		quicktradePairs: quicktradePairSelector(store),
 	};
 };
 

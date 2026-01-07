@@ -8,12 +8,15 @@ const { SERVER_PATH } = require('../constants');
 const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
+const { validatePair, getKitConfig, getAssetsPrices, getKitCoin } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
+const request = require('request-promise');
+const jsonpath = require('jsonpath');
+const crypto = require('crypto');
 const { isArray } = require('lodash');
 const BigNumber = require('bignumber.js');
 const connectedExchanges = {};
@@ -208,7 +211,103 @@ const isFairPriceForBroker = async (broker) => {
 	else return true;
 };
 
+const calculateExternalPrice = async (side, spread, jsonFormula, refresh_interval, brokerId) => {
+	loggerBroker.info('broker/calculateExternalPrice brokerId', brokerId);
+	const { request: reqConfig, extract, normalize } = jsonFormula || {};
+
+	if (!reqConfig || !extract) {
+		throw new Error(FAILED_GET_QUOTE);
+	}
+
+	const method = (reqConfig.method || 'GET').toUpperCase();
+	const url = reqConfig.url;
+	const headers = reqConfig.headers || {};
+	const timeout = reqConfig.timeout || 5000;
+
+	if (!url) {
+		throw new Error(FAILED_GET_QUOTE);
+	}
+
+	// Cache external price to avoid hammering third-party APIs
+	const cacheKey = `${brokerId}-external-${crypto.createHash('md5').update(`${method}:${url}:${JSON.stringify(extract)}`).digest('hex')}`;
+	let basePrice = await client.getAsync(cacheKey);
+
+	if (!basePrice) {
+		loggerBroker.info('broker/calculateExternalPrice no cache for brokerId', brokerId);
+		try {
+			const response = await request({
+				method,
+				uri: url,
+				headers,
+				timeout,
+				json: true
+			});
+			loggerBroker.info('broker/calculateExternalPrice response', response);
+
+			let value = null;
+			if (extract.type === 'jsonpath') {
+				value = jsonpath.value(response, extract.expr);
+				if (value == null) {
+					const candidates = jsonpath.query(response, extract.expr);
+					value = Array.isArray(candidates) && candidates.length ? candidates[0] : null;
+				}
+			} else {
+				throw new Error(FAILED_GET_QUOTE);
+			}
+
+			if (value == null || isNaN(Number(value))) {
+				throw new Error(FAILED_GET_QUOTE);
+			}
+
+			basePrice = Number(value);
+			loggerBroker.info('broker/calculateExternalPrice price', basePrice, 'brokerId', brokerId);
+			if (refresh_interval) await client.setexAsync(cacheKey, refresh_interval, basePrice);
+		} catch (err) {
+			loggerBroker.error('broker/calculateExternalPrice catch', err);
+			throw new Error(FAILED_GET_QUOTE);
+		}
+	} else {
+		basePrice = Number(basePrice);
+	}
+
+	let convertedPrice = basePrice;
+	if (side === 'buy') {
+		convertedPrice = new BigNumber(convertedPrice)?.multipliedBy((1 + (spread / 100)))?.toNumber();
+	} else if (side === 'sell') {
+		convertedPrice = new BigNumber(convertedPrice)?.multipliedBy((1 - (spread / 100)))?.toNumber();
+	}
+
+	if (normalize && normalize.decimalPlaces != null) {
+		const dp = Number(normalize.decimalPlaces);
+		if (!isNaN(dp)) {
+			convertedPrice = new BigNumber(convertedPrice)?.decimalPlaces(dp)?.toNumber();
+		}
+	}
+
+	return convertedPrice;
+};
+
 const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
+	// Support JSON-object formula to fetch external prices
+	try {
+		let jsonFormula = null;
+		if (typeof formula === 'object' && formula !== null) {
+			jsonFormula = formula;
+		} else if (typeof formula === 'string') {
+			const trimmed = formula.trim();
+			if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+				try { jsonFormula = JSON.parse(trimmed); } catch (e) { /* ignore parse error and fallthrough */ }
+			}
+		}
+
+		if (jsonFormula && jsonFormula.request && jsonFormula.extract) {
+			return await calculateExternalPrice(side, spread, jsonFormula, refresh_interval, brokerId);
+		}
+	} catch (err) {
+		loggerBroker.error('broker/calculatePrice catch', err);
+		throw new Error(FAILED_GET_QUOTE);
+	}
+
 	const regex = /([a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)+(?:-[a-zA-Z0-9]+))/g;
 	const variables = formula.match(regex);
 
@@ -295,11 +394,11 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
 	if (!size) {
 		throw new Error(INVALID_SIZE);
-	};
+	}
 
 	if (!price) {
 		throw new Error(INVALID_PRICE);
-	};
+	}
 
 	// Generate random token
 	const randomToken = randomString({
@@ -443,6 +542,7 @@ const testRebalance = async (data) => {
 
 const reverseTransaction = async (orderData) => {
 	const { symbol, side, size } = orderData;
+	loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction input', { symbol, side, size });
 	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
@@ -457,39 +557,59 @@ const reverseTransaction = async (orderData) => {
 	};
 
 	try {
-		const broker = await getModel('broker').findOne({ where: { symbol } });
+		const originalSymbol = symbol;
+		let broker = await getModel('broker').findOne({ where: { symbol: originalSymbol } });
+		if (!broker && typeof originalSymbol === 'string' && originalSymbol.includes('-')) {
+			const [base, quote] = originalSymbol.split('-');
+			const reversedSymbol = `${quote}-${base}`;
+			broker = await getModel('broker').findOne({ where: { symbol: reversedSymbol } });
+		}
+		if (!broker) {
+			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction skip - broker not found', { symbol: originalSymbol });
+			return;
+		}
+		loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction broker found', { requestedSymbol: originalSymbol, matchedSymbol: broker.symbol, brokerId: broker.id, user_id: broker.user_id, paused: broker.paused, hasAccount: !!broker.account });
 
-		const quickTrades = getQuickTrades();
-		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
-
-		if (quickTradeConfig && quickTradeConfig.type === 'broker' && quickTradeConfig.active && broker && !broker.paused && broker.account) {
+		if (broker && !broker.paused && broker.account) {
+			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction hedging conditions satisfied', { symbol });
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
 
-			if (exchangeKey) {
-				const exchange = setExchange({
-					exchange: exchangeKey,
-					api_key: broker.account[exchangeKey].apiKey,
-					api_secret: broker.account[exchangeKey].apiSecret,
-					password: broker.account[exchangeKey].password
-				});
-
-				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
-				if (exchangeKey === 'bybit') {
-					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
-					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
-
-					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
-						.catch((err) => { notifyUser(err.message, broker.user_id); });
-				}
-				else {
-					exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
-						.catch((err) => { notifyUser(err.message, broker.user_id); });
-				}
+			if (!exchangeKey) {
+				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction no exchange account', { exchange: exchangeKey });
+				return false;
 			}
+
+			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction using exchange', { exchange: exchangeKey });
+			const exchange = setExchange({
+				exchange: exchangeKey,
+				api_key: broker.account[exchangeKey].apiKey,
+				api_secret: broker.account[exchangeKey].apiSecret,
+				password: broker.account[exchangeKey].password
+			});
+
+			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
+			if (exchangeKey === 'bybit') {
+				const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+				const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing limit order', { symbol: formattedRebalancingSymbol, side, size, price });
+
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+					.then((res) => { loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction order placed', { exchange: exchangeKey, result: res }); })
+					.catch((err) => { notifyUser(err.message, broker.user_id); loggerBroker.error('hollaex-tools-lib/broker/reverseTransaction order error', err.message); });
+			}
+			else {
+				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing market order', { symbol: formattedRebalancingSymbol, side, size });
+				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
+					.then((res) => { loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction order placed', { exchange: exchangeKey, result: res }); })
+					.catch((err) => { notifyUser(err.message, broker.user_id); loggerBroker.error('hollaex-tools-lib/broker/reverseTransaction order error', err.message); });
+			}
+			
+		} else {
+			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction hedging conditions not met', { symbol, brokerPaused: broker.paused, hasAccount: !!broker.account });
 		}
 	} catch (err) {
-		loggerBroker.error(err);
+		loggerBroker.error('broker/reverseTransaction catch', err);
 	}
 
 };
@@ -578,7 +698,7 @@ const fetchBrokerPairs = async (attributes) => {
 	brokers.forEach(broker => {
 		for (const [key, value] of Object.entries(broker.account || [])) {
 			value.apiKey = '*****',
-				value.apiSecret = '*********';
+			value.apiSecret = '*********';
 		}
 	});
 

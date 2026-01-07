@@ -5,14 +5,14 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, INVALID_NUMBER, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE, FEATURE_NOT_ACTIVE } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, INVALID_NUMBER, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE, BALANCE_NOT_AVAILABLE, FEATURE_NOT_ACTIVE, QUICK_TRADE_INSUFFICIENT_BALANCE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { BASE_SCOPES } = require(`${SERVER_PATH}/constants`);
 const { subscribedToPair, getKitTier, getMinFees, getAssetsPrices, getPublicTrades, getQuickTrades, getKitPairsConfig, getTradePaths, getKitConfig, getKitCoin, removeRepeatingDecimals } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
-const { has } = require('lodash');
+const { has, isPlainObject } = require('lodash');
 const { setPriceEssentials } = require('../../orderbook');
 const { getUserBalanceByKitId, transferAssetByKitIds } = require('./wallet');
 const { verifyBearerTokenPromise, verifyHmacTokenPromise } = require('./security');
@@ -24,8 +24,10 @@ const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
+	// If symbol is not a supported pair on this exchange, mark it as OTC and allow it to pass through
 	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
+		opts = opts || { stop: null, meta: null, additionalHeaders: null };
+		opts.meta = isPlainObject(opts.meta) ? { ...opts.meta, broker: 'otc' } : { broker: 'otc' };
 	}
 
 	if (isNaN(Number(size))) {
@@ -129,11 +131,23 @@ const getUserMarginPositionByKitId = (userKitId, opts = { additionalHeaders: nul
 
 
 const executeUserOrder = async (user_id, opts, token, req) => {
+	loggerOrders.verbose(
+		'hollaex-tools-lib/order/executeUserOrder init',
+		{ user_id, has_token: Boolean(token) }
+	);
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
+		loggerOrders.error(
+			'hollaex-tools-lib/order/executeUserOrder/token not_found',
+			{ user_id, token }
+		);
 		throw new Error(TOKEN_EXPIRED);
 	}
 	const { symbol, price, side, size, type, chain } = JSON.parse(storedToken);
+	loggerOrders.verbose(
+		'hollaex-tools-lib/order/executeUserOrder/token parsed',
+		{ symbol, side, type, size, price, chain }
+	);
 	if (chain) { return executeUserChainTrade(user_id, token, opts, req); }
 
 	if (size < 0) {
@@ -152,7 +166,15 @@ const executeUserOrder = async (user_id, opts, token, req) => {
 		if (new BigNumber(size).dp() > decimalPoint) {
 			roundedAmount = new BigNumber(size).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 		}
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/market init',
+			{ symbol, side, size, roundedAmount, decimalPoint }
+		);
 		res = await createUserOrderByKitId(user_id, symbol, side, roundedAmount, type, 0, opts);
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/market success',
+			{ order_id: res?.id, symbol: res?.symbol, side: res?.side, size: res?.size }
+		);
 	}
 	else if (type === 'broker') {
 		const brokerPair = await getModel('broker').findOne({ where: { symbol } });
@@ -181,6 +203,19 @@ const executeUserOrder = async (user_id, opts, token, req) => {
 
 		const makerFee = tierBroker.fees.maker[symbol];
 		const takerFee = tierUser.fees.taker[symbol];
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/broker init',
+			{
+				symbol,
+				side,
+				price,
+				size,
+				broker_id: broker?.id,
+				user_id: user?.id,
+				maker_fee: makerFee,
+				taker_fee: takerFee
+			}
+		);
 
 		res = await getNodeLib().createBrokerTrade(
 			symbol,
@@ -191,19 +226,38 @@ const executeUserOrder = async (user_id, opts, token, req) => {
 			user.network_id,
 			{ maker: makerFee, taker: takerFee }
 		);
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/broker success',
+			{ trade_id: res?.id, symbol: res?.symbol, side: res?.side, price: res?.price, size: res?.size }
+		);
 	}
 	else if (type === 'network') {
 		const user = await getUserByKitId(user_id);
 		const tierUser = getKitTier(user.verification_level);
 		const fee = tierUser.fees.taker[symbol];
-
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/network init',
+			{ symbol, side, price, size, fee }
+		);
 		res = await getNodeLib().executeQuote(token, user.network_id, fee, opts);
+		loggerOrders.verbose(
+			'hollaex-tools-lib/order/executeUserOrder/network success',
+			{ trade_id: res?.id, symbol: res?.symbol, side: res?.side, price: res?.price, size: res?.size }
+		);
 	}
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
 	await client.delAsync(token);
+	loggerOrders.verbose(
+		'hollaex-tools-lib/order/executeUserOrder/token deleted',
+		{ token_deleted: Boolean(token) }
+	);
 	res.type = type;
+	loggerOrders.verbose(
+		'hollaex-tools-lib/order/executeUserOrder success',
+		{ type: res?.type, id: res?.id, symbol: res?.symbol, side: res?.side, size: res?.size }
+	);
 	return res;
 };
 
@@ -613,8 +667,10 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 };
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
+	// If symbol is not a supported pair on this exchange, mark it as OTC and allow it to pass through
 	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
+		opts = opts || { stop: null, meta: null, additionalHeaders: null };
+		opts.meta = isPlainObject(opts.meta) ? { ...opts.meta, broker: 'otc' } : { broker: 'otc' };
 	}
 	return getUserByEmail(email)
 		.then((user) => {
@@ -640,8 +696,10 @@ const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price =
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
+	// If symbol is not a supported pair on this exchange, mark it as OTC and allow it to pass through
 	if (symbol && !subscribedToPair(symbol)) {
-		return reject(new Error(INVALID_SYMBOL(symbol)));
+		opts = opts || { stop: null, meta: null, additionalHeaders: null };
+		opts.meta = isPlainObject(opts.meta) ? { ...opts.meta, broker: 'otc' } : { broker: 'otc' };
 	}
 	return getUserByNetworkId(networkId)
 		.then((user) => {
@@ -881,6 +939,56 @@ const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limi
 		endDate,
 		...opts
 	});
+};
+
+// Match a user's order (by Kit user id) on the network
+const matchUserOrderByKitId = async (userKitId, orderId, symbol, size = null, opts = { additionalHeaders: null }) => {
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	const user = await getUserByKitId(userKitId);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+
+	const feeData = generateOrderFeeData(
+		user.verification_level,
+		symbol,
+		{ discount: user.discount }
+	);
+
+	return getNodeLib().matchOrder(idDictionary[userKitId], orderId, feeData.fee_structure, size, opts);
+};
+
+// Match a user's order (by Network id) on the network
+const matchUserOrderByNetworkId = async (networkId, orderId, symbol, size = null, opts = { additionalHeaders: null }) => {
+	if (!networkId) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	if (symbol && !subscribedToPair(symbol)) {
+		return reject(new Error(INVALID_SYMBOL(symbol)));
+	}
+
+	const user = await getUserByNetworkId(networkId);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const feeData = generateOrderFeeData(
+		user.verification_level,
+		symbol,
+		{ discount: user.discount }
+	);
+
+	return getNodeLib().matchOrder(networkId, orderId, feeData.fee_structure, size, opts);
 };
 
 const cancelAllUserOrdersByKitId = async (userKitId, symbol, opts = {
@@ -1234,11 +1342,12 @@ const settleFees = async (opts = {
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	loggerOrders.debug(
-		'generateOrderFeeData',
-		'symbol',
-		symbol,
-		'userTier',
-		userTier
+		'hollaex-tools-lib/order/generateOrderFeeData init',
+		{
+			symbol,
+			userTier,
+			discount: Number((opts && opts.discount) || 0)
+		}
 	);
 
 	const tier = getKitTier(userTier);
@@ -1250,17 +1359,24 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	let makerFee = tier.fees.maker[symbol];
 	let takerFee = tier.fees.taker[symbol];
 
-	loggerOrders.debug(
-		'generateOrderFeeData',
-		'current makerFee',
-		makerFee,
-		'current takerFee',
-		takerFee
-	);
+	// Fallback to reversed symbol fees if direct symbol fees are not defined
+	if ((makerFee === undefined || makerFee === null || Number.isNaN(makerFee) || takerFee === undefined || takerFee === null || Number.isNaN(takerFee))
+		&& typeof symbol === 'string' && symbol.includes('-')) {
+		const [base, quote] = symbol.split('-');
+		const reversedSymbol = `${quote}-${base}`;
+		const reversedMakerFee = tier.fees.maker[reversedSymbol];
+		const reversedTakerFee = tier.fees.taker[reversedSymbol];
+		if (reversedMakerFee !== undefined && reversedMakerFee !== null && !Number.isNaN(reversedMakerFee)) {
+			makerFee = reversedMakerFee;
+		}
+		if (reversedTakerFee !== undefined && reversedTakerFee !== null && !Number.isNaN(reversedTakerFee)) {
+			takerFee = reversedTakerFee;
+		}
+	}
 
 	if (opts.discount) {
 		loggerOrders.debug(
-			'generateOrderFeeData',
+			'hollaex-tools-lib/order/generateOrderFeeData discount',
 			'discount percentage',
 			opts.discount
 		);
@@ -1292,8 +1408,8 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 
 		const exchangeMinFee = getMinFees();
 
-		loggerOrders.verbose(
-			'generateOrderFeeData',
+		loggerOrders.debug(
+			'hollaex-tools-lib/order/generateOrderFeeData discounted',
 			'discounted makerFee',
 			discountedMakerFee,
 			'discounted takerFee',
@@ -1317,13 +1433,13 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 
 	const feeData = {
 		fee_structure: {
-			maker: makerFee,
-			taker: takerFee
+			maker: (makerFee === undefined || makerFee === null || Number.isNaN(makerFee)) ? 0.1 : makerFee,
+			taker: (takerFee === undefined || takerFee === null || Number.isNaN(takerFee)) ? 0.1 : takerFee
 		}
 	};
 
-	loggerOrders.verbose(
-		'generateOrderFeeData',
+	loggerOrders.debug(
+		'hollaex-tools-lib/order/generateOrderFeeData result',
 		'generated fee data',
 		feeData
 	);
@@ -1536,6 +1652,20 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 	}
 
 	if (result?.totalRate && user_id) {
+		// Ensure requester has sufficient balance before issuing a token
+		// Only enforce for end-user requests (identified via bearerToken)
+		let hasSufficientBalance = true;
+		if (bearerToken) {
+			const userBalance = await getUserBalanceByKitId(user_id, opts);
+			const isClientSpending = req && req.body && req.body.spending_amount != null;
+			const spendingCoin = isClientSpending ? from : to;
+			const requiredToPay = new BigNumber(isClientSpending ? size : result.totalRate);
+			const availableToPay = new BigNumber(userBalance?.[`${spendingCoin}_available`] || 0);
+			hasSufficientBalance = availableToPay.gte(requiredToPay);
+			if (!hasSufficientBalance && isClientSpending) {
+				throw new Error(QUICK_TRADE_INSUFFICIENT_BALANCE);
+			}
+		}
 		result.symbol = symbol;
 		result.size = size;
 		result.price = result?.totalRate / size;
@@ -1543,13 +1673,15 @@ const getUserChainTradeQuote = async (bearerToken, symbol, size = 1, ip, opts, r
 		result.base_asset = from;
 		result.chain = true;
 		result.user_id = user_id;
-		token = randomString({
-			length: 32,
-			numeric: true,
-			letters: true
-		});
+		if (hasSufficientBalance) {
+			token = randomString({
+				length: 32,
+				numeric: true,
+				letters: true
+			});
 
-		client.setexAsync(token, 30, JSON.stringify(result));
+			client.setexAsync(token, 30, JSON.stringify(result));
+		}
 	}
 
 	return { token, quote_amount: result?.totalRate };
@@ -1677,6 +1809,10 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 	for (const trade of tradeInfo?.trades) {
 		try {
 			let { symbol, price, side, size, type } = trade;
+            loggerOrders.verbose(
+                'hollaex-tools-lib/order/executeUserChainTrade/executeTrades trade init',
+                { symbol, type, side, size, price, source_user_id: sourceUser?.id }
+            );
 			if (size < 0) {
 				throw new Error(INVALID_SIZE);
 			}
@@ -1687,7 +1823,7 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 
 			let res;
 			let currentFee = 0;
-			if (type === 'pro') {
+            if (type === 'pro') {
 				const fee = size * currentFee;
 				size = size - fee;
 
@@ -1696,15 +1832,15 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 				let roundedAmount = size;
 				roundedAmount = new BigNumber(size).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 
-				res = await createUserOrderByKitId(sourceUser.id, symbol, side, roundedAmount, 'market', 0, {
+                res = await createUserOrderByKitId(sourceUser.id, symbol, side, roundedAmount, 'market', 0, {
 					additionalHeaders: {
 						'x-forwarded-for': null
 					}
 				});
 
 				currentFee = res?.fee_structure?.taker || 0;
-			}
-			else if (type === 'broker') {
+            }
+            else if (type === 'broker') {
 
 				const brokerPair = await getModel('broker').findOne({ where: { symbol } });
 
@@ -1719,7 +1855,7 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 				const fee = size * currentFee;
 				size = size - fee;
 
-				res = await getNodeLib().createBrokerTrade(
+                res = await getNodeLib().createBrokerTrade(
 					symbol,
 					side,
 					price,
@@ -1747,12 +1883,20 @@ const executeTrades = async (tradeInfo, sourceUser, opts) => {
 					opts
 				);
 
-				res = await getNodeLib().executeQuote(priceValues?.token, sourceUser.network_id, fee);
+                res = await getNodeLib().executeQuote(priceValues?.token, sourceUser.network_id, fee);
 			}
 
 			successfulTrades.push(res);
+            loggerOrders.verbose(
+                'hollaex-tools-lib/order/executeUserChainTrade/executeTrades trade success',
+                { symbol, type, side, filled_size: res?.size || size, trade_id: res?.id }
+            );
 		} catch (error) {
-			throw new Error('There has been a failure processing your request please try again');
+            loggerOrders.error(
+                'hollaex-tools-lib/order/executeUserChainTrade/executeTrades trade error',
+                { error: error?.message, trade }
+            );
+            throw new Error('There has been a failure processing your request please try again');
 		}
 	}
 
@@ -1794,7 +1938,9 @@ module.exports = {
 	findConversionRate,
 	createMarginTransferByKitId,
 	closeMarginPositionByKitId,
-	getUserMarginPositionByKitId
+	getUserMarginPositionByKitId,
+	matchUserOrderByKitId,
+	matchUserOrderByNetworkId
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,

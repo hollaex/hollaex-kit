@@ -174,13 +174,63 @@ class Settings extends Component {
 			});
 		} else if (formKey === 'email_distribution') {
 			formValues = {};
-			formValues.accounts = {
-				admin: formProps.admin,
-				support: formProps.support,
-			};
-			if (formProps.kyc) formValues.accounts.kyc = formProps.kyc;
-			if (formProps.supervisor)
-				formValues.accounts.supervisor = formProps.supervisor;
+
+			// Backward-compatible: some deployments used this form for accounts distribution
+			if (
+				formProps.admin ||
+				formProps.support ||
+				formProps.kyc ||
+				formProps.supervisor
+			) {
+				formValues.accounts = {
+					admin: formProps.admin,
+					support: formProps.support,
+				};
+				if (formProps.kyc) formValues.accounts.kyc = formProps.kyc;
+				if (formProps.supervisor)
+					formValues.accounts.supervisor = formProps.supervisor;
+			}
+
+			// Email audit (secrets.emails.*)
+			if (
+				Object.prototype.hasOwnProperty.call(formProps, 'audit') ||
+				Object.prototype.hasOwnProperty.call(formProps, 'audit_enabled') ||
+				Object.prototype.hasOwnProperty.call(formProps, 'audit_sensitive') ||
+				Object.prototype.hasOwnProperty.call(
+					formProps,
+					'audit_sensitive_enabled'
+				) ||
+				Object.prototype.hasOwnProperty.call(formProps, 'send_email_to_support')
+			) {
+				formValues.secrets = {
+					emails: {
+						...(Object.prototype.hasOwnProperty.call(formProps, 'audit')
+							? { audit: formProps.audit }
+							: {}),
+						...(Object.prototype.hasOwnProperty.call(formProps, 'audit_enabled')
+							? { audit_enabled: formProps.audit_enabled }
+							: {}),
+						...(Object.prototype.hasOwnProperty.call(
+							formProps,
+							'audit_sensitive'
+						)
+							? { audit_sensitive: formProps.audit_sensitive }
+							: {}),
+						...(Object.prototype.hasOwnProperty.call(
+							formProps,
+							'audit_sensitive_enabled'
+						)
+							? { audit_sensitive_enabled: formProps.audit_sensitive_enabled }
+							: {}),
+						...(Object.prototype.hasOwnProperty.call(
+							formProps,
+							'send_email_to_support'
+						)
+							? { send_email_to_support: formProps.send_email_to_support }
+							: {}),
+					},
+				};
+			}
 		} else if (formKey === 'email_configuration') {
 			formValues = {};
 			let compareValues = initialEmailValues.configuration || {};

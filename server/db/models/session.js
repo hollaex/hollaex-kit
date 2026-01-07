@@ -5,11 +5,11 @@ module.exports = function (sequelize, DataTypes) {
 	const Session = sequelize.define(
 		'Session',
 		{
-            token: {
+			token: {
 				type: DataTypes.STRING(1000),
 				allowNull: false
 			},
-            login_id: {
+			login_id: {
 				type: DataTypes.INTEGER,
 				onDelete: 'CASCADE',
 				allowNull: false,
@@ -22,27 +22,31 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				allowNull: false
 			},
-            last_seen: {
-                type: DataTypes.DATE,
+			last_seen: {
+				type: DataTypes.DATE,
 				allowNull: false,
-                defaultValue: DataTypes.NOW
-            },
+				defaultValue: DataTypes.NOW
+			},
 			expiry_date: {
 				type: DataTypes.DATE,
 				allowNull: false
 			},
-            role: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: ROLES.USER
-            }
+			role: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				defaultValue: ROLES.USER
+			},
+			meta: {
+				type: DataTypes.JSONB,
+				allowNull: true
+			}
 		},
 		{
 			underscored: true,
 			tableName: 'Sessions'
 		}
 	);
-    Session.associate = (models) => {
+	Session.associate = (models) => {
 		Session.belongsTo(models.Login, {
 			as: 'login',
 			foreignKey: 'login_id',

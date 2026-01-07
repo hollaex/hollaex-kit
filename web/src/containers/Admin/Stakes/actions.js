@@ -169,3 +169,11 @@ export const getStakingAnalytics = () => {
 		url: `/admin/stake/analytics`,
 	});
 };
+
+export const updateStaker = (data) => {
+	return axios({
+		method: 'PUT',
+		url: `/admin/staker`,
+		data,
+	});
+};

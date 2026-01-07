@@ -196,9 +196,9 @@ const AppMenuBarItem = ({
 		},
 	];
 
-	const othersOptions = getRemoteRoutes?.map((route, index) => ({
+	const othersOptions = getRemoteRoutes?.map((route) => ({
 		...route,
-		isDisplay: true,
+		isDisplay: !route?.hide_from_appbar,
 	}));
 
 	const [isIconActive, setIsIconActive] = useState(false);

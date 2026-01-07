@@ -327,9 +327,7 @@ const ProfitLossSection = ({
 					const balanceData = response.data.find(
 						(history) =>
 							moment(history.created_at).format('YYYY-MM-DD') ===
-							moment(queryValues.end_date)
-								.subtract(length === 6 ? 0 : length, 'days')
-								.format('YYYY-MM-DD')
+							moment(queryValues.end_date).format('YYYY-MM-DD')
 					);
 					let balance =
 						balanceData ||
@@ -823,6 +821,15 @@ const ProfitLossSection = ({
 		return percentage.toFixed(1);
 	}
 
+	const handleChangePeriod = (period) => {
+		setSelectedCustomDate();
+		setCurrentDay(period);
+		setQueryValues({
+			start_date: moment().subtract(period, 'days').toISOString(),
+			end_date: moment().subtract().toISOString(),
+		});
+	};
+
 	return (
 		<Spin spinning={isLoading}>
 			<div className={`${!isMobile ? 'mt-4' : ''}`}>
@@ -956,13 +963,7 @@ const ProfitLossSection = ({
 										}}
 										className="plButton"
 										ghost
-										onClick={() => {
-											setCurrentDay(7);
-											setQueryValues({
-												start_date: moment().subtract(7, 'days').toISOString(),
-												end_date: moment().subtract().toISOString(),
-											});
-										}}
+										onClick={() => handleChangePeriod(7)}
 									>
 										<span style={{ marginRight: 3 }}>1</span>
 										<EditWrapper stringId="PROFIT_LOSS.WEEK">
@@ -976,13 +977,7 @@ const ProfitLossSection = ({
 										}}
 										className="plButton"
 										ghost
-										onClick={() => {
-											setCurrentDay(30);
-											setQueryValues({
-												start_date: moment().subtract(30, 'days').toISOString(),
-												end_date: moment().subtract().toISOString(),
-											});
-										}}
+										onClick={() => handleChangePeriod(30)}
 									>
 										<span style={{ marginRight: 3 }}>1 </span>{' '}
 										<EditWrapper stringId="PROFIT_LOSS.MONTH">
@@ -996,13 +991,7 @@ const ProfitLossSection = ({
 										}}
 										className="plButton"
 										ghost
-										onClick={() => {
-											setCurrentDay(90);
-											setQueryValues({
-												start_date: moment().subtract(90, 'days').toISOString(),
-												end_date: moment().subtract().toISOString(),
-											});
-										}}
+										onClick={() => handleChangePeriod(90)}
 									>
 										<span style={{ marginRight: 3 }}>3 </span>{' '}
 										<EditWrapper stringId="PROFIT_LOSS.MONTHS">

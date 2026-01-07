@@ -189,6 +189,11 @@ export const ADMIN_PATHS = [
 	//  label: 'Settings',
 	//  routeKey: 'settings'
 	// },
+	{
+		path: '/admin/plugins/store',
+		label: 'store',
+		routeKey: 'store',
+	},
 ];
 
 export const SUPERVISOR_PATH = [
@@ -329,6 +334,7 @@ export const pathToPermissionMap = {
 	],
 	'/admin/sessions': ['/admin/logins:', '/admin/user/sessions:'],
 	'/admin/plugins': ['/admin/kit:', '/admin/plugins:'],
+	'/admin/plugins/store': ['/admin/kit:', '/admin/plugins:'],
 	'/admin/tiers': ['/admin/tier:'],
 	'/admin/audits': ['/admin/audits:'],
 	'/admin/roles': ['/admin/role:', '/admin/role/assign:'],

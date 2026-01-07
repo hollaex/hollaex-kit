@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { message } from 'antd';
+import debounce from 'lodash.debounce';
 import {
 	openContactForm,
 	setSecurityTab,
@@ -15,6 +16,7 @@ import {
 	otpActivate,
 	otpSetActivated,
 	otpRevoke,
+	getConfirmationPassword,
 } from 'actions/userAction';
 import {
 	// CustomTabs,
@@ -68,6 +70,13 @@ class UserSecurity extends Component {
 		updatedPassword: {},
 		isEnableOtpForm: false,
 		otpFormStep: 0,
+		isVerifyCode: false,
+		verifyCode: null,
+		timerMinutes: 6,
+		timerSeconds: 0,
+		timerExpired: false,
+		isEmailVerify: false,
+		isSuccessDialog: false,
 	};
 
 	componentDidMount() {
@@ -166,13 +175,71 @@ class UserSecurity extends Component {
 		) {
 			this.openCurrentTab();
 		}
+		if (!prevState.isVerifyCode && this.state.isVerifyCode) {
+			this.setState(
+				{ timerMinutes: 6, timerSeconds: 0, timerExpired: false },
+				() => this.startTimerDebounced()
+			);
+		}
 	}
 
 	componentWillUnmount() {
 		if (this.props.getSecurityTab) {
 			this.props.setSecurityTab(0);
 		}
+		if (this.timerCancel) {
+			this.timerCancel();
+		}
 	}
+
+	startTimerDebounced = () => {
+		const tick = debounce(() => {
+			const { timerMinutes, timerSeconds, timerExpired } = this.state;
+			if (timerExpired) return;
+			if (timerMinutes === 0 && timerSeconds === 0) {
+				this.setState({ timerExpired: true });
+				return;
+			}
+			if (timerSeconds === 0) {
+				this.setState(
+					(prevState) => ({
+						timerMinutes: prevState?.timerMinutes - 1,
+						timerSeconds: 59,
+					}),
+					() => this.startTimerDebounced()
+				);
+			} else {
+				this.setState(
+					(prevState) => ({
+						timerSeconds: prevState?.timerSeconds - 1,
+					}),
+					() => this.startTimerDebounced()
+				);
+			}
+		}, 1000);
+		this.timerCancel = () => tick.cancel();
+		tick();
+	};
+
+	handleCloseVerifyCode = () => {
+		this.setState({ isVerifyCode: false, verifyCode: null, error: '' });
+	};
+
+	onHandleEmailVerifyClose = () => {
+		this.setState({
+			dialogIsOpen: false,
+			iconId: '',
+			icon: '',
+			updatedPassword: {},
+			isEnableOtpForm: false,
+			isEmailVerify: false,
+		});
+	};
+
+	handleCloseSuccessDialog = () => {
+		this.props.router.push('/login');
+		this.setState({ isSuccessDialog: false });
+	};
 
 	openCurrentTab = () => {
 		let currentTab = '';
@@ -491,11 +558,13 @@ class UserSecurity extends Component {
 			updatedPassword: {
 				old_password: values.old_password,
 				new_password: values.new_password,
+				version: 'v3',
 			},
 		});
 	};
 
 	onSubmitChangePassword = (values) => {
+		this.setState({ verifyCode: null, isEmailVerify: true });
 		const { otp_enabled } = this.props.user;
 		if (otp_enabled) {
 			this.setOtpModalsState(values);
@@ -503,6 +572,7 @@ class UserSecurity extends Component {
 			return resetPassword({
 				old_password: values.old_password,
 				new_password: values.new_password,
+				version: 'v3',
 			})
 				.then((res) => {
 					this.setState({
@@ -614,6 +684,12 @@ class UserSecurity extends Component {
 			isEnableOtpForm: false,
 		});
 		this.props.setSelectedStep(0);
+		if (
+			this.state.modalText ===
+			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION']
+		) {
+			this.setState({ isVerifyCode: true });
+		}
 	};
 
 	// onSubmitotp = (values) => {
@@ -634,7 +710,13 @@ class UserSecurity extends Component {
 		constants,
 		icons
 	) => {
-		const { stringId, icon, iconId, isEnableOtpForm } = this.state;
+		const {
+			stringId,
+			icon,
+			iconId,
+			isEnableOtpForm,
+			isEmailVerify,
+		} = this.state;
 
 		if (error) {
 			return (
@@ -664,6 +746,8 @@ class UserSecurity extends Component {
 				this.handleUpdateOtp,
 				selectedStep
 			);
+		} else if (isEmailVerify) {
+			return this.renderEmailVerify();
 		} else {
 			return (
 				<SuccessDisplay
@@ -683,6 +767,264 @@ class UserSecurity extends Component {
 		this.setState({ isEnableOtpForm: false });
 	};
 
+	renderSuccessContent = () => {
+		const { icons: ICONS } = this.props;
+		return (
+			<div className="success-popup-wrapper">
+				<IconTitle
+					iconPath={ICONS['CHECK']}
+					iconId={'CHECK'}
+					stringId="VERIFY_CODE.PASSWORD_CHANGED"
+					text={STRINGS['VERIFY_CODE.PASSWORD_CHANGED']}
+				/>
+				<div className="text-center">
+					<EditWrapper
+						stringId={STRINGS['VERIFY_CODE.PASSWORD_CHANGED_DESCRIPTION']}
+					>
+						<span className="fs-14">
+							{STRINGS['VERIFY_CODE.PASSWORD_CHANGED_DESCRIPTION']}
+						</span>
+					</EditWrapper>
+				</div>
+				<div className="text-center mt-3">
+					<EditWrapper stringId={STRINGS['VERIFY_CODE.SECURITY_PROTOCOL']}>
+						<span className="fs-14">
+							{STRINGS['VERIFY_CODE.SECURITY_PROTOCOL']}
+						</span>
+					</EditWrapper>
+				</div>
+				<Button
+					onClick={() => this.handleCloseSuccessDialog()}
+					className="success-modal-okay-btn"
+					label={STRINGS['P2P.OKAY']}
+				/>
+			</div>
+		);
+	};
+
+	renderEmailVerify = () => {
+		const { icons: ICONS } = this.props;
+		return (
+			<div className="email-verification-wrapper d-flex flex-column">
+				<IconTitle
+					iconPath={ICONS['VERIFICATION_EMAIL_NEW']}
+					iconId={'VERIFICATION.EMAIL_NEW'}
+					stringId="VERIFY_CODE.EMAIL_CONFIRMATION"
+					text={STRINGS['VERIFY_CODE.EMAIL_CONFIRMATION']}
+				/>
+				<div className="mb-4 mt-3 text-center">
+					<EditWrapper
+						stringId={STRINGS['VERIFY_CODE.EMAIL_CONFIRMATION_DESCRIPTION']}
+					>
+						<span className="fs-14">
+							{STRINGS['VERIFY_CODE.EMAIL_CONFIRMATION_DESCRIPTION']}
+						</span>
+					</EditWrapper>
+				</div>
+				<div className="d-flex gap-1 mt-3">
+					<Button
+						onClick={this.onHandleEmailVerifyClose}
+						label={STRINGS['P2P.CANCEL']}
+					/>
+					<Button
+						onClick={this.onCloseDialog}
+						label={STRINGS['VERIFY_CODE.ENTER_EMAIL_CODE']}
+					/>
+				</div>
+			</div>
+		);
+	};
+
+	handleVerifyCodeChange = (idx, value) => {
+		const { verifyCode } = this.state;
+		const code = verifyCode || Array(7).fill('');
+		if (/^[0-9a-zA-Z]?$/.test(value)) {
+			const newCode = [...code];
+			newCode[idx] = value;
+			this.setState({ verifyCode: newCode, error: '' });
+			if (value && idx < code.length - 1) {
+				const nextInput = document.getElementById(
+					`verify-code-input-${idx + 1}`
+				);
+				if (nextInput) nextInput.focus();
+			}
+		}
+	};
+
+	handleVerifyCodeKeyDown = (idx, e) => {
+		const { verifyCode } = this.state;
+		const code = verifyCode || Array(7).fill('');
+		this.setState({ error: '' });
+		if (e.key === 'Backspace') {
+			if (!code[idx] && idx > 0) {
+				const prevInput = document.getElementById(
+					`verify-code-input-${idx - 1}`
+				);
+				if (prevInput) prevInput.focus();
+			}
+		} else if (e.key === 'ArrowLeft' && idx > 0) {
+			const prevInput = document.getElementById(`verify-code-input-${idx - 1}`);
+			if (prevInput) prevInput.focus();
+		} else if (e.key === 'ArrowRight' && idx < code.length - 1) {
+			const nextInput = document.getElementById(`verify-code-input-${idx + 1}`);
+			if (nextInput) nextInput.focus();
+		}
+	};
+
+	handleVerifyCodePaste = (e, idx) => {
+		e.preventDefault();
+		let pastedData = e.clipboardData.getData('Text')?.trim();
+		if (!pastedData) return;
+		pastedData = pastedData?.replace(/[-\s]/g, '');
+
+		const { verifyCode } = this.state;
+		const code = verifyCode || Array(7).fill('');
+		const newCode = [...code];
+		for (let i = 0; i < pastedData?.length && idx + i < code?.length; i++) {
+			if (/^[0-9a-zA-Z]$/.test(pastedData[i])) {
+				newCode[idx + i] = pastedData[i];
+			}
+		}
+
+		this.setState({ verifyCode: newCode, error: '' }, () => {
+			const nextIndex = idx + pastedData?.length;
+			if (nextIndex < code?.length) {
+				const nextInput = document.getElementById(
+					`verify-code-input-${nextIndex}`
+				);
+				if (nextInput) nextInput.focus();
+			}
+		});
+	};
+
+	onHandleVerifyCode = async () => {
+		const { verifyCode } = this.state;
+		const code = verifyCode || Array(7)?.fill('');
+		const rawCode = code?.join('')?.trim();
+		const prefix = rawCode?.slice(0, 2);
+		const numberPart = rawCode?.slice(2);
+		const finalCode = `${prefix}-${numberPart}`;
+
+		try {
+			await getConfirmationPassword(finalCode);
+			this.setState({ isSuccessDialog: true });
+			this.handleCloseVerifyCode();
+		} catch (err) {
+			const errorMessage =
+				err?.response?.data?.message || err?.message || 'Error verifying code';
+			message.error(errorMessage);
+			if (err?.response?.data?.code === 136) {
+				this.setState({ error: errorMessage });
+			} else {
+				this.handleCloseVerifyCode();
+			}
+		}
+	};
+
+	renderVerifyCode = () => {
+		const code = this.state?.verifyCode || Array(7).fill('');
+		return (
+			<div className="verify-code-wrapper">
+				<div className="text-center">
+					{!this.state.timerExpired ? (
+						<IconTitle
+							stringId="VERIFY_CODE.TITLE"
+							text={STRINGS['VERIFY_CODE.TITLE']}
+							iconId="EMAIL_CODE"
+							iconPath={this.props.icons['EMAIL_CODE']}
+							textType="title"
+						/>
+					) : (
+						<IconTitle
+							stringId="VERIFY_CODE.CODE_EXPIRED"
+							text={STRINGS['VERIFY_CODE.CODE_EXPIRED']}
+							textType="title"
+						/>
+					)}
+				</div>
+				<div className="d-flex align-items-center justify-content-between gap-1 timer-wrapper my-3">
+					<div className="timer-divider"></div>
+					<div className="timer-text">
+						{`${
+							this.state.timerMinutes
+						}:${this.state.timerSeconds?.toString()?.padStart(2, '0')}`}
+					</div>
+					<div className="timer-divider"></div>
+				</div>
+				{this.state.timerExpired ? (
+					<div className="expired-message-wrapper text-center">
+						<div className="expired-message">
+							<EditWrapper stringId="VERIFY_CODE.EXPIRED_MESSAGE">
+								<span className="fs-14">
+									{STRINGS['VERIFY_CODE.EXPIRED_MESSAGE']}
+								</span>
+							</EditWrapper>
+						</div>
+						<Button
+							label={STRINGS['BACK_TEXT']}
+							type="primary"
+							className="w-100 mt-3"
+							onClick={this.handleCloseVerifyCode}
+						/>
+					</div>
+				) : (
+					<>
+						<div className="verification-code-fields my-5 d-flex justify-content-center">
+							{(code || [])?.map((val, idx) => (
+								<div key={idx} className="d-flex align-items-center">
+									<input
+										id={`verify-code-input-${idx}`}
+										key={idx}
+										type="text"
+										maxLength={1}
+										value={val}
+										onChange={(e) =>
+											this.handleVerifyCodeChange(idx, e.target.value)
+										}
+										onKeyDown={(e) => this.handleVerifyCodeKeyDown(idx, e)}
+										className={`verification-code-input ${
+											idx === 1 ? 'mr-3' : ''
+										}`}
+										onPaste={(e) => this.handleVerifyCodePaste(e, idx)}
+										autoFocus={idx === 0}
+									/>
+									{idx === 1 && (
+										<span className="verification-field-divider"></span>
+									)}
+								</div>
+							))}
+						</div>
+						<div className="text-align-center mb-4">
+							<EditWrapper stringId="VERIFY_CODE.DESCRIPTION">
+								<span className="fs-14">
+									{STRINGS.formatString(
+										STRINGS['VERIFY_CODE.DESCRIPTION'],
+										<span className="font-weight-bold">
+											{this.props.user?.email ||
+												STRINGS['HOME.EMAIL_TEXT'].toLowerCase()}
+										</span>
+									)}
+								</span>
+							</EditWrapper>
+						</div>
+						{this.state.error && (
+							<span className="fs-14 bold verification-code-error">
+								{this.state.error}
+							</span>
+						)}
+						<Button
+							label={STRINGS['VERIFY_CODE.VERIFY_CODE_TEXT']}
+							type="submit"
+							className="w-100 mt-3"
+							onClick={this.onHandleVerifyCode}
+							disabled={code?.some((c) => !c)}
+						/>
+					</>
+				)}
+			</div>
+		);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -700,6 +1042,7 @@ class UserSecurity extends Component {
 			tabs,
 			freeze,
 			isEnableOtpForm,
+			isEmailVerify,
 		} = this.state;
 		//const { onCloseDialog } = this;
 
@@ -776,8 +1119,12 @@ class UserSecurity extends Component {
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"
-					onCloseDialog={this.onCloseDialog}
-					showCloseText={!(otp.error || modalText)}
+					onCloseDialog={() =>
+						isEmailVerify
+							? this.onHandleEmailVerifyClose()
+							: this.onCloseDialog()
+					}
+					showCloseText={!(otp.error || modalText) || isEmailVerify}
 					isEnableOtpForm={isEnableOtpForm}
 					onHandleEnableBack={this.onHandleEnableBack}
 				>
@@ -793,6 +1140,26 @@ class UserSecurity extends Component {
 					) : (
 						<div />
 					)}
+				</Dialog>
+
+				<Dialog
+					isOpen={this.state.isVerifyCode}
+					label="verify-code"
+					onCloseDialog={this.handleCloseVerifyCode}
+					showCloseText={true}
+					className="verify-code-modal"
+				>
+					{this.renderVerifyCode()}
+				</Dialog>
+
+				<Dialog
+					isOpen={this.state.isSuccessDialog}
+					label="success-modal"
+					showCloseText={true}
+					className="verification-success-modal"
+					onCloseDialog={this.handleCloseSuccessDialog}
+				>
+					{this.renderSuccessContent()}
 				</Dialog>
 
 				<NotLoggedIn>

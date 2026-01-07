@@ -15,6 +15,7 @@ import { openConnectViaDesktop, setStake } from 'actions/appActions';
 import { HeaderSection, EditWrapper, Button, Coin, Image } from 'components';
 import { STAKING_INDEX_COIN } from 'config/contracts';
 import { browserHistory } from 'react-router';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 class Stake extends Component {
 	constructor(prop) {
@@ -67,7 +68,7 @@ class Stake extends Component {
 			stakables,
 		} = this.props;
 
-		const { display_name } = coins[STAKING_INDEX_COIN];
+		const { display_name } = coins[STAKING_INDEX_COIN] || DEFAULT_COIN_DATA;
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper stake-wrapper">
@@ -203,9 +204,8 @@ class Stake extends Component {
 										<tbody>
 											{stakables.map((tokenData, index) => {
 												const { symbol } = tokenData;
-												const { fullname, icon_id, display_name } = coins[
-													symbol
-												];
+												const { fullname, icon_id, display_name } =
+													coins[symbol] || DEFAULT_COIN_DATA;
 												const commonCellProps = {};
 												return (
 													<tr

@@ -1450,9 +1450,10 @@ $app-menu-width: calc(100vw - 40rem);
 			padding: 3% 7%;
 			margin-bottom: 2%;
 			display: flex;
+			flex-direction: column;
 			gap: 3%;
 			font-size: 12px;
-			align-items: center;
+			align-items: flex-start;
 			background-color: $app-sidebar-background;
 			.blue-link:hover {
 				cursor: pointer;
@@ -1462,6 +1463,13 @@ $app-menu-width: calc(100vw - 40rem);
 				margin-right: unset;
 				position: relative;
 				top: 3px;
+			}
+			.manage-account-icon {
+				width: 2.5rem;
+				svg {
+					width: 1.2rem;
+					height: 1.2rem;
+				}
 			}
 		}
 		.summary-page-link {

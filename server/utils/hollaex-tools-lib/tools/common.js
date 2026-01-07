@@ -49,6 +49,7 @@ const flatten = require('flat');
 const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
+const { isIP } = require('net');
 const moment = require('moment');
 const { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE, GET_TRADEPATHS } = require('../../../constants');
 const BigNumber = require('bignumber.js');
@@ -231,6 +232,17 @@ const updateKitConfigSecrets = (data = {}, scopes, auditInfo, configs, userId) =
 					type: 'update', data: { kit: status.dataValues.kit, secrets: status.dataValues.secrets }
 				})
 			);
+			// Trigger a network refresh init when auto_deposit or auto_withdrawal are updated
+			try {
+				if (data?.kit && (Object.prototype.hasOwnProperty.call(data.kit, 'auto_deposit') || Object.prototype.hasOwnProperty.call(data.kit, 'auto_withdrawal'))) {
+					publisher.publish(
+						INIT_CHANNEL,
+						JSON.stringify({ type: 'refreshInit' })
+					);
+				}
+			} catch (e) {
+				// no-op: publishing failures should not block the response
+			}
 			return {
 				kit: { ...status.dataValues.kit, info },
 				secrets: maskSecrets(status.dataValues.secrets)
@@ -1049,11 +1061,43 @@ const getMinFees = () => {
 };
 
 const validateIp = (ip) => {
-	const regex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/(16|24|32))$/;
-	if (!regex.test(ip)) {
+	if (!isString(ip)) {
 		return false;
 	}
-	return true;
+
+	const ipString = ip.trim();
+	const segments = ipString.split('/');
+
+	if (segments.length > 2) {
+		return false;
+	}
+
+	const [address, prefix] = segments;
+	const version = isIP(address);
+
+	if (!version) {
+		return false;
+	}
+
+	if (prefix === undefined) {
+		return true;
+	}
+
+	if (prefix === '') {
+		return false;
+	}
+
+	const prefixNumber = Number(prefix);
+
+	if (!Number.isInteger(prefixNumber)) {
+		return false;
+	}
+
+	if (version === 4) {
+		return [16, 24, 32].includes(prefixNumber);
+	}
+
+	return prefixNumber >= 0 && prefixNumber <= 128;
 };
 
 const validatePair = (pair) => {

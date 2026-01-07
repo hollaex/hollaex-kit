@@ -18,6 +18,7 @@ import Transaction from './Transaction';
 import StakesAndEarnings from 'containers/Stake/components/StakesAndEarnings';
 import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
 import Variable from 'containers/Stake/components/Variable';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -102,7 +103,7 @@ const MyStaking = ({
 		},
 	];
 
-	const { display_name } = coins[token];
+	const { display_name } = coins[token] || DEFAULT_COIN_DATA;
 
 	return (
 		<div>

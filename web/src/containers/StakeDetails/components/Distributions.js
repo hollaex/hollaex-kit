@@ -5,6 +5,7 @@ import STRINGS from 'config/localizedStrings';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import { web3 } from 'config/contracts';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -53,7 +54,7 @@ const Distributions = ({
 		},
 	];
 
-	const { display_name } = coins[token];
+	const { display_name } = coins[token] || DEFAULT_COIN_DATA;
 
 	return (
 		<div>

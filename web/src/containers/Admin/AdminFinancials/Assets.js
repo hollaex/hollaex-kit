@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Table, Modal, Breadcrumb, message } from 'antd';
+import { Button, Table, Modal, Breadcrumb, message, Input } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -11,8 +11,7 @@ import debounce from 'lodash.debounce';
 import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
 import IconToolTip from '../IconToolTip';
-import Coins from '../Coins';
-import Filter from '../FilterComponent';
+import { Coin } from 'components';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 import {
 	getAllCoins,
@@ -28,15 +27,6 @@ import { STATIC_ICONS } from 'config/icons';
 import { setIsDisplayCreateAsset } from 'actions/appActions';
 
 const { Item } = Breadcrumb;
-
-const filterOptions = [
-	{
-		label: 'All',
-		value: 'all',
-		secondaryType: 'text',
-		secondaryPlaceHolder: 'Input name or symbol',
-	},
-];
 
 export const getTabParams = () => {
 	let paramsString = window.location.search.replace('?', '');
@@ -57,7 +47,8 @@ const getColumns = (
 	balance = {},
 	handleEdit,
 	handlePreview,
-	exchange
+	exchange,
+	appCoins = {}
 ) => [
 	{
 		title: 'Assets',
@@ -77,15 +68,11 @@ const getColumns = (
 					className="coin-symbol-wrapper"
 					onClick={() => handlePreview(selectedAsset)}
 				>
-					<div className="currency_ball">
-						<Coins
-							type={data.symbol.toLowerCase()}
-							small={true}
-							color={selectedAsset.meta ? selectedAsset.meta.color : ''}
-							fullname={selectedAsset.fullname}
-							onClick={() => handlePreview(selectedAsset)}
+					<div className="d-flex align-items-center">
+						<Coin
+							iconId={appCoins?.[data.symbol]?.icon_id || selectedAsset.icon_id}
 						/>
-						<div className="fullName">{selectedAsset.fullname}</div>
+						<div className="ml-2 fullName">{selectedAsset.fullname}</div>
 					</div>
 					{data.id && data.verified ? (
 						<IconToolTip type="success" tip="" animation={false} />
@@ -223,7 +210,17 @@ class Assets extends Component {
 			assetType: '',
 			currentScreen: 'step1',
 			isLoading: false,
+			assetsCoinsData: [],
+			isModalClosable: true,
 		};
+
+		this.debouncedFetchData = debounce(async () => {
+			await this.getMyExchange();
+			await this.getCoins();
+			this.setState({
+				isLoading: false,
+			});
+		}, 5000);
 	}
 
 	componentDidMount() {
@@ -239,6 +236,7 @@ class Assets extends Component {
 			this.setState({
 				coins: coins || [],
 				exchange,
+				assetsCoinsData: coins || [],
 			});
 		}
 		if (Object.keys(tabParams).length) {
@@ -312,6 +310,7 @@ class Assets extends Component {
 			this.setState({
 				coins: coins || [],
 				exchange: exchange,
+				assetsCoinsData: coins || [],
 			});
 		}
 
@@ -331,9 +330,20 @@ class Assets extends Component {
 			this.handleCreateNew();
 			setIsDisplayCreateAsset(false);
 		}
+		if (JSON.stringify(prevProps?.allCoins) !== JSON.stringify(allCoins)) {
+			const coins = allCoins?.filter((val) =>
+				exchange?.coins?.includes(val?.symbol)
+			);
+			this.setState({
+				assetsCoinsData: coins || [],
+			});
+		}
 	}
 
 	componentWillUnmount() {
+		if (this.debouncedFetchData) {
+			this.debouncedFetchData.cancel();
+		}
 		const {
 			setSelectedMarkupAsset = () => {},
 			setIsDisplayCreateAsset = () => {},
@@ -377,6 +387,8 @@ class Assets extends Component {
 	};
 
 	handleClose = () => {
+		const { isModalClosable } = this.state;
+		if (!isModalClosable) return;
 		this.setState({
 			isOpenAdd: this.state.currentScreen === 'step2' ? true : false,
 			isEdit: false,
@@ -428,6 +440,10 @@ class Assets extends Component {
 		} catch (error) {
 			throw error;
 		}
+	};
+
+	handleModalClose = (bool) => {
+		this.setState({ isModalClosable: bool });
 	};
 
 	handleRefreshCoin = async (coinData) => {
@@ -556,13 +572,17 @@ class Assets extends Component {
 	};
 
 	handleDelete = async (symbol) => {
-		const { coins, exchange } = this.state;
-		this.setState({ isLoading: true });
-		this.setState({ submitting: true });
+		const { exchange } = this.state;
+		const { allCoins } = this.props;
+
+		this.setState({ isLoading: true, submitting: true });
 		const pairedCoins = exchange.pairs.filter((data) => {
 			let pairData = data.split('-');
 			return pairData[0] === symbol || pairData[1] === symbol;
 		});
+		const coins = allCoins?.filter((val) =>
+			exchange?.coins?.includes(val?.symbol)
+		);
 		try {
 			let formProps = {
 				id: exchange.id,
@@ -577,9 +597,10 @@ class Assets extends Component {
 				});
 			}
 			await updateExchange(formProps);
-			await this.getMyExchange();
-			await this.getCoins();
-			this.setState({ isLoading: false });
+
+			this.debouncedFetchData.cancel();
+			this.debouncedFetchData();
+
 			message.success('Asset removed successfully');
 			this.setState({
 				isConfigure: false,
@@ -591,7 +612,8 @@ class Assets extends Component {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
-			this.setState({ submitting: false });
+			this.debouncedFetchData.cancel();
+			this.setState({ submitting: false, isLoading: false });
 		}
 	};
 
@@ -619,7 +641,11 @@ class Assets extends Component {
 	};
 
 	handleFilterValues = (filterValues) => {
-		this.setState({ filterValues });
+		this.setState({ filterValues }, () => {
+			if (filterValues === '') {
+				this.onClickFilter(false);
+			}
+		});
 	};
 
 	handledebounceLoading = () => {
@@ -699,11 +725,12 @@ class Assets extends Component {
 	};
 
 	applyConfirmation = () => {
-		const { formData } = this.state;
+		const { formData, selectedAsset, isConfigure } = this.state;
+		const dataToSave = isConfigure ? selectedAsset : formData;
 		if (this.state.exchange.is_running) {
-			this.setState({ isConfirm: true });
+			this.setState({ isConfirm: true, formData: dataToSave });
 		} else {
-			this.handleConfirmation(formData, true);
+			this.handleConfirmation(dataToSave, true);
 		}
 	};
 
@@ -755,6 +782,7 @@ class Assets extends Component {
 							user_id={user_id}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
+							handleEdit={this.handleEditData}
 							handleDelete={this.handleDelete}
 							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
@@ -881,11 +909,12 @@ class Assets extends Component {
 			selectedAsset,
 			isConfirm,
 			exchangeUsers,
+			exchange,
 			userEmails,
 			formData,
 			saveLoading,
+			assetsCoinsData,
 		} = this.state;
-		const { allCoins } = this.props;
 		if (isConfirm) {
 			return (
 				<div className="admin-asset-wrapper">
@@ -921,7 +950,8 @@ class Assets extends Component {
 					isConfigureEdit={isConfigureEdit}
 					editConfigureScreen={editConfigureScreen}
 					// coins={coins}
-					coins={allCoins}
+					exchangeData={exchange}
+					assetsCoins={assetsCoinsData}
 					handleEditDataCallback={this.handleEditData}
 					handleWidth={this.handleWidth}
 					handleConfirmation={this.handleConfirmation}
@@ -937,6 +967,7 @@ class Assets extends Component {
 					assetType={this.state.assetType}
 					currentScreen={this.state.currentScreen}
 					updateCurrentScreen={this.updateCurrentScreen}
+					handleModalClose={this.handleModalClose}
 				/>
 			);
 		}
@@ -957,6 +988,7 @@ class Assets extends Component {
 			exchangeBalance,
 			exchange,
 			isLoading,
+			isModalClosable,
 		} = this.state;
 		const { allCoins, constants } = this.props;
 		return (
@@ -966,11 +998,22 @@ class Assets extends Component {
 				) : (
 					<Fragment>
 						<div className="filter-header">
-							<Filter
-								selectOptions={filterOptions}
-								onChange={this.handleFilterValues}
-								onClickFilter={this.onClickFilter}
-							/>
+							<div className="d-flex align-items-center">
+								<Input
+									onChange={(e) => this.handleFilterValues(e.target.value)}
+									className="w-75 asset-filter-input"
+									size="small"
+									allowClear
+									placeholder="Input name or symbol"
+								/>
+								<Button
+									onClick={this.onClickFilter}
+									className="green-btn no-border asset-filter-button"
+									size="small"
+								>
+									Filter
+								</Button>
+							</div>
 							<Button
 								type="primary"
 								className="green-btn"
@@ -981,13 +1024,17 @@ class Assets extends Component {
 						</div>
 						<div className="table-wrapper">
 							<Table
+								className="assets-table"
+								rowClassName="assets-table-row"
+								size="small"
 								columns={getColumns(
 									allCoins,
 									constants,
 									exchangeBalance,
 									this.handleEdit,
 									this.handlePreview,
-									exchange
+									exchange,
+									this.props.appCoins
 								)}
 								rowKey={(data, index) => index}
 								dataSource={coins}
@@ -1008,6 +1055,7 @@ class Assets extends Component {
 					footer={null}
 					width={`${width}px`}
 					onCancel={this.handleClose}
+					closable={isModalClosable}
 				>
 					{this.renderModalContent()}
 				</Modal>
@@ -1033,6 +1081,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	exchange: state.asset && state.asset.exchange,
 	isDisplayCreateAsset: state.app.isDisplayCreateAsset,
+	appCoins: state.app.coins,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assets);

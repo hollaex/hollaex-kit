@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { Modal, Input, Button, message, Spin } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
+import validator from 'validator';
 import { STATIC_ICONS } from 'config/icons';
 import { Table } from 'components';
 import {
@@ -142,10 +143,10 @@ const GenerateAPiKeys = ({
 	};
 
 	const handleAddIPAddress = (e) => {
-		const ipformat = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
+		const ipformat = validator.isIP(ipAddress);
 		if (userDetails.whitelisted_ips?.includes(ipAddress)) {
 			message.error('IP address already exist');
-		} else if (ipAddress === '' || !ipformat.test(ipAddress)) {
+		} else if (ipAddress === '' || !ipformat) {
 			message.error('Please enter the valid IP address');
 		} else {
 			setUserDetails({

@@ -23,10 +23,14 @@ const EmailConfiguration = ({
 		if (site_key) {
 			formProps.kit = {};
 			formProps.kit.captcha = { site_key };
+			formProps.kit.cloudflare_turnstile = { site_key };
 		}
 		if (site_key || secret_key || server || port || user || password) {
 			formProps.secrets = { smtp: {} };
-			if (secret_key) formProps.secrets.captcha = { secret_key };
+			if (secret_key) {
+				formProps.secrets.captcha = { secret_key };
+				formProps.secrets.cloudflare_turnstile = { secret_key };
+			}
 			if (server) formProps.secrets.smtp.server = server;
 			if (port) formProps.secrets.smtp.port = parseInt(port, 10);
 			if (user) formProps.secrets.smtp.user = user;

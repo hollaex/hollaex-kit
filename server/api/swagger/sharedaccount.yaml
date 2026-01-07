@@ -1,0 +1,302 @@
+paths:
+  /sharedaccounts/shared:
+    x-swagger-router-controller: sharedaccount
+    get:
+      operationId: getUserSharedaccounts
+      description: Get list of sharedaccounts where the authenticated user is the main.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              count:
+                type: number
+                format: int32
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    email:
+                      type: string
+                    active:
+                      type: boolean
+                    created_at:
+                      type: string
+                    label:
+                      type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /sharedaccounts/access:
+    x-swagger-router-controller: sharedaccount
+    get:
+      operationId: getUserAccessibleSharedaccounts
+      description: Get list of accounts the authenticated user has access to as a shared user.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              count:
+                type: number
+                format: int32
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    email:
+                      type: string
+                    active:
+                      type: boolean
+                    created_at:
+                      type: string
+                    label:
+                      type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /sharedaccount:
+    x-swagger-router-controller: sharedaccount
+    post:
+      operationId: createSharedaccount
+      description: Create a new shared account link by email for the authenticated user.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                maxLength: 256
+              label:
+                type: string
+                maxLength: 256
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /sharedaccount/auth:
+    x-swagger-router-controller: sharedaccount
+    post:
+      operationId: getSharedaccountAuthToken
+      description: Shared user requests a JWT for the main user from a sharedaccount link.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - sharedaccount_id
+            properties:
+              sharedaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+
+  /sharedaccount/pause:
+    x-swagger-router-controller: sharedaccount
+    post:
+      operationId: pauseSharedaccount
+      description: Pause a sharedaccount link and revoking shared user's sessions.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - sharedaccount_id
+            properties:
+              sharedaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+
+  /sharedaccount/delete:
+    x-swagger-router-controller: sharedaccount
+    post:
+      operationId: deleteSharedaccount
+      description: Delete a sharedaccount link and revoke sessions made via that link.
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - sharedaccount_id
+            properties:
+              sharedaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+
+  /sharedaccount/resume:
+    x-swagger-router-controller: sharedaccount
+    post:
+      operationId: resumeSharedaccount
+      description: Resume a paused sharedaccount link (set active=true).
+      tags:
+        - User
+        - Sharedaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - sharedaccount_id
+            properties:
+              sharedaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+

@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Button, Table, Modal, Breadcrumb, message, Spin } from 'antd';
+import { Button, Table, Modal, Breadcrumb, message, Spin, Input } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
+import debounce from 'lodash.debounce';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getTabParams } from '../AdminFinancials/Assets';
-import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 import { setAllPairs, setCoins } from 'actions/assetActions';
 import { storePair, updateAssetPairs } from './actions';
@@ -48,15 +48,6 @@ export const renderStatus = ({ id, verified, created_by }, user_id) => {
 		</div>
 	);
 };
-
-const filterOptions = [
-	{
-		label: 'All',
-		value: 'all',
-		secondaryType: 'text',
-		secondaryPlaceHolder: 'Input name or symbol',
-	},
-];
 
 const COLUMNS = (
 	pairs,
@@ -153,7 +144,17 @@ class PairsSummary extends Component {
 			saveLoading: false,
 			isHovered: false,
 			hoveredKey: 0,
+			isModalCloseAble: true,
+			isLoading: false,
 		};
+
+		this.debouncedFetchData = debounce(async () => {
+			await this.props.getMyExchange();
+			await this.getPairs();
+			this.setState({
+				isLoading: false,
+			});
+		}, 5000);
 	}
 
 	componentDidMount() {
@@ -217,6 +218,9 @@ class PairsSummary extends Component {
 	}
 
 	componentWillUnmount() {
+		if (this.debouncedFetchData) {
+			this.debouncedFetchData.cancel();
+		}
 		this.props.setIsDisplayAddMarket(false);
 	}
 
@@ -238,6 +242,9 @@ class PairsSummary extends Component {
 	};
 
 	handleClose = () => {
+		if (!this.state?.isModalCloseAble) {
+			return;
+		}
 		this.setState({
 			isOpen: false,
 			width: 520,
@@ -276,7 +283,11 @@ class PairsSummary extends Component {
 	};
 
 	handleFilterValues = (filterValues) => {
-		this.setState({ filterValues });
+		this.setState({ filterValues }, () => {
+			if (filterValues === '') {
+				this.onClickFilter(false);
+			}
+		});
 	};
 
 	onClickFilter = (isClearField = true) => {
@@ -302,7 +313,7 @@ class PairsSummary extends Component {
 
 	handleDelete = async (formData) => {
 		const { pairs = [], exchange = {} } = this.props;
-		this.setState({ buttonSubmitting: true });
+		this.setState({ buttonSubmitting: true, isLoading: true });
 		try {
 			let formProps = {
 				id: exchange.id,
@@ -311,8 +322,9 @@ class PairsSummary extends Component {
 				),
 			};
 			await updateExchange(formProps);
-			await this.props.getMyExchange();
-			await this.getPairs();
+
+			this.debouncedFetchData.cancel();
+			this.debouncedFetchData();
 			message.success('Pair removed successfully');
 			this.setState({
 				isPreview: false,
@@ -324,7 +336,8 @@ class PairsSummary extends Component {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
-			this.setState({ buttonSubmitting: false });
+			this.debouncedFetchData.cancel();
+			this.setState({ buttonSubmitting: false, isLoading: false });
 		}
 	};
 
@@ -346,6 +359,10 @@ class PairsSummary extends Component {
 
 	handleApplyClose = () => {
 		this.setState({ isPresetConfirm: false });
+	};
+
+	handleMoadalClose = (isModalCloseAble) => {
+		this.setState({ isModalCloseAble });
 	};
 
 	handleConfirm = async (
@@ -681,11 +698,22 @@ class PairsSummary extends Component {
 							<div>A list of all active markets</div>
 						</div>
 						<div className="filter-header">
-							<Filter
-								selectOptions={filterOptions}
-								onChange={this.handleFilterValues}
-								onClickFilter={this.onClickFilter}
-							/>
+							<div className="d-flex align-items-end">
+								<Input
+									onChange={(e) => this.handleFilterValues(e.target.value)}
+									className="w-75 pairs-filter-input"
+									size="small"
+									allowClear
+									placeholder="Input name or symbol"
+								/>
+								<Button
+									onClick={this.onClickFilter}
+									className="green-btn no-border pairs-filter-button"
+									size="small"
+								>
+									Filter
+								</Button>
+							</div>
 							<Button
 								type="primary"
 								className="green-btn"
@@ -696,6 +724,7 @@ class PairsSummary extends Component {
 						</div>
 						<div className="summary table-wrapper admin-tiers-wrapper">
 							<Table
+								className="pairs-summary-table"
 								columns={COLUMNS(
 									allPairs,
 									allCoins,
@@ -707,6 +736,7 @@ class PairsSummary extends Component {
 								dataSource={this.state.pairs}
 								bordered
 								pagination={false}
+								loading={this.state.isLoading}
 							/>
 						</div>
 					</Fragment>
@@ -753,6 +783,7 @@ class PairsSummary extends Component {
 					onClose={this.handleClose}
 					router={this.props.router}
 					getMyExchange={this.props.getMyExchange}
+					handleMoadalClose={this.handleMoadalClose}
 				/>
 			);
 		}
@@ -777,6 +808,7 @@ class PairsSummary extends Component {
 					visible={isOpen || isEdit || isConfirm}
 					onCancel={this.handleClose}
 					footer={null}
+					closable={this.state.isModalCloseAble}
 				>
 					{this.renderModalContent()}
 				</Modal>

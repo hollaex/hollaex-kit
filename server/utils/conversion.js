@@ -19,12 +19,11 @@ const errorMessageConverter = (error, lang) => {
 		return error.message;
 	}
 
+	const normalizedLang = lang || 'en';
 	let message = error.message;
 
 	if (error.name === 'SequelizeValidationError') {
 		message = error.errors[0].message;
-	} else if (error.message === INVALID_CAPTCHA) {
-		message = INVALID_CREDENTIALS;
 	} else if (error.statusCode) {
 		if (typeof error.error === 'string') {
 			try {
@@ -38,16 +37,28 @@ const errorMessageConverter = (error, lang) => {
 		}
 	}
 
-	let response = getMessage(message, lang);
+	let response = getMessage(message, normalizedLang);
 
 	if (response?.message) return response;
 	else {
 		try {
 			const messageKeys = Object.keys(functionMessages);
-			const Index = Object.keys(functionMessages).findIndex(x => message.startsWith(x))
+			const Index = messageKeys.findIndex((x) => message.startsWith(x));
 			if (Index > -1) {
 				let difference = message.split(' ').filter(x => !(functionMessages[messageKeys[Index]]('')['en'].split(' ')).includes(x));
-				return response = { message: functionMessages[messageKeys[Index]](difference)[lang], lang, code: Index + 10 };
+				// Prefer reusing the base code from the main message list (if it exists) to avoid
+				// collisions between getMessage() codes and functionMessages() codes.
+				const base = getMessage(messageKeys[Index], normalizedLang);
+				const code =
+					typeof base?.code === 'number'
+						? base.code
+						: 1000 + Index; // dedicated range for functionMessages
+
+				return (response = {
+					message: functionMessages[messageKeys[Index]](difference)[normalizedLang],
+					lang: normalizedLang,
+					code,
+				});
 			} else return response = { message, lang };
 		} catch (error) {
 			return { message, lang };

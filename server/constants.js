@@ -21,6 +21,7 @@ let configuration = {
 		strings: {},
 		links: {},
 		captcha: {},
+		cloudflare_turnstile: {},
 		defaults: {},
 		features: {},
 		meta: {},
@@ -32,7 +33,10 @@ let configuration = {
 		offramp: {},
 		user_payments: {},
 		dust: {},
-		google_oauth: {}
+		google_oauth: {},
+		auto_deposit: {},
+		auto_withdrawal: {},
+		force_two_factor_authentication_withdrawal: {}
 	},
 	email: {}
 };
@@ -41,6 +45,7 @@ let secrets = {
 	security: {},
 	accounts: {},
 	captcha: {},
+	cloudflare_turnstile: {},
 	emails: {},
 	smtp: {}
 };
@@ -92,6 +97,7 @@ const resetAllConfig = () => {
 		security: {},
 		accounts: {},
 		captcha: {},
+		cloudflare_turnstile: {},
 		emails: {},
 		smtp: {}
 	};
@@ -107,6 +113,7 @@ const resetAllConfig = () => {
 			strings: {},
 			links: {},
 			captcha: {},
+			cloudflare_turnstile: {},
 			defaults: {},
 			features: {},
 			meta: {},
@@ -118,7 +125,10 @@ const resetAllConfig = () => {
 			offramp: {},
 			user_payments: {},
 			dust: {},
-			google_oauth: {}
+			google_oauth: {},
+			auto_deposit: {},
+			auto_withdrawal: {},
+			force_two_factor_authentication_withdrawal: {}
 		},
 		email: {}
 	};
@@ -193,6 +203,7 @@ exports.VALID_USER_META_TYPES = [
 
 exports.KIT_CONFIG_KEYS = [
 	'captcha',
+	'cloudflare_turnstile',
 	'api_name',
 	'description',
 	'color',
@@ -230,7 +241,10 @@ exports.KIT_CONFIG_KEYS = [
 	'suspicious_login',
 	'apps',
 	'timezone',
-	'google_oauth'
+	'google_oauth',
+	'auto_deposit',
+	'auto_withdrawal',
+	'force_two_factor_authentication_withdrawal'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -239,6 +253,7 @@ exports.KIT_SECRETS_KEYS = [
 	'emails',
 	'security',
 	'captcha',
+	'cloudflare_turnstile',
 	'smtp',
 	'test_key',
 ];
@@ -288,6 +303,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `orderbook:${symbolOrUserId}`;
 		case 'trade':
 			return `trade:${symbolOrUserId}`;
+		case 'price':
+			return 'price';
 		case 'order':
 			return `order:${symbolOrUserId}`;
 		case 'usertrade':
@@ -311,6 +328,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
 exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
+// Redis keys
+exports.PRICE_HASH_KEY = 'WS:PRICE_USDT';
 
 // Chat
 exports.CHAT_MAX_MESSAGES = 50;
@@ -686,13 +705,13 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		}
 	],
-	// ton: [
-	// 	{
-	// 		name: 'OKLink',
-	// 		baseUrl: 'https://www.oklink.com/ton',
-	// 		txPath: '/tx'
-	// 	}
-	// ]
+	ton: [
+		{
+			name: 'TonScan',
+			baseUrl: 'https://tonscan.org',
+			txPath: '/tx'
+		}
+	]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------

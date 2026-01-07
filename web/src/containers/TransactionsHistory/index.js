@@ -5,7 +5,11 @@ import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import moment from 'moment';
+import { CloseCircleOutlined } from '@ant-design/icons';
+
 import { getFormatTimestamp } from 'utils/utils';
+import { formatToCurrency } from 'utils/currency';
+import { CURRENCY_PRICE_FORMAT } from 'config/constants';
 
 import {
 	getOrdersHistory,
@@ -16,6 +20,7 @@ import {
 	downloadUserTrades,
 	activeTabFromWallet,
 } from 'actions/walletActions';
+import { cancelOrder } from 'actions/orderAction';
 
 import {
 	IconTitle,
@@ -26,6 +31,7 @@ import {
 	CurrencyBallWithPrice,
 	EditWrapper,
 	NotLoggedIn,
+	Coin,
 } from 'components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from 'config/constants';
 import {
@@ -34,6 +40,8 @@ import {
 	generateTradeHeadersMobile,
 	generateDepositsHeaders,
 	generateWithdrawalsHeaders,
+	calculateAmount,
+	calculatePrice,
 } from './utils';
 import TradeAndOrderFilters from './components/TradeAndOrderFilters';
 import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
@@ -69,7 +77,11 @@ class TransactionsHistory extends Component {
 		params: {},
 		defaultExpand: false,
 		current_order_id: '',
+		showCancelOrderDialog: false,
+		selectedOrder: null,
 	};
+
+	cancelOrderTimeout = null;
 
 	UNSAFE_componentWillMount() {
 		const { coins = {}, router } = this.props;
@@ -81,6 +93,11 @@ class TransactionsHistory extends Component {
 	updateParams(currTab) {
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		urlSearchParams.set('tab', currTab);
+
+		if (currTab !== 'orders' && urlSearchParams.has('active')) {
+			urlSearchParams.delete('active');
+		}
+
 		const newUrl = `${window.location.pathname}?${urlSearchParams.toString()}`;
 		if (window.location?.search !== `?${urlSearchParams?.toString()}`) {
 			this.props.router.push(newUrl);
@@ -116,8 +133,14 @@ class TransactionsHistory extends Component {
 			this.props.prices
 		);
 		this.generateFilters();
-		if (query && query.tab && !transactionTabs.includes(query.tab)) {
-			this.setActiveTab(parseInt(query.tab, 10));
+
+		if (query && query.tab) {
+			if (transactionTabs?.includes(query?.tab)) {
+				const tabIndex = transactionTabs?.indexOf(query.tab);
+				this.setActiveTab(tabIndex);
+			} else {
+				this.setActiveTab(parseInt(query?.tab, 10));
+			}
 		} else {
 			const activeTab = this.getTabBySearch(search);
 			this.setActiveTab(
@@ -140,6 +163,10 @@ class TransactionsHistory extends Component {
 
 	componentWillUnmount() {
 		this.props.activeTabFromWallet('');
+		if (this.cancelOrderTimeout) {
+			clearTimeout(this.cancelOrderTimeout);
+			this.cancelOrderTimeout = null;
+		}
 	}
 
 	getTabBySearch = (search) => {
@@ -157,7 +184,7 @@ class TransactionsHistory extends Component {
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { coins, pairs, prices, quicktradePairs } = this.props;
+		const { coins, pairs, prices, quicktradePairs, orders } = this.props;
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(nextProps.prices) !== JSON.stringify(prices)
@@ -175,6 +202,16 @@ class TransactionsHistory extends Component {
 		) {
 			this.onCloseDialog();
 			this.requestData(nextProps.symbol);
+		}
+		if (
+			JSON.stringify(nextProps.orders?.data) !== JSON.stringify(orders?.data)
+		) {
+			this.generateHeaders(
+				nextProps.symbol,
+				nextProps.coins,
+				nextProps.discount,
+				nextProps.prices
+			);
 		}
 		if (
 			JSON.stringify(nextProps.pairs) !== JSON.stringify(pairs) ||
@@ -197,7 +234,7 @@ class TransactionsHistory extends Component {
 	};
 
 	requestData = () => {
-		const { params, activeTab } = this.state;
+		const { params, activeTab, jumpToPage } = this.state;
 		const {
 			getOrdersHistory,
 			getUserTrades,
@@ -210,6 +247,9 @@ class TransactionsHistory extends Component {
 			open = true;
 		} else if (temp && temp.type && temp.type === 'closed') {
 			open = false;
+		}
+		if (jumpToPage !== 0) {
+			this.setState({ jumpToPage: 0 });
 		}
 		switch (activeTab) {
 			case 1:
@@ -267,10 +307,161 @@ class TransactionsHistory extends Component {
 		router.push(path);
 	};
 
+	handleCancelOrder = (order) => {
+		this.setState({
+			selectedOrder: order,
+			showCancelOrderDialog: true,
+		});
+	};
+
+	handleCloseCancelOrderDialog = () => {
+		this.setState({
+			showCancelOrderDialog: false,
+			selectedOrder: null,
+		});
+	};
+
+	handleConfirmCancelOrder = () => {
+		const { selectedOrder } = this.state;
+		if (selectedOrder?.id) {
+			this.props.cancelOrder(selectedOrder.id, {});
+			this.handleCloseCancelOrderDialog();
+			if (this.cancelOrderTimeout) {
+				clearTimeout(this.cancelOrderTimeout);
+			}
+			this.cancelOrderTimeout = setTimeout(() => {
+				this.requestData();
+				this.cancelOrderTimeout = null;
+			}, 1000);
+		}
+	};
+
+	renderOrderDetails = (order) => {
+		const { pairs } = this.props;
+		if (!order) return null;
+
+		const {
+			id,
+			symbol,
+			type,
+			side,
+			size = 0,
+			price = 0,
+			display_name,
+			icon_id,
+			created_at,
+			quick,
+		} = order;
+		const pairData = pairs[symbol];
+
+		const increment_size = pairData?.increment_size || 0.0001;
+		const increment_price = pairData?.increment_price || 0.0001;
+		const pair_base_display = pairData?.pair_base_display || '';
+		const pair_2_display = pairData?.pair_2_display || '';
+
+		const calculatedPrice = calculatePrice(quick, price, size);
+		const calculatedAmount = calculateAmount(quick, price, size);
+
+		return (
+			<div className="order-details-section mb-4">
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="TRANSACTION_HISTORY.ORDERID">
+							{STRINGS['TRANSACTION_HISTORY.ORDERID']}
+						</EditWrapper>
+					</span>
+					<span>{id || STRINGS['NA']}</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="PAIR">{STRINGS['PAIR']}</EditWrapper>
+					</span>
+					<div className="d-flex align-items-start">
+						{icon_id && (
+							<span className="mr-2">
+								<Coin iconId={icon_id} type="CS6" />
+							</span>
+						)}
+						<span>
+							{display_name?.toUpperCase() || symbol?.toUpperCase() || ''}
+						</span>
+					</div>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="TYPE">{STRINGS['TYPE']}</EditWrapper>
+					</span>
+					<span>{type ? STRINGS[`TYPES.${type.toUpperCase()}`] : ''}</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="SIDE">{STRINGS['SIDE']}</EditWrapper>
+					</span>
+					<span>
+						{side ? STRINGS[`SIDES_VALUES.${side}`]?.toUpperCase() : ''}
+					</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="SIZE">{STRINGS['SIZE']}</EditWrapper>
+					</span>
+					<span>
+						{pairData && increment_size && pair_base_display
+							? STRINGS.formatString(
+									CURRENCY_PRICE_FORMAT,
+									formatToCurrency(size, increment_size),
+									pair_base_display
+							  )
+							: size}
+					</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="PRICE">{STRINGS['PRICE']}</EditWrapper>
+					</span>
+					<span>
+						{pairData && increment_price && pair_2_display
+							? price
+								? STRINGS.formatString(
+										CURRENCY_PRICE_FORMAT,
+										formatToCurrency(calculatedPrice, increment_price),
+										pair_2_display
+								  )
+								: STRINGS['NA']
+							: calculatedPrice}
+					</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="AMOUNT">{STRINGS['AMOUNT']}</EditWrapper>
+					</span>
+					<span>
+						{pairData && increment_price && pair_2_display
+							? STRINGS.formatString(
+									CURRENCY_PRICE_FORMAT,
+									formatToCurrency(calculatedAmount, increment_price),
+									pair_2_display
+							  )
+							: calculatedAmount}
+					</span>
+				</div>
+				<div className="d-flex justify-content-between align-items-center py-2">
+					<span className="bold">
+						<EditWrapper stringId="TIME">{STRINGS['TIME']}</EditWrapper>
+					</span>
+					<span>
+						{created_at ? getFormatTimestamp(created_at) : STRINGS['NA']}
+					</span>
+				</div>
+			</div>
+		);
+	};
+
 	generateHeaders(symbol, coins, discount, prices) {
-		const { withdrawalPopup } = this;
+		const { withdrawalPopup, orders } = this.props;
 		const { pairs, icons: ICONS } = this.props;
 		let type = STRINGS['TIME'];
+		const ordersArray = Array.isArray(orders?.data) ? orders.data : [];
 
 		this.setState({
 			headers: {
@@ -281,7 +472,10 @@ class TransactionsHistory extends Component {
 							coins,
 							discount,
 							prices,
-							ICONS
+							ICONS,
+							type,
+							this.handleCancelOrder,
+							ordersArray
 					  )
 					: generateOrderHistoryHeaders(
 							symbol,
@@ -290,7 +484,9 @@ class TransactionsHistory extends Component {
 							discount,
 							prices,
 							ICONS,
-							type
+							type,
+							this.handleCancelOrder,
+							ordersArray
 					  ),
 				trades: isMobile
 					? generateTradeHeadersMobile(
@@ -384,6 +580,15 @@ class TransactionsHistory extends Component {
 								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
 							</EditWrapper>
 							<p>{obj.stop ? obj.stop : STRINGS['NA']}</p>
+						</div>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.TIME_OF_CREATION"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.TIME_OF_CREATION']}
+							</EditWrapper>
+							<p> {getFormatTimestamp(obj?.created_at)}</p>
 						</div>
 						<div>
 							<EditWrapper
@@ -502,6 +707,7 @@ class TransactionsHistory extends Component {
 			withdrawals,
 			deposits,
 			activeTabFromWallet,
+			router,
 		} = this.props;
 		const { jumpToPage } = this.state;
 		if (jumpToPage !== 0) {
@@ -509,14 +715,22 @@ class TransactionsHistory extends Component {
 				jumpToPage: 0,
 			});
 		}
+
+		const isActiveFilter = router?.location?.query?.active === 'true';
+		const initialParams = {
+			end_date: '',
+			start_date: '',
+		};
+
+		if (isActiveFilter && activeTab === 1) {
+			initialParams.type = 'active';
+		}
+
 		this.setState(
 			{
 				activeTab,
 				params: {
-					[`activeTab_${activeTab}`]: {
-						end_date: '',
-						start_date: '',
-					},
+					[`activeTab_${activeTab}`]: initialParams,
 				},
 			},
 			() => {
@@ -658,6 +872,8 @@ class TransactionsHistory extends Component {
 			data: filterForDepositWallet,
 		};
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
+		const { pairs, coins, discount, prices, icons: ICONS } = this.props;
+		let type = STRINGS['TIME'];
 		let temp = params[`activeTab_${activeTab}`];
 
 		const props = {
@@ -686,7 +902,19 @@ class TransactionsHistory extends Component {
 			case 1:
 				props.stringId = 'ORDER_HISTORY';
 				props.title = `${STRINGS['ORDER_HISTORY']}`;
-				props.headers = headers.orders;
+				const ordersArray = Array.isArray(orders?.data) ? orders.data : [];
+				const currentOrdersHeaders = generateOrderHistoryHeaders(
+					symbol,
+					pairs,
+					coins,
+					discount,
+					prices,
+					ICONS,
+					type,
+					this.handleCancelOrder,
+					ordersArray
+				);
+				props.headers = currentOrdersHeaders;
 				props.data = orders;
 				props.filename = `order-history-${moment().unix()}`;
 				props.withIcon = false;
@@ -757,7 +985,14 @@ class TransactionsHistory extends Component {
 
 	render() {
 		const { coins, icons: ICONS, isFromWallet = false } = this.props;
-		let { activeTab, dialogIsOpen, amount, currency } = this.state;
+		let {
+			activeTab,
+			dialogIsOpen,
+			amount,
+			currency,
+			showCancelOrderDialog,
+			selectedOrder,
+		} = this.state;
 		const { onCloseDialog } = this;
 
 		if (Object.keys(coins).length === 0) {
@@ -893,6 +1128,46 @@ class TransactionsHistory extends Component {
 						</div>
 					</div>
 				</Dialog>
+				{selectedOrder && (
+					<Dialog
+						isOpen={showCancelOrderDialog}
+						label="cancel-order-modal"
+						className="cancel-order-dialog-wrapper"
+						onCloseDialog={this.handleCloseCancelOrderDialog}
+						shouldCloseOnOverlayClick={false}
+						showCloseText={true}
+					>
+						<div className="cancel-order-dialog-content">
+							<div className="d-flex align-items-center mb-3">
+								<CloseCircleOutlined className="order-details-title" />
+								<div className="bold order-details-title ml-2">
+									<EditWrapper stringId="P2P.CANCEL_ORDER">
+										{STRINGS['P2P.CANCEL_ORDER']}
+									</EditWrapper>
+								</div>
+							</div>
+							<div className="mb-3">
+								<EditWrapper stringId="P2P.CANCEL_WARNING">
+									{STRINGS['P2P.CANCEL_WARNING']}
+								</EditWrapper>
+							</div>
+							{this.renderOrderDetails(selectedOrder)}
+							<div className="d-flex justify-content-end">
+								<Button
+									label={STRINGS['BACK']}
+									onClick={this.handleCloseCancelOrderDialog}
+									type="button"
+									className="mr-2"
+								/>
+								<Button
+									label={STRINGS['QUICK_TRADE_COMPONENT.YES_CANCEL_ORDER']}
+									onClick={this.handleConfirmCancelOrder}
+									type="button"
+								/>
+							</div>
+						</div>
+					</Dialog>
+				)}
 				<div className={classnames('inner_container', 'with_border_top')}>
 					<NotLoggedIn>{this.renderActiveTab()}</NotLoggedIn>
 				</div>
@@ -937,6 +1212,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(downloadUserTrades('orders', params)),
 	activeTabFromWallet: bindActionCreators(activeTabFromWallet, dispatch),
 	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
+	cancelOrder: bindActionCreators(cancelOrder, dispatch),
 });
 
 export default connect(

@@ -454,7 +454,10 @@
 				"FULL_NAME_PLACEHOLDER": "身分証明書の表記と同じく入力してください。",
 				"GENDER_LABEL": "性別",
 				"GENDER_PLACEHOLDER": "性別を選択してください。",
-				"GENDER_OPTIONS": { "MAN": "男性", "WOMAN": "女性" },
+				"GENDER_OPTIONS": {
+					"MAN": "男性",
+					"WOMAN": "女性"
+				},
 				"NATIONALITY_LABEL": "国籍",
 				"NATIONALITY_PLACEHOLDER": "お客様の身分証明書に表記された国籍を選択してください。",
 				"DOB_LABEL": "生年月日",
@@ -498,7 +501,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "本人確認書類の種類",
 				"TYPE_PLACEHOLDER": "本人確認書類の種類を選択してください。",
-				"TYPE_OPTIONS": { "ID": "身分証明書", "PASSPORT": "パスポート" },
+				"TYPE_OPTIONS": {
+					"ID": "身分証明書",
+					"PASSPORT": "パスポート"
+				},
 				"ID_NUMBER_LABEL": "パスポート番号",
 				"ID_NUMBER_PLACEHOLDER": "パスポート番号を入力してください。",
 				"ID_PASSPORT_NUMBER_LABEL": "パスポート番号",
@@ -799,12 +805,27 @@
 	},
 	"CURRENCY": "通貨",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "market", "limit": "limit" },
-	"TYPES": { "MARKET": "成行", "LIMIT": "指値" },
+	"TYPES_VALUES": {
+		"market": "market",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "成行",
+		"LIMIT": "指値"
+	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "買う", "sell": "売る" },
-	"SIDES": { "BUY": "買う", "SELL": "売る" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "オン", "OFF": "オフ" },
+	"SIDES_VALUES": {
+		"buy": "買う",
+		"sell": "売る"
+	},
+	"SIDES": {
+		"BUY": "買う",
+		"SELL": "売る"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "オン",
+		"OFF": "オフ"
+	},
 	"SIZE": " 数量",
 	"PRICE": "価格",
 	"FEE": "Fee",
@@ -1337,7 +1358,10 @@
 		"TREND_7D": "トレンド7D",
 		"BUY": "{0} {1} を購入"
 	},
-	"MARKET_OPTIONS": { "LIST": "リスト", "CARD": "カード" },
+	"MARKET_OPTIONS": {
+		"LIST": "リスト",
+		"CARD": "カード"
+	},
 	"ALL": "すべて",
 	"ASSET_TXT": "資産",
 	"ONE_DAY": "1 日",
@@ -1685,7 +1709,10 @@
 		"LABEL": "移動量",
 		"FEE": "取引手数料: {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "買った", "sell": "売られた" },
+	"SIDES_VERBS": {
+		"buy": "買った",
+		"sell": "売られた"
+	},
 	"AVERAGE": "平均",
 	"ORDER_HISTORY": "注文履歴",
 	"CURRENCY_WALLET": {
@@ -1851,7 +1878,9 @@
 	"VERIFY_BANK_WITHDRAW": "出金するには、銀行詳細の確認を含む確認を完了する必要があります。下の「続行」ボタンをクリックしてください。",
 	"VERIFICATION_TITLE": "完全な検証",
 	"WITHDRAW_NOTE": "注意: 自分名義の口座にのみ出金できます。",
-	"USER_PAYMENT": { "TITLE": "支払い" },
+	"USER_PAYMENT": {
+		"TITLE": "支払い"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "下記内容をご確認の上、ご注文をお願いいたします。",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "受け取る金額は概算であり、取引手数料は含まれません",
 	"ORDER_EXPIRED_MSG": "注文の有効期限が切れました。リフレッシュしてください！",
@@ -1979,7 +2008,11 @@
 	"FEES_AND_LIMITS": {
 		"LINK": "料金と制限を表示する",
 		"COIN_PAGE_LINK": "取引手数料と制限",
-		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "戻る", "TO": "要約へ" },
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "戻る",
+			"TO": "要約へ"
+		},
 		"TITLE": "料金と制限",
 		"SEARCH_PLACEHOLDER": "検索...",
 		"TABS": {

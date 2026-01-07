@@ -208,7 +208,10 @@
 			"INFORMATION_PENDING_2": "Bu işlem 10-30 dakika arası sürebilir. {0} blokzincirde onaylandığında, size bir E-Posta göndereceğiz."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "İstek gönderildi", "BUTTON_TEXT": "Tamam" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "İstek gönderildi",
+		"BUTTON_TEXT": "Tamam"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Devam etmek için onay kodunuzu giriniz",
 		"OTP_LABEL": "OTP Kodu",
@@ -407,7 +410,10 @@
 				"FULL_NAME_PLACEHOLDER": "Adınızı kimlikteki tam haliyle yazınız",
 				"GENDER_LABEL": "Cinsiyet",
 				"GENDER_PLACEHOLDER": "Cinsiyetinizi yazınız",
-				"GENDER_OPTIONS": { "MAN": "Erkek", "WOMAN": "Kadın" },
+				"GENDER_OPTIONS": {
+					"MAN": "Erkek",
+					"WOMAN": "Kadın"
+				},
 				"NATIONALITY_LABEL": "Uyruk",
 				"NATIONALITY_PLACEHOLDER": "Kimliğinizde gözüken uyruğunuzu yazınız",
 				"DOB_LABEL": "Doğum tarihi",
@@ -699,7 +705,9 @@
 			"TITLE": "Giriş Geçmişi",
 			"IP_ADDRESS": "IP Adresi",
 			"TIME": "Tarih/Zaman",
-			"CONTENT": { "TITLE": "Giriş Geçmişi" }
+			"CONTENT": {
+				"TITLE": "Giriş Geçmişi"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "Hesabı Dondur",
@@ -805,8 +813,14 @@
 				"CARD": "En yüksek Ödüller / En yüksek Bonuslar",
 				"TEXT": "Kazançlarınıza en yüksek bonus ve ödüller"
 			},
-			"3": { "CARD": "", "TEXT": "" },
-			"4": { "CARD": "", "TEXT": "" }
+			"3": {
+				"CARD": "",
+				"TEXT": ""
+			},
+			"4": {
+				"CARD": "",
+				"TEXT": ""
+			}
 		},
 		"INSTALL_METAMASK_DETAILS": {
 			"TITLE": "MetaMask'ı yükleyin",
@@ -986,13 +1000,31 @@
 	},
 	"CURRENCY": "Para Birimi",
 	"TYPE": "Tür",
-	"TYPES_VALUES": { "market": "piyasa", "limit": "limit" },
-	"TYPES": { "MARKET": "piyasa", "LIMIT": "limit" },
+	"TYPES_VALUES": {
+		"market": "piyasa",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "piyasa",
+		"LIMIT": "limit"
+	},
 	"SIDE": "Kenar",
-	"SIDES_VALUES": { "buy": "al", "sell": "sat" },
-	"SIDES_VERBS": { "buy": "alındı", "sell": "satıldı" },
-	"SIDES": { "BUY": "al", "SELL": "sat" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "açık", "OFF": "kapalı" },
+	"SIDES_VALUES": {
+		"buy": "al",
+		"sell": "sat"
+	},
+	"SIDES_VERBS": {
+		"buy": "alındı",
+		"sell": "satıldı"
+	},
+	"SIDES": {
+		"BUY": "al",
+		"SELL": "sat"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "açık",
+		"OFF": "kapalı"
+	},
 	"SIZE": "Miktar",
 	"PRICE": "Fiyat",
 	"FEE": "Komisyon",
@@ -1480,7 +1512,9 @@
 	"EXPIRED_INFO_1": "Deneme süreciniz tamamlandı.",
 	"EXPIRED_INFO_2": "Borsanızı aktiflemek için teminat yatırın.",
 	"EXPIRED_BUTTON_TXT": "BORSAYI AKTİFLE",
-	"TRADE_POSTS": { "LEARN_MORE": "Daha fazla öğren" },
+	"TRADE_POSTS": {
+		"LEARN_MORE": "Daha fazla öğren"
+	},
 	"OPEN_WALLET": "Cüzdanı aç",
 	"CUMULATIVE_AMOUNT_SYMBOL": "Toplam",
 	"POST_ONLY": "Yalnızca yayınla",
@@ -1548,7 +1582,10 @@
 	"FEE_REDUCTION": "Komisyon indirimi",
 	"FEE_REDUCTION_DESCRIPTION": "*Hesabınızda komisyon indirimi tanımlanmıştır. Bu indirim, hesabınızdaki işlemlerden kesilecek komisyonlara uygulanacaktır.",
 	"CHANGE_PASSWORD_FAILED": "şifre değişimi başarısız",
-	"MARKET_OPTIONS": { "LIST": "Liste", "CARD": "Kart" },
+	"MARKET_OPTIONS": {
+		"LIST": "Liste",
+		"CARD": "Kart"
+	},
 	"ALL": "Tümü",
 	"ASSET_TXT": "Varlık",
 	"ONE_DAY": "1 gün",
@@ -1728,7 +1765,9 @@
 	"VERIFY_BANK_WITHDRAW": "Para çekme işlemi yapabilmek için banka bilgilerinizin doğrulanmasını da içeren doğrulama işlemini tamamlamanız gerekmektedir. Lütfen aşağıdaki devam butonuna tıklayın.",
 	"VERIFICATION_TITLE": "Doğrulamayı tamamla",
 	"WITHDRAW_NOTE": "Lütfen dikkat: Yalnızca adınıza ait bir hesaba para çekebilirsiniz.",
-	"USER_PAYMENT": { "TITLE": "Ödemeler" },
+	"USER_PAYMENT": {
+		"TITLE": "Ödemeler"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Lütfen siparişinizi kontrol edin ve aşağıdan onaylayın.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Alınacak tutar tahminidir ve işlem ücretini içermemektedir",
 	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Fiyat teklifinin süresi {0} {1} içinde dolacak",

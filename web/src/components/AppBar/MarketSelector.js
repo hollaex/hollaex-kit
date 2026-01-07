@@ -5,7 +5,6 @@ import { browserHistory } from 'react-router';
 import { StarFilled, StarOutlined, ThunderboltFilled } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import { object, string, func } from 'prop-types';
-import debounce from 'lodash.debounce';
 
 import SearchBox from './SearchBox';
 import STRINGS from 'config/localizedStrings';
@@ -18,7 +17,6 @@ import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { unique } from 'utils/data';
-import { Loading } from 'containers/DigitalAssets/components/utils';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -34,20 +32,14 @@ class MarketSelector extends Component {
 			searchValue: '',
 			searchResult: [],
 			tabResult: [],
-			isLoading: true,
 		};
 	}
-
-	debouncedSetLoadingFalse = debounce(() => {
-		this.setState({ isLoading: false });
-	}, 2000);
 
 	componentDidMount() {
 		const { selectedTabMenu, searchValue } = this.state;
 
 		this.onAddTabClick(selectedTabMenu);
 		this.handleSearch(searchValue);
-		this.debouncedSetLoadingFalse();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -60,12 +52,8 @@ class MarketSelector extends Component {
 		}
 	}
 
-	componentWillUnmount = () => {
-		this.debouncedSetLoadingFalse && this.debouncedSetLoadingFalse.cancel();
-	};
-
 	tabListMenuItems = () => {
-		const { symbols, selectedTabMenu, isLoading } = this.state;
+		const { symbols, selectedTabMenu } = this.state;
 		const { coins } = this.props;
 
 		return symbols.map((symbol, index) => {
@@ -82,17 +70,7 @@ class MarketSelector extends Component {
 					)}
 					onClick={() => this.onAddTabClick(symbol)}
 				>
-					{symbol === 'all' ? (
-						isLoading ? (
-							STRINGS['LOADING']
-						) : (
-							<span>{STRINGS['ALL']}</span>
-						)
-					) : isLoading ? (
-						<Loading index={index} />
-					) : (
-						display_name
-					)}
+					{symbol === 'all' ? <span>{STRINGS['ALL']}</span> : display_name}
 				</div>
 			);
 		});
@@ -248,7 +226,7 @@ class MarketSelector extends Component {
 			quicktrade,
 		} = this.props;
 
-		const { searchResult, isLoading } = this.state;
+		const { searchResult } = this.state;
 
 		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
@@ -314,73 +292,56 @@ class MarketSelector extends Component {
 											'd-flex align-items-center justify-content-start',
 											'pointer',
 											{
-												'active-market':
-													pair?.name === activeMarket && !isLoading,
+												'active-market': pair?.name === activeMarket,
 											}
 										)}
 									>
-										{isLoading ? (
-											<Loading index={index} />
-										) : (
-											<div
-												className="pl-3 pr-2 pointer"
-												onClick={() => this.toggleFavourite(key || symbol)}
-											>
-												{this.isFavourite(key || symbol) ? (
-													<StarFilled className="stared-market" />
-												) : (
-													<StarOutlined />
-												)}
-											</div>
-										)}
+										<div
+											className="pl-3 pr-2 pointer"
+											onClick={() => this.toggleFavourite(key || symbol)}
+										>
+											{this.isFavourite(key || symbol) ? (
+												<StarFilled className="stared-market" />
+											) : (
+												<StarOutlined />
+											)}
+										</div>
 										<div
 											className="d-flex align-items-center justify-content-between w-100"
 											onClick={() =>
-												!isLoading &&
 												this.onMarketClick(
 													key || symbol,
 													type && type !== 'pro'
 												)
 											}
 										>
-											{isLoading ? (
-												<Loading index={index} />
-											) : (
-												<div className="d-flex align-items-center">
-													<Coin
-														iconId={pair?.icon_id || icon_id}
-														type={isMobile ? 'CS8' : 'CS2'}
-													/>
-													<div className="app_bar-pair-font ml-1">
-														{display_name}
-													</div>
-													{ticker && (
-														<>
-															<span className="app_bar-pair-font">:</span>
-															<div className="title-font ml-1 app-bar_add-tab-price">
-																{formatToCurrency(
-																	ticker?.close,
-																	increment_price
-																)}
-															</div>
-														</>
-													)}
+											<div className="d-flex align-items-center">
+												<Coin
+													iconId={pair?.icon_id || icon_id}
+													type={isMobile ? 'CS8' : 'CS2'}
+												/>
+												<div className="app_bar-pair-font ml-1">
+													{display_name}
 												</div>
-											)}
-											{isLoading ? (
-												<Loading index={index} />
-											) : (
-												<span>
-													<div className="d-flex align-items-center">
-														<PriceChange market={market} key={key || symbol} />
-													</div>
-													{type && type !== 'pro' && (
-														<div className="d-flex align-items-center mr-4 summary-quick-icon">
-															<ThunderboltFilled />
+												{ticker && (
+													<>
+														<span className="app_bar-pair-font">:</span>
+														<div className="title-font ml-1 app-bar_add-tab-price">
+															{formatToCurrency(ticker?.close, increment_price)}
 														</div>
-													)}
-												</span>
-											)}
+													</>
+												)}
+											</div>
+											<span>
+												<div className="d-flex align-items-center">
+													<PriceChange market={market} key={key || symbol} />
+												</div>
+												{type && type !== 'pro' && (
+													<div className="d-flex align-items-center mr-4 summary-quick-icon">
+														<ThunderboltFilled />
+													</div>
+												)}
+											</span>
 										</div>
 									</div>
 								);

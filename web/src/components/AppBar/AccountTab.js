@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { Tooltip } from 'antd';
-import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons';
+import {
+	ApartmentOutlined,
+	CaretDownFilled,
+	CaretUpFilled,
+} from '@ant-design/icons';
 
 import ICONS from 'config/icons/dark';
 import STRINGS from 'config/localizedStrings';
@@ -11,7 +15,13 @@ import Dialog from 'components/Dialog';
 import HelpfulResourcesForm from 'containers/HelpfulResourcesForm';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Image, EditWrapper } from 'components';
-import { isLoggedIn, removeToken } from 'utils/token';
+import {
+	isLoggedIn,
+	removeToken,
+	getMainAccountToken,
+	setToken,
+	checkAccountStatus,
+} from 'utils/token';
 import {
 	setIsMarketDropdownVisible,
 	setIsToolsVisible,
@@ -262,26 +272,85 @@ const AccountList = ({
 		setIsLogout(false);
 	};
 
+	const handleSwitchToMainAccount = () => {
+		const mainAccountToken = getMainAccountToken();
+		if (mainAccountToken) {
+			setIsToolTipVisible(false);
+			setIsIconActive(false);
+			setToken(mainAccountToken);
+			window.location.reload();
+		}
+	};
+
+	const handleManageSubAccount = () => {
+		setIsToolTipVisible(false);
+		setIsIconActive(false);
+		browserHistory.push('/settings?account');
+	};
+
 	return (
 		<div className="navigation-dropdown-container">
 			{isHelpResources && renderHelpResource()}
 			<div className="tier-wrapper">
-				<Image
-					iconId={
-						Icons[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-							? `LEVEL_ACCOUNT_ICON_${verification_level}`
-							: 'LEVEL_ACCOUNT_ICON_4'
-					}
-					icon={icon}
-					wrapperClassName={'trader-wrapper-icon trader-acc-detail-icon'}
-				/>
-				<span
-					className="blue-link text-decoration-underline"
-					onClick={() => onHandleRedirect('/fees-and-limits')}
-				>
-					{userAccountTitle}
-				</span>
-				<span className="secondary-text">({user?.email})</span>
+				<div className="d-flex align-items-center gap-1">
+					<Image
+						iconId={
+							Icons[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+								? `LEVEL_ACCOUNT_ICON_${verification_level}`
+								: 'LEVEL_ACCOUNT_ICON_4'
+						}
+						icon={icon}
+						wrapperClassName={'trader-wrapper-icon trader-acc-detail-icon'}
+					/>
+					<span
+						className="blue-link text-decoration-underline"
+						onClick={() => onHandleRedirect('/fees-and-limits')}
+					>
+						{userAccountTitle}
+					</span>
+					<div className="d-flex flex-column align-items-start">
+						<span className="secondary-text">({user?.email}) </span>
+					</div>
+				</div>
+				<div className="d-flex gap-1 align-items-center">
+					<ApartmentOutlined className="manage-account-icon" />
+					<div className="d-flex align-items-center gap-1 mt-1">
+						{user?.is_subaccount ? (
+							<EditWrapper stringId="SUB_ACCOUNT_SYSTEM.SUB_ACCOUNT">
+								<span className="secondary-text">
+									{STRINGS['SUB_ACCOUNT_SYSTEM.SUB_ACCOUNT']}
+								</span>
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="SUB_ACCOUNT_SYSTEM.MAIN_ACCOUNT">
+								<span className="secondary-text">
+									{STRINGS['SUB_ACCOUNT_SYSTEM.MAIN_ACCOUNT']}
+								</span>
+							</EditWrapper>
+						)}
+					</div>
+					<div>
+						{checkAccountStatus('is_subaccount') ? (
+							<EditWrapper stringId="SUB_ACCOUNT_SYSTEM.SWITCH_TO_MAIN_ACCOUNT">
+								<span
+									className="blue-link text-decoration-underline mt-2 pointer"
+									onClick={handleSwitchToMainAccount}
+								>
+									{STRINGS['SUB_ACCOUNT_SYSTEM.SWITCH_TO_MAIN_ACCOUNT']}
+								</span>
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="SUB_ACCOUNT_SYSTEM.MANAGE_SUB_ACCOUNT">
+								<span
+									className="blue-link text-decoration-underline mt-2 pointer"
+									onClick={handleManageSubAccount}
+								>
+									{STRINGS['SUB_ACCOUNT_SYSTEM.MANAGE_SUB_ACCOUNT']}
+								</span>
+							</EditWrapper>
+						)}
+					</div>
+				</div>
 			</div>
 			{isLogout &&
 				renderConfirmSignout(isLogout, onHandleclose, onHandlelogout)}

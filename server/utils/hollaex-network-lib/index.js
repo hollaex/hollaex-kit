@@ -378,6 +378,85 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Create a crypto address for user
+	 * @param {number} userId - User id on network.
+	 * @param {string} crypto - Crypto asset to create address for.
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.network - Crypto's blockchain network
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object with new address
+	 */
+	createUserWallet(userId, crypto, address, opts = {
+		network: null,
+		skipValidate: false,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!crypto) {
+			return reject(parameterError('crypto', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const data = { address, currency: crypto, user_id: userId };
+		if (opts.network) {
+			data.network = opts.network;
+		}
+		if (opts.skipValidate) {
+			data.skipValidate = opts.skipValidate;
+		}
+
+		let path = `${this.baseUrl}/network/${this.exchange_id}/wallet`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
+	 * Create a crypto address for user
+	 * @param {number} userId - User id on network.
+	 * @param {string} crypto - Crypto asset to create address for.
+	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.network - Crypto's blockchain network
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object with new address
+	 */
+	deleteUserWallet(wallet_id, opts = {
+		network: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!wallet_id) {
+			return reject(parameterError('wallet_id', 'cannot be null'));
+		}
+
+		const verb = 'DELETE';
+
+		let path = `${this.baseUrl}/network/${this.exchange_id}/wallet?wallet_id=${wallet_id}`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
 	 * Get list of wallets in the exchange
 	 * @param {object} opts - Optional parameters.
 	 * @param {number} opts.userId - User's id to filter wallet addresses
@@ -564,7 +643,8 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
 	 * @param {boolean} opts.processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
 	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {boolean} opts.onhold - Onhold status of the deposits to get. Leave blank to get all onhold and not onhold deposits
+ 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
@@ -584,6 +664,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			limit: null,
 			page: null,
 			orderBy: null,
@@ -662,6 +743,9 @@ class HollaExNetwork {
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
 		}
+		if (isBoolean(opts.onhold)) {
+			path += `&onhold=${opts.onhold}`;
+		}
 
 		if (isString(opts.format)) {
 			path += `&format=${opts.format}`;
@@ -688,7 +772,8 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Rejected status of the deposits to get. Leave blank to get all rejected and unrejected deposits
 	 * @param {boolean} opts.processing - Processing status of the deposits to get. Leave blank to get all processing and unprocessing deposits
 	 * @param {boolean} opts.waiting - Waiting status of the deposits to get. Leave blank to get all waiting and unwaiting deposits
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {boolean} opts.onhold - Onhold status of the deposits to get. Leave blank to get all onhold and not. onhold deposits
+     * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
@@ -709,6 +794,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			limit: null,
 			page: null,
 			orderBy: null,
@@ -792,6 +878,9 @@ class HollaExNetwork {
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
 		}
+		if (isBoolean(opts.onhold)) {
+			path += `&onhold=${opts.onhold}`;
+		}
 
 		if (isString(opts.format)) {
 			path += `&format=${opts.format}`;
@@ -817,6 +906,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
 	 * @param {boolean} opts.processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
 	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
+	 * @param {boolean} opts.onhold - Onhold status of the withdrawals to get. Leave blank to get all onhold and not onhold withdrawals
 	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
@@ -837,6 +927,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			limit: null,
 			page: null,
 			orderBy: null,
@@ -915,6 +1006,9 @@ class HollaExNetwork {
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
 		}
+		if (isBoolean(opts.onhold)) {
+			path += `&onhold=${opts.onhold}`;
+		}
 
 		if (isString(opts.format)) {
 			path += `&format=${opts.format}`;
@@ -941,7 +1035,8 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Rejected status of the withdrawals to get. Leave blank to get all rejected and unrejected withdrawals
 	 * @param {boolean} opts.processing - Processing status of the withdrawals to get. Leave blank to get all processing and unprocessing withdrawals
 	 * @param {boolean} opts.waiting - Waiting status of the withdrawals to get. Leave blank to get all waiting and unwaiting withdrawals
-	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {boolean} opts.onhold - Onhold status of the withdrawals to get. Leave blank to get all onhold and non onhold withdrawals
+     * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
 	 * @param {number} opts.page - Page of trades data. Default: 1
 	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
@@ -962,6 +1057,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			limit: null,
 			page: null,
 			orderBy: null,
@@ -1044,6 +1140,9 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
+		}
+		if (isBoolean(opts.onhold)) {
+			path += `&onhold=${opts.onhold}`;
 		}
 
 		if (isString(opts.format)) {
@@ -1342,6 +1441,59 @@ class HollaExNetwork {
 			data.stop = opts.stop;
 		}
 
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
+	 * Match an order for the exchange on the network
+	 * @param {number} userId - Id of the order's user
+	 * @param {number} orderId - Order id to match
+	 * @param {object} feeStructure - Fee structure to apply when matching order
+	 * @param {number} size - Amount of the order to match
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Matched order values returned from the network
+	 */
+	matchOrder(
+		userId,
+		orderId,
+		feeStructure,
+		size,
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!userId) {
+			return reject(parameterError('userId', 'cannot be null'));
+		} else if (!orderId) {
+			return reject(parameterError('orderId', 'cannot be null'));
+		} else if (!isPlainObject(feeStructure)) {
+			return reject(parameterError('feeStructure', 'must be an object'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id
+		}/order/match`;
+		const data = {
+			order_id: orderId,
+			user_id: userId,
+			fee_structure: feeStructure,
+		};
+		if (size) {
+			data.size = size;
+		}
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2351,6 +2503,7 @@ class HollaExNetwork {
 		dismissed: false,
 		rejected: false,
 		waiting: false,
+		onhold: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2408,6 +2561,12 @@ class HollaExNetwork {
 		} else {
 			data.waiting = false;
 		}
+		
+		if (isBoolean(opts.onhold)) {
+			data.onhold = opts.onhold;
+		} else {
+			data.onhold = false;
+		}
 
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
@@ -2440,6 +2599,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.rejected - Set to true to reject pending mint.
 	 * @param {boolean} opts.processing - Set to true to set state to processing.
 	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
+	 * @param {boolean} opts.onhold - Set to true to set state to onhold.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
 	 * @param {string} opts.updatedAddress - Value to update address of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
@@ -2455,6 +2615,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			updatedTransactionId: null,
 			updatedAddress: null,
 			email: true,
@@ -2473,6 +2634,7 @@ class HollaExNetwork {
 		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
 		const processing = isBoolean(opts.processing) ? opts.processing : false;
 		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
+		const onhold = isBoolean(opts.onhold) ? opts.onhold : false;
 
 		if (
 			status && (rejected || dismissed || processing || waiting)
@@ -2492,7 +2654,8 @@ class HollaExNetwork {
 			rejected,
 			dismissed,
 			processing,
-			waiting
+			waiting,
+			onhold
 		};
 
 		if (opts.updatedTransactionId) {
@@ -2548,6 +2711,7 @@ class HollaExNetwork {
 		dismissed: false,
 		rejected: false,
 		waiting: false,
+		onhold: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2606,6 +2770,12 @@ class HollaExNetwork {
 			data.waiting = false;
 		}
 
+		if (isBoolean(opts.onhold)) {
+			data.onhold = opts.onhold;
+		} else {
+			data.onhold = false;
+		}
+
 		if (isBoolean(opts.email)) {
 			data.email = opts.email;
 		} else {
@@ -2652,6 +2822,7 @@ class HollaExNetwork {
 			rejected: null,
 			processing: null,
 			waiting: null,
+			onhold: null,
 			updatedTransactionId: null,
 			updatedAddress: null,
 			email: true,
@@ -2670,6 +2841,7 @@ class HollaExNetwork {
 		const dismissed = isBoolean(opts.dismissed) ? opts.dismissed : false;
 		const processing = isBoolean(opts.processing) ? opts.processing : false;
 		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
+		const onhold = isBoolean(opts.onhold) ? opts.onhold : false;
 
 		if (
 			status && (rejected || dismissed || processing || waiting)
@@ -2689,7 +2861,8 @@ class HollaExNetwork {
 			rejected,
 			dismissed,
 			processing,
-			waiting
+			waiting,
+			onhold
 		};
 
 		if (opts.updatedTransactionId) {

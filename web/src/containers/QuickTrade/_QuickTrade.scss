@@ -162,3 +162,54 @@
 		text-align: center;
 	}
 }
+
+.cancel-order-dialog-wrapper,
+.cancel-all-orders-dialog-wrapper,
+.view-more-order-dialog-wrapper {
+	.ReactModal__Content {
+		width: 32rem;
+		padding: 2.5rem !important;
+	}
+
+	.cancel-order-dialog-content,
+	.cancel-all-orders-dialog-content,
+	.view-more-order-dialog-content {
+		.view-more-order-dialog-header {
+			border-bottom: 1px solid $colors-border;
+			padding-bottom: 1.5rem;
+		}
+		.cancel-order-icon {
+			width: 1.5rem;
+			height: 1.5rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			svg {
+				width: 1.5rem;
+				height: 1.5rem;
+				fill: $colors-main-black;
+			}
+		}
+
+		.order-details-title {
+			font-size: 1.6rem;
+		}
+		.order-details-title-icon {
+			font-size: 2rem;
+		}
+
+		.order-details-section {
+			margin-bottom: 1.5rem;
+
+			.border-bottom {
+				border-bottom: 1px solid $colors-border;
+			}
+
+			.secondary-text {
+				color: $colors-deactivate;
+				font-size: 1rem;
+			}
+		}
+	}
+}

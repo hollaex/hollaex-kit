@@ -114,7 +114,7 @@ class HelpfulResourcesForm extends Component {
 							wrapperClassName="help_icons ml-1 mr-1"
 						/>
 						<EditWrapper
-							stringId="HELP_TELEGRAM_TEXT,HELP_TELEGRAM_LINK"
+							stringId="ADDITIONAL_HELP,HELP_TELEGRAM_LINK"
 							render={(string) => (
 								<div className="text">
 									{string}
@@ -122,7 +122,7 @@ class HelpfulResourcesForm extends Component {
 								</div>
 							)}
 						>
-							{STRINGS['HELP_TELEGRAM_TEXT']}
+							{STRINGS['ADDITIONAL_HELP']}
 						</EditWrapper>
 						<div className="w-25" />
 					</div>

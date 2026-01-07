@@ -239,7 +239,10 @@
 			"INFORMATION_PENDING_2": "입금이 완료되는데 약 10-30분이 소요되지만, 상황에 따라 지연될 수 있습니다. {0}이 블록체인상 확인이 완료되면 이메일을 보내드립니다."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "요청을 보냈습니다.", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "요청을 보냈습니다.",
+		"BUTTON_TEXT": "Okay"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "인증번호를 입력하여 계속 진행하시기 바랍니다.",
 		"OTP_LABEL": "OTP 번호",
@@ -441,7 +444,10 @@
 				"FULL_NAME_PLACEHOLDER": "신분증과 동일하게 성명을 입력해주시기바랍니다.",
 				"GENDER_LABEL": "성별",
 				"GENDER_PLACEHOLDER": "성별을 선택해주시기바랍니다.",
-				"GENDER_OPTIONS": { "MAN": "남성", "WOMAN": "여성" },
+				"GENDER_OPTIONS": {
+					"MAN": "남성",
+					"WOMAN": "여성"
+				},
 				"NATIONALITY_LABEL": "국적",
 				"NATIONALITY_PLACEHOLDER": "신분증 상의 국적을 선택해 주시기 바랍니다.",
 				"DOB_LABEL": "생년월일",
@@ -485,7 +491,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "신분증 유형",
 				"TYPE_PLACEHOLDER": "신분증 문서 유형을 선택해주시기바랍니다.",
-				"TYPE_OPTIONS": { "ID": "주민등록증,신분증", "PASSPORT": "여권" },
+				"TYPE_OPTIONS": {
+					"ID": "주민등록증,신분증",
+					"PASSPORT": "여권"
+				},
 				"ID_NUMBER_LABEL": "여권번호",
 				"ID_NUMBER_PLACEHOLDER": "여권번호를 입력해주시기바랍니다.",
 				"ID_PASSPORT_NUMBER_LABEL": "여권번호",
@@ -860,12 +869,27 @@
 	},
 	"CURRENCY": "Currency",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "market", "limit": "limit" },
-	"TYPES": { "MARKET": "시장", "LIMIT": "지정" },
+	"TYPES_VALUES": {
+		"market": "market",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "시장",
+		"LIMIT": "지정"
+	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "매수", "sell": "매도" },
-	"SIDES": { "BUY": "매수", "SELL": "매도" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "켜기", "OFF": "끄기" },
+	"SIDES_VALUES": {
+		"buy": "매수",
+		"sell": "매도"
+	},
+	"SIDES": {
+		"BUY": "매수",
+		"SELL": "매도"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "켜기",
+		"OFF": "끄기"
+	},
 	"SIZE": "수량",
 	"PRICE": "가격",
 	"FEE": "Fee",
@@ -1404,7 +1428,10 @@
 		"TREND_7D": "트렌드 7D",
 		"BUY": "{0} {1} 구매"
 	},
-	"MARKET_OPTIONS": { "LIST": "리스트", "CARD": "카드" },
+	"MARKET_OPTIONS": {
+		"LIST": "리스트",
+		"CARD": "카드"
+	},
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "24시간 입금 및 출금 한도 ({0})",
 		"HEADER_ROW_AMOUNT": "24시간 한도 ({0})",
@@ -1670,7 +1697,10 @@
 		"LABEL": "이사할 금액",
 		"FEE": "거래 수수료: {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "구입했다", "sell": "판매된" },
+	"SIDES_VERBS": {
+		"buy": "구입했다",
+		"sell": "판매된"
+	},
 	"AVERAGE": "평균",
 	"NETWORK": "회로망",
 	"CATEGORY": "범주",
@@ -1854,7 +1884,9 @@
 	"VERIFY_BANK_WITHDRAW": "인출하려면 은행 정보 확인을 포함한 확인을 완료해야 합니다. 아래 진행 버튼을 눌러주세요.",
 	"VERIFICATION_TITLE": "검증 완료",
 	"WITHDRAW_NOTE": "참고: 귀하의 이름으로 된 계좌로만 출금이 가능합니다.",
-	"USER_PAYMENT": { "TITLE": "결제" },
+	"USER_PAYMENT": {
+		"TITLE": "결제"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "주문 내용을 확인하시고 아래 내용을 확인해 주시기 바랍니다.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "수령할 금액은 추정치이며 거래 수수료는 포함되어 있지 않습니다.",
 	"QUOTE_CONFIRMATION_EXPIRY_MSG": "가격 견적은 {0} {1} 후에 만료됩니다.",
@@ -2026,7 +2058,11 @@
 	"FEES_AND_LIMITS": {
 		"LINK": "내 수수료 및 한도 보기",
 		"COIN_PAGE_LINK": "거래 수수료 및 한도",
-		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "돌아가기", "TO": "요약하기" },
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "돌아가기",
+			"TO": "요약하기"
+		},
 		"TITLE": "수수료 및 한도",
 		"SEARCH_PLACEHOLDER": "찾다...",
 		"TABS": {
@@ -2103,7 +2139,10 @@
 			},
 			"TABLE": {
 				"HEADER": {
-					"LAST_SEEN": { "TITLE": "마지막으로 본", "DESCRIPTION": "(최근순)" },
+					"LAST_SEEN": {
+						"TITLE": "마지막으로 본",
+						"DESCRIPTION": "(최근순)"
+					},
 					"FAILED_ATTEMPTS": "실패한 시도",
 					"COUNTRY": "국가",
 					"IP_ADDRESS": "IP 주소"
@@ -2127,7 +2166,10 @@
 			"DOWNLOAD": "다운로드",
 			"TABLE": {
 				"HEADER": {
-					"LAST_SEEN": { "TITLE": "마지막으로 본", "DESCRIPTION": "(최근순)" },
+					"LAST_SEEN": {
+						"TITLE": "마지막으로 본",
+						"DESCRIPTION": "(최근순)"
+					},
 					"SESSION_STARTED": "세션이 시작되었습니다",
 					"SESSION_EXPIRY": "세션 만료",
 					"STATUS": "상태"

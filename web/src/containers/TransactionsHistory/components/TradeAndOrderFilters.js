@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -12,20 +13,29 @@ import { Coin } from 'components';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const Filters = ({ pairs, onSearch, formName, activeTab }) => {
+const Filters = ({ pairs, onSearch, formName, activeTab, router }) => {
 	const [form] = Form.useForm();
 	const [click, setClick] = useState([]);
 	const [customSel, setCustomSel] = useState(false);
 
 	useEffect(() => {
+		const getInitialType = () => {
+			if (router?.location?.query?.active === 'true' && activeTab === 1) {
+				return 'active';
+			}
+			return 'closed';
+		};
+
+		const initialType = getInitialType();
 		form.setFieldsValue({
 			status: null,
 			currency: null,
 			size: 'all',
-			type: 'closed',
+			type: initialType,
 		});
 		setCustomSel(false);
-	}, [activeTab, form]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [activeTab, form, router]);
 
 	useEffect(() => {
 		if (
@@ -207,4 +217,4 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 });
 
-export default connect(mapStateToProps)(Filters);
+export default withRouter(connect(mapStateToProps)(Filters));

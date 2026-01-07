@@ -3,7 +3,7 @@ import { Button, message, Modal, Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
 
-import { DonutChart, CurrencyBall } from '../../../components';
+import { DonutChart, Coin } from '../../../components';
 import { generateCryptoAddress, requestUserBalance } from './actions';
 import { requestUserData } from '../User/actions';
 import { getPrices, generateChartData } from '../../../actions/assetActions';
@@ -11,6 +11,7 @@ import { isSupport } from '../../../utils/token';
 import {
 	calculateBalancePrice,
 	formatCurrencyByIncrementalUnit,
+	formatToCurrency,
 } from '../../../utils/currency';
 import { STATIC_ICONS } from 'config/icons';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
@@ -25,6 +26,7 @@ const INITIAL_STATE = {
 	generateWalletStep: 'step-1',
 	generateAddressParams: {},
 	totalAvaliableAsset: 0,
+	oraclePrices: {},
 };
 
 class UserBalance extends Component {
@@ -43,13 +45,14 @@ class UserBalance extends Component {
 				JSON.stringify(this.state.userBalance) ||
 			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins) ||
 			JSON.stringify(prevState.userInformation) !==
-				JSON.stringify(this.state.userInformation)
+				JSON.stringify(this.state.userInformation) ||
+			JSON.stringify(prevState.oraclePrices) !==
+				JSON.stringify(this.state.oraclePrices)
 		) {
 			this.handleChartData();
 			const wallet = this.state.userInformation.wallet || [];
 
 			const tableData = Object.entries(this.props.coins)
-				.sort()
 				.map(([key, value]) => {
 					let addressData = {};
 					let networks = value.network ? value.network.split(',') : [];
@@ -67,13 +70,18 @@ class UserBalance extends Component {
 						let temp = wallet.filter((data) => data.currency === key)[0] || {};
 						addressData.address = temp.address;
 					}
+					const balance = this.state.userBalance[`${key}_balance`];
+					const estimated =
+						(balance || 0) * (Number(this.state.oraclePrices?.[key]) || 0);
 					return {
 						...value,
 						...addressData,
-						balance: this.state.userBalance[`${key}_balance`],
+						balance,
 						balance_available: this.state.userBalance[`${key}_available`],
+						estimated,
 					};
-				});
+				})
+				.sort((a, b) => Number(b.estimated || 0) - Number(a.estimated || 0));
 			this.setState({ tableData });
 		}
 	}
@@ -135,6 +143,11 @@ class UserBalance extends Component {
 		}
 	};
 	getBalanceColumn = () => {
+		const displayCurrency =
+			this.state?.userInformation?.settings?.interface?.display_currency ||
+			BASE_CURRENCY;
+		const { increment_unit, display_name } =
+			this.props?.coins?.[displayCurrency] || DEFAULT_COIN_DATA;
 		return [
 			{
 				title: 'Assets',
@@ -143,40 +156,37 @@ class UserBalance extends Component {
 				render: (symbol, data) => {
 					return (
 						<div className="d-flex align-items-center">
-							<CurrencyBall symbol={symbol} name={symbol} size="l" />
+							<Coin iconId={data.icon_id} />
 							<div className="ml-2">{data.fullname}</div>
 						</div>
 					);
 				},
 			},
-			// {
-			// 	title: 'Address',
-			// 	key: 'address',
-			// 	render: ({ network, address, ...rest }) => {
-			// 		const networks = network ? network.split(',') : [];
-			// 		if (networks.length) {
-			// 			return (
-			// 				<div>
-			// 					{networks.map((data, index) => {
-			// 						return (
-			// 							<div key={index}>{data}: {rest[`${data}_address`] ? rest[`${data}_address`] : 'Not generated'} </div>
-			// 						)
-			// 					})}
-			// 				</div>
-			// 			)
-			// 		} else if (address) {
-			// 			return <div>{address}</div>
-			// 		} else {
-			// 			return <div>Not generated</div>
-			// 		}
-			// 	}
-			// },
+			{
+				title: 'Balance',
+				dataIndex: 'balance',
+				key: 'balance',
+				render: (value, data) => formatToCurrency(Number(value || 0), data.min),
+			},
 			{
 				title: 'Available',
 				dataIndex: 'balance_available',
 				key: 'balance_available',
+				render: (value, data) => formatToCurrency(Number(value || 0), data.min),
 			},
-			{ title: 'Balance', dataIndex: 'balance', key: 'balance' },
+			{
+				title: 'Estimated',
+				key: 'estimated',
+				render: (_, data) => {
+					const estimated = data.estimated || 0;
+					return (
+						<div>
+							{formatCurrencyByIncrementalUnit(estimated, increment_unit)}{' '}
+							{display_name || ''}
+						</div>
+					);
+				},
+			},
 		];
 	};
 
@@ -186,7 +196,11 @@ class UserBalance extends Component {
 		const prices = await getPrices({ coins });
 		const totalAsset = calculateBalancePrice(userBalance, prices, coins);
 		const chartData = generateChartData(userBalance, prices, coins, totalAsset);
-		this.setState({ chartData, totalAvaliableAsset: totalAsset });
+		this.setState({
+			chartData,
+			totalAvaliableAsset: totalAsset,
+			oraclePrices: prices,
+		});
 	};
 
 	handleBalance = (userData, isSupportUser) => {
@@ -379,6 +393,7 @@ class UserBalance extends Component {
 					rowKey={(data) => {
 						return data.id;
 					}}
+					size="small"
 					expandedRowRender={this.renderAddress}
 					dataSource={tableData}
 					className="blue-admin-table"

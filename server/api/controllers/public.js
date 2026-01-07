@@ -1,7 +1,7 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { API_HOST, HOLLAEX_NETWORK_ENDPOINT } = require('../../constants');
+const { API_HOST, HOLLAEX_NETWORK_ENDPOINT, DOMAIN } = require('../../constants');
 const { loggerPublic } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -12,6 +12,7 @@ const getHealth = (req, res) => {
 			name: toolsLib.getKitConfig().api_name || packageJson.name,
 			version: packageJson.version,
 			host: API_HOST,
+			domain: DOMAIN,
 			basePath: '/v2',
 			status: toolsLib.getKitConfig().status
 		});

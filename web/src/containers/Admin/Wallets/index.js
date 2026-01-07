@@ -5,7 +5,13 @@ import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import {
+	formatCurrencyByIncrementalUnit,
+	calculateOraclePrice,
+} from 'utils/currency';
+import { getPrices } from 'actions/assetActions';
+import { Coin } from 'components';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import './index.scss';
 class Wallets extends Component {
 	state = {
@@ -16,13 +22,32 @@ class Wallets extends Component {
 		showSweep: null,
 		walletNum: null,
 		constants: {},
+		oraclePrices: {},
 	};
 
 	UNSAFE_componentWillMount() {
 		this.requestTotalBalance();
 		this.requestConstants();
 		this.setState({ showSweep: false });
+		this.fetchPrices();
 	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
+			this.fetchPrices();
+		}
+	}
+
+	fetchPrices = async () => {
+		try {
+			const { coins } = this.props;
+			if (!coins || !Object.keys(coins).length) return;
+			const prices = await getPrices({ coins });
+			this.setState({ oraclePrices: prices });
+		} catch (e) {
+			// ignore price fetch errors for summary display
+		}
+	};
 
 	requestConstants = () => {
 		this.setState({
@@ -70,16 +95,28 @@ class Wallets extends Component {
 	};
 
 	render() {
-		const { balance, loading, error } = this.state;
+		const { balance, loading, error, oraclePrices } = this.state;
 		const { coins } = this.props;
 		const sortedCoins = Object.keys(coins).sort();
 
 		const data = [];
 		const columns = [
 			{
-				key: 'name',
-				title: 'Name',
-				dataIndex: 'name',
+				key: 'assets',
+				title: 'Assets',
+				dataIndex: 'assets',
+				render: (_, row) => {
+					const symbol = row?.symbol || '';
+					const coinData = coins[symbol] || DEFAULT_COIN_DATA;
+					return (
+						<div className="d-flex align-items-center">
+							<Coin iconId={coinData.icon_id} />
+							<div className="ml-2">
+								{coinData.fullname || symbol.toUpperCase()}
+							</div>
+						</div>
+					);
+				},
 			},
 			{
 				key: 'total',
@@ -91,13 +128,22 @@ class Wallets extends Component {
 				title: 'Available',
 				dataIndex: 'available',
 			},
+			{
+				key: 'estimated',
+				title: 'Estimated',
+				dataIndex: 'estimated_display',
+			},
 		];
 
 		sortedCoins.forEach((coin) => {
 			if (balance && balance[`${coin}_balance`]) {
 				const inc_unit = coins[coin]?.increment_unit;
+				const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+				const price = oraclePrices?.[coin] || 0;
+				const est = calculateOraclePrice(balance[`${coin}_balance`], price);
 				let asset = {
-					name: coin.toUpperCase(),
+					symbol: coin,
+					assets: coin.toUpperCase(),
 					total: formatCurrencyByIncrementalUnit(
 						balance[`${coin}_balance`],
 						inc_unit
@@ -106,10 +152,20 @@ class Wallets extends Component {
 						balance[`${coin}_available`],
 						inc_unit
 					),
+					estimated: Number(est || 0),
+					estimated_display: `${formatCurrencyByIncrementalUnit(
+						est,
+						baseCoin.increment_unit
+					)} ${baseCoin.display_name || ''}`,
 				};
 				data.push(asset);
 			}
 		});
+
+		// Sort by estimated desc if prices available
+		if (Object.keys(oraclePrices).length) {
+			data.sort((a, b) => Number(b.estimated || 0) - Number(a.estimated || 0));
+		}
 
 		return (
 			<div className="app_container-content">
@@ -142,6 +198,7 @@ class Wallets extends Component {
 							rowKey={(data, index) => index}
 							dataSource={data}
 							loading={data.length === 0}
+							size="small"
 							pagination={false}
 						/>
 					</div>

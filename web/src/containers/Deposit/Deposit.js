@@ -19,15 +19,11 @@ import {
 import { Coin, EditWrapper } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { assetsSelector } from 'containers/Wallet/utils';
-import {
-	networkList,
-	renderLabel,
-	renderNetworkField,
-	renderNetworkWithLabel,
-} from 'containers/Withdraw/utils';
+import { renderLabel, renderNetworkWithLabel } from 'containers/Withdraw/utils';
 import STRINGS from 'config/localizedStrings';
 import { onHandleSymbol } from './utils';
 import { handlePopupContainer } from 'utils/utils';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const DepositComponent = ({
 	coins,
@@ -65,7 +61,6 @@ const DepositComponent = ({
 	const [optionalTag, setOptionalTag] = useState('');
 	const [isDisbaleDeposit, setIsDisbaleDeposit] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
-	const [networkData, setNetworkData] = useState(null);
 
 	const defaultCurrency = currency !== '' && currency;
 	const address = depositAddress?.split(':');
@@ -233,20 +228,32 @@ const DepositComponent = ({
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
-			if (
-				coinLength?.length > 1 &&
-				networkHasTag.includes(renderNetworkField(val))
-			) {
-				setIsVisible(true);
-			}
 			setCurrStep((prev) => ({ ...prev, stepThree: true }));
 			setDepositNetworkOptions(val);
-			updateAddress(renderNetworkField(val), true);
+			updateAddress(val, true);
 			setDepositNetwork(val);
-			setNetworkData(val);
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
+	};
+
+	const filterNetworkOptions = (input, option) => {
+		const searchValue = input?.toLowerCase();
+		const networkKey = option?.value?.toLowerCase();
+		const networkDisplayName =
+			getNetworkNameByKey(option?.value)?.toLowerCase() || '';
+
+		return (
+			networkKey?.includes(searchValue) ||
+			networkDisplayName?.includes(searchValue)
+		);
+	};
+
+	const filterCoinOptions = (input, option) => {
+		const searchValue = input?.toLowerCase();
+		const optionValue = option?.value?.toLowerCase();
+
+		return optionValue?.includes(searchValue);
 	};
 
 	const renderScanIcon = (isTag = false, type = 'address') => {
@@ -290,7 +297,6 @@ const DepositComponent = ({
 		}
 		if (type === 'network') {
 			setDepositNetworkOptions(null);
-			setNetworkData(null);
 		}
 	};
 
@@ -334,14 +340,7 @@ const DepositComponent = ({
 
 	const renderOptionalField =
 		(['xrp', 'xlm'].includes(selectedAsset) ||
-			['xlm', 'ton'].includes(
-				coinLength &&
-					coinLength.length > 1 &&
-					getDepositNetworkOptions &&
-					getDepositNetworkOptions
-					? renderNetworkField(networkData)
-					: network
-			)) &&
+			['xlm', 'ton'].includes(network)) &&
 		depositAddress;
 	const networkIcon = selectedNetwork
 		? coins[selectedNetwork]?.icon_id
@@ -349,14 +348,13 @@ const DepositComponent = ({
 	const networkOptionsIcon = coins[getDepositNetworkOptions]?.icon_id;
 
 	const renderMarkupFee = () => {
+		const selectedNetwork = getDepositNetworkOptions || network;
 		const feeMarkup =
 			defaultCurrency &&
-			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				renderNetworkField(networkData) || network
-			]?.deposit?.symbol === defaultCurrency &&
-			coin_customizations?.[defaultCurrency]?.fee_markups?.[
-				renderNetworkField(networkData) || network
-			]?.deposit?.value;
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[selectedNetwork]
+				?.deposit?.symbol === defaultCurrency &&
+			coin_customizations?.[defaultCurrency]?.fee_markups?.[selectedNetwork]
+				?.deposit?.value;
 
 		return feeMarkup || 0;
 	};
@@ -421,6 +419,7 @@ const DepositComponent = ({
 							<div className="d-flex">
 								<Select
 									showSearch={true}
+									filterOption={filterCoinOptions}
 									className="custom-select-input-style elevated select-field"
 									dropdownClassName="custom-select-style"
 									suffixIcon={<CaretDownOutlined />}
@@ -519,6 +518,7 @@ const DepositComponent = ({
 								<div className="d-flex">
 									<Select
 										showSearch={true}
+										filterOption={filterNetworkOptions}
 										className={`custom-select-input-style elevated ${
 											coinLength && coinLength.length > 1
 												? 'select-field'
@@ -526,24 +526,23 @@ const DepositComponent = ({
 										}`}
 										dropdownClassName="custom-select-style"
 										suffixIcon={<CaretDownOutlined />}
-										allowClear={networkData ? true : false}
+										allowClear={getDepositNetworkOptions ? true : false}
 										onChange={onHandleChangeNetwork}
 										value={
 											defaultCurrency &&
 											!isPinnedAssets &&
 											coinLength?.length < 1
-												? defaultNetwork
+												? renderNetworkWithLabel(
+														coins[defaultNetwork]?.icon_id,
+														defaultNetwork
+												  )
 												: coinLength && coinLength.length <= 1
-												? getDepositNetworkOptions && getDepositNetworkOptions
-													? networkData
-													: renderNetworkWithLabel(networkIcon, network)
+												? renderNetworkWithLabel(networkIcon, network)
 												: coinLength && coinLength.length > 1
-												? getDepositNetworkOptions && getDepositNetworkOptions
-													? networkData
-													: renderNetworkWithLabel(
-															networkOptionsIcon,
-															getDepositNetworkOptions
-													  )
+												? renderNetworkWithLabel(
+														networkOptionsIcon,
+														getDepositNetworkOptions
+												  )
 												: coins[getDepositCurrency]?.symbol.toUpperCase()
 										}
 										disabled={
@@ -552,10 +551,8 @@ const DepositComponent = ({
 										}
 										placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
 										onClear={() => onHandleClear('network')}
-										getPopupContainer={handlePopupContainer}
 									>
 										{coinLength &&
-											coinLength?.length === 1 &&
 											coinLength.map((data, inx) => (
 												<Option key={inx} value={data}>
 													<div className="d-flex gap-1">
@@ -568,35 +565,6 @@ const DepositComponent = ({
 													</div>
 												</Option>
 											))}
-										{coinLength &&
-											coinLength?.length > 1 &&
-											networkList.map((data, inx) => {
-												const coin = data.iconId.split('_');
-												return coinLength.map((coinData, coinInx) => {
-													if (coinData === coin[0]?.toLowerCase()) {
-														return (
-															<Option
-																key={`${inx}-${coinInx}`}
-																value={data?.network}
-															>
-																<div className="d-flex gap-1">
-																	<div className="d-flex">
-																		{data?.network}
-																		<div className="ml-2 mt-1">
-																			<Coin
-																				iconId={data.iconId}
-																				type="CS2"
-																				className="mt-2 withdraw-network-icon"
-																			/>
-																		</div>
-																	</div>
-																</div>
-															</Option>
-														);
-													}
-													return null;
-												});
-											})}
 									</Select>
 									{(coinLength &&
 										coinLength.length === 1 &&

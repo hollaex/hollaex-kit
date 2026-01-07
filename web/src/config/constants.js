@@ -110,6 +110,7 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const DASH_TOKEN_KEY = `${ENV}_${NETWORK}_DASH_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
+export const MAIN_ACCOUNT_TOKEN = 'main_account_token';
 
 export const TEMP_KEY_LANGUAGE_RTL = 'temp_key_language_rtl';
 export const TEMP_KEY_LANGUAGE_LTR = 'temp_key_language_ltr';

@@ -268,6 +268,9 @@ export const getAllPots = () => {
 };
 
 const getUserStake = (token = 'xht') => async (address) => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+		return null;
+	}
 	const stakes = await CONTRACTS()[token].main.methods.getStake(address).call();
 	return stakes;
 };
@@ -293,6 +296,14 @@ export const approve = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
+	if (
+		!CONTRACTS()[token] ||
+		!CONTRACTS()[token]?.token ||
+		!CONTRACT_ADDRESSES()[token] ||
+		!CONTRACT_ADDRESSES()[token].main
+	) {
+		return null;
+	}
 	return CONTRACTS()
 		[token].token.methods.approve(
 			CONTRACT_ADDRESSES()[token].main,
@@ -313,6 +324,9 @@ export const addStake = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+		return null;
+	}
 	return CONTRACTS()
 		[token].main.methods.addStake(web3.utils.toWei(amount.toString()), period)
 		.send(
@@ -329,6 +343,9 @@ export const removeStake = (token = 'xht') => ({
 	index,
 	cb = () => {},
 }) => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+		return null;
+	}
 	return CONTRACTS()
 		[token].main.methods.removeStake(index)
 		.send(
@@ -342,6 +359,9 @@ export const removeStake = (token = 'xht') => ({
 
 const getPeriodForToken = (token = 'xht') => async (index) => {
 	try {
+		if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+			return null;
+		}
 		const period = await CONTRACTS()[token].main.methods.periods(index).call();
 		return period;
 	} catch (err) {
@@ -358,11 +378,17 @@ const getAllPeriodsForToken = (token = 'xht') => async () => {
 };
 
 const getPenaltyForToken = (token = 'xht') => async () => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+		return null;
+	}
 	const penalty = await CONTRACTS()[token].main.methods.penalty().call();
 	return penalty;
 };
 
 const getPotForToken = (token = 'xht') => async () => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+		return null;
+	}
 	const address = await CONTRACTS()[token].main.methods.pot().call();
 	const balance = await getTokenBalance(token)(address);
 	return {
@@ -377,6 +403,9 @@ const getPotForToken = (token = 'xht') => async () => {
 // };
 
 const getTokenBalance = (token = 'xht') => async (account) => {
+	if (!CONTRACTS()[token] || !CONTRACTS()[token]?.token) {
+		return '0';
+	}
 	const balance = await CONTRACTS()
 		[token].token.methods.balanceOf(account)
 		.call();
@@ -386,6 +415,10 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 export const getPublicInfo = (token = 'xht') => {
 	return async (dispatch) => {
 		try {
+			if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+				return;
+			}
+
 			const data = {
 				totalReward: CONTRACTS()[token].main.methods.getTotalReward().call(),
 				totalStaked: CONTRACTS()[token].main.methods.totalStake().call(),
@@ -409,6 +442,10 @@ export const getPublicInfo = (token = 'xht') => {
 export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
 		try {
+			if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+				return;
+			}
+
 			const events = await CONTRACTS()[token].main.getPastEvents('allEvents', {
 				fromBlock: 1,
 				toBlock: 'latest',
@@ -424,6 +461,10 @@ export const getStakeEvents = (token = 'xht', account = '') => {
 export const getDistributions = (token = 'xht') => {
 	return async (dispatch) => {
 		try {
+			if (!CONTRACTS()[token] || !CONTRACTS()[token]?.main) {
+				return;
+			}
+
 			const events = await CONTRACTS()[token].main.getPastEvents(
 				CONTRACT_EVENTS.Distribute,
 				{
@@ -452,6 +493,14 @@ export const getPendingTransactions = (account = '') => {
 };
 
 export const getTokenAllowance = (token = 'xht') => async (account) => {
+	if (
+		!CONTRACTS()[token] ||
+		!CONTRACTS()[token]?.token ||
+		!CONTRACT_ADDRESSES()[token] ||
+		!CONTRACT_ADDRESSES()[token]?.main
+	) {
+		return '0';
+	}
 	const allowance = await CONTRACTS()
 		[token].token.methods.allowance(account, CONTRACT_ADDRESSES()[token].main)
 		.call();

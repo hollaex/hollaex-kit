@@ -8,6 +8,8 @@ import {
 import { AuthForm } from 'components';
 import STRINGS from 'config/localizedStrings';
 
+export const FORM_NAME = 'EmailRequestForm';
+
 export const generateFormFields = () => ({
 	email: {
 		type: 'email',
@@ -30,5 +32,5 @@ const Form = (props) => (
 );
 
 export default reduxForm({
-	form: 'EmailRequestForm',
+	form: FORM_NAME,
 })(Form);

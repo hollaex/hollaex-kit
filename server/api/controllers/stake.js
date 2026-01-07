@@ -11,7 +11,7 @@ const { errorMessageConverter } = require('../../utils/conversion');
 const getExchangeStakes = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
-	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date, status } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerStake.error(
@@ -29,6 +29,7 @@ const getExchangeStakes = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
+		status: status?.value,
 	}
 	)
 		.then((data) => {
@@ -46,6 +47,8 @@ const createExchangeStakes = (req, res) => {
 
 	const {
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -66,6 +69,8 @@ const createExchangeStakes = (req, res) => {
 		req.uuid,
 		'controllers/stake/createExchangeStakes data',
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -84,6 +89,8 @@ const createExchangeStakes = (req, res) => {
 
 	toolsLib.stake.createExchangeStakePool({
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -122,6 +129,8 @@ const updateExchangeStakes = (req, res) => {
 	const {
 		id,
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -143,6 +152,8 @@ const updateExchangeStakes = (req, res) => {
 		'controllers/stake/updateExchangeStakes data',
 		id,
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -161,6 +172,8 @@ const updateExchangeStakes = (req, res) => {
 	const auditInfo = { userEmail: req?.auth?.sub?.email, sessionId: req?.session_id, apiPath: req?.swagger?.apiPath, method: req?.swagger?.operationPath?.[2] };
 	toolsLib.stake.updateExchangeStakePool(id, {
 		name,
+		category,
+		is_automatic,
 		currency,
 		reward_currency,
 		account_id,
@@ -353,6 +366,40 @@ const deleteExchangeStaker = (req, res) => {
 		});
 }
 
+const updateExchangeStaker = (req, res) => {
+	loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStaker/auth', req.auth);
+
+	const { id, nav, reward, status } = req.swagger.params.data.value;
+
+	loggerStake.verbose(req.uuid, 'controllers/stake/updateExchangeStaker data', id, nav, reward, status);
+
+	const auditInfo = {
+		userEmail: req?.auth?.sub?.email,
+		sessionId: req?.session_id,
+		apiPath: req?.swagger?.apiPath,
+		method: req?.swagger?.operationPath?.[2]
+	};
+
+	toolsLib.stake.updateExchangeStaker(id, { nav, reward, status }, auditInfo)
+		.then((data) => {
+			toolsLib.user.createAuditLog(
+				{ email: req?.auth?.sub?.email, session_id: req?.session_id },
+				req?.swagger?.apiPath,
+				req?.swagger?.operationPath?.[2],
+				req?.swagger?.params?.data?.value
+			);
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerStake.error(req.uuid, 'controllers/stake/updateExchangeStaker err', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res
+				.status(err.statusCode || 400)
+				.json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 const unstakeEstimateSlash = (req, res) => {
 	loggerStake.verbose(req.uuid, 'controllers/stake/unstakeEstimateSlash/auth', req.auth);
 
@@ -487,6 +534,7 @@ module.exports = {
 	getExchangeStakersForUser,
 	createStaker,
 	deleteExchangeStaker,
+	updateExchangeStaker,
 	unstakeEstimateSlash,
 	unstakeEstimateSlashAdmin,
 	fetchStakeAnalytics,

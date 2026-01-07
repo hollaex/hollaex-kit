@@ -13,3 +13,14 @@
 		color: #fff !important;
 	}
 }
+
+.admin-session-table {
+	tr.ant-table-expanded-row {
+		> td {
+			background: var(--admin_panel_table_tbody) !important;
+		}
+		&:hover > td {
+			background: var(--admin_panel_table_tbody) !important;
+		}
+	}
+}

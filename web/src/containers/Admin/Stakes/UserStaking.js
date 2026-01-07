@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { Table, Button, Spin, Input, Select } from 'antd';
+import {
+	Table,
+	Button,
+	Spin,
+	Input,
+	Select,
+	Modal,
+	InputNumber,
+	message,
+} from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
@@ -10,6 +19,7 @@ import {
 	requestStakersByAdmin,
 	requestStakePools,
 	getStakingAnalytics,
+	updateStaker,
 } from './actions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
@@ -36,6 +46,12 @@ const UserStaking = ({
 
 	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
+	const [isEditNavOpen, setIsEditNavOpen] = useState(false);
+	const [selectedStaker, setSelectedStaker] = useState(null);
+	const [navValue, setNavValue] = useState(null);
+	const [rewardValue, setRewardValue] = useState(null);
+	const [statusValue, setStatusValue] = useState(null);
+
 	const statuses = {
 		staking: 2,
 		unstaking: 1,
@@ -50,7 +66,14 @@ const UserStaking = ({
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						<Button className="ant-btn green-btn no-border ant-tooltip-open ant-btn-primary">
+						<Button
+							className="ant-btn green-btn no-border ant-tooltip-open ant-btn-primary"
+							onClick={() => {
+								if (data?.user_id) {
+									router.push(`/admin/user?id=${data.user_id}`);
+								}
+							}}
+						>
 							{data?.user_id}
 						</Button>
 						{/* <div className="ml-3">{data.User.email}</div> */}
@@ -129,13 +152,28 @@ const UserStaking = ({
 			},
 		},
 		{
+			title: 'NAV',
+			dataIndex: 'nav',
+			key: 'nav',
+			render: (nav, data) => {
+				const displayNav = nav === null || nav === undefined ? '-' : nav;
+				return (
+					<div className="d-flex">
+						<span>
+							{displayNav} {data?.stake?.currency?.toUpperCase()}{' '}
+						</span>
+					</div>
+				);
+			},
+		},
+		{
 			title: 'Earnings',
 			dataIndex: 'reward',
 			key: 'reward',
 			render: (user_id, data) => {
 				const incrementUnit =
 					coins[data?.reward_currency || data?.currency]?.increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit)?.dp();
+				const decimalPoint = new BigNumber(incrementUnit)?.dp() + 2;
 				const sourceAmount =
 					data?.reward &&
 					new BigNumber(data?.reward - data?.slashed)
@@ -169,6 +207,30 @@ const UserStaking = ({
 						) : (
 							<span>Closed</span>
 						)}
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Config',
+			dataIndex: 'config',
+			key: 'config',
+			render: (_value, data) => {
+				return (
+					<div className="d-flex">
+						<span
+							className="underline-text pointer"
+							style={{ color: '#fff' }}
+							onClick={() => {
+								setSelectedStaker(data);
+								setNavValue(data?.nav ?? data?.amount);
+								setRewardValue(data?.reward ?? 0);
+								setStatusValue(data?.status ?? 'staking');
+								setIsEditNavOpen(true);
+							}}
+						>
+							Edit Stake
+						</span>
 					</div>
 				);
 			},
@@ -282,6 +344,67 @@ const UserStaking = ({
 
 	return (
 		<div className="admin-users-stake-wrapper">
+			<Modal
+				visible={isEditNavOpen}
+				title={<span style={{ color: '#fff' }}>Edit Stake</span>}
+				okText="Save"
+				cancelText="Cancel"
+				onCancel={() => {
+					setIsEditNavOpen(false);
+					setSelectedStaker(null);
+					setNavValue(null);
+					setRewardValue(null);
+					setStatusValue(null);
+				}}
+				onOk={async () => {
+					try {
+						if (!selectedStaker?.id) return;
+						await updateStaker({
+							id: selectedStaker.id,
+							nav: navValue,
+							reward: rewardValue,
+							status: statusValue,
+						});
+						message.success('Stake updated.');
+						setIsEditNavOpen(false);
+						setSelectedStaker(null);
+						setNavValue(null);
+						setRewardValue(null);
+						setStatusValue(null);
+						requestExchangeStakers(queryFilters?.page, queryFilters?.limit);
+					} catch (error) {
+						message.error(error?.response?.data?.message || error?.message);
+					}
+				}}
+			>
+				<div style={{ marginBottom: 8 }}>NAV</div>
+				<InputNumber
+					style={{ width: '100%' }}
+					value={navValue}
+					onChange={(value) => setNavValue(value)}
+				/>
+				<div style={{ marginBottom: 8, marginTop: 16 }}>Earnings (reward)</div>
+				<InputNumber
+					style={{ width: '100%' }}
+					value={rewardValue}
+					onChange={(value) => setRewardValue(value)}
+				/>
+				<div style={{ marginBottom: 8, marginTop: 16 }}>Status</div>
+				<Select
+					style={{ width: '100%' }}
+					value={statusValue}
+					onChange={(value) => setStatusValue(value)}
+					getPopupContainer={(triggerNode) => triggerNode.parentNode}
+				>
+					<Select.Option value="staking">Active</Select.Option>
+					<Select.Option value="unstaking">Unstaking</Select.Option>
+					<Select.Option value="closed">Closed</Select.Option>
+				</Select>
+				<div style={{ marginTop: 12, color: '#ccc', fontSize: 12 }}>
+					Note: Updating a user’s stake status does not automatically transfer
+					assets. Any required transfers must be handled manually.
+				</div>
+			</Modal>
 			{!isUserProfileStakeTab && (
 				<>
 					<div className="bold">User active stakes</div>

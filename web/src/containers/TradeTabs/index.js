@@ -242,7 +242,7 @@ class AddTradeTab extends Component {
 						<Fragment>
 							{selected === options[0].value ? (
 								<MarketList
-									loading={this.state.isLoading}
+									loading={this.state.isLoading || this.props.isFetching}
 									markets={data}
 									chartData={chartData}
 									handleClick={handleClick}
@@ -281,6 +281,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	constants: store.app.constants,
 	markets: MarketsSelector(store),
+	isFetching: store.asset.isFetching,
 });
 
 export default connect(mapStateToProps)(withConfig(AddTradeTab));

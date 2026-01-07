@@ -46,7 +46,7 @@ subscriber.on('message', (channel, data) => {
 });
 
 const initializeTopic = (topic, ws, symbol) => {
-	switch (topic) {
+    switch (topic) {
 		case 'orderbook':
 		case 'trade':
 			if (symbol) {
@@ -68,6 +68,13 @@ const initializeTopic = (topic, ws, symbol) => {
 						ws.send(JSON.stringify({ message: err.message }));
 					}
 				});
+			}
+			break;
+		case 'price':
+			addSubscriber(WEBSOCKET_CHANNEL('price'), ws);
+			if (getPublicData().price && Object.keys(getPublicData().price.data || {}).length) {
+				const snapshot = getPublicData().price;
+				ws.send(JSON.stringify({ topic: 'price', action: 'partial', data: snapshot.data, time: snapshot.time }));
 			}
 			break;
 		case 'order':
@@ -124,7 +131,7 @@ const initializeTopic = (topic, ws, symbol) => {
 };
 
 const terminateTopic = (topic, ws, symbol) => {
-	switch (topic) {
+    switch (topic) {
 		case 'orderbook':
 		case 'trade':
 			if (symbol) {
@@ -144,6 +151,10 @@ const terminateTopic = (topic, ws, symbol) => {
 				});
 			}
 			break;
+        case 'price':
+            removeSubscriber(WEBSOCKET_CHANNEL('price'), ws);
+            ws.send(JSON.stringify({ message: 'Unsubscribed from channel price' }));
+            break;
 		case 'order':
 		case 'usertrade':
 		case 'wallet':
@@ -250,6 +261,12 @@ const terminateClosedChannels = (ws) => {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
 	});
+
+    try {
+        removeSubscriber(WEBSOCKET_CHANNEL('price'), ws);
+    } catch (err) {
+        loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+    }
 	if (ws.auth.sub) {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws, 'private');

@@ -144,7 +144,8 @@ class Stake extends Component {
 	startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { coins, setNotification } = this.props;
-		const { fullname, display_name, icon_id } = coins[symbol];
+		const { fullname, display_name, icon_id } =
+			coins[symbol] || DEFAULT_COIN_DATA;
 		setNotification(NOTIFICATIONS.STAKE, {
 			tokenData: { ...tokenData, fullname, display_name, icon_id },
 		});
@@ -182,32 +183,28 @@ class Stake extends Component {
 	};
 
 	goToPOT = () => {
-		const {
-			contracts: {
-				[STAKING_INDEX_COIN]: { network, token },
-			},
-			pots,
-		} = this.props;
-		const address = pots[STAKING_INDEX_COIN]
-			? pots[STAKING_INDEX_COIN].address
-			: '';
+		const { contracts, pots } = this.props;
+		const { network, token } = contracts?.[STAKING_INDEX_COIN] || {};
+		const address = pots?.[STAKING_INDEX_COIN]?.address || '';
 
-		const url = `https://${
-			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/token/${token}?a=${address}`;
-		open(url);
+		if (network && token) {
+			const url = `https://${
+				network !== 'main' ? `${network}.` : ''
+			}etherscan.io/token/${token}?a=${address}`;
+			open(url);
+		}
 	};
 
 	goToBlocks = () => {
-		const {
-			contracts: {
-				[STAKING_INDEX_COIN]: { network },
-			},
-		} = this.props;
-		const url = `https://${
-			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/blocks`;
-		open(url);
+		const { contracts } = this.props;
+		const { network } = contracts?.[STAKING_INDEX_COIN] || {};
+
+		if (network) {
+			const url = `https://${
+				network !== 'main' ? `${network}.` : ''
+			}etherscan.io/blocks`;
+			open(url);
+		}
 	};
 
 	handleTabChange = (key) => {
@@ -241,7 +238,9 @@ class Stake extends Component {
 			setSelectedStake,
 		} = this.props;
 
-		const index_display_name = coins?.[STAKING_INDEX_COIN]?.display_name;
+		const index_display_name =
+			coins?.[STAKING_INDEX_COIN]?.display_name ||
+			DEFAULT_COIN_DATA.display_name;
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
@@ -491,7 +490,8 @@ class Stake extends Component {
 									<tbody>
 										{stakables.map((tokenData, index) => {
 											const { symbol, available } = tokenData;
-											const { fullname, display_name, icon_id } = coins[symbol];
+											const { fullname, display_name, icon_id } =
+												coins[symbol] || DEFAULT_COIN_DATA;
 											const goToSymbol = () => this.goToDetails(symbol);
 											const commonCellProps = !account
 												? {}
@@ -639,7 +639,8 @@ class Stake extends Component {
 															</Help>
 														);
 
-														const { display_name } = coins[symbol];
+														const { display_name } =
+															coins[symbol] || DEFAULT_COIN_DATA;
 
 														const data = {
 															amount,

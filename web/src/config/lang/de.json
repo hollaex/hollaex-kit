@@ -246,7 +246,10 @@
 			"INFORMATION_PENDING_2": "Dies kann 10-30 Minuten dauern. Wir senden eine E-Mail, sobald Ihre {0} in der Blockchain bestätigt wurde."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Anfrage gesendet", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Anfrage gesendet",
+		"BUTTON_TEXT": "Okay"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Geben Sie Ihren Authentifizierungscode ein, um fortzufahren",
 		"OTP_LABEL": "OTP-Code",
@@ -448,7 +451,10 @@
 				"FULL_NAME_PLACEHOLDER": "Geben Sie Ihren vollständigen Namen ein, wie er in Ihrem Ausweisdokument steht",
 				"GENDER_LABEL": "Geschlecht",
 				"GENDER_PLACEHOLDER": "Geben Sie an, welches Geschlecht Sie haben",
-				"GENDER_OPTIONS": { "MAN": "Männlich", "WOMAN": "Weiblich" },
+				"GENDER_OPTIONS": {
+					"MAN": "Männlich",
+					"WOMAN": "Weiblich"
+				},
 				"NATIONALITY_LABEL": "Nationalität",
 				"NATIONALITY_PLACEHOLDER": "Geben Sie ein, welche Nationalität in Ihrem Ausweisdokument steht",
 				"DOB_LABEL": "Geburtsdatum",
@@ -492,7 +498,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "Dokument-ID Typ",
 				"TYPE_PLACEHOLDER": "Art des Ausweises wählen",
-				"TYPE_OPTIONS": { "ID": "ID", "PASSPORT": "Reisepass" },
+				"TYPE_OPTIONS": {
+					"ID": "ID",
+					"PASSPORT": "Reisepass"
+				},
 				"ID_NUMBER_LABEL": "Reisepassnummer",
 				"ID_NUMBER_PLACEHOLDER": "Geben Sie Ihre Reisepassnummer ein",
 				"ID_PASSPORT_NUMBER_LABEL": "Reisepassnummer",
@@ -763,7 +772,9 @@
 			"TITLE": "Anmeldeverlauf",
 			"IP_ADDRESS": "IP Adresse",
 			"TIME": "Terminzeit",
-			"CONTENT": { "TITLE": "Anmeldeverlauf" }
+			"CONTENT": {
+				"TITLE": "Anmeldeverlauf"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "Konto einfrieren",
@@ -855,12 +866,27 @@
 	},
 	"CURRENCY": "Währung",
 	"TYPE": "Typ",
-	"TYPES_VALUES": { "market": "Markt", "limit": "Limit" },
-	"TYPES": { "MARKET": "Markt", "LIMIT": "Limit" },
+	"TYPES_VALUES": {
+		"market": "Markt",
+		"limit": "Limit"
+	},
+	"TYPES": {
+		"MARKET": "Markt",
+		"LIMIT": "Limit"
+	},
 	"SIDE": "Seite",
-	"SIDES_VALUES": { "buy": "kaufen", "sell": "verkaufen" },
-	"SIDES": { "BUY": "kaufen", "SELL": "verkaufen" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "an", "OFF": "aus" },
+	"SIDES_VALUES": {
+		"buy": "kaufen",
+		"sell": "verkaufen"
+	},
+	"SIDES": {
+		"BUY": "kaufen",
+		"SELL": "verkaufen"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "an",
+		"OFF": "aus"
+	},
 	"SIZE": "Größe",
 	"PRICE": "Preis",
 	"FEE": "Gebühr",
@@ -1626,7 +1652,10 @@
 		"LABEL": "Zu verschiebender Betrag",
 		"FEE": "Transaktionsgebühr: {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "gekauft", "sell": "verkauft" },
+	"SIDES_VERBS": {
+		"buy": "gekauft",
+		"sell": "verkauft"
+	},
 	"AVERAGE": "Durchschnitt",
 	"ORDER_HISTORY": "Bestellverlauf",
 	"ESTIMATED_PRICE": "Schätzpreis",
@@ -1761,7 +1790,10 @@
 	"FEE_REDUCTION": "Gebührenermäßigung",
 	"FEE_REDUCTION_DESCRIPTION": "*Auf Ihr Konto wird ein Gebührenrabatt angewendet. Die Ermäßigung wird auf die Handelsgebühren basierend auf Ihrem Konto angewendet.",
 	"CHANGE_PASSWORD_FAILED": "Das Ändern des Passworts ist fehlgeschlagen",
-	"MARKET_OPTIONS": { "LIST": "Aufführen", "CARD": "Karte" },
+	"MARKET_OPTIONS": {
+		"LIST": "Aufführen",
+		"CARD": "Karte"
+	},
 	"ALL": "Alle",
 	"ASSET_TXT": "Anlage",
 	"ONE_DAY": "1 Tag",
@@ -1838,7 +1870,9 @@
 	"VERIFY_BANK_WITHDRAW": "Um eine Auszahlung vorzunehmen, müssen Sie Ihre Verifizierung durchführen, einschließlich der Verifizierung Ihrer Bankdaten. Bitte klicken Sie unten auf die Schaltfläche „Weiter“.",
 	"VERIFICATION_TITLE": "Vollständige Überprüfung",
 	"WITHDRAW_NOTE": "Bitte beachten Sie: Sie können nur auf ein Konto abheben, das auf Ihren Namen lautet.",
-	"USER_PAYMENT": { "TITLE": "Zahlungen" },
+	"USER_PAYMENT": {
+		"TITLE": "Zahlungen"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Bitte überprüfen Sie Ihre Bestellung und bestätigen Sie diese unten.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Bei den zu erhaltenden Beträgen handelt es sich um Schätzungen, in denen die Handelsgebühr nicht enthalten ist",
 	"ORDER_EXPIRED_MSG": "Bestellung abgelaufen. Bitte aktualisieren!",
@@ -1879,7 +1913,10 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Asset-Infoseite",
-	"MARKET_ROW": { "NATIVE": "Einheimisch", "NO_NATIVE": "Keine native Quelle" },
+	"MARKET_ROW": {
+		"NATIVE": "Einheimisch",
+		"NO_NATIVE": "Keine native Quelle"
+	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digitale Vermögenswerte",
 		"GO_BACK": "Geh zurück",

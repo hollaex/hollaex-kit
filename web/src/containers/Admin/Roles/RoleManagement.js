@@ -13,6 +13,7 @@ import {
 	Typography,
 	Tabs,
 	Tooltip,
+	InputNumber,
 } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -228,6 +229,7 @@ const PermissionTabs = ({
 	activeTab,
 	setActiveTab = () => {},
 	search,
+	setSearch = () => {},
 }) => {
 	// const onCheck = (checkedKeys, { checkedNodes, halfCheckedKeys }, type) => {
 	//     const leafKeys = checkedNodes
@@ -367,6 +369,38 @@ const PermissionTabs = ({
 
 	// const currenciesList = Object.keys(coins);
 
+	// Restriction edit state for max_view_verification_level
+	const [isEditingRestriction, setIsEditingRestriction] = useState(false);
+	const currentMaxVerificationLevel =
+		typeof restrictions?.max_view_verification_level === 'number'
+			? restrictions?.max_view_verification_level
+			: restrictions?.users?.max_view_verification_level;
+	const [tempMaxLevel, setTempMaxLevel] = useState(
+		currentMaxVerificationLevel ?? null
+	);
+
+	const startEditRestriction = () => {
+		setTempMaxLevel(
+			typeof restrictions?.max_view_verification_level === 'number'
+				? restrictions?.max_view_verification_level
+				: restrictions?.users?.max_view_verification_level ?? null
+		);
+		setIsEditingRestriction(true);
+	};
+
+	const cancelEditRestriction = () => {
+		setIsEditingRestriction(false);
+	};
+
+	const saveEditRestriction = () => {
+		setRestrictions((prev) => ({
+			...(prev || {}),
+			max_view_verification_level:
+				tempMaxLevel == null ? null : Number(tempMaxLevel),
+		}));
+		setIsEditingRestriction(false);
+	};
+
 	return (
 		<Tabs activeKey={activeTab} onChange={(value) => setActiveTab(value)}>
 			<TabPane
@@ -374,6 +408,14 @@ const PermissionTabs = ({
 				key="apiRoute"
 			>
 				<div className="permission-tab-content">
+					<div className="font-weight-bold text-white fs-14">Permissions</div>
+					<Input
+						className="mt-3 mb-2 w-75 search-field"
+						placeholder="Enter permissions"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+						allowClear
+					/>
 					{search && !renderTreeNodes(treeData)?.length ? (
 						<span className="text-white d-flex justify-content-center bold">
 							No Data
@@ -392,6 +434,54 @@ const PermissionTabs = ({
 							onExpand={(data) => setExpandedKeys(data)}
 						/>
 					)}
+				</div>
+			</TabPane>
+			<TabPane
+				tab={<span className="permission-tab-header">Restriction</span>}
+				key="restriction"
+			>
+				<div className="permission-tab-content">
+					<div className="text-white">
+						<div className="mb-2">Max visible user verification level</div>
+						{!isEditingRestriction ? (
+							<div className="d-flex align-items-center justify-content-between">
+								<div className="fs-14">
+									{typeof currentMaxVerificationLevel === 'number'
+										? `Current: ${currentMaxVerificationLevel}`
+										: 'No restrictions'}
+								</div>
+								<Button type="primary" onClick={startEditRestriction}>
+									Edit
+								</Button>
+							</div>
+						) : (
+							<div>
+								<InputNumber
+									className="admin-role-input-number"
+									min={0}
+									precision={0}
+									style={{ width: '100%', backgroundColor: '#27339D' }}
+									value={tempMaxLevel}
+									onChange={(value) =>
+										setTempMaxLevel(value == null ? null : Number(value))
+									}
+								/>
+								<div className="d-flex mt-2">
+									<Button
+										type="primary"
+										className="mr-2"
+										onClick={saveEditRestriction}
+									>
+										Save
+									</Button>
+									<Button onClick={cancelEditRestriction}>Cancel</Button>
+								</div>
+							</div>
+						)}
+						<div className="mt-2 fs-12">
+							Only users with verification_level ≤ this value will be listed.
+						</div>
+					</div>
 				</div>
 			</TabPane>
 			<TabPane
@@ -752,14 +842,6 @@ const RoleForm = ({
 				</Form.Item>
 			</div>
 			<div className={isPermissionPopup ? 'd-block' : 'd-none'}>
-				<div className="font-weight-bold text-white fs-14">Permissions</div>
-				<Input
-					className="mt-3 w-75 search-field"
-					placeholder="Enter permissions"
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
-					allowClear
-				/>
 				<PermissionTabs
 					checkedKeys={checkedKeys}
 					setCheckedKeys={setCheckedKeys}
@@ -775,6 +857,7 @@ const RoleForm = ({
 					activeTab={activeTab}
 					setActiveTab={setActiveTab}
 					search={search}
+					setSearch={setSearch}
 				/>
 			</div>
 			<Divider />

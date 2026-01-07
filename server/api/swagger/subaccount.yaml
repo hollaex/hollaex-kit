@@ -1,0 +1,215 @@
+paths:
+  /subaccounts:
+    x-swagger-router-controller: subaccount
+    get:
+      operationId: getUserSubaccounts
+      description: Get list of subaccounts for the authenticated master user. Not available for subaccounts.
+      tags:
+        - User
+        - Subaccount
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              count:
+                type: number
+                format: int32
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    email:
+                      type: string
+                    verification_level:
+                      type: number
+                    is_subaccount:
+                      type: boolean
+                    network_id:
+                      type: number
+                    created_at:
+                      type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /subaccount:
+    x-swagger-router-controller: subaccount
+    post:
+      operationId: createSubaccount
+      description: Create a new subaccount for the authenticated master user. Not available for subaccounts.
+      tags:
+        - User
+        - Subaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - label
+            properties:
+              email:
+                type: string
+                maxLength: 256
+              password:
+                type: string
+                maxLength: 256
+              label:
+                type: string
+                maxLength: 256
+              color:
+                type: string
+                description: Hex color code for the subaccount label
+                default: "#000000"
+              virtual:
+                type: boolean
+                default: false
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+    delete:
+      operationId: deleteSubaccount
+      description: Deactivate a subaccount link. Will fail if the subaccount has any non-zero available balance.
+      tags:
+        - User
+        - Subaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - subaccount_id
+            properties:
+              subaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /subaccount/transfer:
+    x-swagger-router-controller: subaccount
+    post:
+      operationId: transferBetweenAccounts
+      description: Transfer asset to or from a subaccount. Only master users can initiate, and subaccount must belong to the master.
+      tags:
+        - User
+        - Subaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - subaccount_id
+              - currency
+              - amount
+              - direction
+            properties:
+              subaccount_id:
+                type: number
+                format: int32
+              currency:
+                type: string
+                maxLength: 256
+              amount:
+                type: number
+                format: double
+              direction:
+                type: string
+                enum: ['to_sub', 'to_master']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /subaccount/auth:
+    x-swagger-router-controller: subaccount
+    post:
+      operationId: getSubaccountAuthToken
+      description: Master requests a JWT for a subaccount they own.
+      tags:
+        - User
+        - Subaccount
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - subaccount_id
+            properties:
+              subaccount_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user

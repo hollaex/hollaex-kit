@@ -7,12 +7,36 @@ const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
 const { GET_KIT_CONFIG, GET_KIT_SECRETS, DOMAIN } = require('../constants');
-const AUDIT_EMAIL = () => GET_KIT_SECRETS().emails.audit;
+const trimEmail = (v) => (typeof v === 'string' ? v.trim() : '');
+const AUDIT_EMAIL = () => trimEmail(GET_KIT_SECRETS().emails.audit);
+const SENSITIVE_AUDIT_EMAIL = () =>
+	trimEmail(GET_KIT_SECRETS().emails.audit_sensitive ?? AUDIT_EMAIL());
+const AUDIT_ENABLED = () => GET_KIT_SECRETS().emails.audit_enabled ?? true;
+const AUDIT_SENSITIVE_ENABLED = () => GET_KIT_SECRETS().emails.audit_sensitive_enabled ?? true;
 const SENDER_EMAIL = () => GET_KIT_SECRETS().emails.sender;
 const SEND_EMAIL_COPY = () => GET_KIT_SECRETS().emails.send_email_to_support;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
-const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
+
+const SENSITIVE_BCC_MAILTYPES = new Set([
+	MAILTYPE.WITHDRAWAL_REQUEST,
+	MAILTYPE.RESET_PASSWORD,
+	MAILTYPE.RESET_PASSWORD_CODE,
+	MAILTYPE.CHANGE_PASSWORD,
+	MAILTYPE.CHANGE_PASSWORD_CODE
+]);
+
+const BCC_ADDRESSES = (type) => {
+	if (!SEND_EMAIL_COPY()) return [];
+
+	if (SENSITIVE_BCC_MAILTYPES.has(type)) {
+		if (AUDIT_SENSITIVE_ENABLED() && SENSITIVE_AUDIT_EMAIL()) return [SENSITIVE_AUDIT_EMAIL()];
+		return [];
+	}
+
+	if (AUDIT_ENABLED() && AUDIT_EMAIL()) return [AUDIT_EMAIL()];
+	return [];
+};
 const SMTP_SERVER = () => GET_KIT_SECRETS().smtp.server;
 const SMTP_USER = () => GET_KIT_SECRETS().smtp.user;
 
@@ -48,6 +72,7 @@ const sendEmail = (
 		case MAILTYPE.SIGNUP:
 		case MAILTYPE.RESET_PASSWORD:
 		case MAILTYPE.CHANGE_PASSWORD:
+		case MAILTYPE.CHANGE_PASSWORD_CODE:
 		case MAILTYPE.PASSWORD_CHANGED:
 		case MAILTYPE.USER_VERIFICATION_REJECT:
 		case MAILTYPE.ACCOUNT_UPGRADE:
@@ -80,27 +105,29 @@ const sendEmail = (
 		case MAILTYPE.AUTO_TRADE_FILLED:
 		case MAILTYPE.AUTO_TRADE_REMINDER:
 		case MAILTYPE.DOC_REJECTED:
-		case MAILTYPE.DOC_VERIFIED: {
-			to.BccAddresses = BCC_ADDRESSES();
+		case MAILTYPE.DOC_VERIFIED:
+		case MAILTYPE.SUBACCOUNT_REMOVED: {
+			to.BccAddresses = BCC_ADDRESSES(type);
 			break;
 		}
 		case MAILTYPE.DEPOSIT_CANCEL: {
 			if (data.date) data.date = formatDate(data.date);
-			to.BccAddresses = BCC_ADDRESSES();
+			to.BccAddresses = BCC_ADDRESSES(type);
 			break;
 		}
 		case MAILTYPE.ALERT:
 		case MAILTYPE.SUSPICIOUS_DEPOSIT:
 		case MAILTYPE.USER_VERIFICATION:
 		case MAILTYPE.CONTACT_FORM: {
-			to.ToAddresses = [AUDIT_EMAIL()];
+			// Prefer sensitive audit inbox for these high-signal operational emails
+			to.ToAddresses = [SENSITIVE_AUDIT_EMAIL()];
 			break;
 		}
 		case MAILTYPE.OTP_DISABLED:
 		case MAILTYPE.OTP_ENABLED: {
 			if (data.time) data.time = formatDate(data.time, language);
 			if (data.ip) data.country = getCountryFromIp(data.ip);
-			to.BccAddresses = BCC_ADDRESSES();
+			to.BccAddresses = BCC_ADDRESSES(type);
 			break;
 		}
 		default:

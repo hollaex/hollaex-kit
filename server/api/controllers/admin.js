@@ -10,7 +10,7 @@ const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
-const { isEmail } = require('validator');
+const { isEmail, isUUID } = require('validator');
 const { publisher } = require('../../db/pubsub');
 const { parse } = require('json2csv');
 const crypto = require('crypto');
@@ -131,6 +131,50 @@ const putAdminKit = (req, res) => {
 		});
 };
 
+const adminMatchOrder = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/adminMatchOrder auth',
+		req.auth
+	);
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/adminMatchOrder body',
+		req.swagger.params.order.value
+	);
+
+	const { user_id, order_id, symbol, size } = req.swagger.params.order.value || {};
+
+	if (!user_id || typeof user_id !== 'number') {
+		return res.status(400).json({ message: 'Invalid user id' });
+	}
+	if (!order_id || typeof order_id !== 'string' || !isUUID(order_id)) {
+		return res.status(400).json({ message: 'Invalid order id' });
+	}
+	if (!symbol || typeof symbol !== 'string') {
+		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	toolsLib.order.matchUserOrderByKitId(user_id, order_id, symbol, size, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], { user_id, order_id, symbol, size });
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/adminMatchOrder error',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
@@ -177,6 +221,22 @@ const getUsersAdmin = (req, res) => {
 	}
 
 
+	// Derive max visible verification level from the requester's role restrictions (if configured)
+	let maxVisibleVerificationLevel = null;
+	try {
+		const roles = toolsLib.getRoles();
+		const requesterRoleName = req?.auth?.sub?.role;
+		const requesterRole = roles?.find((r) => r.role_name === requesterRoleName);
+		const restrictions = requesterRole?.restrictions || {};
+		const usersRestriction = restrictions?.users || {};
+		const configuredMaxLevel = usersRestriction?.max_view_verification_level ?? restrictions?.max_view_verification_level;
+		if (typeof configuredMaxLevel === 'number') {
+			maxVisibleVerificationLevel = configuredMaxLevel;
+		}
+	} catch (e) {
+		// ignore restriction errors and proceed without max filter
+	}
+
 	toolsLib.user.getAllUsersAdmin({
 		id: id.value,
 		user_id: user_id.value,
@@ -198,6 +258,7 @@ const getUsersAdmin = (req, res) => {
 		gender: gender.value,
 		nationality: nationality.value,
 		verification_level: verification_level.value,
+		max_verification_level: maxVisibleVerificationLevel,
 		email_verified: email_verified.value,
 		otp_enabled: otp_enabled.value,
 		phone_number: phone_number.value,
@@ -2116,6 +2177,7 @@ const setUserBank = (req, res) => {
 				}
 			});
 
+			user.changed('bank_account', true);
 			const updatedUser = await user.update(
 				{ bank_account: newBankAccounts },
 				{ fields: ['bank_account'] }
@@ -2177,6 +2239,7 @@ const verifyUserBank = (req, res) => {
 				return bank;
 			});
 
+			user.changed('bank_account', true);
 			return user.update(
 				{ bank_account: banks },
 				{ fields: ['bank_account'] }
@@ -2223,6 +2286,7 @@ const revokeUserBank = (req, res) => {
 
 			const newBanks = user.bank_account.filter((bank) => bank.id !== bank_id);
 
+			user.changed('bank_account', true);
 			return user.update(
 				{ bank_account: newBanks },
 				{ fields: ['bank_account'] }
@@ -2844,7 +2908,7 @@ const disableUserWithdrawal = (req, res) => {
 		expiry_date
 	);
 
-	toolsLib.user.disableUserWithdrawal(user_id, { expiry_date })
+	toolsLib.user.disableUserWithdrawal(user_id, { expiry_date, override: true })
 		.then((data) => {
 			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
 			loggerAdmin.info(
@@ -3845,4 +3909,5 @@ module.exports = {
 	downloadUserWalletCsv,
 	downloadUserSessionsCsv,
 	downloadBalancesCsv,
+	adminMatchOrder,
 };

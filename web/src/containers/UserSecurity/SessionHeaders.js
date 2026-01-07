@@ -1,11 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { PlusSquareOutlined, MinusSquareOutlined } from '@ant-design/icons';
-import { EditWrapper } from 'components';
+import { EditWrapper, Image, Tooltip } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { getFormatTimestamp } from 'utils/utils';
 
-export const generateHeaders = (revokeSession) => {
+export const generateHeaders = (revokeSession, ICONS = {}) => {
 	return [
 		{
 			key: 'icon',
@@ -58,10 +58,31 @@ export const generateHeaders = (revokeSession) => {
 			label: STRINGS['SESSIONS.CONTENT.TABLE.HEADER.STATUS'],
 			key: 'status',
 			className: 'text-center',
-			renderCell: ({ id, status }, key) => (
+			renderCell: ({ meta, id, status }, key) => (
 				<td key={`${key}-${id}-status`} className={classnames('text-center')}>
 					<div className="d-flex justify-content-center">
-						<div className="mx-2">
+						{meta?.is_sharedaccount && (
+							<Tooltip
+								className="account-tab-options-tooltip mr-2"
+								overlayClassName="account-tab-options-tooltip ml-2"
+								text={STRINGS?.['ACCOUNT_SHARING.SHARED_ACCOUNT_TOOLTIP']}
+								placement="bottom"
+								arrow={false}
+							>
+								<div>
+									<Image
+										iconId="ACCOUNT_SHARING_SHARED_ACCOUNT_BY_YOU"
+										icon={ICONS?.['ACCOUNT_SHARING_SHARED_ACCOUNT_BY_YOU']}
+										svgWrapperClassName="shared-account-icon-session-table"
+									/>
+								</div>
+							</Tooltip>
+						)}
+						<div
+							className={`mx-2 status-label ${
+								meta?.is_sharedaccount ? 'ml-0 ' : 'pl-3'
+							}`}
+						>
 							<EditWrapper stringId="SESSIONS.CONTENT.TABLE.CELL.ACTIVE,SESSIONS.CONTENT.SUBTITLE.LINK">
 								{STRINGS['SESSIONS.CONTENT.TABLE.CELL.ACTIVE']}
 							</EditWrapper>

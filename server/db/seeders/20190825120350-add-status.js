@@ -20,6 +20,8 @@ const {
 	ALLOWED_DOMAINS,
 	CAPTCHA_SECRET_KEY,
 	CAPTCHA_SITE_KEY,
+	CLOUDFLARE_TURNSTILE_SECRET_KEY,
+	CLOUDFLARE_TURNSTILE_SITE_KEY,
 	ADMIN_WHITELIST_IP,
 	ACTIVATION_CODE,
 	NATIVE_CURRENCY,
@@ -144,6 +146,9 @@ module.exports = {
 						captcha: {
 							site_key: CAPTCHA_SITE_KEY
 						},
+						cloudflare_turnstile: {
+							site_key: CLOUDFLARE_TURNSTILE_SITE_KEY || process.env.TURNSTILE_SITE_KEY
+						},
 						defaults: {
 							language: NEW_USER_DEFAULT_LANGUAGE || 'en',
 							theme: DEFAULT_THEME || 'white',
@@ -164,10 +169,16 @@ module.exports = {
 							timezone: EMAILS_TIMEZONE || '',
 							send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
 							sender: '',
-							audit: ''
+							audit: '',
+							audit_sensitive: '',
+							audit_enabled: true,
+							audit_sensitive_enabled: true
 						},
 						captcha: {
 							secret_key: CAPTCHA_SECRET_KEY
+						},
+						cloudflare_turnstile: {
+							secret_key: CLOUDFLARE_TURNSTILE_SECRET_KEY || process.env.TURNSTILE_SECRET_KEY
 						},
 						smtp: {
 							server: SMTP_SERVER || '',

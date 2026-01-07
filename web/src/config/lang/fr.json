@@ -246,7 +246,10 @@
 			"INFORMATION_PENDING_2": "Cela peut prendre entre 10 à 30 minutes. Nous vous enverrons un email une fois que votre {0} est confirmé sur la blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Demande envoyée", "BUTTON_TEXT": "Ok" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Demande envoyée",
+		"BUTTON_TEXT": "Ok"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Entrez votre code d'authentification pour continuer",
 		"OTP_LABEL": "OTP Code",
@@ -448,7 +451,10 @@
 				"FULL_NAME_PLACEHOLDER": "Entrez votre nom complet tel qu'il apparaît sur votre pièce d'identité ",
 				"GENDER_LABEL": "Sexe",
 				"GENDER_PLACEHOLDER": "Saisissez votre sexe",
-				"GENDER_OPTIONS": { "MAN": "Masculin", "WOMAN": "Féminin" },
+				"GENDER_OPTIONS": {
+					"MAN": "Masculin",
+					"WOMAN": "Féminin"
+				},
 				"NATIONALITY_LABEL": "Nationalité",
 				"NATIONALITY_PLACEHOLDER": "Entrez la nationalité sur votre pièce d'identité",
 				"DOB_LABEL": "Date de naissance",
@@ -492,7 +498,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "Type de document d'identité",
 				"TYPE_PLACEHOLDER": "Sélectionnez le type de pièce d'identité",
-				"TYPE_OPTIONS": { "ID": "Identité", "PASSPORT": "Passeport" },
+				"TYPE_OPTIONS": {
+					"ID": "Identité",
+					"PASSPORT": "Passeport"
+				},
 				"ID_NUMBER_LABEL": "Numéro de passeport",
 				"ID_NUMBER_PLACEHOLDER": "Entrez votre numéro de passeport",
 				"ID_PASSPORT_NUMBER_LABEL": "Numéro de passeport",
@@ -865,12 +874,27 @@
 	},
 	"CURRENCY": "Devise",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "marché", "limit": "limite" },
-	"TYPES": { "MARKET": "marché", "LIMIT": "limite" },
+	"TYPES_VALUES": {
+		"market": "marché",
+		"limit": "limite"
+	},
+	"TYPES": {
+		"MARKET": "marché",
+		"LIMIT": "limite"
+	},
 	"SIDE": "Acheter/Vendre",
-	"SIDES_VALUES": { "buy": "acheter", "sell": "vendre" },
-	"SIDES": { "BUY": "acheter", "SELL": "vendre" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "on", "OFF": "off" },
+	"SIDES_VALUES": {
+		"buy": "acheter",
+		"sell": "vendre"
+	},
+	"SIDES": {
+		"BUY": "acheter",
+		"SELL": "vendre"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "on",
+		"OFF": "off"
+	},
 	"SIZE": "Taille",
 	"PRICE": "Prix",
 	"FEE": "Frais",
@@ -1639,7 +1663,10 @@
 		"LABEL": "Montant à déplacer",
 		"FEE": "Frais de transaction : {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "acheté", "sell": "vendu" },
+	"SIDES_VERBS": {
+		"buy": "acheté",
+		"sell": "vendu"
+	},
 	"AVERAGE": "Moyenne",
 	"NETWORK": "Réseau",
 	"CATEGORY": "Catégorie",
@@ -1782,7 +1809,10 @@
 	"FEE_REDUCTION": "Réduction des frais",
 	"FEE_REDUCTION_DESCRIPTION": "*Votre compte bénéficie d'une réduction sur les frais. La réduction s'applique sur les frais de trading en fonction de votre compte.",
 	"CHANGE_PASSWORD_FAILED": "échec du changement de mot de passe",
-	"MARKET_OPTIONS": { "LIST": "Liste", "CARD": "Carte" },
+	"MARKET_OPTIONS": {
+		"LIST": "Liste",
+		"CARD": "Carte"
+	},
 	"ALL": "Tous",
 	"ASSET_TXT": "Actif",
 	"ONE_DAY": "Un jour",
@@ -1859,7 +1889,9 @@
 	"VERIFY_BANK_WITHDRAW": "Afin d'effectuer un retrait, vous devez effectuer votre vérification qui comprend la vérification de vos coordonnées bancaires. Veuillez cliquer sur le bouton Continuer ci-dessous.",
 	"VERIFICATION_TITLE": "Vérification complète",
 	"WITHDRAW_NOTE": "Attention : vous ne pouvez effectuer un retrait que sur un compte à votre nom.",
-	"USER_PAYMENT": { "TITLE": "Paiements" },
+	"USER_PAYMENT": {
+		"TITLE": "Paiements"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Veuillez vérifier votre commande et la confirmer ci-dessous.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Le montant à recevoir est une estimation et n'inclut pas les frais de négociation",
 	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Le devis expirera dans {0} {1}",
@@ -2025,7 +2057,9 @@
 		"TITLE": "La page ne s'ouvre pas automatiquement ?",
 		"TEXT": "Votre navigateur bloque peut-être la page. Essayez plutôt de copier et coller le lien ci-dessous :"
 	},
-	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Pour avoir accès, contactez" },
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Pour avoir accès, contactez"
+	},
 	"FEES_AND_LIMITS": {
 		"LINK": "consulter mes frais et mes limites",
 		"COIN_PAGE_LINK": "Frais et limites de négociation",

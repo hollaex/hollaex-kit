@@ -7,6 +7,7 @@ const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
 const { Op, fn, col } = require('sequelize');
+const { parse } = require('json2csv');
 const BigNumber = require('bignumber.js');
 const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
 const dbQuery = require('./database/query');
@@ -39,6 +40,7 @@ const {
 	STAKE_POOL_NOT_ACTIVE_FOR_UNSTAKING_STATUS,
 	UNSTAKE_PERIOD_ERROR,
 	STAKE_UNSUPPORTED_EXCHANGE_PLAN,
+	NO_ORACLE_PRICE_FOUND,
 	REWARD_CURRENCY_CANNOT_BE_SAME,
 	STAKE_MAX_ACTIVE
 
@@ -191,6 +193,7 @@ const getExchangeStakePools = async (opts = {
 	order: null,
 	start_date: null,
 	end_date: null,
+	status: null,
 	format: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
@@ -200,6 +203,7 @@ const getExchangeStakePools = async (opts = {
 	const query = {
 		where: {
 			created_at: timeframe,
+			...(opts.status && { status: opts.status }),
 		},
 		order: [ordering],
 		...(!opts.format && pagination),
@@ -244,7 +248,6 @@ const createExchangeStakePool = async (stake) => {
 		duration,
 		slashing,
 		early_unstake,
-		max_amount,
 		status,
 		onboarding,
 	} = stake;
@@ -298,6 +301,8 @@ const createExchangeStakePool = async (stake) => {
 	return getModel('stake').create(stake, {
 		fields: [
 			'name',
+			'category',
+			'is_automatic',
 			'user_id',
 			'currency',
 			'reward_currency',
@@ -327,13 +332,7 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
 	const {
 		currency,
 		reward_currency,
-		name,
 		account_id,
-		duration,
-		slashing,
-		early_unstake,
-		slashing_principle_percentage,
-		slashing_earning_percentage,
 		status,
 		onboarding,
 	} = data;
@@ -344,14 +343,7 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
 
 	if (status !== 'uninitialized' && (
 		(currency && currency !== stakePool.currency)
-		|| (name && name !== stakePool.name)
 		|| (reward_currency && reward_currency !== stakePool.reward_currency)
-		|| (account_id && account_id !== stakePool.account_id)
-		|| (duration && duration !== stakePool.duration)
-		|| (slashing && slashing !== stakePool.slashing)
-		|| (early_unstake && early_unstake !== stakePool.early_unstake)
-		|| (slashing_principle_percentage && slashing_principle_percentage !== stakePool.slashing_principle_percentage)
-		|| (slashing_earning_percentage && slashing_earning_percentage !== stakePool.slashing_earning_percentage)
 	)) {
 		throw new Error(INVALID_STAKE_POOL_ACTION);
 	}
@@ -435,6 +427,8 @@ const updateExchangeStakePool = async (id, data, auditInfo) => {
 	return stakePool.update(updatedStakePool, {
 		fields: [
 			'name',
+			'category',
+			'is_automatic',
 			'currency',
 			'reward_currency',
 			'account_id',
@@ -555,6 +549,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 		user_id,
 		stake_id,
 		amount,
+		nav: amount,
 		currency: stakePool.currency,
 		reward_currency: stakePool.reward_currency || stakePool.currency,
 		status: 'staking',
@@ -571,6 +566,7 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 				'user_id',
 				'stake_id',
 				'amount',
+				'nav',
 				'currency',
 				'reward_currency',
 				'status',
@@ -654,6 +650,59 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 	});
 };
 
+const updateExchangeStaker = async (id, data = {}, auditInfo) => {
+	const staker = await getModel('staker').findOne({ where: { id } });
+
+	if (!staker) {
+		throw new Error(STAKER_NOT_EXIST);
+	}
+
+	if (data.nav !== undefined) {
+		const nav = Number(data.nav);
+		if (!Number.isFinite(nav)) {
+			throw new Error('Invalid nav');
+		}
+	}
+
+	if (data.reward !== undefined) {
+		const reward = Number(data.reward);
+		if (!Number.isFinite(reward)) {
+			throw new Error('Invalid reward');
+		}
+	}
+
+	if (data.status !== undefined) {
+		const allowedStatuses = ['staking', 'unstaking', 'closed'];
+		if (!allowedStatuses.includes(data.status)) {
+			throw new Error('Invalid status');
+		}
+	}
+
+	const updatedStaker = {
+		...staker.get({ plain: true }),
+		...Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined))
+	};
+
+	if (auditInfo?.userEmail) {
+		createAuditLog(
+			{ email: auditInfo.userEmail, session_id: auditInfo.sessionId },
+			auditInfo.apiPath,
+			auditInfo.method,
+			updatedStaker,
+			staker.dataValues
+		);
+	}
+
+	const fields = Object.keys(data).filter((key) => data[key] !== undefined);
+	if (!fields.length) {
+		return staker;
+	}
+
+	return staker.update(updatedStaker, {
+		fields
+	});
+};
+
 const unstakeEstimateSlash = async (staker_id) => {
 	const staker = await getModel('staker').findOne({ where: { id: staker_id } });
 
@@ -716,6 +765,7 @@ module.exports = {
 	getExchangeStakers,
 	createExchangeStaker,
 	deleteExchangeStaker,
+	updateExchangeStaker,
 	unstakeEstimateSlash,
 	unstakeEstimateSlashAdmin,
 	fetchStakeAnalytics
