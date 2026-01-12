@@ -10,7 +10,7 @@ import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
 import { unique } from 'utils/data';
 import { Loading } from './utils';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import { formatByLastPrice } from 'utils/currency';
 
 const AssetsRow = ({
 	coinData,
@@ -33,7 +33,6 @@ const AssetsRow = ({
 		oneDayPriceDifferencePercent,
 		lastPrice,
 		key,
-		increment_unit,
 	} = coinData;
 
 	const getAllAvailableMarkets = (key) => {
@@ -140,12 +139,7 @@ const AssetsRow = ({
 									{lastPrice && '$'}
 								</span>
 								<span className="title-font last-price-label">
-									{lastPrice
-										? formatCurrencyByIncrementalUnit(
-												roundPrice,
-												increment_unit
-										  )
-										: '-'}
+									{lastPrice ? formatByLastPrice(roundPrice) : '-'}
 								</span>
 							</div>
 							{(oneDayPriceDifferencePercent && oneDayPriceDifference) ||
@@ -230,9 +224,7 @@ const AssetsRow = ({
 								{lastPrice && '$'}
 							</span>
 							<span className="title-font last-price-label">
-								{lastPrice
-									? formatCurrencyByIncrementalUnit(roundPrice, increment_unit)
-									: '-'}
+								{lastPrice ? formatByLastPrice(roundPrice) : '-'}
 							</span>
 						</div>
 					) : (
