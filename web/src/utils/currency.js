@@ -382,3 +382,38 @@ export const estimatePrice = (key) => {
 
 	return estimatedPrice;
 };
+
+export const formatByLastPrice = (amount = 0) => {
+	const numericAmount = Number(amount);
+
+	if (
+		amount === null ||
+		amount === undefined ||
+		amount === '' ||
+		Number.isNaN(numericAmount)
+	) {
+		return amount;
+	}
+
+	const abs = Math.abs(numericAmount);
+
+	if (numericAmount % 1 === 0) {
+		return numbro(numericAmount).format('0,0');
+	}
+
+	if (abs >= 1e11) {
+		return numbro(Math.round(numericAmount)).format('0,0');
+	}
+
+	let maxDecimals;
+
+	if (abs >= 1e6) {
+		maxDecimals = 2;
+	} else if (abs >= 1) {
+		maxDecimals = 6;
+	} else {
+		maxDecimals = 8;
+	}
+
+	return numbro(numericAmount).format(`0,0.[${'0'.repeat(maxDecimals)}]`);
+};

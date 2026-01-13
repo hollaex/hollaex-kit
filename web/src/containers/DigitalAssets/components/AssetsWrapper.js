@@ -115,21 +115,52 @@ class AssetsWrapper extends Component {
 		return {};
 	};
 
+	getSortFunctions = () => {
+		const { coins } = this.props;
+		return {
+			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
+				data.sort(
+					(a, b) =>
+						(coins[b?.symbol]?.market_cap || 0) -
+						(coins[a?.symbol]?.market_cap || 0)
+				),
+			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) >= 0
+					)
+					?.sort(
+						(a, b) =>
+							(b?.oneDayPriceDifferencePercenVal || 0) -
+							(a?.oneDayPriceDifferencePercenVal || 0)
+					),
+			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) <= 0
+					)
+					?.sort(
+						(a, b) =>
+							(a?.oneDayPriceDifferencePercenVal || 0) -
+							(b?.oneDayPriceDifferencePercenVal || 0)
+					),
+			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
+				data?.sort((a, b) => new Date(b?.created_at) - new Date(a?.created_at)),
+		};
+	};
+
 	getCoinsData = (coinsList, chartValues) => {
 		const { coins, quicktradePairs, setCoinsData } = this.props;
+		const { selectedButton } = this.state;
 		// const topAssets = [];
 		// const remainingAssets = [];
-		const coinsData = coinsList
+		let coinsData = coinsList
 			.map((name) => {
-				const {
-					code,
-					icon_id,
-					symbol,
-					fullname,
-					type,
-					created_at,
-					increment_unit,
-				} = coins[name];
+				const { code, icon_id, symbol, fullname, type, created_at } = coins[
+					name
+				];
 
 				const key = `${code}-usdt`;
 				const pricingData = this.getPricingData(chartValues[key]);
@@ -143,17 +174,20 @@ class AssetsWrapper extends Component {
 					fullname,
 					type,
 					key,
-					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};
 			})
-			?.filter(({ type }) => type === 'blockchain')
-			?.sort(
-				(a, b) =>
-					(coins[b?.symbol]?.market_cap || 0) -
-					(coins[a?.symbol]?.market_cap || 0)
-			);
+			?.filter(({ type }) => type === 'blockchain');
+
+		const sortFunctions = this.getSortFunctions();
+		const sortKey =
+			selectedButton || STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'];
+
+		coinsData = sortFunctions[sortKey]
+			? sortFunctions[sortKey](coinsData)
+			: coinsData;
+
 		// pinned_assets.forEach((pin) => {
 		// 	const asset = coinsData.find(({ symbol }) => symbol === pin);
 		// 	if (asset) {
@@ -295,41 +329,9 @@ class AssetsWrapper extends Component {
 
 	handleMarket = (value) => {
 		const { page, searchValue } = this.state;
-		const { coinsData, coins } = this.props;
+		const { coinsData } = this.props;
 
-		const sortFunctions = {
-			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
-				data.sort(
-					(a, b) =>
-						(coins[b?.symbol]?.market_cap || 0) -
-						(coins[a?.symbol]?.market_cap || 0)
-				),
-			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
-				data
-					?.filter(
-						({ oneDayPriceDifferencePercenVal }) =>
-							(oneDayPriceDifferencePercenVal || 0) >= 0
-					)
-					?.sort(
-						(a, b) =>
-							(b.oneDayPriceDifferencePercenVal || 0) -
-							(a.oneDayPriceDifferencePercenVal || 0)
-					),
-			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
-				data
-					?.filter(
-						({ oneDayPriceDifferencePercenVal }) =>
-							(oneDayPriceDifferencePercenVal || 0) <= 0
-					)
-					?.sort(
-						(a, b) =>
-							(a.oneDayPriceDifferencePercenVal || 0) -
-							(b.oneDayPriceDifferencePercenVal || 0)
-					),
-			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
-				data?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
-		};
-
+		const sortFunctions = this.getSortFunctions();
 		const updatedCoinsData = sortFunctions[value]
 			? sortFunctions[value](coinsData)
 			: coinsData;
