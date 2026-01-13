@@ -37,7 +37,7 @@ import { isLoggedIn } from 'utils/token';
 import { getMiniCharts } from 'actions/chartAction';
 import {
 	countDecimals,
-	formatCurrencyByIncrementalUnit,
+	formatByLastPrice,
 	formatPercentage,
 	formatToCurrency,
 } from 'utils/currency';
@@ -202,15 +202,9 @@ class Home extends Component {
 		const { coins, quicktradePairs, setCoinsData } = this.props;
 		const coinsData = coinsList
 			.map((name) => {
-				const {
-					code,
-					icon_id,
-					symbol,
-					fullname,
-					type,
-					created_at,
-					increment_unit,
-				} = coins[name];
+				const { code, icon_id, symbol, fullname, type, created_at } = coins[
+					name
+				];
 
 				const key = `${code}-usdt`;
 				const pricingData = this.getPricingData(chartValues[key]);
@@ -224,7 +218,6 @@ class Home extends Component {
 					fullname,
 					type,
 					key,
-					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};
@@ -373,7 +366,7 @@ class Home extends Component {
 			data?.oneDayPriceDifferencePercent !== undefined &&
 			data?.oneDayPriceDifference !== undefined;
 		const formattedPrice = data?.lastPrice
-			? formatCurrencyByIncrementalUnit(roundPrice, data?.increment_unit)
+			? formatByLastPrice(roundPrice)
 			: '-';
 
 		return (

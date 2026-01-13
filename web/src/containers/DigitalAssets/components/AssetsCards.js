@@ -15,7 +15,7 @@ import icons from 'config/icons/dark';
 import { Coin, EditWrapper, IconTitle } from 'components';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { Loading } from './utils';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import { formatByLastPrice } from 'utils/currency';
 
 const cardTypes = ['gainers', 'losers', 'newAssets'];
 const cardTitles = [
@@ -104,7 +104,6 @@ const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
 					lastPrice,
 					oneDayPriceDifferencePercent,
 					oneDayPriceDifferencePercenVal,
-					increment_unit,
 				},
 				index
 			) => {
@@ -133,12 +132,7 @@ const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
 						<div className="asset-container align-items-center">
 							<div className="assets-value">
 								<span className="gainer-price">
-									{lastPrice
-										? `$${formatCurrencyByIncrementalUnit(
-												roundPrice,
-												increment_unit
-										  )}`
-										: '-'}
+									{lastPrice ? `$${formatByLastPrice(roundPrice)}` : '-'}
 								</span>
 								{renderPercentage(
 									type === 'newAssets'

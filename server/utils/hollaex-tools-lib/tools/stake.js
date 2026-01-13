@@ -460,6 +460,7 @@ const getExchangeStakers = async (
 		order: null,
 		start_date: null,
 		end_date: null,
+		status: null,
 		format: null
 	}) => {
 
@@ -472,7 +473,8 @@ const getExchangeStakers = async (
 			created_at: timeframe,
 			...(opts.user_id && { user_id: opts.user_id }),
 			...(opts.stake_id && { stake_id: opts.stake_id }),
-			...(opts.currency && { currency: opts.currency })
+			...(opts.currency && { currency: opts.currency }),
+			...(opts.status && { status: opts.status })
 		},
 		order: [ordering],
 		include: [

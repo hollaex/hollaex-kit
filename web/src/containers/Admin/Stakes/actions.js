@@ -95,6 +95,27 @@ export const requestStakersByAdmin = (values) => {
 	return requestAuthenticated(`/admin/stakers?${queryValues}`);
 };
 
+export const requestStakersByAdminCsv = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return axios({
+		method: 'GET',
+		url: `/admin/stakers?${queryValues}`,
+	})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`stakers_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch(() => {});
+};
+
 export const requestStakePoolsDownload = (values) => {
 	const query = querystring.stringify(values);
 	return axios({

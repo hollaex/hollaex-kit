@@ -10,13 +10,14 @@ import {
 	InputNumber,
 	message,
 } from 'antd';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+import { ExclamationCircleFilled, DownloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 
 import { Coin } from 'components';
 import {
 	requestStakersByAdmin,
+	requestStakersByAdminCsv,
 	requestStakePools,
 	getStakingAnalytics,
 	updateStaker,
@@ -57,6 +58,7 @@ const UserStaking = ({
 		unstaking: 1,
 		closed: 3,
 	};
+	const filterStatuses = ['staking', 'unstaking', 'closed'];
 
 	const columns = [
 		{
@@ -265,20 +267,26 @@ const UserStaking = ({
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		let requestQueryValues = {};
-		if (!queryValues?.user_id && !queryValues?.stake_id) return;
+		if (!queryValues) return;
 		setIsLoading(true);
 		if (isUserProfileStakeTab && selectedUserId) {
-			requestQueryValues = {
-				user_id: String(selectedUserId),
-				...(queryValues?.stake_id !== '0' && queryValues),
-			};
+			const cleaned = { ...queryValues, user_id: String(selectedUserId) };
+			if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+			if (cleaned?.user_id === '') delete cleaned.user_id;
+			if (cleaned?.currency === 'all' || cleaned?.currency === '')
+				delete cleaned.currency;
+			if (cleaned?.status === 'all' || cleaned?.status === '')
+				delete cleaned.status;
+			requestQueryValues = cleaned;
 		} else {
-			const { stake_id, user_id } = queryValues || {};
-			if (stake_id === '0') {
-				requestQueryValues = user_id ? { user_id } : {};
-			} else {
-				requestQueryValues = user_id === '' ? { stake_id } : { ...queryValues };
-			}
+			const cleaned = { ...(queryValues || {}) };
+			if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+			if (cleaned?.user_id === '') delete cleaned.user_id;
+			if (cleaned?.currency === 'all' || cleaned?.currency === '')
+				delete cleaned.currency;
+			if (cleaned?.status === 'all' || cleaned?.status === '')
+				delete cleaned.status;
+			requestQueryValues = cleaned;
 		}
 		requestStakersByAdmin({ page, limit, ...requestQueryValues })
 			.then((response) => {
@@ -300,6 +308,21 @@ const UserStaking = ({
 				// const message = error.message;
 				setIsLoading(false);
 			});
+	};
+
+	const requestDownload = () => {
+		if (!queryValues) return;
+		const cleaned = { ...(queryValues || {}) };
+		if (isUserProfileStakeTab && selectedUserId) {
+			cleaned.user_id = String(selectedUserId);
+		}
+		if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+		if (cleaned?.user_id === '') delete cleaned.user_id;
+		if (cleaned?.currency === 'all' || cleaned?.currency === '')
+			delete cleaned.currency;
+		if (cleaned?.status === 'all' || cleaned?.status === '')
+			delete cleaned.status;
+		requestStakersByAdminCsv({ ...cleaned, format: 'csv' });
 	};
 
 	const pageChange = (count, pageSize) => {
@@ -532,6 +555,74 @@ const UserStaking = ({
 									</div>
 								</span>
 							</div>
+							<div className="staking-pool-filter-container">
+								<span>
+									<div>Filter by Currency</div>
+									<div className="pt-2">
+										<Select
+											showSearch
+											className="select-box"
+											dropdownClassName="stake-pool-filter-dropdown"
+											value={queryValues?.currency || 'all'}
+											placeholder="Select Currency"
+											onChange={(e) => {
+												setQueryValues((prev) => ({
+													...prev,
+													currency: e,
+												}));
+											}}
+											filterOption={(input, option) =>
+												option?.props?.children
+													?.toLowerCase()
+													?.includes(input?.toLowerCase())
+											}
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
+										>
+											<Select.Option key="all" value="all">
+												All
+											</Select.Option>
+											{Object.keys(coins || {}).map((symbol) => (
+												<Select.Option key={symbol} value={symbol}>
+													{symbol?.toUpperCase()}
+												</Select.Option>
+											))}
+										</Select>
+									</div>
+								</span>
+							</div>
+							<div className="staking-pool-filter-container">
+								<span>
+									<div>Filter by Status</div>
+									<div className="pt-2">
+										<Select
+											className="select-box"
+											dropdownClassName="stake-pool-filter-dropdown"
+											value={queryValues?.status || 'all'}
+											placeholder="Select Status"
+											onChange={(e) => {
+												setQueryValues((prev) => ({
+													...prev,
+													status: e,
+												}));
+											}}
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
+										>
+											<Select.Option key="all" value="all">
+												All
+											</Select.Option>
+											{filterStatuses.map((st) => (
+												<Select.Option key={st} value={st}>
+													{st}
+												</Select.Option>
+											))}
+										</Select>
+									</div>
+								</span>
+							</div>
 						</span>
 
 						<div>
@@ -631,6 +722,20 @@ const UserStaking = ({
 						<Spin spinning={isLoading}>
 							<Table
 								className="blue-admin-table"
+								title={() => (
+									<div className="d-flex justify-content-end align-items-center">
+										<Button
+											onClick={requestDownload}
+											type="default"
+											icon={<DownloadOutlined />}
+										>
+											Download Table
+										</Button>
+										<div className="ml-2 secondary-text">
+											Total: {queryFilters?.total || 0}
+										</div>
+									</div>
+								)}
 								columns={columns}
 								dataSource={
 									userData.sort((a, b) => {

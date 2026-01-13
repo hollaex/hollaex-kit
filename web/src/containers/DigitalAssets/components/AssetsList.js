@@ -302,26 +302,31 @@ const AssetsList = ({
 					</tbody>
 				</table>
 			</div>
-			{!hideViewMore && coinsListData?.length >= pageSize && (
-				<div className="d-flex content-center view-more-btn mb-2">
-					<div
-						className="blue-link underline-text pointer"
-						onClick={goToNextPage}
-					>
-						{STRINGS['STAKE_DETAILS.VIEW_MORE']}
+			{!hideViewMore &&
+				!initialLoading &&
+				getSortedList()?.length &&
+				coinsListData?.length >= pageSize && (
+					<div className="d-flex content-center view-more-btn mb-2">
+						<div
+							className="blue-link underline-text pointer"
+							onClick={goToNextPage}
+						>
+							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
+						</div>
+					</div>
+				)}
+			{!initialLoading && getSortedList()?.length && (
+				<div className="d-flex content-center view-more-btn mb-4">
+					<div className="blue-link pointer caps" onClick={onHandleScrollToTop}>
+						<EditWrapper stringId="DIGITAL_ASSETS.BACK_TO_TOP">
+							<span className="underline-text">
+								{STRINGS['DIGITAL_ASSETS.BACK_TO_TOP']}
+								<ArrowUpOutlined />
+							</span>
+						</EditWrapper>
 					</div>
 				</div>
 			)}
-			<div className="d-flex content-center view-more-btn mb-4">
-				<div className="blue-link pointer caps" onClick={onHandleScrollToTop}>
-					<EditWrapper stringId="DIGITAL_ASSETS.BACK_TO_TOP">
-						<span className="underline-text">
-							{STRINGS['DIGITAL_ASSETS.BACK_TO_TOP']}
-							<ArrowUpOutlined />
-						</span>
-					</EditWrapper>
-				</div>
-			</div>
 		</div>
 	);
 };
