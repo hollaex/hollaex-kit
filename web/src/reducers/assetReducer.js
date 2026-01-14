@@ -6,10 +6,11 @@ import {
 	SET_PRICES_AND_ASSET_PENDING,
 	SET_PRICES_AND_ASSET_FAILURE,
 	SET_DASH_TOKEN,
+	SET_SOCKET_PRICES,
 } from 'actions/assetActions';
 
 const INITIAL_STATE = {
-	oraclePrices: {},
+	wsPriceData: {},
 	totalAsset: 0,
 	chartData: [],
 	allCoins: [],
@@ -38,6 +39,15 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 
 		case SET_DASH_TOKEN:
 			return { ...state, ...payload };
+
+		case SET_SOCKET_PRICES:
+			return {
+				...state,
+				wsPriceData: {
+					...state.wsPriceData,
+					...payload.wsPriceData,
+				},
+			};
 
 		default:
 			return state;

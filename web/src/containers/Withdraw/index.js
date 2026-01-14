@@ -421,7 +421,7 @@ class Withdraw extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	prices: store.asset.oraclePrices,
+	prices: store.asset.wsPriceData,
 	balance: store.user.balance,
 	// fee: store.user.fee,
 	verification_level: store.user.verification_level,

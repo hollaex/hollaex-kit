@@ -1177,7 +1177,7 @@ class TransactionsHistory extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	prices: store.asset.oraclePrices,
+	prices: store.asset.wsPriceData,
 	pairs: store.app.pairs,
 	coins: store.app.coins,
 	quicktradePairs: quicktradePairSelector(store),

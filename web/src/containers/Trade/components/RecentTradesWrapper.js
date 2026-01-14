@@ -80,7 +80,7 @@ RecentTradesWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-	prices: state.asset.oraclePrices,
+	prices: state.asset.wsPriceData,
 	userTrades: userTradesSelector(state),
 	recentTradesMarket: state.app.recentTradesMarket,
 	fetched: state.wallet.trades.fetched,

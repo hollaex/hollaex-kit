@@ -11,6 +11,7 @@ import {
 export const SET_PRICES_AND_ASSET_PENDING = 'SET_PRICES_AND_ASSET_PENDING';
 export const SET_PRICES_AND_ASSET_SUCCESS = 'SET_PRICES_AND_ASSET_SUCCESS';
 export const SET_PRICES_AND_ASSET_FAILURE = 'SET_PRICES_AND_ASSET_FAILURE';
+export const SET_SOCKET_PRICES = 'SET_SOCKET_PRICES';
 export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
@@ -23,24 +24,19 @@ export const setPricesAndAssetPending = () => {
 };
 
 export const setPricesAndAsset = (balance, coins) => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });
-		getPrices({ coins })
-			.then((prices) => {
-				const totalAsset = calculateBalancePrice(balance, prices, coins);
 
-				dispatch({
-					type: SET_PRICES_AND_ASSET_SUCCESS,
-					payload: {
-						oraclePrices: prices,
-						totalAsset,
-						chartData: generateChartData(balance, prices, coins, totalAsset),
-					},
-				});
-			})
-			.catch((err) => {
-				dispatch({ type: SET_PRICES_AND_ASSET_FAILURE });
-			});
+		const wsPriceData = getState()?.asset?.wsPriceData || {};
+		const totalAsset = calculateBalancePrice(balance, wsPriceData, coins);
+
+		dispatch({
+			type: SET_PRICES_AND_ASSET_SUCCESS,
+			payload: {
+				totalAsset,
+				chartData: generateChartData(balance, wsPriceData, coins, totalAsset),
+			},
+		});
 	};
 };
 
@@ -88,22 +84,15 @@ export const setDashToken = (dashToken) => {
 	};
 };
 
-const ENDPOINTS = {
-	GET_PRICE: '/oracle/prices',
-};
-
-export const getPrices = async ({
-	amount = 1,
-	quote = localStorage?.getItem('base_currnecy')
-		? localStorage?.getItem('base_currnecy')
-		: 'usdt',
-	coins = {},
-}) => {
-	const assets = Object.keys(coins).join();
-	const { data: prices = {} } = await axios.get(ENDPOINTS.GET_PRICE, {
-		params: { amount, quote, assets },
-	});
-	return prices;
+export const setSocketprices = (prices) => {
+	return (dispatch) => {
+		dispatch({
+			type: SET_SOCKET_PRICES,
+			payload: {
+				wsPriceData: prices,
+			},
+		});
+	};
 };
 
 export const generateChartData = (balance, prices, coins, totalAsset) => {

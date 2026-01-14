@@ -9,7 +9,6 @@ import {
 	formatCurrencyByIncrementalUnit,
 	calculateOraclePrice,
 } from 'utils/currency';
-import { getPrices } from 'actions/assetActions';
 import { Coin } from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import './index.scss';
@@ -22,7 +21,7 @@ class Wallets extends Component {
 		showSweep: null,
 		walletNum: null,
 		constants: {},
-		oraclePrices: {},
+		wsPriceData: {},
 	};
 
 	UNSAFE_componentWillMount() {
@@ -33,19 +32,20 @@ class Wallets extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
+		if (
+			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins) ||
+			JSON.stringify(prevProps.wsPriceData) !==
+				JSON.stringify(this.props.wsPriceData)
+		) {
 			this.fetchPrices();
 		}
 	}
 
-	fetchPrices = async () => {
-		try {
-			const { coins } = this.props;
-			if (!coins || !Object.keys(coins).length) return;
-			const prices = await getPrices({ coins });
-			this.setState({ oraclePrices: prices });
-		} catch (e) {
-			// ignore price fetch errors for summary display
+	fetchPrices = () => {
+		const { coins, wsPriceData } = this.props;
+		if (!coins || !Object.keys(coins)?.length) return;
+		if (wsPriceData && Object.keys(wsPriceData)?.length > 0) {
+			this.setState({ wsPriceData: wsPriceData });
 		}
 	};
 
@@ -95,7 +95,7 @@ class Wallets extends Component {
 	};
 
 	render() {
-		const { balance, loading, error, oraclePrices } = this.state;
+		const { balance, loading, error, wsPriceData } = this.state;
 		const { coins } = this.props;
 		const sortedCoins = Object.keys(coins).sort();
 
@@ -139,7 +139,7 @@ class Wallets extends Component {
 			if (balance && balance[`${coin}_balance`]) {
 				const inc_unit = coins[coin]?.increment_unit;
 				const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-				const price = oraclePrices?.[coin] || 0;
+				const price = wsPriceData?.[coin] || 0;
 				const est = calculateOraclePrice(balance[`${coin}_balance`], price);
 				let asset = {
 					symbol: coin,
@@ -163,7 +163,7 @@ class Wallets extends Component {
 		});
 
 		// Sort by estimated desc if prices available
-		if (Object.keys(oraclePrices).length) {
+		if (Object.keys(wsPriceData)?.length) {
 			data.sort((a, b) => Number(b.estimated || 0) - Number(a.estimated || 0));
 		}
 
@@ -211,6 +211,7 @@ class Wallets extends Component {
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	coins: state.app.coins,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 export default connect(mapStateToProps)(Wallets);
