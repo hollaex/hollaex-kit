@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	calculateBalancePrice,
