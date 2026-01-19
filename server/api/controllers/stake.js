@@ -361,6 +361,12 @@ const deleteExchangeStaker = (req, res) => {
 
 	toolsLib.stake.deleteExchangeStaker(req.swagger.params.data.value.id, req.auth.sub.id)
 		.then(() => {
+			toolsLib.user.createAuditLog(
+				{ email: req?.auth?.sub?.email, session_id: req?.session_id },
+				req?.swagger?.apiPath,
+				req?.swagger?.operationPath?.[2],
+				req?.swagger?.params?.data?.value
+			);
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake.' });
 		})
