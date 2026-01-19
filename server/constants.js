@@ -315,6 +315,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `deposit:${symbolOrUserId}`;
 		case 'withdrawal':
 			return `withdrawal:${symbolOrUserId}`;
+		case 'stake':
+			return `stake:${symbolOrUserId}`;
 		case 'admin':
 			return 'admin';
 		case 'chat':
@@ -327,6 +329,7 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 };
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
 exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
+exports.WS_PUBSUB_STAKE_CHANNEL = 'channel:ws:stake';
 exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 // Redis keys
 exports.PRICE_HASH_KEY = 'WS:PRICE_USDT';
