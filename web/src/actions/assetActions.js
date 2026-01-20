@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	calculateBalancePrice,
@@ -22,20 +23,44 @@ export const setPricesAndAssetPending = () => {
 	};
 };
 
+const ENDPOINTS = {
+	GET_PRICE: '/oracle/prices',
+};
+
+export const getPrices = async ({
+	amount = 1,
+	quote = localStorage?.getItem('base_currnecy')
+		? localStorage?.getItem('base_currnecy')
+		: 'usdt',
+	coins = {},
+}) => {
+	const assets = Object.keys(coins).join();
+	const { data: prices = {} } = await axios.get(ENDPOINTS.GET_PRICE, {
+		params: { amount, quote, assets },
+	});
+	return prices;
+};
+
 export const setPricesAndAsset = (balance, coins) => {
-	return (dispatch, getState) => {
+	return async (dispatch, getState) => {
 		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });
 
-		const wsPriceData = getState()?.asset?.wsPriceData || {};
-		const totalAsset = calculateBalancePrice(balance, wsPriceData, coins);
+		try {
+			const prices = await getPrices({ coins });
+			const wsPriceData = getState()?.asset?.wsPriceData || {};
+			const totalAsset = calculateBalancePrice(balance, wsPriceData, coins);
 
-		dispatch({
-			type: SET_PRICES_AND_ASSET_SUCCESS,
-			payload: {
-				totalAsset,
-				chartData: generateChartData(balance, wsPriceData, coins, totalAsset),
-			},
-		});
+			dispatch({
+				type: SET_PRICES_AND_ASSET_SUCCESS,
+				payload: {
+					oraclePrices: prices,
+					totalAsset,
+					chartData: generateChartData(balance, wsPriceData, coins, totalAsset),
+				},
+			});
+		} catch (err) {
+			dispatch({ type: SET_PRICES_AND_ASSET_FAILURE });
+		}
 	};
 };
 

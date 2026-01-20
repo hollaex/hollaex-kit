@@ -10,6 +10,7 @@ import {
 } from 'actions/assetActions';
 
 const INITIAL_STATE = {
+	oraclePrices: {},
 	wsPriceData: {},
 	totalAsset: 0,
 	chartData: [],
