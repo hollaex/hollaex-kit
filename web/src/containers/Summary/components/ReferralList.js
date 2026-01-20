@@ -1950,7 +1950,6 @@ const ReferralList = ({
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
-	pricesInNative: state.asset.oraclePrices,
 	dust: state.app.constants.dust,
 	referral_history_config: state.app.constants.referral_history_config,
 	affiliation: state.user.affiliation || {},

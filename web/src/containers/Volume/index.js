@@ -368,7 +368,6 @@ const Volume = ({
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
-	pricesInNative: state.asset.oraclePrices,
 	quicktrade: state.app.quicktrade,
 	pairs: state.app.pairs,
 	nativeCurrency: state.app.constants.native_currency,

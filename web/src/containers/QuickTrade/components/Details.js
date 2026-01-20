@@ -29,6 +29,7 @@ const Details = ({
 	isCoinPage = false,
 	pairs,
 	isLoading = false,
+	wsPriceData = {},
 }) => {
 	const [sevenDayData, setSevenDayData] = useState({});
 	const [oneDayData, setOneDayData] = useState({});
@@ -45,9 +46,9 @@ const Details = ({
 
 	const { icon_id } = coins[pairBase] || {};
 
-	const getPricingData = (price) => {
+	const getPricingData = (price, wsPrice = null) => {
 		const firstPrice = price[0];
-		const lastPrice = price[price.length - 1];
+		const lastPrice = wsPrice ? wsPrice : price[price?.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
 			(priceDifference / firstPrice) * 100
@@ -84,19 +85,21 @@ const Details = ({
 		const handleDataUpdate = () => {
 			const { price, time } = coinChartData;
 			if (price && time) {
+				const wsPrice = wsPriceData[pairBase] || null;
+
 				const indexOneDay = getIndexofOneDay(time);
 				const oneDayChartPrices = price.slice(indexOneDay, price.length);
 				setOneDayChartData(getLastValuesFromParts(oneDayChartPrices));
-				setOneDayData(getPricingData(oneDayChartPrices));
+				setOneDayData(getPricingData(oneDayChartPrices, wsPrice));
 				setSevenDayChartData(getLastValuesFromParts(price));
-				setSevenDayData(getPricingData(price));
+				setSevenDayData(getPricingData(price, wsPrice));
 			}
 		};
 
 		handleDataUpdate();
 		//  TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [coinChartData, pair]);
+	}, [coinChartData, pair, wsPriceData]);
 
 	useEffect(() => {
 		const renderSevenDays = () => {
@@ -361,6 +364,7 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	coins: store.app.coins,
 	constants: store.app.constants,
+	wsPriceData: store.asset.wsPriceData,
 });
 
 export default connect(mapStateToProps)(withRouter(Details));

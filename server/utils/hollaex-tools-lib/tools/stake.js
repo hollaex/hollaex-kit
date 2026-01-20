@@ -587,6 +587,22 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 			time: moment().unix()
 		}));
 
+		sendEmail(
+			MAILTYPE.STAKE_CREATED,
+			user.email,
+			{
+				stake_name: stakePool.name,
+				amount,
+				currency: stakePool.currency,
+				reward_currency: stakePool.reward_currency || stakePool.currency,
+				status: stakerData.status,
+				duration: stakePool.duration,
+				start_date: stakerData.created_at,
+				end_date: stakerData.closing
+			},
+			user.settings
+		);
+
 		return stakerData;
 	} catch (error) {
 		const adminAccount = await getUserByKitId(1);

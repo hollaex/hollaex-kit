@@ -21,6 +21,7 @@ const AssetsRow = ({
 	icons,
 	coins,
 	selectedButton,
+	wsPriceData = {},
 }) => {
 	const {
 		icon_id,
@@ -31,9 +32,10 @@ const AssetsRow = ({
 		priceDifferencePercent,
 		oneDayPriceDifference,
 		oneDayPriceDifferencePercent,
-		lastPrice,
 		key,
 	} = coinData;
+
+	const wsPrice = wsPriceData[symbol] ? wsPriceData[symbol] : null;
 
 	const getAllAvailableMarkets = (key) => {
 		if (quicktrade?.length) {
@@ -95,7 +97,6 @@ const AssetsRow = ({
 	};
 
 	const markets = getAllAvailableMarkets(symbol);
-	const roundPrice = lastPrice?.split(',')?.join('');
 
 	return (
 		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
@@ -136,10 +137,10 @@ const AssetsRow = ({
 						<div>
 							<div className="d-flex justify-content-end">
 								<span className="title-font last-price-label">
-									{lastPrice && '$'}
+									{wsPrice && '$'}
 								</span>
 								<span className="title-font last-price-label">
-									{lastPrice ? formatByLastPrice(roundPrice) : '-'}
+									{wsPrice ? formatByLastPrice(wsPrice) : '-'}
 								</span>
 							</div>
 							{(oneDayPriceDifferencePercent && oneDayPriceDifference) ||
@@ -221,10 +222,10 @@ const AssetsRow = ({
 					{!loading ? (
 						<div className="d-flex justify-content-end">
 							<span className="title-font last-price-label">
-								{lastPrice && '$'}
+								{wsPrice && '$'}
 							</span>
 							<span className="title-font last-price-label">
-								{lastPrice ? formatByLastPrice(roundPrice) : '-'}
+								{wsPrice ? formatByLastPrice(wsPrice) : '-'}
 							</span>
 						</div>
 					) : (
@@ -349,6 +350,7 @@ const AssetsRow = ({
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 export default connect(mapStateToProps)(AssetsRow);

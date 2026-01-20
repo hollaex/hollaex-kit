@@ -628,6 +628,49 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
 		html = html.replace(/\$\{confirmation_code\}/g, data);
 	}
+	else if (type === MAILTYPE.STAKE_CREATED) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{stake_name\}/g, data.stake_name || '');
+		html = html.replace(/\$\{amount\}/g, data.amount || '');
+		html = html.replace(/\$\{currency\}/g, (data.currency || '').toUpperCase());
+		html = html.replace(/\$\{reward_currency\}/g, (data.reward_currency || data.currency || '').toUpperCase());
+		html = html.replace(/\$\{status\}/g, data.status || '');
+		if (data.duration) {
+			html = html.replace(/\$\{duration\}/g, data.duration);
+		} else {
+			html = html.replace(/<span id='duration'>[\s\S]*?<\/span>/, '');
+		}
+		if (data.start_date) {
+			html = html.replace(/\$\{start_date\}/g, data.start_date);
+		} else {
+			html = html.replace(/<span id='start_date'>[\s\S]*?<\/span>/, '');
+		}
+		if (data.end_date) {
+			html = html.replace(/\$\{end_date\}/g, data.end_date);
+		} else {
+			html = html.replace(/<span id='end_date'>[\s\S]*?<\/span>/, '');
+		}
+	}
+	else if (type === MAILTYPE.STAKE_SETTLED) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{stake_name\}/g, data.stake_name || '');
+		html = html.replace(/\$\{status\}/g, data.status || '');
+		html = html.replace(/\$\{amount_returned\}/g, data.amount_returned || '');
+		html = html.replace(/\$\{currency\}/g, (data.currency || '').toUpperCase());
+		html = html.replace(/\$\{reward_currency\}/g, (data.reward_currency || data.currency || '').toUpperCase());
+		if (data.reward_amount) {
+			html = html.replace(/\$\{reward_amount\}/g, data.reward_amount);
+		} else {
+			html = html.replace(/<span id='reward_amount'>[\s\S]*?<\/span>/, '');
+		}
+		if (data.end_date) {
+			html = html.replace(/\$\{end_date\}/g, data.end_date);
+		} else {
+			html = html.replace(/<span id='end_date'>[\s\S]*?<\/span>/, '');
+		}
+	}
 	return html;
 };
 

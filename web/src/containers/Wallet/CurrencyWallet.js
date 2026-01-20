@@ -152,23 +152,23 @@ class Wallet extends Component {
 			(val) => val[1].symbol === currency
 		);
 		const [assetsValue] = filteredAssets.map(
-			([_, { increment_unit, oraclePrice }]) => ({
+			([_, { increment_unit, wsPrice }]) => ({
 				increment_unit,
-				oraclePrice,
+				wsPrice,
 			})
 		);
 		const balanceText =
 			assetsValue &&
 			assetsValue.increment_unit &&
 			assetsValue &&
-			assetsValue.oraclePrice
+			assetsValue.wsPrice
 				? currency === BASE_CURRENCY
 					? formatCurrencyByIncrementalUnit(
 							balanceValue,
 							assetsValue.increment_unit
 					  )
 					: formatCurrencyByIncrementalUnit(
-							calculateOraclePrice(balanceValue, assetsValue.oraclePrice),
+							calculateOraclePrice(balanceValue, assetsValue.wsPrice),
 							baseCoin.increment_unit
 					  )
 				: null;

@@ -93,6 +93,7 @@ const mapStateToProps = (store) => ({
 	balance: store.user.balance,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
+	wsPriceData: store.asset.wsPriceData,
 	chartData: store.asset.chartData,
 	activeNotification: store.app.activeNotification,
 	activeLanguage: store.app.language,

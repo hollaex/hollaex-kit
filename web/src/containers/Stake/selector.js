@@ -8,7 +8,7 @@ const getUserStakes = (state) => state.stake.userStakes;
 
 const getUserAccount = (state) => state.stake.account;
 
-const getOraclePrices = (state) => state.asset.oraclePrices;
+const getSocketPrices = (state) => state.asset.wsPriceData;
 
 const getPublicInfo = (state) => state.stake.publicInfo;
 
@@ -75,7 +75,7 @@ const getValue = (balances, prices) => {
 };
 
 export const userStakesValueSelector = createSelector(
-	[getOraclePrices, userActiveStakesSelector],
+	[getSocketPrices, userActiveStakesSelector],
 	(prices = {}, { totalUserStakes, totalUserEarnings }) => {
 		const totalStakesValue = getValue(totalUserStakes, prices);
 		const totalEarningsValue = getValue(totalUserEarnings, prices);
@@ -88,7 +88,7 @@ export const publicInfoSelector = createSelector(
 	[
 		getUserAccount,
 		getPublicInfo,
-		getOraclePrices,
+		getSocketPrices,
 		userActiveStakesSelector,
 		getPots,
 		getDistributions,

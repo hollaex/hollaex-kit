@@ -303,19 +303,19 @@ const AssetsList = ({
 				</table>
 			</div>
 			{!hideViewMore &&
-				!initialLoading &&
-				getSortedList()?.length &&
-				coinsListData?.length >= pageSize && (
-					<div className="d-flex content-center view-more-btn mb-2">
-						<div
-							className="blue-link underline-text pointer"
-							onClick={goToNextPage}
-						>
-							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-						</div>
+			!initialLoading &&
+			getSortedList()?.length &&
+			coinsListData?.length >= pageSize ? (
+				<div className="d-flex content-center view-more-btn mb-2">
+					<div
+						className="blue-link underline-text pointer"
+						onClick={goToNextPage}
+					>
+						{STRINGS['STAKE_DETAILS.VIEW_MORE']}
 					</div>
-				)}
-			{!initialLoading && getSortedList()?.length && (
+				</div>
+			) : null}
+			{!initialLoading && getSortedList()?.length ? (
 				<div className="d-flex content-center view-more-btn mb-4">
 					<div className="blue-link pointer caps" onClick={onHandleScrollToTop}>
 						<EditWrapper stringId="DIGITAL_ASSETS.BACK_TO_TOP">
@@ -326,7 +326,7 @@ const AssetsList = ({
 						</EditWrapper>
 					</div>
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

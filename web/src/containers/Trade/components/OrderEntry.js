@@ -732,7 +732,6 @@ const mapStateToProps = (state) => {
 		bids,
 		marketPrice,
 		order_entry_data: state.orderbook.order_entry_data,
-		oraclePrices: state.asset.oraclePrices,
 		estimatedPrice,
 	};
 };

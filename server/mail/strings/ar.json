@@ -36,6 +36,14 @@
 			"html": "<div><p> ${name}العزيز </p><p>لقد قدّمت طلب سحب${currency} بمبلغ ${amount} الى ${address}<br /><br />المبلغ: ${amount}<br />الرسوم: ${fee} ${currency}<br /><div id='address'>العنوان: ${address}<br /></div><div id='network'>شبكة الاتصال: ${network}<br /></div><br />لتأكيد هذا السحب ، انقر على الزر أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">أيٍّد</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات في حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} سحب  طلب"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>مطلوب التحقق من المستخدم</h3><div>قام المستخدم '${email}' بتحميل مستنداته للتحقق منها. يرجى التحقق من وثائقه.</div></div>",
 			"title": "التحقق من المستخدم"
