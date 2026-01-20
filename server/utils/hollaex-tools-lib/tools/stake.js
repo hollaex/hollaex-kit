@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
-const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`);
+const { STAKE_SUPPORTED_PLANS, WS_PUBSUB_STAKE_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
@@ -14,6 +14,7 @@ const dbQuery = require('./database/query');
 const moment = require('moment');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
+const { publisher } = require('./database/redis');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -577,6 +578,15 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 			]
 		});
 
+		publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+			topic: 'stake',
+			action: 'insert',
+			user_id: user.id,
+			user_network_id: user.network_id,
+			data: stakerData.get({ plain: true }),
+			time: moment().unix()
+		}));
+
 		return stakerData;
 	} catch (error) {
 		const adminAccount = await getUserByKitId(1);
@@ -641,7 +651,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 		slashed: slashedValues.slashingEarning,
 		unstaked_date: new Date()
 	};
-	return staker.update(updatedStaker, {
+	const updatedRecord = await staker.update(updatedStaker, {
 		fields: [
 			'status',
 			'amount',
@@ -650,6 +660,17 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 			'unstaked_date'
 		]
 	});
+
+	publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+		topic: 'stake',
+		action: 'delete',
+		user_id: user.id,
+		user_network_id: user.network_id,
+		data: updatedRecord.get({ plain: true }),
+		time: moment().unix()
+	}));
+
+	return updatedRecord;
 };
 
 const updateExchangeStaker = async (id, data = {}, auditInfo) => {
@@ -658,6 +679,8 @@ const updateExchangeStaker = async (id, data = {}, auditInfo) => {
 	if (!staker) {
 		throw new Error(STAKER_NOT_EXIST);
 	}
+
+	const user = await getUserByKitId(staker.user_id);
 
 	if (data.nav !== undefined) {
 		const nav = Number(data.nav);
@@ -700,9 +723,22 @@ const updateExchangeStaker = async (id, data = {}, auditInfo) => {
 		return staker;
 	}
 
-	return staker.update(updatedStaker, {
+	const updatedRecord = await staker.update(updatedStaker, {
 		fields
 	});
+
+	if (user) {
+		publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+			topic: 'stake',
+			action: 'update',
+			user_id: user.id,
+			user_network_id: user.network_id,
+			data: updatedRecord.get({ plain: true }),
+			time: moment().unix()
+		}));
+	}
+
+	return updatedRecord;
 };
 
 const unstakeEstimateSlash = async (staker_id) => {
