@@ -406,7 +406,8 @@ export const formatByLastPrice = (amount = 0) => {
 		amount === null ||
 		amount === undefined ||
 		amount === '' ||
-		Number.isNaN(numericAmount)
+		Number.isNaN(numericAmount) ||
+		!Number.isFinite(numericAmount)
 	) {
 		return amount;
 	}
@@ -421,9 +422,8 @@ export const formatByLastPrice = (amount = 0) => {
 	}
 
 	let maxDecimals;
-	if (abs >= 1e7) maxDecimals = 2;
-	else if (abs >= 1e3) maxDecimals = 4;
-	else if (abs >= 1) maxDecimals = 6;
+	if (abs >= 1e2) maxDecimals = 2;
+	else if (abs >= 1) maxDecimals = 4;
 	else maxDecimals = 8;
 
 	return numbro(numericAmount).format(`0,0.[${'0'.repeat(maxDecimals)}]`);

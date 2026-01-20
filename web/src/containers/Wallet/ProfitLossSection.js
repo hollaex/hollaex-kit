@@ -460,7 +460,7 @@ const ProfitLossSection = ({
 					const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					const selectedCoin = assets.find((coin) => coin[0] === symbol);
 					const { increment_unit } = selectedCoin;
-					const oraclePrice = pricesInNative[coin?.symbol];
+					const wsPrice = pricesInNative[coin?.symbol];
 					const balance = balances[`${coin?.symbol}_balance`];
 					const incrementUnit = coins[coin.symbol].increment_unit;
 					const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -481,7 +481,7 @@ const ProfitLossSection = ({
 						coin?.symbol === BASE_CURRENCY
 							? formatCurrencyByIncrementalUnit(balance, increment_unit)
 							: formatCurrencyByIncrementalUnit(
-									calculateOraclePrice(balance, oraclePrice),
+									calculateOraclePrice(balance, wsPrice),
 									baseCoin.increment_unit
 							  );
 					const totalValue = currentBalance?.total;
@@ -1136,7 +1136,7 @@ const ProfitLossSection = ({
 														key,
 														{
 															increment_unit,
-															oraclePrice,
+															wsPrice,
 															balance,
 															fullname,
 															symbol = '',
@@ -1158,7 +1158,7 @@ const ProfitLossSection = ({
 																	increment_unit
 															  )
 															: formatCurrencyByIncrementalUnit(
-																	calculateOraclePrice(balance, oraclePrice),
+																	calculateOraclePrice(balance, wsPrice),
 																	baseCoin.increment_unit
 															  );
 													return (
@@ -1465,7 +1465,7 @@ const ProfitLossSection = ({
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
-	pricesInNative: state.asset.oraclePrices,
+	pricesInNative: state.asset.wsPriceData,
 	dust: state.app.constants.dust,
 	balance_history_config: state.app.constants.balance_history_config,
 	chartData: state.asset.chartData,

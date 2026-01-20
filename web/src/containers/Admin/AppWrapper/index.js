@@ -39,6 +39,7 @@ import {
 	getRole,
 	// eslint-disable-next-line
 	getPermissions,
+	getToken,
 } from 'utils/token';
 import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
 import { logout } from 'actions/authAction';
@@ -57,14 +58,19 @@ import {
 	requestConstant,
 	setRolesList,
 } from 'actions/appActions';
-import { SESSION_TIME } from 'config/constants';
+import { SESSION_TIME, WS_URL } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import MobileSider from './mobileSider';
 import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
 import { requestMyPlugins } from 'containers/Admin/Plugins/action';
-import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
+import {
+	setAllPairs,
+	setCoins,
+	setExchange,
+	setSocketprices,
+} from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
 import {
@@ -131,7 +137,9 @@ class AppWrapper extends React.Component {
 			isConfigure: false,
 			isDisplaySearchPopup: false,
 			search: '',
+			priceSocket: null,
 		};
+		this.pingInterval = null;
 	}
 
 	onHandleRoleDetails = async () => {
@@ -143,7 +151,82 @@ class AppWrapper extends React.Component {
 		}
 	};
 
+	transformPriceData = (priceData) => {
+		const transformedData = {};
+		if (priceData && typeof priceData === 'object') {
+			Object.keys(priceData).forEach((coin) => {
+				const coinData = priceData[coin];
+				if (
+					coinData &&
+					typeof coinData === 'object' &&
+					coinData?.price !== undefined
+				) {
+					transformedData[coin] = coinData?.price;
+				}
+			});
+		}
+		return transformedData;
+	};
+
+	connectPriceWebSocket = () => {
+		const url = `${WS_URL}/stream?authorization=Bearer ${getToken()}`;
+		const priceSocket = new WebSocket(url);
+
+		priceSocket.onopen = () => {
+			this.setState({ priceSocket });
+
+			priceSocket.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: ['price'],
+				})
+			);
+
+			this.pingInterval = setInterval(() => {
+				if (priceSocket.readyState === WebSocket.OPEN) {
+					priceSocket.send(JSON.stringify({ op: 'ping' }));
+				}
+			}, 55000);
+		};
+
+		priceSocket.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			if (data?.topic === 'price') {
+				if (data?.action === 'partial' || data?.action === 'update') {
+					const transformedPrices = this.transformPriceData(data?.data);
+					this.props.setSocketprices(transformedPrices);
+				}
+			}
+		};
+
+		priceSocket.onclose = () => {
+			clearInterval(this.pingInterval);
+			setTimeout(() => {
+				if (
+					!this.props?.wsPriceData ||
+					Object.keys(this.props?.wsPriceData)?.length === 0
+				) {
+					this.connectPriceWebSocket();
+				}
+			}, 3000);
+		};
+
+		priceSocket.onerror = (error) => {
+			console.error('Price WebSocket error:', error);
+			clearInterval(this.pingInterval);
+			priceSocket.close();
+		};
+
+		return priceSocket;
+	};
+
 	componentDidMount() {
+		if (
+			!this.props?.wsPriceData ||
+			Object.keys(this.props?.wsPriceData)?.length === 0
+		) {
+			this.connectPriceWebSocket();
+		}
 		this.getData();
 		this.onHandleRoleDetails();
 		// this.getAssets();
@@ -207,6 +290,12 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		this.resetTimer && this.resetTimer.cancel();
+		if (this.pingInterval) {
+			clearInterval(this.pingInterval);
+		}
+		if (this.state?.priceSocket) {
+			this.state.priceSocket.close();
+		}
 	}
 
 	getData = async () => {
@@ -811,6 +900,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	user: state.user,
 	rolesList: state.app.rolesList,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -829,6 +919,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
 	setRolesList: bindActionCreators(setRolesList, dispatch),
+	setSocketprices: bindActionCreators(setSocketprices, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

@@ -517,7 +517,6 @@ const mapStateToProps = (store) => ({
 	coinData: store.app.coins,
 	prices: store.orderbook.prices,
 	balanceData: store.user.balance,
-	oraclePrices: store.asset.oraclePrices,
 	constants: store.app.constants,
 	markets: MarketsSelector(store),
 });
