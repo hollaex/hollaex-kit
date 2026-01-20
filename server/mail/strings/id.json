@@ -36,6 +36,14 @@
 			"html": "<div><p> Kepada ${name} </p><p>Anda telah membuat permintaan penarikan ${currency} dengan jumlah ${amount} ke ${address}<br /><br />Jumlah: ${amount}<br />Biaya: ${fee} ${currency}<br /><div id='address'>Alamat: ${address}<br /></div><div id='network'>Jaringan: ${network}<br /></div><br />Untuk konfirmasi penarikan ini, silakan klik tombol di bawah.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Konfirmasi</Button></a></div><p>Jika Anda tidak ingin melanjutkan permintaan ini, silakan abaikan ini; tidak ada perubahan pada akun Anda.</p><p>Permintaan dari: ${ip}</p><p> Salam<br> ${api_name} tim </p></div>",
 			"title": "${currency} Penarikan Permintaan"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Verifikasi Pengguna Diperlukan</h3><div>Pengguna '${email}' telah mengupload dokumen untuk verifikasi. Silakan verifikasi dokumennya.</div></div>",
 			"title": "Verifikasi Pengguna"

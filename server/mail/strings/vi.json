@@ -36,6 +36,14 @@
 			"html": "<div><p> ${name} thân mến </p><p>Quý khách vừa thực hiện yêu cầu rút ${currency} với số lượng ${amount} tới ${address}<br /><br />Số lượng: ${amount}<br />Phí: ${fee} ${currency}<br /><div id='address'>Địa chỉ: ${address}<br /></div><div id='network'>Mạng: ${network}<br /></div><br />Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Xác nhận</Button></a></div><p>Trong trường hợp không mong muốn thay đổi nêu trên, hãy bỏ qua tin nhắn này. Chúng tôi sẽ không thực hiện bất kỳ thay đổi nào trên tài khoản của quý khách.</p><p>Yêu cầu được gửi đến từ: ${ip}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
 			"title": "Yêu cầu ${currency} Rút tiền"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Đã yêu cầu xác thực người dùng</h3><div>Khách hàng có địa chỉ email '${email}' đã tải lên hồ sơ để yêu cầu xác thực. Vui lòng xác thực hồ sơ của người dùng này.</div></div>",
 			"title": "Xác thực người dùng"

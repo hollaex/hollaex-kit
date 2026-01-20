@@ -36,6 +36,14 @@
 			"html": "<div><p> Bonjour ${name} </p><p>Vous avez fait une demande de retrait ${currency} d'un montant de ${amount} à l'adresse suivante ${address}<br /><br />Montant: ${amount}<br />Frais : ${fee} ${currency}<br /><div id='address'>Addresse : ${address}<br /></div><div id='network'>Réseau: ${network}<br /></div><br />Pour confirmer le retrait, veuillez cliquer dur le bouton ci-dessous.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmer</Button></a></div><p>Si cette demande a été faite par erreur, il est prudent de l'ignorer ; aucune modification ne sera apportée à votre compte.</p><p>Demande initiée depuis : ${ip}</p><p> Bien cordialement<br> l'équipe ${api_name} </p></div>",
 			"title": "${currency} Retrait Demande"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Vérification de l'utilisateur</h3><div>Utilisateur \"${email}\" a téléchargé ses documents pour vérification. Veuillez vérifier ses documents.</div></div>",
 			"title": "Vérification de l'utilisateur"

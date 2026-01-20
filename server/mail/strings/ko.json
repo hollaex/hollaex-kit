@@ -36,6 +36,14 @@
 			"html": "<div><p> ${name}님 </p><p>회원님은 ${address} 로 ${amount} 의 ${currency}을 출금요청하였습니다.<br /><br />금액: ${amount}<br />수수료: ${fee} ${currency}<br /><div id='address'>주소: ${address}<br /></div><div id='network'>회로망: ${network}<br /></div><br />출금 요청을 완료하시려면 아래버튼을 클릭해주시기 바랍니다.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">나의 계정 활성화</Button></a></div><p>만약 이 요청을 원하지 않는다면, 회원님의 계정에는 변경사항이 없으니 본 메일을 무시해 주시기 바랍니다.</p><p>요청하신곳: ${ip}</p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
 			"title": "${currency} 출금 요청"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>사용자 확인 필요</h3><div>사용자 '${email}' 이(가) 확인을 위해 문서를 업로드했습니다. 그의 문서를 확인하십시오.</div></div>",
 			"title": "사용자 확인"
