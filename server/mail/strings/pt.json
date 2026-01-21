@@ -37,12 +37,12 @@
 			"title": "${currency} Saque Solicitação"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> Dear ${name} </p><p>Sua solicitação de staking foi criada.</p><p>Staking: ${stake_name}<br />Quantia: ${amount} ${currency}<br />Moeda de recompensa: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duração: ${duration} dias<br /></span><span id='start_date'>Data de início: ${start_date}<br /></span><span id='end_date'>Data de término: ${end_date}<br /></span></p><p> Saudações<br> ${api_name} equipe </p></div>",
+			"title": "Staking criado"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> Dear ${name} </p><p>Seu staking foi liquidado e encerrado.</p><p>Staking: ${stake_name}<br />Status: ${status}<br />Devolvido: ${amount_returned} ${currency}<br /><span id='reward_amount'>Recompensa: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Data de término: ${end_date}<br /></span></p><p> Saudações<br> ${api_name} equipe </p></div>",
+			"title": "Staking liquidado"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Verificação de usuário necessária</h3><div>O usuário '${email}' fez o upload de seus documentos para verificação. Por favor, verifique-os.</div></div>",

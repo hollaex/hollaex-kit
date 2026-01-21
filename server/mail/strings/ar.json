@@ -37,12 +37,12 @@
 			"title": "${currency} سحب  طلب"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> ${name}العزيز </p><p>تم إنشاء طلب التخزين.</p><p>التخزين: ${stake_name}<br />المبلغ: ${amount} ${currency}<br />عملة المكافأة: ${reward_currency}<br />الحالة: ${status}<br /><span id='duration'>المدة: ${duration} يومًا<br /></span><span id='start_date'>تاريخ البدء: ${start_date}<br /></span><span id='end_date'>تاريخ الانتهاء: ${end_date}<br /></span></p><p> تحية<br> فريق${api_name} </p></div>",
+			"title": "تم إنشاء التخزين"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> ${name}العزيز </p><p>تمت تسوية التخزين وإغلاقه.</p><p>التخزين: ${stake_name}<br />الحالة: ${status}<br />المعاد: ${amount_returned} ${currency}<br /><span id='reward_amount'>المكافأة: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>تاريخ الانتهاء: ${end_date}<br /></span></p><p> تحية<br> فريق${api_name} </p></div>",
+			"title": "تمت تسوية التخزين"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>مطلوب التحقق من المستخدم</h3><div>قام المستخدم '${email}' بتحميل مستنداته للتحقق منها. يرجى التحقق من وثائقه.</div></div>",

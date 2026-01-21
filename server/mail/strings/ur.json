@@ -57,12 +57,12 @@
 			"title": "${currency} واپسی کی درخواست"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> محترم ${name} </p><p>آپ کی اسٹیکنگ کی درخواست بنائی گئی ہے۔</p><p>اسٹیکنگ: ${stake_name}<br />رقم: ${amount} ${currency}<br />انعامی کرنسی: ${reward_currency}<br />حالت: ${status}<br /><span id='duration'>مدت: ${duration} دن<br /></span><span id='start_date'>شروع کی تاریخ: ${start_date}<br /></span><span id='end_date'>اختتام کی تاریخ: ${end_date}<br /></span></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اسٹیکنگ بنائی گئی"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> محترم ${name} </p><p>آپ کی اسٹیکنگ طے ہو چکی ہے اور بند کر دی گئی ہے۔</p><p>اسٹیکنگ: ${stake_name}<br />حالت: ${status}<br />واپس کی گئی رقم: ${amount_returned} ${currency}<br /><span id='reward_amount'>انعام: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>اختتام کی تاریخ: ${end_date}<br /></span></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اسٹیکنگ طے ہو گئی"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>صارف کی تصدیق کی ضرورت ہے۔</h3><div>User \"${email}\" تصدیق کے لیے اپنی دستاویزات اپ لوڈ کیں۔ براہ کرم اس کے دستاویزات کی تصدیق کریں۔</div></div>",

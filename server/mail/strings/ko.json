@@ -37,12 +37,12 @@
 			"title": "${currency} 출금 요청"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> ${name}님 </p><p>스테이킹 요청이 생성되었습니다.</p><p>스테이킹: ${stake_name}<br />수량: ${amount} ${currency}<br />보상 통화: ${reward_currency}<br />상태: ${status}<br /><span id='duration'>기간: ${duration}일<br /></span><span id='start_date'>시작일: ${start_date}<br /></span><span id='end_date'>종료일: ${end_date}<br /></span></p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"title": "스테이킹 생성됨"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> ${name}님 </p><p>스테이킹이 정산되어 종료되었습니다.</p><p>스테이킹: ${stake_name}<br />상태: ${status}<br />반환: ${amount_returned} ${currency}<br /><span id='reward_amount'>보상: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>종료일: ${end_date}<br /></span></p><p> 이용해 주셔서 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"title": "스테이킹 정산됨"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>사용자 확인 필요</h3><div>사용자 '${email}' 이(가) 확인을 위해 문서를 업로드했습니다. 그의 문서를 확인하십시오.</div></div>",

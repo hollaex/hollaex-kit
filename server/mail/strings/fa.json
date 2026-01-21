@@ -37,12 +37,12 @@
 			"title": "${currency} برداشت درخواست"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p>  کاربر عزیز${name} </p><p>درخواست استیکینگ شما ایجاد شد.</p><p>استیکینگ: ${stake_name}<br />مبلغ: ${amount} ${currency}<br />ارز پاداش: ${reward_currency}<br />وضعیت: ${status}<br /><span id='duration'>مدت: ${duration} روز<br /></span><span id='start_date'>تاریخ شروع: ${start_date}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "ایجاد استیکینگ"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p>  کاربر عزیز${name} </p><p>استیکینگ شما تسویه و بسته شد.</p><p>استیکینگ: ${stake_name}<br />وضعیت: ${status}<br />بازگشتی: ${amount_returned} ${currency}<br /><span id='reward_amount'>پاداش: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "تسویه استیکینگ"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",

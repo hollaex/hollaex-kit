@@ -37,12 +37,12 @@
 			"title": "${currency} Retrait Demande"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> Bonjour ${name} </p><p>Votre demande de staking a été créée.</p><p>Staking: ${stake_name}<br />Montant: ${amount} ${currency}<br />Devise de récompense: ${reward_currency}<br />Statut: ${status}<br /><span id='duration'>Durée: ${duration} jours<br /></span><span id='start_date'>Date de début: ${start_date}<br /></span><span id='end_date'>Date de fin: ${end_date}<br /></span></p><p> Bien cordialement<br> l'équipe ${api_name} </p></div>",
+			"title": "Staking créé"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> Bonjour ${name} </p><p>Votre staking a été réglé et clôturé.</p><p>Staking: ${stake_name}<br />Statut: ${status}<br />Retourné: ${amount_returned} ${currency}<br /><span id='reward_amount'>Récompense: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Date de fin: ${end_date}<br /></span></p><p> Bien cordialement<br> l'équipe ${api_name} </p></div>",
+			"title": "Staking réglé"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Vérification de l'utilisateur</h3><div>Utilisateur \"${email}\" a téléchargé ses documents pour vérification. Veuillez vérifier ses documents.</div></div>",
