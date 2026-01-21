@@ -703,8 +703,10 @@ const QuickTrade = ({
 
 	const calculateSlippage = () => {
 		const { price = [] } = chartData[symbol] || chartData[flippedPair] || {};
-		const [base = ''] = symbol?.split('-') || [];
-		const wsPrice = wsPriceData[base] || null;
+		const activePair =
+			activeQuickTradePair || getQuickTradePairInfo() || symbol;
+		const [base = '', quote = ''] = activePair?.split('-') || [];
+		const wsPrice = wsPriceData[base] / wsPriceData[quote] || null;
 		const pricingData = getPricingData(price, wsPrice);
 		const lastPrice = wsPrice
 			? wsPrice
@@ -1109,7 +1111,8 @@ const QuickTrade = ({
 				lineChartData?.price || chartData[chartDataKey]?.price;
 			if (chartPriceData && chartPriceData.length > 0) {
 				const [chartBase, chartQuote] = chartDataKey?.split('-');
-				const wsPrice = wsPriceData[chartBase] || null;
+				const wsPrice =
+					wsPriceData[chartBase] / wsPriceData[chartQuote] || null;
 				const lastPrice = wsPrice
 					? wsPrice
 					: chartPriceData[chartPriceData?.length - 1];
@@ -1131,6 +1134,10 @@ const QuickTrade = ({
 				chartData[expectedSymbol]?.price &&
 				chartData[expectedSymbol]?.price?.length > 0
 			) {
+				const [base, quote] = expectedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					return wsPriceData[base] / wsPriceData[quote];
+				}
 				return chartData[expectedSymbol]?.price[
 					chartData[expectedSymbol]?.price?.length - 1
 				];
@@ -1139,6 +1146,11 @@ const QuickTrade = ({
 				chartData[expectedFlippedSymbol]?.price &&
 				chartData[expectedFlippedSymbol]?.price?.length > 0
 			) {
+				const [base, quote] = expectedFlippedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					const lastPrice = wsPriceData[quote] / wsPriceData[base];
+					return 1 / lastPrice;
+				}
 				return (
 					1 /
 					chartData[expectedFlippedSymbol]?.price[
@@ -1156,8 +1168,11 @@ const QuickTrade = ({
 		const chartDataKey = activeQuickTradePair || quickTradePairSymbol;
 		const chartPriceData =
 			lineChartData?.price || chartData[chartDataKey]?.price;
-
+		const [base = '', quote = ''] = chartDataKey?.split('-');
 		if (chartPriceData && chartPriceData?.length > 0) {
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
+			}
 			return chartPriceData[chartPriceData?.length - 1];
 		}
 
@@ -1165,6 +1180,9 @@ const QuickTrade = ({
 			chartData[quickTradePairSymbol]?.price &&
 			chartData[quickTradePairSymbol]?.price?.length > 0
 		) {
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
+			}
 			return chartData[quickTradePairSymbol]?.price[
 				chartData[quickTradePairSymbol]?.price?.length - 1
 			];
