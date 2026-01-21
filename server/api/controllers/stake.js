@@ -338,7 +338,6 @@ const createStaker = (req, res) => {
 		req.auth.sub.id
 	)
 		.then((data) => {
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
@@ -367,7 +366,6 @@ const deleteExchangeStaker = (req, res) => {
 				req?.swagger?.operationPath?.[2],
 				req?.swagger?.params?.data?.value
 			);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json({ message: 'Successfully deleted stake.' });
 		})
 		.catch((err) => {
@@ -403,7 +401,6 @@ const updateExchangeStaker = (req, res) => {
 				req?.swagger?.operationPath?.[2],
 				req?.swagger?.params?.data?.value
 			);
-			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshApi' }));
 			return res.json(data);
 		})
 		.catch((err) => {
