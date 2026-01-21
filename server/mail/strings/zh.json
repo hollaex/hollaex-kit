@@ -37,12 +37,12 @@
 			"title": "${currency} 提款 申请"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> ${name} </p><p>您的质押请求已创建。</p><p>质押: ${stake_name}<br />金额: ${amount} ${currency}<br />奖励币种: ${reward_currency}<br />状态: ${status}<br /><span id='duration'>期限: ${duration} 天<br /></span><span id='start_date'>开始日期: ${start_date}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已创建"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> ${name} </p><p>您的质押已结算并关闭。</p><p>质押: ${stake_name}<br />状态: ${status}<br />返还: ${amount_returned} ${currency}<br /><span id='reward_amount'>奖励: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已结算"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>需要用戶驗證</h3><div> 用戶'${email}'上傳了他的文件以供驗證。 請核實他的文件。</div></div>",

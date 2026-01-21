@@ -37,12 +37,12 @@
 			"title": "${currency} 出金 リクエスト"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> ${name}様 </p><p>ステーキング申請が作成されました。</p><p>ステーキング: ${stake_name}<br />金額: ${amount} ${currency}<br />報酬通貨: ${reward_currency}<br />状態: ${status}<br /><span id='duration'>期間: ${duration} 日<br /></span><span id='start_date'>開始日: ${start_date}<br /></span><span id='end_date'>終了日: ${end_date}<br /></span></p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "ステーキング作成"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> ${name}様 </p><p>ステーキングは精算され、終了しました。</p><p>ステーキング: ${stake_name}<br />状態: ${status}<br />返還: ${amount_returned} ${currency}<br /><span id='reward_amount'>報酬: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>終了日: ${end_date}<br /></span></p><p> 敬具<br> ${api_name} チーム </p></div>",
+			"title": "ステーキング精算"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>ユーザー本人確認要請</h3><div>ユーザー '${email}' uが本人確認書類をアップロードしました。書類の確認をお願いします。</div></div>",

@@ -57,12 +57,12 @@
 			"title": "${currency} Зарлагын хүсэлт"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны стейкинг хүсэлт үүсгэгдлээ.</p><p>Стейкинг: ${stake_name}<br />Дүн: ${amount} ${currency}<br />Шагналын валют: ${reward_currency}<br />Төлөв: ${status}<br /><span id='duration'>Хугацаа: ${duration} өдөр<br /></span><span id='start_date'>Эхлэх огноо: ${start_date}<br /></span><span id='end_date'>Дуусах огноо: ${end_date}<br /></span></p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Стейкинг үүсгэгдлээ"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны стейкинг тооцоологдож хаагдлаа.</p><p>Стейкинг: ${stake_name}<br />Төлөв: ${status}<br />Буцаалт: ${amount_returned} ${currency}<br /><span id='reward_amount'>Шагнал: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Дуусах огноо: ${end_date}<br /></span></p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Стейкинг тооцоологдлоо"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Баталгаажуулалт шаардлагатай байна</h3><div> \"${email}\" хаягтай хэрэглэгч бичиг баримтаа баталгаажуулахаар илгээсэн байна. Бичиг баримтыг нь шалгана уу.</div></div>",

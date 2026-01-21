@@ -41,12 +41,12 @@
 			"title": "${currency} Çekim İsteği"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> Sayın ${name} </p><p>Staking talebiniz oluşturuldu.</p><p>Staking: ${stake_name}<br />Miktar: ${amount} ${currency}<br />Ödül para birimi: ${reward_currency}<br />Durum: ${status}<br /><span id='duration'>Süre: ${duration} gün<br /></span><span id='start_date'>Başlangıç tarihi: ${start_date}<br /></span><span id='end_date'>Bitiş tarihi: ${end_date}<br /></span></p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"title": "Staking oluşturuldu"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> Sayın ${name} </p><p>Staking işleminiz sonuçlandırıldı ve kapatıldı.</p><p>Staking: ${stake_name}<br />Durum: ${status}<br />İade: ${amount_returned} ${currency}<br /><span id='reward_amount'>Ödül: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Bitiş tarihi: ${end_date}<br /></span></p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"title": "Staking sonuçlandı"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Kullanıcı Onayı Gerekmektedir</h3><div> \"${email}\" kullanıcısı, onay için belgelerini yüklemiştir. Lütfen dökümanlarını inceleyiniz.</div></div>",

@@ -37,12 +37,12 @@
 			"title": "${currency} Abbuchung Anfrage"
 		},
 		"STAKE_CREATED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Created"
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre Staking-Anfrage wurde erstellt.</p><p>Staking: ${stake_name}<br />Betrag: ${amount} ${currency}<br />Belohnungswährung: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Dauer: ${duration} Tage<br /></span><span id='start_date'>Startdatum: ${start_date}<br /></span><span id='end_date'>Enddatum: ${end_date}<br /></span></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Staking erstellt"
 		},
 		"STAKE_SETTLED": {
-			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
-			"title": "Staking Settled"
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Staking wurde abgerechnet und geschlossen.</p><p>Staking: ${stake_name}<br />Status: ${status}<br />Rückzahlung: ${amount_returned} ${currency}<br /><span id='reward_amount'>Belohnung: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Enddatum: ${end_date}<br /></span></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Staking abgerechnet"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Benutzerverifizierung erforderlich</h3><div>Der Benutzer '${email}' hat seine Dokumente zur Überprüfung hochgeladen. Bitte verifizieren Sie seine Dokumente.</div></div>",
