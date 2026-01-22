@@ -196,7 +196,11 @@ class Trade extends PureComponent {
 			constants: { features: { pro_trade = false } = {} } = {},
 			setIsProTrade,
 		} = this.props;
-		if (!isReady || !pro_trade) {
+		if (
+			!isReady ||
+			!pro_trade ||
+			Object.keys(this.props?.pairs || {})?.length === 0
+		) {
 			router.push('/summary');
 		}
 		this.setSymbol(this.props.routeParams.pair);

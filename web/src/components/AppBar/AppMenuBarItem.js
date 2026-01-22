@@ -129,7 +129,7 @@ const AppMenuBarItem = ({
 			title: 'CONVERT',
 			description: 'DESKTOP_NAVIGATION.CONVERT_DESC',
 			path: `/quick-trade/${pair}`,
-			isDisplay: features?.quick_trade,
+			isDisplay: features?.quick_trade && Object.keys(pairs || {})?.length > 0,
 		},
 		{
 			icon: 'TRADE_OPTION_ICON',
@@ -139,7 +139,7 @@ const AppMenuBarItem = ({
 				getFavourites && getFavourites?.length && filteredMarkets?.length > 0
 					? `/trade/${filteredMarkets[0]}`
 					: `/trade/${getMarkets[0]?.key}`,
-			isDisplay: features?.pro_trade,
+			isDisplay: features?.pro_trade && Object.keys(pairs || {})?.length > 0,
 		},
 		{
 			icon: 'P2P_OPTION_ICON',
