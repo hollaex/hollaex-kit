@@ -85,8 +85,10 @@ const Details = ({
 		const handleDataUpdate = () => {
 			const { price, time } = coinChartData;
 			if (price && time) {
-				const wsPrice = wsPriceData[pairBase] || null;
-
+				const wsPrice =
+					pairBase && pair_2
+						? wsPriceData[pairBase] / wsPriceData[pair_2]
+						: null;
 				const indexOneDay = getIndexofOneDay(time);
 				const oneDayChartPrices = price.slice(indexOneDay, price.length);
 				setOneDayChartData(getLastValuesFromParts(oneDayChartPrices));
