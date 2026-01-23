@@ -119,11 +119,18 @@ class Stake extends Component {
 			JSON.stringify(this.state?.selectedStaking)
 		) {
 			this.openCurrentTab();
+			if (this.state.selectedStaking === 'defi') {
+				this.setBlockNumberInterval();
+			} else {
+				this.clearBlockNumberInterval();
+			}
 		}
 	}
 
 	componentDidMount() {
-		this.setBlockNumberInterval();
+		if (this.state.selectedStaking === 'defi') {
+			this.setBlockNumberInterval();
+		}
 		this.openCurrentTab();
 	}
 

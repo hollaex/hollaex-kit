@@ -38,6 +38,7 @@ import STRINGS from 'config/localizedStrings';
 import Connections from './Connections';
 import AccountTab from './AccountTab';
 import AnnouncementList from './AnnouncementList';
+import { setPairsTradesFetched } from 'actions/orderbookAction';
 
 class AppBar extends Component {
 	state = {
@@ -59,6 +60,7 @@ class AppBar extends Component {
 			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		this.props.getTickers();
+		this.props.setPairsTradesFetched(true);
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
@@ -787,6 +789,7 @@ const mapDispatchToProps = (dispatch) => ({
 		setIsActiveSelectedAnnouncement,
 		dispatch
 	),
+	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 });
 
 export default connect(
