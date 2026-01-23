@@ -328,8 +328,12 @@ const createStaker = (req, res) => {
 	loggerStake.verbose(
 		req.uuid,
 		'controllers/stake/createStaker data',
+		'stake pool id',
 		stake_id,
-		amount
+		'amount',
+		amount,
+		'user id',
+		req.auth.sub.id
 	);
 
 	toolsLib.stake.createExchangeStaker(
@@ -338,6 +342,12 @@ const createStaker = (req, res) => {
 		req.auth.sub.id
 	)
 		.then((data) => {
+			loggerStake.info(
+				req.uuid,
+				'controllers/stake/createStaker created',
+				'data',
+				data
+			);
 			return res.json(data);
 		})
 		.catch((err) => {

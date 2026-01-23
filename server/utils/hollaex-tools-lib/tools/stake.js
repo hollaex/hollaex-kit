@@ -3,6 +3,7 @@
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
 const { STAKE_SUPPORTED_PLANS, WS_PUBSUB_STAKE_CHANNEL } = require(`${SERVER_PATH}/constants`);
+const { loggerStake } = require('../../../config/logger');
 const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
@@ -562,6 +563,17 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
 	await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', false, { category: 'stake' });
 
+	loggerStake.info(
+		'hollaex-tools-lib/stake/createExchangeStaker transfer success',
+		'user id',
+		user_id,
+		'stake id',
+		stake_id,
+		'amount',
+		amount,
+		'currency',
+		stakePool.currency
+	);
 
 	try {
 		const stakerData = await getModel('staker').create(staker, {
@@ -605,6 +617,11 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
 		return stakerData;
 	} catch (error) {
+		loggerStake.info(
+			'hollaex-tools-lib/stake/createExchangeStaker error',
+			'error',
+			error.message
+		);
 		const adminAccount = await getUserByKitId(1);
 		sendEmail(
 			MAILTYPE.ALERT,
