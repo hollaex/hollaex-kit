@@ -106,9 +106,7 @@ const unstakingCheckRunner = () => {
 					staker
 				);
 
-				await staker.update({ status: 'closed' }, {
-					fields: ['status']
-				});
+				await toolsLib.stake.updateExchangeStaker(staker.id, { status: 'closed' });
 
 				loggerPlugin.verbose(
 					'/plugins unstakingCheckRunner staker updated successfully',
@@ -136,6 +134,21 @@ const unstakingCheckRunner = () => {
 						stakePool.currency,
 						'total',
 						totalAmount
+					);
+
+					sendEmail(
+						MAILTYPE.STAKE_SETTLED,
+						user.email,
+						{
+							stake_name: stakePool.name,
+							status: 'closed',
+							amount_returned: totalAmount,
+							currency: stakePool.currency,
+							reward_amount: stakePool.reward_currency !== stakePool.currency ? amountAfterSlash : '',
+							reward_currency: stakePool.reward_currency || stakePool.currency,
+							end_date: staker.closing || staker.updated_at
+						},
+						user.settings
 					);
 
 				} catch (error) {

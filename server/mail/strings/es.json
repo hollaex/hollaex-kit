@@ -36,6 +36,14 @@
 			"html": "<div><p> Estimado/ Estimada ${name} </p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}<br /><br />Cantidad: ${amount}<br />Fee: ${fee} ${currency}<br /><div id='address'>Dirección: ${address}<br /></div><div id='network'>La red: ${network}<br /></div><br />In order to confirm this withdrawal, please click the button below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p>Si esta solicitud se hizo por error, es seguro ignorarla; no se harán cambios en su cuenta.</p><p>Solicitud iniciada de: ${ip}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
 			"title": "${currency} Retirada Request"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Estimado/ Estimada ${name} </p><p>Su solicitud de staking ha sido creada.</p><p>Staking: ${stake_name}<br />Cantidad: ${amount} ${currency}<br />Moneda de recompensa: ${reward_currency}<br />Estado: ${status}<br /><span id='duration'>Duración: ${duration} días<br /></span><span id='start_date'>Fecha de inicio: ${start_date}<br /></span><span id='end_date'>Fecha de finalización: ${end_date}<br /></span></p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+			"title": "Staking creado"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Estimado/ Estimada ${name} </p><p>Su staking ha sido liquidado y cerrado.</p><p>Staking: ${stake_name}<br />Estado: ${status}<br />Devuelto: ${amount_returned} ${currency}<br /><span id='reward_amount'>Recompensa: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Fecha de finalización: ${end_date}<br /></span></p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+			"title": "Staking liquidado"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Se requiere la verificación del usuario</h3><div>Usuario '${email}' subió sus documentos para verificarlos. Por favor, verifique sus documentos.</div></div>",
 			"title": "Verificación de usuario"

@@ -29,6 +29,16 @@ const findBrokerPairForSymbol = async (symbol) => {
 	}
 };
 
+const getHedgingTradeId = (matchResponse) => {
+	if (!matchResponse) return null;
+	if (matchResponse.trade_id != null) return matchResponse.trade_id;
+	if (matchResponse.id != null) return matchResponse.id;
+	if (matchResponse.data?.trade_id != null) return matchResponse.data.trade_id;
+	if (matchResponse.data?.id != null) return matchResponse.data.id;
+	if (Array.isArray(matchResponse.trades) && matchResponse.trades[0]?.id != null) return matchResponse.trades[0].id;
+	return null;
+};
+
 // Match the active OTC order against the OTC broker (by broker user_id) and optionally hedge
 const matchOtcOrder = async (order) => {
 	if (!order || !order.symbol) return;
@@ -55,10 +65,12 @@ const matchOtcOrder = async (order) => {
 
 	const userId = makerId;
 
+	let hedgingTradeId = null;
 	try {
 		loggerPlugin.verbose('plugins/otc-order-monitor matching OTC order', { id: order.id, symbol, side, price, size });
 		const matchResponse = await toolsLib.order.matchUserOrderByKitId(userId, order.id, symbol, size);
 		loggerPlugin.info('plugins/otc-order-monitor order match response', { id: order.id, symbol, response: matchResponse });
+		hedgingTradeId = getHedgingTradeId(matchResponse) || order.id;
 	} catch (err) {
 		loggerPlugin.error('plugins/otc-order-monitor order match failed', { id: order.id, symbol, error: err.message });
 		return;
@@ -66,7 +78,7 @@ const matchOtcOrder = async (order) => {
 
 	// Trigger hedge if configured (reverseTransaction internally verifies requirements)
 	try {
-		const hedgeResponse = await toolsLib.broker.reverseTransaction({ symbol, side, price, size });
+		const hedgeResponse = await toolsLib.broker.reverseTransaction({ symbol, side, price, size, trade_id: hedgingTradeId });
 		loggerPlugin.info('plugins/otc-order-monitor hedge response', { id: order.id, symbol, response: hedgeResponse });
 		loggerPlugin.verbose('plugins/otc-order-monitor hedge triggered', { id: order.id, symbol });
 	} catch (err) {

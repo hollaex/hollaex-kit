@@ -36,6 +36,14 @@
 			"html": "<div><p> Kepada ${name} </p><p>Anda telah membuat permintaan penarikan ${currency} dengan jumlah ${amount} ke ${address}<br /><br />Jumlah: ${amount}<br />Biaya: ${fee} ${currency}<br /><div id='address'>Alamat: ${address}<br /></div><div id='network'>Jaringan: ${network}<br /></div><br />Untuk konfirmasi penarikan ini, silakan klik tombol di bawah.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Konfirmasi</Button></a></div><p>Jika Anda tidak ingin melanjutkan permintaan ini, silakan abaikan ini; tidak ada perubahan pada akun Anda.</p><p>Permintaan dari: ${ip}</p><p> Salam<br> ${api_name} tim </p></div>",
 			"title": "${currency} Penarikan Permintaan"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Kepada ${name} </p><p>Permintaan staking Anda telah dibuat.</p><p>Staking: ${stake_name}<br />Jumlah: ${amount} ${currency}<br />Mata uang hadiah: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Durasi: ${duration} hari<br /></span><span id='start_date'>Tanggal mulai: ${start_date}<br /></span><span id='end_date'>Tanggal berakhir: ${end_date}<br /></span></p><p> Salam<br> ${api_name} tim </p></div>",
+			"title": "Staking dibuat"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Kepada ${name} </p><p>Staking Anda telah diselesaikan dan ditutup.</p><p>Staking: ${stake_name}<br />Status: ${status}<br />Dikembalikan: ${amount_returned} ${currency}<br /><span id='reward_amount'>Hadiah: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Tanggal berakhir: ${end_date}<br /></span></p><p> Salam<br> ${api_name} tim </p></div>",
+			"title": "Staking diselesaikan"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Verifikasi Pengguna Diperlukan</h3><div>Pengguna '${email}' telah mengupload dokumen untuk verifikasi. Silakan verifikasi dokumennya.</div></div>",
 			"title": "Verifikasi Pengguna"

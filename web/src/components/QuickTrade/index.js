@@ -88,6 +88,7 @@ const QuickTrade = ({
 	setTransactionPair,
 	cancelOrder,
 	cancelAllOrders,
+	wsPriceData = {},
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -678,9 +679,9 @@ const QuickTrade = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coins, pair]);
 
-	const getPricingData = (price = []) => {
+	const getPricingData = (price = [], wsPrice = null) => {
 		const firstPrice = price[0];
-		const lastPrice = price[price?.length - 1];
+		const lastPrice = wsPrice ? wsPrice : price[price?.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
 			(priceDifference / firstPrice) * 100
@@ -702,8 +703,14 @@ const QuickTrade = ({
 
 	const calculateSlippage = () => {
 		const { price = [] } = chartData[symbol] || chartData[flippedPair] || {};
-		const pricingData = getPricingData(price);
-		const lastPrice = parseFloat(pricingData?.lastPrice?.replace(/,/g, ''));
+		const activePair =
+			activeQuickTradePair || getQuickTradePairInfo() || symbol;
+		const [base = '', quote = ''] = activePair?.split('-') || [];
+		const wsPrice = wsPriceData[base] / wsPriceData[quote] || null;
+		const pricingData = getPricingData(price, wsPrice);
+		const lastPrice = wsPrice
+			? wsPrice
+			: parseFloat(pricingData?.lastPrice?.replace(/,/g, ''));
 
 		const sourcePrice = parseFloat(sourceAmount);
 		const targetPrice = parseFloat(targetAmount);
@@ -1102,10 +1109,13 @@ const QuickTrade = ({
 			const chartDataKey = activeQuickTradePair ? activeQuickTradePair : pair;
 			const chartPriceData =
 				lineChartData?.price || chartData[chartDataKey]?.price;
-
 			if (chartPriceData && chartPriceData.length > 0) {
-				const lastPrice = chartPriceData[chartPriceData?.length - 1];
 				const [chartBase, chartQuote] = chartDataKey?.split('-');
+				const wsPrice =
+					wsPriceData[chartBase] / wsPriceData[chartQuote] || null;
+				const lastPrice = wsPrice
+					? wsPrice
+					: chartPriceData[chartPriceData?.length - 1];
 
 				if (chartBase === selectedSource && chartQuote === selectedTarget) {
 					return lastPrice;
@@ -1124,6 +1134,10 @@ const QuickTrade = ({
 				chartData[expectedSymbol]?.price &&
 				chartData[expectedSymbol]?.price?.length > 0
 			) {
+				const [base, quote] = expectedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					return wsPriceData[base] / wsPriceData[quote];
+				}
 				return chartData[expectedSymbol]?.price[
 					chartData[expectedSymbol]?.price?.length - 1
 				];
@@ -1132,6 +1146,11 @@ const QuickTrade = ({
 				chartData[expectedFlippedSymbol]?.price &&
 				chartData[expectedFlippedSymbol]?.price?.length > 0
 			) {
+				const [base, quote] = expectedFlippedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					const lastPrice = wsPriceData[quote] / wsPriceData[base];
+					return 1 / lastPrice;
+				}
 				return (
 					1 /
 					chartData[expectedFlippedSymbol]?.price[
@@ -1149,8 +1168,11 @@ const QuickTrade = ({
 		const chartDataKey = activeQuickTradePair || quickTradePairSymbol;
 		const chartPriceData =
 			lineChartData?.price || chartData[chartDataKey]?.price;
-
+		const [base = '', quote = ''] = chartDataKey?.split('-');
 		if (chartPriceData && chartPriceData?.length > 0) {
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
+			}
 			return chartPriceData[chartPriceData?.length - 1];
 		}
 
@@ -1158,6 +1180,9 @@ const QuickTrade = ({
 			chartData[quickTradePairSymbol]?.price &&
 			chartData[quickTradePairSymbol]?.price?.length > 0
 		) {
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
+			}
 			return chartData[quickTradePairSymbol]?.price[
 				chartData[quickTradePairSymbol]?.price?.length - 1
 			];
@@ -1908,6 +1933,7 @@ const mapStateToProps = (store) => {
 		chain_trade_config: store.app.constants.chain_trade_config,
 		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
 		transactionPair: store.app.transactionPair,
+		wsPriceData: store.asset.wsPriceData,
 	};
 };
 

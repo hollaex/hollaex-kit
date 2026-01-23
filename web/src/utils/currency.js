@@ -1,4 +1,4 @@
-import math from 'mathjs';
+import math, { create, all } from 'mathjs';
 import numbro from 'numbro';
 import store from 'store';
 import STRINGS from '../config/localizedStrings';
@@ -381,4 +381,50 @@ export const estimatePrice = (key) => {
 	}
 
 	return estimatedPrice;
+};
+
+const mathValue = create(all, {
+	number: 'BigNumber',
+	precision: 32,
+});
+
+const trimZeros = (str) => str.replace(/\.?0+$/, '');
+
+const roundSmallValues = (value) => {
+	const big = mathValue.bignumber(value);
+
+	return mathValue.format(big, {
+		notation: 'fixed',
+		precision: Math.abs(mathValue.floor(mathValue.log10(big))) + 1,
+	});
+};
+
+export const formatByLastPrice = (amount = 0) => {
+	const numericAmount = Number(amount);
+
+	if (
+		amount === null ||
+		amount === undefined ||
+		amount === '' ||
+		Number.isNaN(numericAmount) ||
+		!Number.isFinite(numericAmount)
+	) {
+		return amount;
+	}
+	const abs = Math.abs(numericAmount);
+
+	if (numericAmount % 1 === 0 || abs >= 1e11) {
+		return numbro(Math.round(numericAmount)).format('0,0');
+	}
+
+	if (abs > 0 && abs < 1e-8) {
+		return trimZeros(roundSmallValues(amount));
+	}
+
+	let maxDecimals;
+	if (abs >= 1e2) maxDecimals = 2;
+	else if (abs >= 1) maxDecimals = 4;
+	else maxDecimals = 8;
+
+	return numbro(numericAmount).format(`0,0.[${'0'.repeat(maxDecimals)}]`);
 };

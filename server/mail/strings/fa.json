@@ -36,6 +36,14 @@
 			"html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br /><div id='address'>آدرس: ${address}<br /></div><div id='network'>شبکه: ${network}<br /></div><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} برداشت درخواست"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>درخواست استیکینگ شما ایجاد شد.</p><p>استیکینگ: ${stake_name}<br />مبلغ: ${amount} ${currency}<br />ارز پاداش: ${reward_currency}<br />وضعیت: ${status}<br /><span id='duration'>مدت: ${duration} روز<br /></span><span id='start_date'>تاریخ شروع: ${start_date}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "ایجاد استیکینگ"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>استیکینگ شما تسویه و بسته شد.</p><p>استیکینگ: ${stake_name}<br />وضعیت: ${status}<br />بازگشتی: ${amount_returned} ${currency}<br /><span id='reward_amount'>پاداش: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "تسویه استیکینگ"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",
 			"title": "تایید کاربر"

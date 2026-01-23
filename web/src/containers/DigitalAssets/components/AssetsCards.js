@@ -15,7 +15,7 @@ import icons from 'config/icons/dark';
 import { Coin, EditWrapper, IconTitle } from 'components';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
 import { Loading } from './utils';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import { formatByLastPrice } from 'utils/currency';
 
 const cardTypes = ['gainers', 'losers', 'newAssets'];
 const cardTitles = [
@@ -95,21 +95,26 @@ const goToCoinInfo = (symbol, features, quicktradePairs) => {
 	}
 };
 
-const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
+const renderCards = (
+	data,
+	coins,
+	type,
+	loading,
+	features,
+	quicktradePairs,
+	wsPriceData
+) => {
 	return data?.length >= 1 ? (
 		data?.map(
 			(
 				{
 					symbol,
-					lastPrice,
 					oneDayPriceDifferencePercent,
 					oneDayPriceDifferencePercenVal,
-					increment_unit,
 				},
 				index
 			) => {
-				const roundPrice = lastPrice?.split(',')?.join('');
-
+				const wsPrice = wsPriceData[symbol] ? wsPriceData[symbol] : null;
 				return loading ? (
 					<Loading key={index} index={index} />
 				) : (
@@ -133,12 +138,7 @@ const renderCards = (data, coins, type, loading, features, quicktradePairs) => {
 						<div className="asset-container align-items-center">
 							<div className="assets-value">
 								<span className="gainer-price">
-									{lastPrice
-										? `$${formatCurrencyByIncrementalUnit(
-												roundPrice,
-												increment_unit
-										  )}`
-										: '-'}
+									{wsPrice ? `$${formatByLastPrice(wsPrice)}` : '-'}
 								</span>
 								{renderPercentage(
 									type === 'newAssets'
@@ -168,6 +168,7 @@ const AssetsCards = ({
 	loading,
 	features,
 	quicktradePairs,
+	wsPriceData,
 }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isVisible, setIsVisible] = useState(true);
@@ -287,7 +288,8 @@ const AssetsCards = ({
 									cardTypes[currentIndex],
 									loading,
 									features,
-									quicktradePairs
+									quicktradePairs,
+									wsPriceData
 								)}
 							</Card>
 							<div
@@ -356,7 +358,8 @@ const AssetsCards = ({
 									type,
 									loading,
 									features,
-									quicktradePairs
+									quicktradePairs,
+									wsPriceData
 								)}
 							</Card>
 						))}
@@ -371,6 +374,7 @@ const mapStateToProps = (state) => ({
 	quicktradePairs: quicktradePairSelector(state),
 	coinsData: state.app.coinsData,
 	features: state.app.features,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 export default connect(mapStateToProps)(withConfig(AssetsCards));

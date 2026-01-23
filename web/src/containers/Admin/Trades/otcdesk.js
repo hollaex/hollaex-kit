@@ -48,7 +48,7 @@ const OtcDeskContainer = ({
 	user,
 	coinData,
 	balanceData,
-	oraclePrices,
+	wsPriceData,
 	setPricesAndAsset,
 	setBroker,
 	constants,
@@ -597,7 +597,7 @@ const OtcDeskContainer = ({
 			title: 'Min / Max',
 			key: 'minMax',
 			render: ({ max_size, min_size, ...rest }) => {
-				return sortedSearchResults.map(([key, { min, oraclePrice }]) => {
+				return sortedSearchResults.map(([key, { min, wsPrice }]) => {
 					if (rest.symbol.split('-')[0] === key) {
 						const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 						const minBalanceValue = min_size;
@@ -605,7 +605,7 @@ const OtcDeskContainer = ({
 							key === BASE_CURRENCY
 								? formatToCurrency(minBalanceValue, min)
 								: formatToCurrency(
-										calculateOraclePrice(minBalanceValue, oraclePrice),
+										calculateOraclePrice(minBalanceValue, wsPrice),
 										baseCoin.min
 								  );
 						const maxBalanceValue = max_size;
@@ -613,7 +613,7 @@ const OtcDeskContainer = ({
 							key === BASE_CURRENCY
 								? formatToCurrency(maxBalanceValue, min)
 								: formatToCurrency(
-										calculateOraclePrice(maxBalanceValue, oraclePrice),
+										calculateOraclePrice(maxBalanceValue, wsPrice),
 										baseCoin.min
 								  );
 						return (
@@ -841,7 +841,7 @@ const OtcDeskContainer = ({
 		moveToStep('step1');
 	};
 
-	const getSearchResult = (coinData, balance, oraclePrices) => {
+	const getSearchResult = (coinData, balance, wsPriceData) => {
 		const searchValue = '';
 		const isZeroBalanceHidden = false;
 		const result = {};
@@ -856,25 +856,25 @@ const OtcDeskContainer = ({
 				!isCoinHidden &&
 				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
 			) {
-				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
+				result[key] = { ...temp, wsPrice: wsPriceData[key] };
 			}
 			return key;
 		});
 		return { ...result };
 	};
 
-	const searchResult = getSearchResult(coinData, balanceData, oraclePrices);
+	const searchResult = getSearchResult(coinData, balanceData, wsPriceData);
 
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balanceData.hasOwnProperty(`${key}_balance`))
 		.sort(([key_a], [key_b]) => {
 			const price_a = calculateOraclePrice(
 				balanceData[`${key_a}_balance`],
-				searchResult[key_a].oraclePrice
+				searchResult[key_a]?.wsPrice
 			);
 			const price_b = calculateOraclePrice(
 				balanceData[`${key_b}_balance`],
-				searchResult[key_b].oraclePrice
+				searchResult[key_b]?.wsPrice
 			);
 			return price_a < price_b ? 1 : -1; // descending order
 		});
@@ -1045,7 +1045,7 @@ const mapStateToProps = (store) => ({
 	coinData: store.app.coins,
 	prices: store.orderbook.prices,
 	balanceData: store.user.balance,
-	oraclePrices: store.asset.oraclePrices,
+	wsPriceData: store.asset.wsPriceData,
 	constants: store.app.constants,
 	markets: MarketsSelector(store),
 });

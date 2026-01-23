@@ -58,7 +58,7 @@ const AmountPreview = ({
 };
 
 const mapStateToProps = (store, { symbol }) => {
-	const price = store.asset.oraclePrices[symbol];
+	const price = store.asset.wsPriceData[symbol];
 
 	return {
 		coins: store.app.coins,
