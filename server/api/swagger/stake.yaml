@@ -139,6 +139,8 @@ paths:
         - hmac
       x-security-scopes:
         - user
+      x-token-permissions:
+        - can_withdraw
     delete:
          description: delete staker for user
          operationId: deleteExchangeStaker
@@ -166,6 +168,8 @@ paths:
            - hmac
          x-security-scopes:
            - user
+         x-token-permissions:
+           - can_withdraw
   /stakes:
     x-swagger-router-controller: stake
     get:

@@ -175,6 +175,8 @@ paths:
         - hmac
       x-security-scopes:
         - user
+      x-token-permissions:
+        - can_withdraw
   /subaccount/auth:
     x-swagger-router-controller: subaccount
     post:
