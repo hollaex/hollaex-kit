@@ -9,7 +9,6 @@ import merge from 'lodash.merge';
 import { Router, browserHistory } from 'react-router';
 import ConfigProvider from 'components/ConfigProvider';
 import EditProvider from 'components/EditProvider';
-import ElasticRumProvider from 'components/ElasticRumProvider';
 import defaultConfig from 'config/project.config';
 import './config/initialize';
 import './config/firebase'; // Initialize Firebase
@@ -335,16 +334,14 @@ const bootstrapApp = (
 	render(
 		<Provider store={store}>
 			<ErrorBoundary>
-				<ElasticRumProvider>
-					<EditProvider>
-						<ConfigProvider initialConfig={appConfig}>
-							<Router
-								routes={generateRoutes(remoteRoutes)}
-								history={browserHistory}
-							/>
-						</ConfigProvider>
-					</EditProvider>
-				</ElasticRumProvider>
+				<EditProvider>
+					<ConfigProvider initialConfig={appConfig}>
+						<Router
+							routes={generateRoutes(remoteRoutes)}
+							history={browserHistory}
+						/>
+					</ConfigProvider>
+				</EditProvider>
 			</ErrorBoundary>
 		</Provider>,
 		document.getElementById('root')

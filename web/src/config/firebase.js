@@ -6,34 +6,75 @@ import 'firebase/performance';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-	apiKey: 'AIzaSyA2so5cdUx2fl4__EcvA8Cpzh7kdL4ZPS0',
-	authDomain: 'sandbox-hollaex.firebaseapp.com',
-	projectId: 'sandbox-hollaex',
-	storageBucket: 'sandbox-hollaex.firebasestorage.app',
-	messagingSenderId: '380838888620',
-	appId: '1:380838888620:web:bce9556b277eb78472cb09',
-	measurementId: 'G-00RTC9N4LV',
+// Check if Firebase is enabled via environment variable
+const isFirebaseEnabled =
+	String(process.env.REACT_APP_FIREBASE_ENABLED || '').toLowerCase() === 'true';
+
+// Get Firebase configuration from environment variables
+const getFirebaseConfig = () => {
+	const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
+	const authDomain = process.env.REACT_APP_FIREBASE_AUTH_DOMAIN;
+	const projectId = process.env.REACT_APP_FIREBASE_PROJECT_ID;
+	const storageBucket = process.env.REACT_APP_FIREBASE_STORAGE_BUCKET;
+	const messagingSenderId = process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID;
+	const appId = process.env.REACT_APP_FIREBASE_APP_ID;
+	const measurementId = process.env.REACT_APP_FIREBASE_MEASUREMENT_ID;
+
+	// Check if all required config values are present
+	if (
+		!apiKey ||
+		!authDomain ||
+		!projectId ||
+		!storageBucket ||
+		!messagingSenderId ||
+		!appId
+	) {
+		return null;
+	}
+
+	return {
+		apiKey,
+		authDomain,
+		projectId,
+		storageBucket,
+		messagingSenderId,
+		appId,
+		...(measurementId && { measurementId }),
+	};
 };
 
-// Initialize Firebase
-const app =
-	firebase.apps.length === 0
-		? firebase.initializeApp(firebaseConfig)
-		: firebase.app();
-
-// Initialize Analytics (only in browser environment)
+// Initialize Firebase only if enabled and config is available
+let app = null;
 let analytics = null;
-if (typeof window !== 'undefined' && firebase.analytics) {
-	analytics = firebase.analytics();
-}
-
-// Initialize Performance Monitoring (only in browser environment)
 let performance = null;
-if (typeof window !== 'undefined' && firebase.performance) {
-	performance = firebase.performance();
+
+if (isFirebaseEnabled && typeof window !== 'undefined') {
+	const firebaseConfig = getFirebaseConfig();
+	if (firebaseConfig) {
+		try {
+			// Initialize Firebase
+			app =
+				firebase.apps.length === 0
+					? firebase.initializeApp(firebaseConfig)
+					: firebase.app();
+
+			// Initialize Analytics (only in browser environment)
+			if (firebase.analytics) {
+				analytics = firebase.analytics();
+			}
+
+			// Initialize Performance Monitoring (only in browser environment)
+			if (firebase.performance) {
+				performance = firebase.performance();
+			}
+		} catch (error) {
+			console.warn('Failed to initialize Firebase:', error);
+		}
+	} else if (isFirebaseEnabled) {
+		console.warn(
+			'Firebase is enabled but configuration is incomplete. Please check your environment variables.'
+		);
+	}
 }
 
 // Route trace management for SPA route tracking

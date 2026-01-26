@@ -5,9 +5,8 @@ import promise from 'redux-promise-middleware';
 import { autoRehydrate } from 'redux-persist';
 import { ENV } from './config/constants';
 import reducer from './reducers/reducer';
-import { elasticRumMiddleware } from './utils/elastic-rum';
 
-const middlewares = [promise, thunk, elasticRumMiddleware];
+const middlewares = [promise, thunk];
 
 if (ENV === 'development') {
 	// middlewares.push(logger);
