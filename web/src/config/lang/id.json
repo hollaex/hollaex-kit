@@ -245,7 +245,10 @@
 			"INFORMATION_PENDING_2": "Proses ini membutuhkan waktu 10-30 menit. Kami akan kirim email setelah {0} Anda sudah dikonfirmasi pada blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Permintaan Terkirim", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Permintaan Terkirim",
+		"BUTTON_TEXT": "Okay"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Masukkan kode autentikasi untuk lanjutkan",
 		"OTP_LABEL": "Kode OTP",
@@ -447,7 +450,10 @@
 				"FULL_NAME_PLACEHOLDER": "Masukkan nama lengkap Anda sesuai dengan yang tertulis pada dokumen identitas Anda",
 				"GENDER_LABEL": "Jenis Kelamin",
 				"GENDER_PLACEHOLDER": "Pilih jenis kelamin Anda",
-				"GENDER_OPTIONS": { "MAN": "Laki-laki", "WOMAN": "Perempuan" },
+				"GENDER_OPTIONS": {
+					"MAN": "Laki-laki",
+					"WOMAN": "Perempuan"
+				},
 				"NATIONALITY_LABEL": "Kewarganegaraan",
 				"NATIONALITY_PLACEHOLDER": "Pilih kewarganegaraan Anda yang tertulis pada dokumen identitas Anda",
 				"DOB_LABEL": "Tanggal lahir",
@@ -491,7 +497,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "Tipe Dokumen ID",
 				"TYPE_PLACEHOLDER": "Pilih Tipe dokumen identitas",
-				"TYPE_OPTIONS": { "ID": "ID", "PASSPORT": "Paspor" },
+				"TYPE_OPTIONS": {
+					"ID": "ID",
+					"PASSPORT": "Paspor"
+				},
 				"ID_NUMBER_LABEL": "Nomor Paspor",
 				"ID_NUMBER_PLACEHOLDER": "Masukkan nomor paspor Anda",
 				"ID_PASSPORT_NUMBER_LABEL": "Nomor Paspor",
@@ -792,12 +801,27 @@
 	},
 	"CURRENCY": "Currency",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "market", "limit": "limit" },
-	"TYPES": { "MARKET": "market", "LIMIT": "limit" },
+	"TYPES_VALUES": {
+		"market": "market",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "market",
+		"LIMIT": "limit"
+	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "beli", "sell": "jual" },
-	"SIDES": { "BUY": "beli", "SELL": "jual" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "on", "OFF": "off" },
+	"SIDES_VALUES": {
+		"buy": "beli",
+		"sell": "jual"
+	},
+	"SIDES": {
+		"BUY": "beli",
+		"SELL": "jual"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "on",
+		"OFF": "off"
+	},
 	"SIZE": "Jumlah",
 	"PRICE": "Harga",
 	"FEE": "Fee",
@@ -1601,7 +1625,10 @@
 		"LABEL": "Jumlah untuk dipindahkan",
 		"FEE": "Biaya transaksi: {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "dibeli", "sell": "terjual" },
+	"SIDES_VERBS": {
+		"buy": "dibeli",
+		"sell": "terjual"
+	},
 	"AVERAGE": "Rata-rata",
 	"ORDER_HISTORY": "Riwayat pesanan",
 	"ESTIMATED_PRICE": "Perkiraan harga",
@@ -1736,7 +1763,10 @@
 	"FEE_REDUCTION": "Pengurangan biaya",
 	"FEE_REDUCTION_DESCRIPTION": "* akun Anda memiliki diskon biaya yang diterapkan padanya. Pengurangan diterapkan pada biaya perdagangan berdasarkan akun Anda.",
 	"CHANGE_PASSWORD_FAILED": "mengubah kata sandi gagal",
-	"MARKET_OPTIONS": { "LIST": "Daftar", "CARD": "Kartu" },
+	"MARKET_OPTIONS": {
+		"LIST": "Daftar",
+		"CARD": "Kartu"
+	},
 	"ALL": "Semua",
 	"ASSET_TXT": "Aset",
 	"ONE_DAY": "1 hari",
@@ -1813,7 +1843,9 @@
 	"VERIFY_BANK_WITHDRAW": "Untuk melakukan penarikan, Anda harus menyelesaikan verifikasi yang mencakup verifikasi detail bank Anda. Silakan klik tombol lanjutkan di bawah ini.",
 	"VERIFICATION_TITLE": "Verifikasi lengkap",
 	"WITHDRAW_NOTE": "Harap dicatat: Anda hanya dapat menarik ke akun atas nama Anda.",
-	"USER_PAYMENT": { "TITLE": "Pembayaran" },
+	"USER_PAYMENT": {
+		"TITLE": "Pembayaran"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Silakan periksa pesanan Anda dan konfirmasi di bawah ini.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Jumlah yang akan diterima adalah perkiraan dan tidak termasuk biaya perdagangan",
 	"ORDER_EXPIRED_MSG": "Pesanan kedaluwarsa. Segarkan!",
@@ -1935,7 +1967,9 @@
 		"TITLE": "Halaman tidak terbuka secara otomatis?",
 		"TEXT": "Browser Anda mungkin memblokir halaman. Coba salin dan tempel tautan di bawah sebagai gantinya:"
 	},
-	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Untuk mendapatkan akses, hubungi" },
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Untuk mendapatkan akses, hubungi"
+	},
 	"FEES_AND_LIMITS": {
 		"LINK": "lihat biaya dan batasan saya",
 		"COIN_PAGE_LINK": "Biaya & batas perdagangan",

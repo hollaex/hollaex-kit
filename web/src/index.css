@@ -5431,6 +5431,105 @@ table th {
 .risky-trade-disclaimer .coin-icon-container {
   text-align: center; }
 
+.cancel-order-dialog-wrapper .ReactModal__Content,
+.cancel-all-orders-dialog-wrapper .ReactModal__Content,
+.view-more-order-dialog-wrapper .ReactModal__Content {
+  width: 32rem;
+  padding: 2.5rem !important; }
+
+.cancel-order-dialog-wrapper .cancel-order-dialog-content .view-more-order-dialog-header,
+.cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .view-more-order-dialog-header,
+.cancel-order-dialog-wrapper .view-more-order-dialog-content .view-more-order-dialog-header,
+.cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .view-more-order-dialog-header,
+.cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .view-more-order-dialog-header,
+.cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .view-more-order-dialog-header,
+.view-more-order-dialog-wrapper .cancel-order-dialog-content .view-more-order-dialog-header,
+.view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .view-more-order-dialog-header,
+.view-more-order-dialog-wrapper .view-more-order-dialog-content .view-more-order-dialog-header {
+  border-bottom: 1px solid var(--calculated_secondary-border);
+  padding-bottom: 1.5rem; }
+
+.cancel-order-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon,
+.cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon,
+.cancel-order-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon,
+.cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon,
+.cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon,
+.cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon,
+.view-more-order-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon,
+.view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon,
+.view-more-order-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .cancel-order-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon svg,
+  .cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon svg,
+  .cancel-order-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon svg,
+  .cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon svg,
+  .cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon svg,
+  .cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon svg,
+  .view-more-order-dialog-wrapper .cancel-order-dialog-content .cancel-order-icon svg,
+  .view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .cancel-order-icon svg,
+  .view-more-order-dialog-wrapper .view-more-order-dialog-content .cancel-order-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--labels_important-active-labels-text-graphics); }
+
+.cancel-order-dialog-wrapper .cancel-order-dialog-content .order-details-title,
+.cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title,
+.cancel-order-dialog-wrapper .view-more-order-dialog-content .order-details-title,
+.cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .order-details-title,
+.cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title,
+.cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .order-details-title,
+.view-more-order-dialog-wrapper .cancel-order-dialog-content .order-details-title,
+.view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title,
+.view-more-order-dialog-wrapper .view-more-order-dialog-content .order-details-title {
+  font-size: 1.6rem; }
+
+.cancel-order-dialog-wrapper .cancel-order-dialog-content .order-details-title-icon,
+.cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title-icon,
+.cancel-order-dialog-wrapper .view-more-order-dialog-content .order-details-title-icon,
+.cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .order-details-title-icon,
+.cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title-icon,
+.cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .order-details-title-icon,
+.view-more-order-dialog-wrapper .cancel-order-dialog-content .order-details-title-icon,
+.view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-title-icon,
+.view-more-order-dialog-wrapper .view-more-order-dialog-content .order-details-title-icon {
+  font-size: 2rem; }
+
+.cancel-order-dialog-wrapper .cancel-order-dialog-content .order-details-section,
+.cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section,
+.cancel-order-dialog-wrapper .view-more-order-dialog-content .order-details-section,
+.cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .order-details-section,
+.cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section,
+.cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .order-details-section,
+.view-more-order-dialog-wrapper .cancel-order-dialog-content .order-details-section,
+.view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section,
+.view-more-order-dialog-wrapper .view-more-order-dialog-content .order-details-section {
+  margin-bottom: 1.5rem; }
+  .cancel-order-dialog-wrapper .cancel-order-dialog-content .order-details-section .border-bottom,
+  .cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .border-bottom,
+  .cancel-order-dialog-wrapper .view-more-order-dialog-content .order-details-section .border-bottom,
+  .cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .order-details-section .border-bottom,
+  .cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .border-bottom,
+  .cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .order-details-section .border-bottom,
+  .view-more-order-dialog-wrapper .cancel-order-dialog-content .order-details-section .border-bottom,
+  .view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .border-bottom,
+  .view-more-order-dialog-wrapper .view-more-order-dialog-content .order-details-section .border-bottom {
+    border-bottom: 1px solid var(--calculated_secondary-border); }
+  .cancel-order-dialog-wrapper .cancel-order-dialog-content .order-details-section .secondary-text,
+  .cancel-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .secondary-text,
+  .cancel-order-dialog-wrapper .view-more-order-dialog-content .order-details-section .secondary-text,
+  .cancel-all-orders-dialog-wrapper .cancel-order-dialog-content .order-details-section .secondary-text,
+  .cancel-all-orders-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .secondary-text,
+  .cancel-all-orders-dialog-wrapper .view-more-order-dialog-content .order-details-section .secondary-text,
+  .view-more-order-dialog-wrapper .cancel-order-dialog-content .order-details-section .secondary-text,
+  .view-more-order-dialog-wrapper .cancel-all-orders-dialog-content .order-details-section .secondary-text,
+  .view-more-order-dialog-wrapper .view-more-order-dialog-content .order-details-section .secondary-text {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    font-size: 1rem; }
+
 .contact_form-wrapper {
   min-width: 30rem; }
   .contact_form-wrapper .icon_title-wrapper .icon_title-text.title {
@@ -21666,6 +21765,110 @@ table th {
       color: var(--labels_important-active-labels-text-graphics); }
   .quick_trade-container .input-group__select_disabled {
     font-size: 1.2rem; }
+  .quick_trade-container .active-otc-limit-order-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%; }
+    .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item {
+      border: 1px solid var(--calculated_secondary-border);
+      border-radius: 5px;
+      display: flex;
+      transition: all 0.2s ease; }
+      .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item.inactive {
+        opacity: 0.5; }
+      .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .base-info-container {
+        padding: 2%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 34%;
+        font-size: 1.2rem;
+        background: var(--base_wallet-sidebar-and-popup); }
+      .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container {
+        padding: 2%;
+        width: 65%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        overflow: hidden; }
+        .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .progress-bar-background {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          background: linear-gradient(270deg, transparent 0%, var(--trading_buying-related-elements) 100%, transparent 100%);
+          opacity: 0.2;
+          transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 0;
+          border-radius: 0 4px 4px 0; }
+          .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .progress-bar-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, var(--base_background) 50%, transparent 100%);
+            opacity: 0.3; }
+          .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .progress-bar-background.progress-completed {
+            background-color: var(--specials_buttons-links-and-highlights);
+            opacity: 0.25; }
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%); }
+  100% {
+    transform: translateX(100%); } }
+        .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .quote-info-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+          font-size: 1.2rem;
+          position: relative;
+          z-index: 1; }
+          .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .quote-info-content .quote-info-receiving-amount {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; }
+        .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .order-complete-amount {
+          color: var(--trading_buying-related-elements); }
+        .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .completed-check-icon {
+          color: var(--labels_important-active-labels-text-graphics);
+          font-size: 1.2rem;
+          margin-left: 0.5rem; }
+        .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-item .quote-info-container .cancel-order-btn {
+          background: var(--base_wallet-sidebar-and-popup);
+          border-radius: 50%;
+          padding: 5px 8px;
+          color: var(--labels_secondary-inactive-label-text-graphics);
+          position: relative;
+          z-index: 2; }
+    .quick_trade-container .active-otc-limit-order-container .no-data .no-active-orders-icon {
+      width: 3rem;
+      height: 3rem; }
+      .quick_trade-container .active-otc-limit-order-container .no-data .no-active-orders-icon svg {
+        width: 2.5rem;
+        height: 2.5rem; }
+    .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-pair-button {
+      padding: 0.5rem 1rem;
+      background-color: var(--base_background);
+      border: 1px solid var(--calculated_secondary-border);
+      border-radius: 5px;
+      font-weight: normal;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease; }
+      .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-pair-button:hover {
+        background-color: var(--base_wallet-sidebar-and-popup); }
+      .quick_trade-container .active-otc-limit-order-container .active-otc-limit-order-pair-button.active {
+        border: 2px solid var(--labels_important-active-labels-text-graphics);
+        color: var(--labels_important-active-labels-text-graphics);
+        font-weight: bold; }
 
 .quick_trade-wrapper.width-none {
   min-width: unset !important;
@@ -21673,7 +21876,7 @@ table th {
 
 .quick_trade-wrapper {
   height: fit-content;
-  height: 664px;
+  min-height: 664px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics);
   font-size: 1.3rem;
   border-radius: 10px; }
@@ -21802,55 +22005,55 @@ table th {
 
 .limit-order-success-popup-wrapper .ReactModal__Content {
   width: 40rem; }
-  .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title {
-    padding-bottom: 4%;
-    display: flex;
-    align-items: center;
-    gap: 2%; }
-    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .limit-order-success-icon {
-      width: 2.5rem;
-      height: 2.5rem; }
-      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .limit-order-success-icon svg {
+  .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container {
+    padding: 2%; }
+    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title {
+      padding-bottom: 4%;
+      display: flex;
+      align-items: center;
+      gap: 2%; }
+      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .limit-order-success-icon {
         width: 2.5rem;
         height: 2.5rem; }
-    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .title-text {
-      font-size: 1.8rem; }
-  .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content {
-    padding: 2% 3%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem; }
-    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details {
-      width: 100%; }
-      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .order-details-label {
-        font-weight: bold;
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-        display: block; }
-      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .order-details-text {
-        margin-bottom: 0.5rem;
-        font-size: 1.2rem; }
-        .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .order-details-text .limit-order-asset-icon {
-          position: relative;
-          top: 3px; }
-      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .conversion-price-text {
+        .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .limit-order-success-icon svg {
+          width: 2.5rem;
+          height: 2.5rem; }
+      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .title-text {
+        font-size: 1.8rem; }
+    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem; }
+      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details {
+        width: 100%; }
+        .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .order-details-label {
+          font-weight: bold;
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+          display: block; }
+        .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .order-details-text {
+          margin-bottom: 0.5rem;
+          font-size: 1.2rem;
+          display: flex;
+          align-items: flex-start; }
+        .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-order-details .conversion-price-text {
+          color: var(--labels_secondary-inactive-label-text-graphics);
+          font-size: 1rem; }
+      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-note {
+        width: 100%;
+        padding-top: 1.6rem;
+        border-top: 1px solid var(--calculated_secondary-border); }
+      .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-balance-reminder {
+        width: 100%;
         color: var(--labels_secondary-inactive-label-text-graphics);
         font-size: 1rem; }
-    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-note {
-      width: 100%;
-      padding-top: 1rem;
-      border-top: 1px solid var(--calculated_secondary-border); }
-    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content .limit-order-success-balance-reminder {
-      width: 100%;
-      color: var(--labels_secondary-inactive-label-text-graphics);
-      font-size: 1rem; }
-  .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3%;
-    margin-top: 5%; }
+    .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3%;
+      margin-top: 5%; }
 
 .layout-mobile .ReactModal__Overlay .ReactModal__Content {
   background-color: var(--base_background) !important; }

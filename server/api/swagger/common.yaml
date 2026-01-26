@@ -181,6 +181,12 @@ paths:
           required: false
           type: string
           enum: ['v2', 'v3']
+        - name: captcha
+          in: query
+          description: Cloudflare Turnstile captcha token (required when captcha is enabled and resend=true)
+          required: false
+          type: string
+          maxLength: 2048
         - name: verification_code
           in: query
           description: Verification code
@@ -324,6 +330,12 @@ paths:
           required: false
           type: string
           enum: ['v2', 'v3']
+        - name: captcha
+          in: query
+          description: Cloudflare Turnstile captcha token (required when captcha is enabled)
+          required: false
+          type: string
+          maxLength: 2048
       responses:
         200:
           description: Success

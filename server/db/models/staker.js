@@ -24,6 +24,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.DOUBLE,
 				allowNull: false
 			},
+			nav: {
+				type: DataTypes.DOUBLE,
+				allowNull: true
+			},
 			currency: {
 				type: DataTypes.STRING,
 				allowNull: false

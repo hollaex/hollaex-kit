@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react';
 import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Checkbox, Radio, Space, Input, Tag, Button as AntButton } from 'antd';
+import validator from 'validator';
 import DumbField from 'components/Form/FormFields/DumbField';
 
 const BASIC_PERMISSIONS = ['can_read', 'can_trade'];
@@ -48,9 +49,7 @@ class EditToken extends Component {
 
 	validateIp = () => {
 		const { ip } = this.state;
-		const rx = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
-
-		return rx.test(ip);
+		return validator.isIP(ip);
 	};
 
 	onChangeBasicAccess = (permissions) => {

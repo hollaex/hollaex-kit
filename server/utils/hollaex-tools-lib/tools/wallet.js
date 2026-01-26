@@ -20,7 +20,9 @@ const {
 	USER_NOT_REGISTERED_ON_NETWORK,
 	INVALID_NETWORK,
 	NETWORK_REQUIRED,
-	WITHDRAWAL_DISABLED
+	WITHDRAWAL_DISABLED,
+	WITHDRAWAL_OTP_REQUIRED,
+	WITHDRAWAL_LIMIT_ERROR
 } = require(`${SERVER_PATH}/messages`);
 const { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { findTransactionLimitPerTier } = require('./tier');
@@ -332,6 +334,7 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 
 	if (transactionLimit.amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	if (transactionLimit?.monthly_amount === -1) throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	const decimalPoint = new BigNumber(increment_unit).dp();
 
 	if (transactionLimit.amount > 0) {
 
@@ -380,13 +383,16 @@ const calculateWithdrawalMax = async (user_id, currency, selectedNetwork) => {
 		}
 
 		amount = BigNumber.minimum(dailyAmount, amount).toNumber();
+		if (new BigNumber(amount).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber() <= 0) {
+			throw new Error(WITHDRAWAL_LIMIT_ERROR);
+		}
+		
 	}
 
 	if (amount < 0) {
 		amount = 0;
 	}
 
-	const decimalPoint = new BigNumber(increment_unit).dp();
 	amount = new BigNumber(amount).decimalPlaces(decimalPoint, BigNumber.ROUND_DOWN).toNumber();
 	return { amount };
 };
@@ -437,6 +443,12 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 		throw new Error(WITHDRAWAL_DISABLED);
 	} else if(user.withdrawal_blocked && moment().isBefore(moment(user.withdrawal_blocked))) {
 		throw new Error(WITHDRAWAL_DISABLED);	
+	}
+
+	// Enforce 2FA for withdrawals when feature flag is enabled
+	const requireOtp = getKitConfig()?.force_two_factor_authentication_withdrawal?.active;
+	if (requireOtp && !user.otp_enabled) {
+		throw new Error(WITHDRAWAL_OTP_REQUIRED);
 	}
 
 	let { fee, fee_coin } = getWithdrawalFee(currency, network, amount, user.verification_level);
@@ -718,6 +730,7 @@ const getUserTransactionsByKitId = (
 	description,
 	format,
 	opts = {
+		onhold: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -878,6 +891,7 @@ const getUserDepositsByKitId = (
 	description,
 	format,
 	opts = {
+		onhold: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -923,6 +937,7 @@ const getUserWithdrawalsByKitId = (
 	description,
 	format,
 	opts = {
+		onhold: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -966,6 +981,7 @@ const getExchangeDeposits = (
 	address,
 	format,
 	opts = {
+		onhold: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -1020,6 +1036,7 @@ const getExchangeWithdrawals = (
 	address,
 	format,
 	opts = {
+		onhold: false,
 		additionalHeaders: null
 	}
 ) => {
@@ -1363,46 +1380,6 @@ const createUserWalletByKitId = async (kitId, currency, address, opts = {
 	return getNodeLib().createUserWallet(idDictionary[kitId], currency, address, opts);
 };
 
-const getExchangeTransactions = (type, params = {}) => {
-	const { format, ...rest } = params || {};
-	const normalizedFormat = (format && (format === 'csv' || format === 'all')) ? 'all' : null;
-
-	let fetchFn = null;
-	if (type === 'deposit' || type === 'deposits') {
-		fetchFn = getNodeLib().getDeposits;
-	} else if (type === 'withdrawal' || type === 'withdrawals') {
-		fetchFn = getNodeLib().getWithdrawals;
-	} else {
-		return reject(new Error('INVALID_TRANSACTION_TYPE'));
-	}
-
-	return fetchFn({
-		...rest,
-		format: normalizedFormat
-	})
-		.then(async (transactions) => {
-			if (transactions.data && transactions.data.length > 0) {
-				const networkIds = transactions.data.map((tx) => tx.user_id);
-				const idDictionary = await mapNetworkIdToKitId(networkIds);
-				for (let tx of transactions.data) {
-					const user_kit_id = idDictionary[tx.user_id];
-					tx.network_id = tx.user_id;
-					tx.user_id = user_kit_id;
-					if (tx.User) tx.User.id = user_kit_id;
-				}
-			}
-			if (format && format === 'csv') {
-				if (!transactions.data || transactions.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
-				return csv;
-			} else {
-				return transactions;
-			}
-		});
-};
-
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawal,
@@ -1419,7 +1396,6 @@ module.exports = {
 	cancelUserWithdrawalByNetworkId,
 	getExchangeDeposits,
 	getExchangeWithdrawals,
-	getExchangeTransactions,
 	getUserBalanceByNetworkId,
 	transferAssetByNetworkIds,
 	mintAssetByKitId,

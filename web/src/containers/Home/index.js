@@ -37,7 +37,7 @@ import { isLoggedIn } from 'utils/token';
 import { getMiniCharts } from 'actions/chartAction';
 import {
 	countDecimals,
-	formatCurrencyByIncrementalUnit,
+	formatByLastPrice,
 	formatPercentage,
 	formatToCurrency,
 } from 'utils/currency';
@@ -143,9 +143,9 @@ class Home extends Component {
 		return index;
 	};
 
-	getPriceDetails = (price) => {
+	getPriceDetails = (price, wsPrice = null) => {
 		const firstPrice = price[0];
-		const lastPrice = price[price.length - 1];
+		const lastPrice = wsPrice ? wsPrice : price[price?.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
 			(priceDifference / firstPrice) * 100
@@ -165,7 +165,7 @@ class Home extends Component {
 		};
 	};
 
-	getPricingData = (chartData) => {
+	getPricingData = (chartData, wsPrice = null) => {
 		const { price = [], time } = chartData || {};
 
 		if (time?.length > 0 && price?.length > 0) {
@@ -174,7 +174,7 @@ class Home extends Component {
 				priceDifferencePercent,
 				priceDifferencePercentVal,
 				lastPrice,
-			} = this.getPriceDetails(price);
+			} = this.getPriceDetails(price, wsPrice);
 
 			const indexOneDay = this.getIndexofOneDay(time);
 			const oneDayChartPrices = price.slice(indexOneDay, price?.length);
@@ -183,7 +183,7 @@ class Home extends Component {
 				priceDifference: oneDayPriceDifference,
 				priceDifferencePercent: oneDayPriceDifferencePercent,
 				priceDifferencePercentVal: oneDayPriceDifferencePercenVal,
-			} = this.getPriceDetails(oneDayChartPrices);
+			} = this.getPriceDetails(oneDayChartPrices, wsPrice);
 
 			return {
 				oneDayPriceDifference,
@@ -199,21 +199,21 @@ class Home extends Component {
 	};
 
 	getCoinsData = (coinsList, chartValues) => {
-		const { coins, quicktradePairs, setCoinsData } = this.props;
+		const {
+			coins,
+			quicktradePairs,
+			setCoinsData,
+			wsPriceData = {},
+		} = this.props;
 		const coinsData = coinsList
 			.map((name) => {
-				const {
-					code,
-					icon_id,
-					symbol,
-					fullname,
-					type,
-					created_at,
-					increment_unit,
-				} = coins[name];
+				const { code, icon_id, symbol, fullname, type, created_at } = coins[
+					name
+				];
 
 				const key = `${code}-usdt`;
-				const pricingData = this.getPricingData(chartValues[key]);
+				const wsPrice = wsPriceData[symbol] || null;
+				const pricingData = this.getPricingData(chartValues[key], wsPrice);
 
 				return {
 					...pricingData,
@@ -224,7 +224,6 @@ class Home extends Component {
 					fullname,
 					type,
 					key,
-					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};
@@ -367,14 +366,14 @@ class Home extends Component {
 		router.push(path);
 	};
 
-	renderPriceCard = (data, index, carouselLoading) => {
-		const roundPrice = data?.lastPrice?.split(',')?.join('');
+	renderPriceCard = (data, index, carouselLoading, wsPriceData) => {
+		const wsPrice = wsPriceData[data?.symbol]
+			? wsPriceData[data?.symbol]
+			: null;
 		const isPriceAvailable =
 			data?.oneDayPriceDifferencePercent !== undefined &&
 			data?.oneDayPriceDifference !== undefined;
-		const formattedPrice = data?.lastPrice
-			? formatCurrencyByIncrementalUnit(roundPrice, data?.increment_unit)
-			: '-';
+		const formattedPrice = wsPrice ? formatByLastPrice(wsPrice) : '-';
 
 		return (
 			<div className="price-card-wrapper">
@@ -417,7 +416,7 @@ class Home extends Component {
 						<Loading index={index} />
 					) : (
 						<span className="last-price-label">
-							{data?.lastPrice && '$'}
+							{wsPrice && '$'}
 							{formattedPrice}
 						</span>
 					)}
@@ -590,7 +589,7 @@ class Home extends Component {
 				);
 			}
 			case 'carousel_section': {
-				const { coinsData } = this.props;
+				const { coinsData, wsPriceData = {} } = this.props;
 				const { carouselLoading } = this.state;
 				let loopCnt = 0;
 
@@ -660,7 +659,12 @@ class Home extends Component {
 												onClick={() => this.sectionToNav(data)}
 											>
 												{data
-													? this.renderPriceCard(data, ind, carouselLoading)
+													? this.renderPriceCard(
+															data,
+															ind,
+															carouselLoading,
+															wsPriceData
+													  )
 													: null}
 											</div>
 										))}
@@ -832,6 +836,7 @@ const mapStateToProps = (store) => {
 		emailDetail: store.app.emailDetail,
 		coinsData: store.app.coinsData,
 		quicktradePairs: quicktradePairSelector(store),
+		wsPriceData: store.asset.wsPriceData,
 	};
 };
 

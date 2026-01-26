@@ -53,18 +53,21 @@ export default class SetupWizard extends Component {
 
 	setConstants = (data) => {
 		const { kit = {}, secrets = {} } = data;
+		const turnstileKit = kit.cloudflare_turnstile || kit.captcha || {};
+		const turnstileSecrets =
+			secrets.cloudflare_turnstile || secrets.captcha || {};
 		let timeZoneInitialValues = {
 			language: kit.defaults && kit.defaults.language,
 			timezone: secrets.emails && secrets.emails.timezone,
 		};
 		let emailInitialvalues = {
 			site_key:
-				kit.captcha && kit.captcha.site_key !== 'null'
-					? kit.captcha.site_key
+				turnstileKit && turnstileKit.site_key !== 'null'
+					? turnstileKit.site_key
 					: '',
 			secret_key:
-				secrets.captcha && secrets.captcha.secret_key !== 'null'
-					? secrets.captcha.secret_key
+				turnstileSecrets && turnstileSecrets.secret_key !== 'null'
+					? turnstileSecrets.secret_key
 					: '',
 		};
 		let tradeInitialvalues = { ...this.state.tradeInitialvalues };

@@ -8,6 +8,8 @@ import {
 import { AuthForm } from 'components';
 import STRINGS from 'config/localizedStrings';
 
+export const FORM_NAME = 'ResetPasswordForm';
+
 export const generateFormFields = (theme) => ({
 	email: {
 		type: 'email',
@@ -19,7 +21,7 @@ export const generateFormFields = (theme) => ({
 		fullWidth: true,
 		label: STRINGS['FORM_FIELDS.EMAIL_LABEL'],
 		placeholder: STRINGS['FORM_FIELDS.EMAIL_PLACEHOLDER'],
-	}
+	},
 });
 
 const Form = (props) => (
@@ -27,5 +29,5 @@ const Form = (props) => (
 );
 
 export default reduxForm({
-	form: 'ResetPasswordForm',
+	form: FORM_NAME,
 })(Form);

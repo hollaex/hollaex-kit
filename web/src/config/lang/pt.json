@@ -31,7 +31,7 @@
 	"PROCEED": "AVANÇAR",
 	"EDIT_TEXT": "Editar",
 	"BACK_TEXT": "Voltar",
-	"NO_OPTIONS": "Sem opções disponí\u00adveis",
+	"NO_OPTIONS": "Sem opções disponí­veis",
 	"SECONDS": "segundos",
 	"VIEW_MARKET": "ver mercado",
 	"GO_TRADE": "Trade",
@@ -245,7 +245,10 @@
 			"INFORMATION_PENDING_2": "Isso pode levar de 10 a 30 minutos. Enviaremos um e-mail assim que seu {0} for confirmado na blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": " Solicitação Enviada", "BUTTON_TEXT": "Ok" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": " Solicitação Enviada",
+		"BUTTON_TEXT": "Ok"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Digite seu código de autenticação para continuar",
 		"OTP_LABEL": "Código OTP",
@@ -451,7 +454,10 @@
 				"FULL_NAME_PLACEHOLDER": "Digite seu nome completo exatamente como aparece em seu documento de identidade",
 				"GENDER_LABEL": "Gênero",
 				"GENDER_PLACEHOLDER": "Digite seu gênero",
-				"GENDER_OPTIONS": { "MAN": "Masculino", "WOMAN": "Feminino" },
+				"GENDER_OPTIONS": {
+					"MAN": "Masculino",
+					"WOMAN": "Feminino"
+				},
 				"NATIONALITY_LABEL": "Nacionalidade",
 				"NATIONALITY_PLACEHOLDER": "Digite a nacionalidade que está escrita no seu documento de identidade",
 				"DOB_LABEL": "Data de nascimento",
@@ -495,7 +501,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "Tipo de documento de identidade",
 				"TYPE_PLACEHOLDER": "Selecione o tipo de documento de identidade",
-				"TYPE_OPTIONS": { "ID": "Identidade", "PASSPORT": "Passporte" },
+				"TYPE_OPTIONS": {
+					"ID": "Identidade",
+					"PASSPORT": "Passporte"
+				},
 				"ID_NUMBER_LABEL": "Número do Passaporte",
 				"ID_NUMBER_PLACEHOLDER": "Digite o número do seu passaporte",
 				"ID_PASSPORT_NUMBER_LABEL": "Número do Passaporte",
@@ -785,13 +794,31 @@
 	},
 	"CURRENCY": "Moeda",
 	"TYPE": "Tipo",
-	"TYPES_VALUES": { "market": "mercado", "limit": "limite" },
-	"TYPES": { "MARKET": "mercado", "LIMIT": "limite" },
+	"TYPES_VALUES": {
+		"market": "mercado",
+		"limit": "limite"
+	},
+	"TYPES": {
+		"MARKET": "mercado",
+		"LIMIT": "limite"
+	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "comprar", "sell": "vender" },
-	"SIDES_VERBS": { "buy": "comprado", "sell": "vendido" },
-	"SIDES": { "BUY": "comprar", "SELL": "vender" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "on", "OFF": "off" },
+	"SIDES_VALUES": {
+		"buy": "comprar",
+		"sell": "vender"
+	},
+	"SIDES_VERBS": {
+		"buy": "comprado",
+		"sell": "vendido"
+	},
+	"SIDES": {
+		"BUY": "comprar",
+		"SELL": "vender"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "on",
+		"OFF": "off"
+	},
 	"SIZE": "Tamanho",
 	"PRICE": "Preço",
 	"FEE": "Taxa",
@@ -1740,7 +1767,10 @@
 	"FEE_REDUCTION": "Redução de taxa",
 	"FEE_REDUCTION_DESCRIPTION": "*sua conta tem um desconto de taxa aplicado a ela. A redução é aplicada às taxas de negociação com base na sua conta.",
 	"CHANGE_PASSWORD_FAILED": "falha na alteração da senha",
-	"MARKET_OPTIONS": { "LIST": "Lista", "CARD": "Cartão" },
+	"MARKET_OPTIONS": {
+		"LIST": "Lista",
+		"CARD": "Cartão"
+	},
 	"ALL": "Todos",
 	"ASSET_TXT": "Ativo",
 	"ONE_DAY": "1 dia",
@@ -1817,7 +1847,9 @@
 	"VERIFY_BANK_WITHDRAW": "Para fazer uma retirada, você deve concluir sua verificação, que inclui a verificação de seus dados bancários. Por favor, clique no botão continuar abaixo.",
 	"VERIFICATION_TITLE": "Verificação completa",
 	"WITHDRAW_NOTE": "Observação: você só pode sacar para uma conta em seu nome.",
-	"USER_PAYMENT": { "TITLE": "Pagamentos" },
+	"USER_PAYMENT": {
+		"TITLE": "Pagamentos"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Por favor, verifique seu pedido e confirme abaixo.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "O valor a receber é uma estimativa e não inclui a taxa de negociação",
 	"ORDER_EXPIRED_MSG": "Pedido expirado. Por favor atualize!",
@@ -1858,7 +1890,10 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Página de informações do recurso",
-	"MARKET_ROW": { "NATIVE": "Nativo", "NO_NATIVE": "Nenhuma fonte nativa" },
+	"MARKET_ROW": {
+		"NATIVE": "Nativo",
+		"NO_NATIVE": "Nenhuma fonte nativa"
+	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "ativos digitais",
 		"GO_BACK": "Volte",
@@ -1936,11 +1971,17 @@
 		"TITLE": "A página não abre automaticamente?",
 		"TEXT": "Seu navegador pode estar bloqueando a página. Tente copiar e colar o link abaixo:"
 	},
-	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Para ter acesso entre em contato" },
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Para ter acesso entre em contato"
+	},
 	"FEES_AND_LIMITS": {
 		"LINK": "ver minhas taxas e limites",
 		"COIN_PAGE_LINK": "Taxas e limites de negociação",
-		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "Volte", "TO": "resumir" },
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Volte",
+			"TO": "resumir"
+		},
 		"TITLE": "Taxas e limites",
 		"SEARCH_PLACEHOLDER": "Procurar...",
 		"TABS": {

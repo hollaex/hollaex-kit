@@ -1,14 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import { Button, Select, Input, Form } from 'antd';
+import { Button, Input, Form, Radio, message } from 'antd';
 import ColorPicker from '../ColorPicker';
+import { updateAssetCoins } from '../AdminFinancials/action';
 
-const { Option } = Select;
-
-const ASSET_TYPES = [
-	{ label: 'Blockchain', value: 'blockchain' },
-	{ label: 'Fiat', value: 'fiat' },
-	{ label: 'Other', value: 'other' },
-];
+const { TextArea } = Input;
 
 const EditAsset = ({
 	type = 'color',
@@ -21,10 +16,28 @@ const EditAsset = ({
 	const { meta = {} } = coinFormData;
 	const [assetType, setType] = useState(coinFormData.type);
 	const [form] = Form.useForm();
+	const [submitting, setSubmitting] = useState(false);
 
-	const handleSubmit = (values) => {
-		if (values) {
+	const handleSubmit = async (values) => {
+		try {
+			setSubmitting(true);
+			const payload = {
+				id: coinFormData.id,
+				symbol: values.symbol || coinFormData.symbol,
+				code:
+					coinFormData.code ||
+					(values.symbol || coinFormData.symbol || '').toLowerCase(),
+				fullname: values.fullname || coinFormData.fullname,
+				type: assetType || coinFormData.type,
+				description: values.description ?? coinFormData.description ?? '',
+			};
+			await updateAssetCoins(payload);
+			message.success('Asset info updated.');
 			onClose();
+		} catch (error) {
+			message.error(error?.data?.message || 'Failed to update asset info');
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -43,51 +56,32 @@ const EditAsset = ({
 			return (
 				<Fragment>
 					{!coinFormData.verified ? (
-						<Fragment>
-							<div className="md-field-wrap">
-								<div className="sub-title">Type</div>
-								<Select
-									name={'type'}
-									value={assetType}
-									onChange={(value) => {
-										handleSelectChange(value, 'type');
-										setType(value);
-									}}
-								>
-									{ASSET_TYPES.map((type, index) => (
-										<Option key={index} value={type.value}>
-											{type.label}
-										</Option>
-									))}
-								</Select>
-							</div>
-							<div className="md-field-wrap">
-								<div className="sub-title">Asset symbol</div>
-								<Form.Item
+						<div className="md-field-wrap">
+							<div className="sub-title">Asset symbol</div>
+							<Form.Item
+								name="symbol"
+								rules={[
+									{
+										required: true,
+										message: 'This field is required!',
+									},
+									{
+										max: 8,
+										message: 'It must be maximum 8 characters.',
+									},
+									{
+										min: 2,
+										message: 'It must be minimum 2 characters.',
+									},
+								]}
+							>
+								<Input
 									name="symbol"
-									rules={[
-										{
-											required: true,
-											message: 'This field is required!',
-										},
-										{
-											max: 8,
-											message: 'It must be maximum 8 characters.',
-										},
-										{
-											min: 2,
-											message: 'It must be minimum 2 characters.',
-										},
-									]}
-								>
-									<Input
-										name="symbol"
-										placeholder="Enter short hand name"
-										onChange={handleChange}
-									/>
-								</Form.Item>
-							</div>
-						</Fragment>
+									placeholder="Enter short hand name"
+									onChange={handleChange}
+								/>
+							</Form.Item>
+						</div>
 					) : null}
 					<div className="md-field-wrap">
 						<div className="sub-title">Asset name</div>
@@ -107,6 +101,33 @@ const EditAsset = ({
 							/>
 						</Form.Item>
 					</div>
+					<div className="md-field-wrap">
+						<div className="sub-title">Description</div>
+						<Form.Item name="description">
+							<TextArea
+								name="description"
+								rows={3}
+								placeholder="Write a short description of this asset"
+								onChange={handleChange}
+							/>
+						</Form.Item>
+					</div>
+					{type === 'info' ? (
+						<div className="md-field-wrap">
+							<div className="sub-title">Asset type</div>
+							<Radio.Group
+								name="type"
+								value={assetType}
+								onChange={(e) => {
+									handleSelectChange(e.target.value, 'type');
+									setType(e.target.value);
+								}}
+							>
+								<Radio value="blockchain">Blockchain</Radio>
+								<Radio value="fiat">Fiat</Radio>
+							</Radio.Group>
+						</div>
+					) : null}
 					{assetType === 'vault' ? (
 						<div className="md-field-wrap">
 							<div className="sub-title">Contract</div>
@@ -138,7 +159,12 @@ const EditAsset = ({
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" htmlType="submit">
+					<Button
+						type="primary"
+						className="green-btn"
+						htmlType="submit"
+						loading={submitting}
+					>
 						Confirm
 					</Button>
 				</div>

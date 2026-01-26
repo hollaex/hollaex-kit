@@ -239,7 +239,10 @@
 			"INFORMATION_PENDING_2": "可能需要10-30分钟，一旦{0}在区块链上得到确认，我们将向你发送电子邮件"
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "发送请求", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "发送请求",
+		"BUTTON_TEXT": "Okay"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "如需解除谷歌验证（2FA），请在下方输入验证码",
 		"OTP_LABEL": "谷歌验证码",
@@ -441,7 +444,10 @@
 				"FULL_NAME_PLACEHOLDER": "输入身份证上的名字",
 				"GENDER_LABEL": "性别",
 				"GENDER_PLACEHOLDER": "输入性别",
-				"GENDER_OPTIONS": { "MAN": "男", "WOMAN": "女" },
+				"GENDER_OPTIONS": {
+					"MAN": "男",
+					"WOMAN": "女"
+				},
 				"NATIONALITY_LABEL": "国籍",
 				"NATIONALITY_PLACEHOLDER": "输入身份证上的国籍",
 				"DOB_LABEL": "出生年月日",
@@ -485,7 +491,10 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "身份证件类型",
 				"TYPE_PLACEHOLDER": "选择身份证件类型",
-				"TYPE_OPTIONS": { "ID": "身份证", "PASSPORT": "护照" },
+				"TYPE_OPTIONS": {
+					"ID": "身份证",
+					"PASSPORT": "护照"
+				},
 				"ID_NUMBER_LABEL": "护照号码",
 				"ID_NUMBER_PLACEHOLDER": "请输入护照号码",
 				"ID_PASSPORT_NUMBER_LABEL": "护照号码",
@@ -675,7 +684,10 @@
 			"TITLE": "谷歌验证（2FA）",
 			"OTP_ENABLED": "启用OTP",
 			"OTP_DISABLED": "请激活2FA",
-			"ENABLED_TEXTS": { "TEXT_1": "登录时需要OTP", "TEXT_2": "提款时需要OTP" },
+			"ENABLED_TEXTS": {
+				"TEXT_1": "登录时需要OTP",
+				"TEXT_2": "提款时需要OTP"
+			},
 			"DIALOG": {
 				"SUCCESS": "成功激活谷歌验证（2FA）",
 				"REVOKE": "成功解除谷歌验证（2FA）"
@@ -701,7 +713,10 @@
 				"STRONGLY_RECOMMEND": "强烈推荐",
 				"WARNING_CONTENT": "启用双重身份验证以增强帐户安全性并保护您的资金"
 			},
-			"FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" },
+			"FORM": {
+				"PLACEHOLDER": "请输入6位谷歌验证码",
+				"BUTTON": "启用2FA"
+			},
 			"DOWNLOAD_APP": "下载并安装",
 			"GOOGLE_AUTHENTICATOR": "Google 身份验证器：",
 			"DOWNLOAD_FROM": "下载自",
@@ -745,7 +760,10 @@
 					"label": "当前密码",
 					"placeholder": "输入当前密码"
 				},
-				"NEW_PASSWORD": { "label": "新密码", "placeholder": "输入新密码" },
+				"NEW_PASSWORD": {
+					"label": "新密码",
+					"placeholder": "输入新密码"
+				},
 				"NEW_PASSWORD_REPEAT": {
 					"label": "确认新密码",
 					"placeholder": "重新输入新密码"
@@ -851,12 +869,27 @@
 	},
 	"CURRENCY": "加密货币",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "market", "limit": "limit" },
-	"TYPES": { "MARKET": "市价", "LIMIT": "限价" },
+	"TYPES_VALUES": {
+		"market": "market",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "市价",
+		"LIMIT": "限价"
+	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "买入", "sell": "卖出" },
-	"SIDES": { "BUY": "买入", "SELL": "卖出" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "开启", "OFF": "关闭" },
+	"SIDES_VALUES": {
+		"buy": "买入",
+		"sell": "卖出"
+	},
+	"SIDES": {
+		"BUY": "买入",
+		"SELL": "卖出"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "开启",
+		"OFF": "关闭"
+	},
 	"SIZE": "数量",
 	"PRICE": "价格",
 	"FEE": "Fee",
@@ -1381,7 +1414,10 @@
 		"TREND_7D": "趋势7D",
 		"BUY": "购买 {0} {1}"
 	},
-	"MARKET_OPTIONS": { "LIST": "列表", "CARD": "图表" },
+	"MARKET_OPTIONS": {
+		"LIST": "列表",
+		"CARD": "图表"
+	},
 	"ALL": "全部",
 	"ASSET_TXT": "资产",
 	"ONE_DAY": "1 天",
@@ -1668,7 +1704,10 @@
 		"LABEL": "移动量",
 		"FEE": "交易费用：{0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "买", "sell": "卖" },
+	"SIDES_VERBS": {
+		"buy": "买",
+		"sell": "卖"
+	},
 	"AVERAGE": "平均的",
 	"NETWORK": "网络",
 	"CATEGORY": "类别",
@@ -1854,7 +1893,9 @@
 	"VERIFY_BANK_WITHDRAW": "为了提款，您需要完成验证，其中包括验证您的银行详细信息。请点击下面的继续按钮。",
 	"VERIFICATION_TITLE": "完成验证",
 	"WITHDRAW_NOTE": "请注意：您只能提款至您名下的账户。",
-	"USER_PAYMENT": { "TITLE": "付款方式" },
+	"USER_PAYMENT": {
+		"TITLE": "付款方式"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "请检查您的订单并在下面确认。",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "收到的金额为估计值，不包含交易费用",
 	"QUOTE_CONFIRMATION_EXPIRY_MSG": "报价将于 {0} {1} 后到期",
@@ -2020,11 +2061,17 @@
 		"TITLE": "页面没有自动打开？",
 		"TEXT": "您的浏览器可能阻止该页面。尝试复制并粘贴下面的链接："
 	},
-	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "要获得访问权限，请联系" },
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "要获得访问权限，请联系"
+	},
 	"FEES_AND_LIMITS": {
 		"LINK": "查看我的费用和限制",
 		"COIN_PAGE_LINK": "交易费用和限额",
-		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "回去", "TO": "总结" },
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "回去",
+			"TO": "总结"
+		},
 		"TITLE": "费用和限制",
 		"SEARCH_PLACEHOLDER": "搜索...",
 		"TABS": {

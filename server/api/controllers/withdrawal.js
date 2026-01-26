@@ -4,7 +4,7 @@ const { loggerWithdrawals } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 const { ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, WITHDRAWAL_DISABLED } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isEmail } = require('validator');
 
@@ -218,6 +218,10 @@ const performWithdrawal = (req, res) => {
 
 const performDirectWithdrawal = (req, res) => {
 	const { id: userId } = req.auth.sub;
+	if (req.auth?.is_subaccount) {
+		const messageObj = errorMessageConverter(new Error(WITHDRAWAL_DISABLED), req?.auth?.sub?.lang);
+		return res.status(400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
 	const {
 		address,
 		currency,

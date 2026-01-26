@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Divider, Button, Tabs, Row, Spin, Modal, Input } from 'antd';
+import {
+	Divider,
+	Button,
+	Tabs,
+	Row,
+	Spin,
+	Modal,
+	Input,
+	Switch,
+	message,
+} from 'antd';
 import { reduxForm, reset } from 'redux-form';
 import { LoadingOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
@@ -23,10 +33,6 @@ const { isEmail } = require('validator');
 const TabPane = Tabs.TabPane;
 
 const Form = AdminHocForm('ADMIN_SETTINGS_FORM', 'transaction-form');
-const EmailDistributionForm = AdminHocForm(
-	'ADMIN_EMAIL_DISTRIBUTION_FORM',
-	'transaction-form'
-);
 const EmailForm = AdminHocForm('ADMIN_EMAIL_SETTINGS_FORM', 'transaction-form');
 const SecurityForm = AdminHocForm(
 	'ADMIN_SECURITY_SETTINGS_FORM',
@@ -83,6 +89,25 @@ export const EmailSettingsForm = ({
 	const [smtpError, setSmtpError] = useState('');
 	const [isDisable, setIsDisable] = useState(false);
 	const settingsFormRef = useRef(null);
+	const distribution = initialValues?.distribution;
+	const [auditDraft, setAuditDraft] = useState({
+		send_email_to_support: false,
+		audit_enabled: true,
+		audit: '',
+		audit_sensitive_enabled: true,
+		audit_sensitive: '',
+	});
+
+	useEffect(() => {
+		const dist = distribution || {};
+		setAuditDraft({
+			send_email_to_support: !!dist.send_email_to_support,
+			audit_enabled: dist.audit_enabled ?? true,
+			audit: dist.audit ?? '',
+			audit_sensitive_enabled: dist.audit_sensitive_enabled ?? true,
+			audit_sensitive: dist.audit_sensitive ?? '',
+		});
+	}, [distribution]);
 
 	useEffect(() => {
 		return () => {
@@ -323,21 +348,133 @@ export const EmailSettingsForm = ({
 			</div>
 			<div className="divider"></div>
 			<div className="mb-4">
-				<h2 id="email-audit">Email Audit</h2>
+				<h2 id="email-audit">Email Copy/Audit</h2>
 				<p>
-					This feature allows specific email to receive a copy of all important
-					emails sent to the user for audit purposes. By filling the auditor
-					email, the email will be in BCC of emails sent to the user.
+					BCC a copy of important user emails to your audit inboxes (for
+					monitoring/compliance). You can enable general and/or sensitive audit
+					inboxes independently.
 				</p>
-				<EmailDistributionForm
-					initialValues={initialValues.distribution}
-					onSubmit={(formProps) =>
-						handleSubmitSettings(formProps, 'email_distribution')
-					}
-					buttonText="Save"
-					fields={fields.email_distribution_list}
-					buttonSubmitting={buttonSubmitting}
-				/>
+				<div>
+					<div className="d-flex flex-wrap" style={{ gap: 16 }}>
+						<div
+							className="mb-3"
+							style={{
+								flex: 1,
+								minWidth: 320,
+								border: '1px solid #e6e6e6',
+								borderRadius: 6,
+								padding: 12,
+							}}
+						>
+							<div className="d-flex justify-content-between align-items-center mb-2">
+								<div>
+									<div className="bold">General audit inbox</div>
+									<div className="secondary-text">
+										BCC copies of general user emails Signup, Deposit
+										notification, etc.
+									</div>
+								</div>
+								<Switch
+									checked={!!auditDraft.audit_enabled}
+									onChange={(checked) =>
+										setAuditDraft((prev) => ({
+											...prev,
+											audit_enabled: checked,
+										}))
+									}
+								/>
+							</div>
+							<Input
+								disabled={!auditDraft.audit_enabled}
+								value={auditDraft.audit}
+								onChange={(e) =>
+									setAuditDraft((prev) => ({ ...prev, audit: e.target.value }))
+								}
+								placeholder="auditor email address"
+							/>
+						</div>
+
+						<div
+							className="mb-3"
+							style={{
+								flex: 1,
+								minWidth: 320,
+								border: '1px solid #e6e6e6',
+								borderRadius: 6,
+								padding: 12,
+							}}
+						>
+							<div className="d-flex justify-content-between align-items-center mb-2">
+								<div>
+									<div className="bold">Sensitive audit inbox</div>
+									<div className="secondary-text">
+										BCC copies for password, withdrawal etc.
+									</div>
+								</div>
+								<Switch
+									checked={!!auditDraft.audit_sensitive_enabled}
+									onChange={(checked) =>
+										setAuditDraft((prev) => ({
+											...prev,
+											audit_sensitive_enabled: checked,
+										}))
+									}
+								/>
+							</div>
+							<Input
+								disabled={!auditDraft.audit_sensitive_enabled}
+								value={auditDraft.audit_sensitive}
+								onChange={(e) =>
+									setAuditDraft((prev) => ({
+										...prev,
+										audit_sensitive: e.target.value,
+									}))
+								}
+								placeholder="sensitive auditor email address"
+							/>
+						</div>
+					</div>
+
+					<Button
+						type="primary"
+						disabled={buttonSubmitting}
+						loading={buttonSubmitting}
+						onClick={() => {
+							const nextSendEmailToSupport =
+								!!auditDraft.audit_enabled ||
+								!!auditDraft.audit_sensitive_enabled;
+
+							// Basic client-side validation when enabled
+							if (
+								auditDraft.audit_enabled &&
+								!isEmail((auditDraft.audit || '').trim())
+							) {
+								message.error('Please enter a valid general auditor email');
+								return;
+							}
+							if (
+								auditDraft.audit_sensitive_enabled &&
+								!isEmail((auditDraft.audit_sensitive || '').trim())
+							) {
+								message.error('Please enter a valid sensitive auditor email');
+								return;
+							}
+
+							handleSubmitSettings(
+								{
+									send_email_to_support: nextSendEmailToSupport,
+									audit_enabled: auditDraft.audit_enabled,
+									audit: (auditDraft.audit || '').trim(),
+									audit_sensitive_enabled: auditDraft.audit_sensitive_enabled,
+									audit_sensitive: (auditDraft.audit_sensitive || '').trim(),
+								},
+								'email_distribution'
+							);
+						}}
+					>
+						Save email audit
+					</Button>
+				</div>
 			</div>
 			<Modal
 				visible={isOpen}

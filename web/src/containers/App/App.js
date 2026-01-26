@@ -801,7 +801,7 @@ class App extends Component {
 			// unreadMessages,
 			router,
 			location,
-			constants = { captcha: {} },
+			constants = { captcha: {}, cloudflare_turnstile: {} },
 			isEditMode,
 			// user,
 			features,

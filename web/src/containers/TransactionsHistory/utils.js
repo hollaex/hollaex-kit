@@ -47,7 +47,7 @@ notification.config({
 	return feeAmount;
 };*/
 
-const calculateAmount = (isQuick = false, price, size) => {
+export const calculateAmount = (isQuick = false, price, size) => {
 	/* Deprecated
 	if (isQuick) {
 		return price;
@@ -57,7 +57,7 @@ const calculateAmount = (isQuick = false, price, size) => {
 	return amount;
 };
 
-const calculatePrice = (isQuick = false, price, size) => {
+export const calculatePrice = (isQuick = false, price, size) => {
 	/* Deprecated
 	if (isQuick) {
 		const amount = mathjs.chain(price).divide(size).done();
@@ -74,8 +74,21 @@ export const generateOrderHistoryHeaders = (
 	discount,
 	prices = {},
 	ICONS,
-	type
+	type,
+	onCancelOrder,
+	orders = []
 ) => {
+	const ordersArray = Array.isArray(orders) ? orders : [];
+	const hasActiveOrders = ordersArray.some((order) => {
+		const status = order?.status;
+		return (
+			status &&
+			status !== 'filled' &&
+			status !== 'canceled' &&
+			status !== 'cancelled'
+		);
+	});
+
 	return [
 		{
 			key: 'icon',
@@ -374,21 +387,43 @@ export const generateOrderHistoryHeaders = (
 				</td>
 			),
 		},*/
-		{
-			stringId: 'TIME',
-			label: type,
+		hasActiveOrders && {
+			stringId: 'CANCEL',
+			label: STRINGS['CANCEL'],
 			key: 'created_at',
 			className: isMobile ? 'text-center' : '',
-			exportToCsv: ({ created_at = '' }) => created_at,
-			renderCell: ({ created_at = '' }, key, index) => {
+			renderCell: (data, index) => {
+				const isActiveOrder =
+					data?.status &&
+					data.status !== 'filled' &&
+					data.status !== 'canceled' &&
+					data.status !== 'cancelled';
+
+				if (!isActiveOrder) {
+					return (
+						<td key={index} className={isMobile ? 'text-center' : ''}></td>
+					);
+				}
+
+				const handleCancelClick = () => {
+					if (onCancelOrder && data) {
+						onCancelOrder(data);
+					}
+				};
+
 				return (
 					<td key={index} className={isMobile ? 'text-center' : ''}>
-						{getFormatTimestamp(created_at)}
+						<span
+							className="pointer blue-link underline-text"
+							onClick={handleCancelClick}
+						>
+							{STRINGS['CANCEL']}
+						</span>
 					</td>
 				);
 			},
 		},
-	];
+	].filter(Boolean);
 };
 
 export const generateTradeHeaders = (

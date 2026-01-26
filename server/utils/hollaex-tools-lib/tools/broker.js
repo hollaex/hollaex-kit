@@ -540,9 +540,22 @@ const testRebalance = async (data) => {
 
 };
 
+const buildClientOrderParams = (exchangeKey, tradeId) => {
+	if (!exchangeKey || tradeId == null) return null;
+	const clientOrderId = String(tradeId).trim();
+	if (!clientOrderId) return null;
+	const paramKeyByExchange = {
+		binance: 'newClientOrderId',
+		okx: 'clOrdId',
+		bybit: 'orderLinkId'
+	};
+	const paramKey = paramKeyByExchange[exchangeKey];
+	return paramKey ? { [paramKey]: clientOrderId } : null;
+};
+
 const reverseTransaction = async (orderData) => {
-	const { symbol, side, size } = orderData;
-	loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction input', { symbol, side, size });
+	const { symbol, side, size, trade_id } = orderData;
+	loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction input', { symbol, side, size, trade_id });
 	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
@@ -580,7 +593,8 @@ const reverseTransaction = async (orderData) => {
 				return false;
 			}
 
-			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction using exchange', { exchange: exchangeKey });
+			const clientOrderParams = buildClientOrderParams(exchangeKey, trade_id);
+			loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction using exchange', { exchange: exchangeKey, clientOrderParams });
 			const exchange = setExchange({
 				exchange: exchangeKey,
 				api_key: broker.account[exchangeKey].apiKey,
@@ -592,15 +606,15 @@ const reverseTransaction = async (orderData) => {
 			if (exchangeKey === 'bybit') {
 				const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
 				const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
-				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing limit order', { symbol: formattedRebalancingSymbol, side, size, price });
+				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing limit order', { symbol: formattedRebalancingSymbol, side, size, price, clientOrderParams });
 
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price, clientOrderParams || undefined)
 					.then((res) => { loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction order placed', { exchange: exchangeKey, result: res }); })
 					.catch((err) => { notifyUser(err.message, broker.user_id); loggerBroker.error('hollaex-tools-lib/broker/reverseTransaction order error', err.message); });
 			}
 			else {
-				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing market order', { symbol: formattedRebalancingSymbol, side, size });
-				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
+				loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction placing market order', { symbol: formattedRebalancingSymbol, side, size, clientOrderParams });
+				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size, undefined, clientOrderParams || undefined)
 					.then((res) => { loggerBroker.info('hollaex-tools-lib/broker/reverseTransaction order placed', { exchange: exchangeKey, result: res }); })
 					.catch((err) => { notifyUser(err.message, broker.user_id); loggerBroker.error('hollaex-tools-lib/broker/reverseTransaction order error', err.message); });
 			}

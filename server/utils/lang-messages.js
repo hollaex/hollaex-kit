@@ -4105,10 +4105,51 @@ const messages = {
 		'vi': 'Tài khoản phụ không thể tạo địa chỉ nạp tiền',
 		'zh': '子账户无法生成充值地址'
 	},
+	'Reset password request is sent if the user exists.': {
+		'en': 'Reset password request is sent if the user exists.',
+		'de': 'Reset password request is sent if the user exists.',
+		'es': 'Reset password request is sent if the user exists.',
+		'fa': 'Reset password request is sent if the user exists.',
+		'fr': 'Reset password request is sent if the user exists.',
+		'id': 'Reset password request is sent if the user exists.',
+		'it': 'Reset password request is sent if the user exists.',
+		'ja': 'Reset password request is sent if the user exists.',
+		'ko': 'Reset password request is sent if the user exists.',
+		'mn': 'Reset password request is sent if the user exists.',
+		'nl': 'Reset password request is sent if the user exists.',
+		'pt': 'Reset password request is sent if the user exists.',
+		'ru': 'Reset password request is sent if the user exists.',
+		'tr': 'Reset password request is sent if the user exists.',
+		'ur': 'Reset password request is sent if the user exists.',
+		'vi': 'Reset password request is sent if the user exists.',
+		'zh': 'Reset password request is sent if the user exists.'
+	}
 };
 
 
 const functionMessages = {
+	'Invalid OTP Code': (msg) => {
+		const suffix = Array.isArray(msg) ? msg.join(' ') : msg;
+		return {
+			'en': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'de': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'es': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'fa': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'fr': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'id': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'it': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'ja': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'ko': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'mn': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'nl': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'pt': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'ru': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'tr': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'ur': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'vi': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+			'zh': `Invalid OTP Code${suffix ? ` ${suffix}` : ''}`,
+		};
+	},
 	'Access denied': (msg) => {
 		return {
 			'en': `Access denied: ${msg}`,
@@ -4298,6 +4339,25 @@ const functionMessages = {
 			'zh': `通讯运算符无法更新值：${value}`,
 		};
 	},
+	'You have reached your withdrawal limit for your tier': {
+		'en': 'You have reached your withdrawal limit for your tier',
+		'de': 'Sie haben das Auszahlungslimit für Ihre Stufe erreicht',
+		'es': 'Has alcanzado el límite de retiro de tu nivel',
+		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
+		'fr': 'Vous avez atteint la limite de retrait de votre niveau',
+		'id': 'Anda telah mencapai batas penarikan untuk tingkat Anda',
+		'it': 'Hai raggiunto il limite di prelievo per il tuo livello',
+		'ja': 'あなたのティアの出金上限に達しました',
+		'ko': '현재 등급의 출금 한도에 도달했습니다',
+		'mn': 'Та өөрийн түвшний мөнгө татах хязгаарт хүрсэн байна',
+		'nl': 'Je hebt de opnamelimiet voor jouw niveau bereikt',
+		'pt': 'Você atingiu o limite de saque do seu nível',
+		'ru': 'Вы достигли лимита вывода средств для вашего уровня',
+		'tr': 'Seviyeniz için belirlenen çekim limitine ulaştınız',
+		'ur': 'آپ اپنے درجے کے لیے مقرر کردہ نکاسی کی حد تک پہنچ چکے ہیں',
+		'vi': 'Bạn đã đạt đến giới hạn rút tiền cho cấp của mình',
+		'zh': '您已达到当前等级的提现限额'
+	}
 };
 
 exports.getMessage = (message_type, lang = 'en') => {

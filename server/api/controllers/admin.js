@@ -2177,6 +2177,7 @@ const setUserBank = (req, res) => {
 				}
 			});
 
+			user.changed('bank_account', true);
 			const updatedUser = await user.update(
 				{ bank_account: newBankAccounts },
 				{ fields: ['bank_account'] }
@@ -2238,6 +2239,7 @@ const verifyUserBank = (req, res) => {
 				return bank;
 			});
 
+			user.changed('bank_account', true);
 			return user.update(
 				{ bank_account: banks },
 				{ fields: ['bank_account'] }
@@ -2284,6 +2286,7 @@ const revokeUserBank = (req, res) => {
 
 			const newBanks = user.bank_account.filter((bank) => bank.id !== bank_id);
 
+			user.changed('bank_account', true);
 			return user.update(
 				{ bank_account: newBanks },
 				{ fields: ['bank_account'] }

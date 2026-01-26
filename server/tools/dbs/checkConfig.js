@@ -45,6 +45,11 @@ Status.findOne()
 			captcha: {
 				site_key: existingKitConfigurations.captcha ? (existingKitConfigurations.captcha.site_key || process.env.CAPTCHA_SITE_KEY) : process.env.CAPTCHA_SITE_KEY
 			},
+			cloudflare_turnstile: {
+				site_key: existingKitConfigurations.cloudflare_turnstile
+					? (existingKitConfigurations.cloudflare_turnstile.site_key || process.env.CLOUDFLARE_TURNSTILE_SITE_KEY)
+					: (process.env.CLOUDFLARE_TURNSTILE_SITE_KEY)
+			},
 			defaults: {
 				language: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.language || process.env.NEW_USER_DEFAULT_LANGUAGE || 'en') : (process.env.NEW_USER_DEFAULT_LANGUAGE || 'en'),
 				theme: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white') : (process.env.DEFAULT_THEME || 'white'),
@@ -75,7 +80,8 @@ Status.findOne()
 			timezone: existingKitConfigurations?.timezone || existingSecrets.emails ? (existingSecrets.emails.timzeone || process.env.EMAILS_TIMEZONE || 'Etc/UTC') : (process.env.EMAILS_TIMEZONE || 'Etc/UTC'),
 			google_oauth: existingKitConfigurations.google_oauth || {},
 			auto_deposit: existingKitConfigurations.auto_deposit || { active: true },
-			auto_withdrawal: existingKitConfigurations.auto_withdrawal || { active: true }
+			auto_withdrawal: existingKitConfigurations.auto_withdrawal || { active: true },
+			force_two_factor_authentication_withdrawal: existingKitConfigurations.force_two_factor_authentication_withdrawal || { active: false }
 		};
 
 		const secrets = {
@@ -89,7 +95,16 @@ Status.findOne()
 				timezone: existingSecrets.emails ? (existingSecrets.emails.timzeone || process.env.EMAILS_TIMEZONE || 'Etc/UTC') : (process.env.EMAILS_TIMEZONE || 'Etc/UTC'),
 				send_email_to_support: existingSecrets.emails ? (existingSecrets.emails.send_email_to_support || (process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false) : ((process.env.SEND_EMAIL_TO_SUPPORT && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false),
 				sender: existingSecrets.emails ? (existingSecrets.emails.sender || '') : '',
-				audit: existingSecrets.emails ? (existingSecrets.emails.audit || '') : ''
+				audit: existingSecrets.emails ? (existingSecrets.emails.audit || '') : '',
+				audit_sensitive: existingSecrets.emails
+					? (existingSecrets.emails.audit_sensitive ?? existingSecrets.emails.audit ?? '')
+					: '',
+				audit_enabled: existingSecrets.emails
+					? (existingSecrets.emails.audit_enabled ?? true)
+					: true,
+				audit_sensitive_enabled: existingSecrets.emails
+					? (existingSecrets.emails.audit_sensitive_enabled ?? true)
+					: true
 			},
 			test_key: existingSecrets.test_key || {
 				value: 'exch_' + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -99,6 +114,11 @@ Status.findOne()
 			},
 			captcha: {
 				secret_key: existingSecrets.captcha ? (existingSecrets.captcha.secret_key || process.env.CAPTCHA_SECRET_KEY) : process.env.CAPTCHA_SECRET_KEY
+			},
+			cloudflare_turnstile: {
+				secret_key: existingSecrets.cloudflare_turnstile
+					? (existingSecrets.cloudflare_turnstile.secret_key || process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY)
+					: (process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY)
 			},
 			smtp: {
 				server: existingSecrets.smtp ? (existingSecrets.smtp.server || process.env.SMTP_SERVER || '') : (process.env.SMTP_SERVER || ''),

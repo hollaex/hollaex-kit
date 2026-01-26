@@ -34,6 +34,11 @@
 	color: #000000 !important;
 }
 
+.summary-content-wrapper tr.ant-table-expanded-row > td,
+.summary-content-wrapper tr.ant-table-expanded-row:hover > td {
+	background: var(--admin_panel_table_tbody) !important;
+}
+
 .summary-content-wrapper .body-container .box-outerDesign .ramp-heading {
 	display: flex;
 	justify-content: space-between;
@@ -837,4 +842,8 @@
 	display: flex;
 	align-items: center;
 	gap: 2%;
+}
+
+.summary-content-wrapper > .blue-admin-table > .ant-expanded-row > td:hover {
+	background-color: var(--admin_panel_content_background) !important;
 }

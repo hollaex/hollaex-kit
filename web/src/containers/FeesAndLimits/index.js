@@ -32,9 +32,7 @@ const Index = ({
 	getLimitTab,
 	setSelectedAccount,
 }) => {
-	const [selectedLevel, setSelectedLevel] = useState(
-		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
-	);
+	const [selectedLevel, setSelectedLevel] = useState();
 	const [tabs, setTabs] = useState([]);
 	const [activeTab, setActiveTab] = useState(isMobile ? null : 0);
 	const [search, setSearch] = useState();
@@ -51,7 +49,11 @@ const Index = ({
 	};
 
 	useEffect(() => {
-		setSelectedAccount(verification_level);
+		const level = isLoggedIn()
+			? verification_level?.toString()
+			: Object.keys(config_level)[0];
+		setSelectedAccount(level);
+		setSelectedLevel(level);
 		//eslint-disable-next-line
 	}, []);
 

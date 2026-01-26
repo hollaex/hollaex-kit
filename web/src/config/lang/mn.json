@@ -206,7 +206,10 @@
 			"INFORMATION_PENDING_2": "Үүнд 10-30 минут зарцуулагдаж магадгүй. Таны {0} блокчлон дээр баталгаажсаны дараа бид имэйл илгээх болно."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Хүсэлт илгээсэн", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Хүсэлт илгээсэн",
+		"BUTTON_TEXT": "Okay"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Баталгаажуулах код оруулна уу",
 		"OTP_FORM_INFO": "Үргэлжлүүлэхийн тулд 6 оронтой кодоо оруулна уу",
@@ -402,7 +405,10 @@
 				"FULL_NAME_PLACEHOLDER": "Иргэний үнэмлэх дээрх өөрийн нэрээ бичнэ үү",
 				"GENDER_LABEL": "Хүйс",
 				"GENDER_PLACEHOLDER": "Өөрийн хүйсээ оруулна уу",
-				"GENDER_OPTIONS": { "MAN": "Эрэгтэй", "WOMAN": "Эмэгтэй" },
+				"GENDER_OPTIONS": {
+					"MAN": "Эрэгтэй",
+					"WOMAN": "Эмэгтэй"
+				},
 				"NATIONALITY_LABEL": "Иргэншил",
 				"NATIONALITY_PLACEHOLDER": "Та өөрийн иргэншилээ бичнэ үү",
 				"DOB_LABEL": "Төрсөн огноо",
@@ -718,7 +724,9 @@
 		"CHANGE_PASSWORD": {
 			"TITLE": "Нууц үг солих",
 			"ACTIVE": "ИДЭВХИТЭЙ",
-			"DIALOG": { "EMAIL_CONFIRMATION": "Баталгаажуулах и-мэйл явууллаа." },
+			"DIALOG": {
+				"EMAIL_CONFIRMATION": "Баталгаажуулах и-мэйл явууллаа."
+			},
 			"FORM": {
 				"BUTTON": "Нууц үг",
 				"CURRENT_PASSWORD": {
@@ -739,7 +747,9 @@
 			"TITLE": "Нэвтрэлтийн түүх",
 			"IP_ADDRESS": "IP хаяг",
 			"TIME": "Огноо",
-			"CONTENT": { "TITLE": "Нэвтрэлтийн түүх" }
+			"CONTENT": {
+				"TITLE": "Нэвтрэлтийн түүх"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "Аккаунт түгжих",
@@ -840,7 +850,10 @@
 		"DEFI_STAKING": "DeFi Staking",
 		"CEFI_STAKING": "CeFi Staking",
 		"REWARDS": {
-			"0": { "CARD": "Өгөөж авах (бонус байхгүй)", "TEXT": "тогтмол өгөөж." },
+			"0": {
+				"CARD": "Өгөөж авах (бонус байхгүй)",
+				"TEXT": "тогтмол өгөөж."
+			},
 			"1": {
 				"CARD": "Өгөөж + урамшуулал аваарай",
 				"TEXT": "орлогоосоо урамшуулах урамшуулал"
@@ -849,8 +862,14 @@
 				"CARD": "Хамгийн өндөр өгөөж, хамгийн өндөр урамшуулал",
 				"TEXT": "таны орлогын хамгийн өндөр урамшуулал"
 			},
-			"3": { "CARD": "", "TEXT": "" },
-			"4": { "CARD": "", "TEXT": "" }
+			"3": {
+				"CARD": "",
+				"TEXT": ""
+			},
+			"4": {
+				"CARD": "",
+				"TEXT": ""
+			}
 		}
 	},
 	"UNSTAKE": {
@@ -1022,13 +1041,31 @@
 	},
 	"CURRENCY": "Крипто",
 	"TYPE": "Төрөл",
-	"TYPES_VALUES": { "market": "market", "limit": "limit" },
-	"TYPES": { "MARKET": "market", "LIMIT": "limit" },
+	"TYPES_VALUES": {
+		"market": "market",
+		"limit": "limit"
+	},
+	"TYPES": {
+		"MARKET": "market",
+		"LIMIT": "limit"
+	},
 	"SIDE": "Тал",
-	"SIDES_VALUES": { "buy": "авах", "sell": "зарах" },
-	"SIDES_VERBS": { "buy": "авсан", "sell": "зарсан" },
-	"SIDES": { "BUY": "авах", "SELL": "зарах" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "ON", "OFF": "OFF" },
+	"SIDES_VALUES": {
+		"buy": "авах",
+		"sell": "зарах"
+	},
+	"SIDES_VERBS": {
+		"buy": "авсан",
+		"sell": "зарсан"
+	},
+	"SIDES": {
+		"BUY": "авах",
+		"SELL": "зарах"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "ON",
+		"OFF": "OFF"
+	},
 	"SIZE": "Хэмжээ",
 	"PRICE": "Ханш",
 	"AVERAGE": "Дундаж",
@@ -1564,7 +1601,9 @@
 	"EXPIRED_INFO_1": "Таны trial дууслаа. ",
 	"EXPIRED_INFO_2": "Биржийг дахин идэвхжүүлэхийн тулд барьцаа хөрөнгөө тавина уу.",
 	"EXPIRED_BUTTON_TXT": "EXCHANGE-г ИДЭВХЖҮҮЛЭХ",
-	"TRADE_POSTS": { "LEARN_MORE": "Илүү их судла" },
+	"TRADE_POSTS": {
+		"LEARN_MORE": "Илүү их судла"
+	},
 	"OPEN_WALLET": "Хэтэвч",
 	"CUMULATIVE_AMOUNT_SYMBOL": "Нийт",
 	"POST_ONLY": "Post only",
@@ -1639,7 +1678,10 @@
 	"FEE_REDUCTION": "Шимтгэл бууралт",
 	"FEE_REDUCTION_DESCRIPTION": "*таны дансанд шимтгэлийн хөнгөлөлт үзүүлсэн байна. Хөнгөлөлт нь таны хийж буй арилжааны Шимтгэлид хамаарна.",
 	"CHANGE_PASSWORD_FAILED": "Нууц үг солиход алдаа гарлаа",
-	"MARKET_OPTIONS": { "LIST": "Жагсаалт", "CARD": "Card" },
+	"MARKET_OPTIONS": {
+		"LIST": "Жагсаалт",
+		"CARD": "Card"
+	},
 	"ALL": "Бүгд",
 	"ASSET_TXT": "Хөрөнгө",
 	"ONE_DAY": "1 өдөр",
@@ -1719,7 +1761,9 @@
 	"NO_VERIFIED_BANK": "Баталгаажсан банкны данс олдсонгүй",
 	"NO_VERIFIED_BANK_DESC": "Танд {0} баталгаажсан банкны данс байхгүй байна. Та дансаа бүртгүүлж, баталгаажуулна уу.",
 	"WITHDRAW_NOTE": "Анхааруулга: Та зөвхөн өөрийн нэр дээрх дансруу мөнгө татах боломжтой.",
-	"USER_PAYMENT": { "TITLE": "Төлбөр, тооцооо" },
+	"USER_PAYMENT": {
+		"TITLE": "Төлбөр, тооцооо"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Захиалгаа шалгаад баталгаажуулна уу.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Хүлээн авах дүн нь урьдчилсан тооцоо бөгөөд арилжааны хураамжийг оруулаагүй болно",
 	"QUOTE_CONFIRMATION_EXPIRY_MSG": "Үнийн санал {0} {1} дараа дуусна",
@@ -1920,7 +1964,11 @@
 	"FEES_AND_LIMITS": {
 		"LINK": "Миний хураамж, хязгаарлалт",
 		"COIN_PAGE_LINK": "Арилжааны хураамж ба хязгаарлалт",
-		"BACK": { "PLACEHOLDER": "{0} {1}", "BACK": "Буцах", "TO": "хураангуйлах" },
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Буцах",
+			"TO": "хураангуйлах"
+		},
 		"TITLE": "Хураамж, лимит",
 		"SEARCH_PLACEHOLDER": "Хайх...",
 		"TABS": {

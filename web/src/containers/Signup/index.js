@@ -6,11 +6,13 @@ import { isMobile } from 'react-device-detect';
 import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { message } from 'antd';
+import { requiredWithCustomMessage } from 'components/Form/validations';
 import { performGoogleSignup, performSignup } from 'actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from 'containers';
 import { IconTitle, Dialog, MobileBarBack, EditWrapper } from 'components';
+import CloudflareTurnstile from 'components/CloudflareTurnstile';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -115,6 +117,13 @@ class Signup extends Component {
 	};
 
 	onSubmitSignup = (values) => {
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+		if (turnstileEnabled && !values?.captcha) {
+			throw new SubmissionError({ _error: STRINGS['INVALID_CAPTCHA'] });
+		}
+
 		// const affiliation_code = this.getReferralCode();
 		// if (affiliation_code && !values.referral) {
 		// 	values.referral = affiliation_code;
@@ -199,14 +208,27 @@ class Signup extends Component {
 			);
 		}
 
-		const formFields = generateFormFields(
-			STRINGS,
-			activeTheme,
-			constants.links,
-			isReferral,
-			signupEmail,
-			emailDetail
-		);
+		const turnstileSiteKey = constants?.cloudflare_turnstile?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+
+		const formFields = {
+			...generateFormFields(
+				STRINGS,
+				activeTheme,
+				constants.links,
+				isReferral,
+				signupEmail,
+				emailDetail
+			),
+			...(turnstileEnabled
+				? {
+						captcha: {
+							type: 'hidden',
+							validate: [requiredWithCustomMessage(STRINGS['INVALID_CAPTCHA'])],
+						},
+				  }
+				: {}),
+		};
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -251,6 +273,17 @@ class Signup extends Component {
 						<SignupForm
 							onSubmit={this.onSubmitSignup}
 							formFields={formFields}
+							extraContent={
+								turnstileEnabled ? (
+									<CloudflareTurnstile
+										siteKey={turnstileSiteKey}
+										theme={activeTheme}
+										onToken={(token) =>
+											this.props.change(FORM_NAME, 'captcha', token)
+										}
+									/>
+								) : null
+							}
 						/>
 						{isMobile && <BottomLinks />}
 						{!!constants?.google_oauth?.client_id && (

@@ -29,7 +29,6 @@ import {
 	withdrawNetwork,
 	withdrawNetworkOptions,
 } from 'actions/appActions';
-import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
@@ -58,6 +57,7 @@ const RenderWithdraw = ({
 	onHandleScan,
 	selectedNetwork,
 	optionalTag,
+	wsPriceData,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -76,6 +76,7 @@ const RenderWithdraw = ({
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState([]);
 	const [prices, setPrices] = useState({});
+	const [withdrawalLimitError, setWithdrawalLimitError] = useState(null);
 	const [selectedAsset, setSelectedAsset] = useState({
 		selectedCurrency: null,
 		networkData: null,
@@ -239,7 +240,7 @@ const RenderWithdraw = ({
 		// ) {
 		// 	setIsWarning(true);
 		// }
-		getOraclePrices();
+		getSocketPrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 
 		return () => {
@@ -321,10 +322,9 @@ const RenderWithdraw = ({
 		isValidUserEmail,
 	]);
 
-	const getOraclePrices = async () => {
+	const getSocketPrices = async () => {
 		try {
-			const prices = await getPrices({ coins });
-			setPrices(prices);
+			setPrices(wsPriceData);
 		} catch (error) {
 			console.error(error);
 		}
@@ -332,6 +332,7 @@ const RenderWithdraw = ({
 
 	const getWithdrawMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
+			setWithdrawalLimitError();
 			const res = await getWithdrawalMax(
 				getWithdrawCurrency && getWithdrawCurrency,
 				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
@@ -345,7 +346,7 @@ const RenderWithdraw = ({
 			isMaxAmount && setWithdrawAmount(res?.data?.amount);
 			setMaxAmount(res?.data?.amount);
 		} catch (error) {
-			console.error(error);
+			setWithdrawalLimitError(error?.response?.data?.message);
 		}
 	};
 
@@ -1579,12 +1580,19 @@ const RenderWithdraw = ({
 										)}
 									</div>
 								) : null}
-								{!maxAmount && maxAmount === 0 && (
+								{!maxAmount && !withdrawalLimitError && maxAmount === 0 && (
 									<div className="d-flex mt-2 warning-text">
 										<ExclamationCircleFilled className="mt-1 mr-1" />
 										{renderLabel('WITHDRAW_PAGE.ZERO_BALANCE')}
 									</div>
 								)}
+								{withdrawalLimitError && (
+									<div className="d-flex mt-2 warning_text">
+										<ExclamationCircleFilled className="mt-1 mr-1" />
+										{withdrawalLimitError}
+									</div>
+								)}
+
 								{currStep.stepFive && (
 									<div
 										className={`d-flex h-25 ${
@@ -1665,6 +1673,7 @@ const mapStateToForm = (state) => ({
 	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 	optionalTag: state.app.withdrawFields.optionalTag,
 	scannedAddress: state.wallet.scannedAddress,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

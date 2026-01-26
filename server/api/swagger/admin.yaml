@@ -3594,6 +3594,12 @@ paths:
           type: string
           format: date-time
         - in: query
+          name: status
+          description: Filter stake pools by status
+          required: false
+          type: string
+          enum: ['uninitialized', 'active', 'paused', 'terminated']
+        - in: query
           name: format
           description: Specify data format
           required: false
@@ -3696,6 +3702,50 @@ paths:
       x-security-types:
         - bearer
         - hmac
+  /admin/staker:
+    x-swagger-router-controller: stake
+    put:
+      description: Update exchange staker values for admin
+      operationId: updateExchangeStaker
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: number
+                format: int32
+              nav:
+                type: number
+                format: double
+              reward:
+                type: number
+                format: double
+              status:
+                type: string
+                enum: ['staking', 'unstaking', 'closed']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-token-permissions:
+        - can_withdraw
   /admin/stake/slash-estimate:
     x-swagger-router-controller: stake
     get:
@@ -3735,12 +3785,6 @@ paths:
         - Admin
       parameters:
         - in: query
-          name: id
-          description: Unique identifier for the staker entry.
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: user_id
           description: The ID of the user who has locked funds and staked.
           required: false
@@ -3758,17 +3802,10 @@ paths:
           required: false
           type: string
         - in: query
-          name: reward
-          description: The amount the user has received as rewards.
+          name: status
+          description: Status of the staker entry (e.g. staking, unstaking, closed).
           required: false
-          type: number
-          format: double
-        - in: query
-          name: slashed
-          description: The amount slashed.
-          required: false
-          type: number
-          format: double
+          type: string
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"

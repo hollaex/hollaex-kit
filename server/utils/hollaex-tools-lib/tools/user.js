@@ -353,7 +353,7 @@ const createUserOnNetwork = (email, opts = {
 	return getNodeLib().createUser(email, opts);
 };
 
-const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer) => {
+const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer, headers = {}) => {
 	return getUserByEmail(email.toLowerCase())
 		.then((user) => {
 			if (!user) {
@@ -377,7 +377,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 
 			if (!user.otp_enabled) {
-				return all([user, checkCaptcha(captcha, ip)]);
+				return all([user, checkCaptcha(captcha, ip, headers)]);
 			} else {
 				return all([
 					user,
@@ -385,7 +385,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return checkCaptcha(captcha, ip);
+							return checkCaptcha(captcha, ip, headers);
 						}
 					})
 				]);
@@ -1400,6 +1400,17 @@ const changeUserVerificationLevelById = (userId, newLevel, domain) => {
 			);
 		})
 		.then((user) => {
+			if (currentVerificationLevel !== user.verification_level) {
+				publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+					type: 'user',
+					data: {
+						action: 'verification_level',
+						user_id: user.id,
+						previous_level: currentVerificationLevel,
+						current_level: user.verification_level,
+					}
+				}));
+			}
 			if (currentVerificationLevel < user.verification_level) {
 				sendEmail(
 					MAILTYPE.ACCOUNT_UPGRADE,
@@ -2119,11 +2130,22 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	}
 	const oldValues = { user_id: userId };
 	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
+	const previousUserData = omitUserFields(user.dataValues);
 
 	await user.update(
 		updateData,
 		{ fields: Object.keys(updateData) }
 	);
+
+	publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+		type: 'user',
+		data: {
+			action: 'update',
+			user_id: userId,
+			previous_user: previousUserData,
+			...user
+		}
+	}));
 
 	createAuditLog({ email: auditInfo.userEmail, session_id: auditInfo.sessionId }, auditInfo.apiPath, auditInfo.method, updateData, oldValues);
 	return omitUserFields(user.dataValues);
@@ -2283,7 +2305,7 @@ const revokeAllUserSessions = async (userId) => {
 	return true;
 };
 
-const revokeUserSession = async (sessionId, userId = null) => {
+const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	const session = await getModel('session').findOne({
 		include: [
 			{
@@ -4791,11 +4813,17 @@ const createSharedaccount = async (mainKitId, { email, label }) => {
 	if (!main) {
 		throw new Error(USER_NOT_FOUND);
 	}
+	if (main.is_subaccount) {
+		throw new Error(NOT_AUTHORIZED);
+	}
 
 	const normalizedEmail = String(email).toLowerCase().trim();
 	const shared = await getUserByEmail(normalizedEmail, false);
 	if (!shared) {
 		throw new Error(USER_NOT_FOUND);
+	}
+	if (shared.is_subaccount) {
+		throw new Error(NOT_AUTHORIZED);
 	}
 
 	if (shared.id === main.id) {
@@ -4913,12 +4941,14 @@ const getUserAccessibleSharedaccounts = async (sharedKitId, { limit, page } = {}
 const issueSharedaccountToken = async ({ sharedKitId, sharedaccountId, ip, headers = {} }) => {
 	const sharedUser = await getUserByKitId(sharedKitId, false);
 	if (!sharedUser) throw new Error(USER_NOT_FOUND);
+	if (sharedUser.is_subaccount) throw new Error(NOT_AUTHORIZED);
 
 	const link = await dbQuery.findOne('sharedaccount', { where: { id: sharedaccountId, shared_id: sharedUser.id, active: true } });
 	if (!link) throw new Error(NOT_AUTHORIZED);
 
 	const main = await getUserByKitId(link.main_id, false);
 	if (!main) throw new Error(USER_NOT_FOUND);
+	if (main.is_subaccount) throw new Error(NOT_AUTHORIZED);
 	if (!main.activated) throw new Error(NOT_AUTHORIZED);
 
 	const token = await require('./security').issueToken(
@@ -4988,7 +5018,7 @@ const pauseSharedaccount = async (mainKitId, sharedaccountId) => {
 		for (const session of sessions) {
 			const m = session.meta || {};
 			if (m.is_sharedaccount === true && Number(m.sharedaccount_id) === Number(link.id)) {
-				await revokeUserSession(session.id, main.id);
+				await revokeExchangeUserSession(session.id, main.id);
 			}
 		}
 	} catch (e) {
@@ -5026,7 +5056,7 @@ const deleteSharedaccount = async (mainKitId, sharedaccountId) => {
 		for (const session of sessions) {
 			const m = session.meta || {};
 			if (m.is_sharedaccount === true && Number(m.sharedaccount_id) === Number(link.id)) {
-				await revokeUserSession(session.id, main.id);
+				await revokeExchangeUserSession(session.id, main.id);
 			}
 		}
 	} catch (e) {
@@ -5106,7 +5136,7 @@ module.exports = {
 	updateUserInfo,
 	updateLoginAttempt,
 	getExchangeUserSessions,
-	revokeUserSession,
+	revokeExchangeUserSession,
 	updateLoginStatus,
 	findUserLatestLogin,
 	createUserLogin,

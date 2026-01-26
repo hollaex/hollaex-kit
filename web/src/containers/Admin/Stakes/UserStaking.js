@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { Table, Button, Spin, Input, Select } from 'antd';
-import { ExclamationCircleFilled } from '@ant-design/icons';
+import {
+	Table,
+	Button,
+	Spin,
+	Input,
+	Select,
+	Modal,
+	InputNumber,
+	message,
+} from 'antd';
+import { ExclamationCircleFilled, DownloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 
 import { Coin } from 'components';
 import {
 	requestStakersByAdmin,
+	requestStakersByAdminCsv,
 	requestStakePools,
 	getStakingAnalytics,
+	updateStaker,
 } from './actions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
@@ -36,11 +47,18 @@ const UserStaking = ({
 
 	const [stakingAnayltics, setStakingAnalytics] = useState({});
 
+	const [isEditNavOpen, setIsEditNavOpen] = useState(false);
+	const [selectedStaker, setSelectedStaker] = useState(null);
+	const [navValue, setNavValue] = useState(null);
+	const [rewardValue, setRewardValue] = useState(null);
+	const [statusValue, setStatusValue] = useState(null);
+
 	const statuses = {
 		staking: 2,
 		unstaking: 1,
 		closed: 3,
 	};
+	const filterStatuses = ['staking', 'unstaking', 'closed'];
 
 	const columns = [
 		{
@@ -50,7 +68,14 @@ const UserStaking = ({
 			render: (user_id, data) => {
 				return (
 					<div className="d-flex">
-						<Button className="ant-btn green-btn no-border ant-tooltip-open ant-btn-primary">
+						<Button
+							className="ant-btn green-btn no-border ant-tooltip-open ant-btn-primary"
+							onClick={() => {
+								if (data?.user_id) {
+									router.push(`/admin/user?id=${data.user_id}`);
+								}
+							}}
+						>
 							{data?.user_id}
 						</Button>
 						{/* <div className="ml-3">{data.User.email}</div> */}
@@ -129,13 +154,28 @@ const UserStaking = ({
 			},
 		},
 		{
+			title: 'NAV',
+			dataIndex: 'nav',
+			key: 'nav',
+			render: (nav, data) => {
+				const displayNav = nav === null || nav === undefined ? '-' : nav;
+				return (
+					<div className="d-flex">
+						<span>
+							{displayNav} {data?.stake?.currency?.toUpperCase()}{' '}
+						</span>
+					</div>
+				);
+			},
+		},
+		{
 			title: 'Earnings',
 			dataIndex: 'reward',
 			key: 'reward',
 			render: (user_id, data) => {
 				const incrementUnit =
 					coins[data?.reward_currency || data?.currency]?.increment_unit;
-				const decimalPoint = new BigNumber(incrementUnit)?.dp();
+				const decimalPoint = new BigNumber(incrementUnit)?.dp() + 2;
 				const sourceAmount =
 					data?.reward &&
 					new BigNumber(data?.reward - data?.slashed)
@@ -173,6 +213,30 @@ const UserStaking = ({
 				);
 			},
 		},
+		{
+			title: 'Config',
+			dataIndex: 'config',
+			key: 'config',
+			render: (_value, data) => {
+				return (
+					<div className="d-flex">
+						<span
+							className="underline-text pointer"
+							style={{ color: '#fff' }}
+							onClick={() => {
+								setSelectedStaker(data);
+								setNavValue(data?.nav ?? data?.amount);
+								setRewardValue(data?.reward ?? 0);
+								setStatusValue(data?.status ?? 'staking');
+								setIsEditNavOpen(true);
+							}}
+						>
+							Edit Stake
+						</span>
+					</div>
+				);
+			},
+		},
 	];
 
 	useEffect(() => {
@@ -203,20 +267,26 @@ const UserStaking = ({
 
 	const requestExchangeStakers = (page = 1, limit = 50) => {
 		let requestQueryValues = {};
-		if (!queryValues?.user_id && !queryValues?.stake_id) return;
+		if (!queryValues) return;
 		setIsLoading(true);
 		if (isUserProfileStakeTab && selectedUserId) {
-			requestQueryValues = {
-				user_id: String(selectedUserId),
-				...(queryValues?.stake_id !== '0' && queryValues),
-			};
+			const cleaned = { ...queryValues, user_id: String(selectedUserId) };
+			if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+			if (cleaned?.user_id === '') delete cleaned.user_id;
+			if (cleaned?.currency === 'all' || cleaned?.currency === '')
+				delete cleaned.currency;
+			if (cleaned?.status === 'all' || cleaned?.status === '')
+				delete cleaned.status;
+			requestQueryValues = cleaned;
 		} else {
-			const { stake_id, user_id } = queryValues || {};
-			if (stake_id === '0') {
-				requestQueryValues = user_id ? { user_id } : {};
-			} else {
-				requestQueryValues = user_id === '' ? { stake_id } : { ...queryValues };
-			}
+			const cleaned = { ...(queryValues || {}) };
+			if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+			if (cleaned?.user_id === '') delete cleaned.user_id;
+			if (cleaned?.currency === 'all' || cleaned?.currency === '')
+				delete cleaned.currency;
+			if (cleaned?.status === 'all' || cleaned?.status === '')
+				delete cleaned.status;
+			requestQueryValues = cleaned;
 		}
 		requestStakersByAdmin({ page, limit, ...requestQueryValues })
 			.then((response) => {
@@ -238,6 +308,21 @@ const UserStaking = ({
 				// const message = error.message;
 				setIsLoading(false);
 			});
+	};
+
+	const requestDownload = () => {
+		if (!queryValues) return;
+		const cleaned = { ...(queryValues || {}) };
+		if (isUserProfileStakeTab && selectedUserId) {
+			cleaned.user_id = String(selectedUserId);
+		}
+		if (cleaned?.stake_id === '0') delete cleaned.stake_id;
+		if (cleaned?.user_id === '') delete cleaned.user_id;
+		if (cleaned?.currency === 'all' || cleaned?.currency === '')
+			delete cleaned.currency;
+		if (cleaned?.status === 'all' || cleaned?.status === '')
+			delete cleaned.status;
+		requestStakersByAdminCsv({ ...cleaned, format: 'csv' });
 	};
 
 	const pageChange = (count, pageSize) => {
@@ -282,6 +367,67 @@ const UserStaking = ({
 
 	return (
 		<div className="admin-users-stake-wrapper">
+			<Modal
+				visible={isEditNavOpen}
+				title={<span style={{ color: '#fff' }}>Edit Stake</span>}
+				okText="Save"
+				cancelText="Cancel"
+				onCancel={() => {
+					setIsEditNavOpen(false);
+					setSelectedStaker(null);
+					setNavValue(null);
+					setRewardValue(null);
+					setStatusValue(null);
+				}}
+				onOk={async () => {
+					try {
+						if (!selectedStaker?.id) return;
+						await updateStaker({
+							id: selectedStaker.id,
+							nav: navValue,
+							reward: rewardValue,
+							status: statusValue,
+						});
+						message.success('Stake updated.');
+						setIsEditNavOpen(false);
+						setSelectedStaker(null);
+						setNavValue(null);
+						setRewardValue(null);
+						setStatusValue(null);
+						requestExchangeStakers(queryFilters?.page, queryFilters?.limit);
+					} catch (error) {
+						message.error(error?.response?.data?.message || error?.message);
+					}
+				}}
+			>
+				<div style={{ marginBottom: 8 }}>NAV</div>
+				<InputNumber
+					style={{ width: '100%' }}
+					value={navValue}
+					onChange={(value) => setNavValue(value)}
+				/>
+				<div style={{ marginBottom: 8, marginTop: 16 }}>Earnings (reward)</div>
+				<InputNumber
+					style={{ width: '100%' }}
+					value={rewardValue}
+					onChange={(value) => setRewardValue(value)}
+				/>
+				<div style={{ marginBottom: 8, marginTop: 16 }}>Status</div>
+				<Select
+					style={{ width: '100%' }}
+					value={statusValue}
+					onChange={(value) => setStatusValue(value)}
+					getPopupContainer={(triggerNode) => triggerNode.parentNode}
+				>
+					<Select.Option value="staking">Active</Select.Option>
+					<Select.Option value="unstaking">Unstaking</Select.Option>
+					<Select.Option value="closed">Closed</Select.Option>
+				</Select>
+				<div style={{ marginTop: 12, color: '#ccc', fontSize: 12 }}>
+					Note: Updating a user’s stake status does not automatically transfer
+					assets. Any required transfers must be handled manually.
+				</div>
+			</Modal>
 			{!isUserProfileStakeTab && (
 				<>
 					<div className="bold">User active stakes</div>
@@ -409,6 +555,74 @@ const UserStaking = ({
 									</div>
 								</span>
 							</div>
+							<div className="staking-pool-filter-container">
+								<span>
+									<div>Filter by Currency</div>
+									<div className="pt-2">
+										<Select
+											showSearch
+											className="select-box"
+											dropdownClassName="stake-pool-filter-dropdown"
+											value={queryValues?.currency || 'all'}
+											placeholder="Select Currency"
+											onChange={(e) => {
+												setQueryValues((prev) => ({
+													...prev,
+													currency: e,
+												}));
+											}}
+											filterOption={(input, option) =>
+												option?.props?.children
+													?.toLowerCase()
+													?.includes(input?.toLowerCase())
+											}
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
+										>
+											<Select.Option key="all" value="all">
+												All
+											</Select.Option>
+											{Object.keys(coins || {}).map((symbol) => (
+												<Select.Option key={symbol} value={symbol}>
+													{symbol?.toUpperCase()}
+												</Select.Option>
+											))}
+										</Select>
+									</div>
+								</span>
+							</div>
+							<div className="staking-pool-filter-container">
+								<span>
+									<div>Filter by Status</div>
+									<div className="pt-2">
+										<Select
+											className="select-box"
+											dropdownClassName="stake-pool-filter-dropdown"
+											value={queryValues?.status || 'all'}
+											placeholder="Select Status"
+											onChange={(e) => {
+												setQueryValues((prev) => ({
+													...prev,
+													status: e,
+												}));
+											}}
+											getPopupContainer={(triggerNode) =>
+												triggerNode.parentNode
+											}
+										>
+											<Select.Option key="all" value="all">
+												All
+											</Select.Option>
+											{filterStatuses.map((st) => (
+												<Select.Option key={st} value={st}>
+													{st}
+												</Select.Option>
+											))}
+										</Select>
+									</div>
+								</span>
+							</div>
 						</span>
 
 						<div>
@@ -508,6 +722,20 @@ const UserStaking = ({
 						<Spin spinning={isLoading}>
 							<Table
 								className="blue-admin-table"
+								title={() => (
+									<div className="d-flex justify-content-end align-items-center">
+										<Button
+											onClick={requestDownload}
+											type="default"
+											icon={<DownloadOutlined />}
+										>
+											Download Table
+										</Button>
+										<div className="ml-2 secondary-text">
+											Total: {queryFilters?.total || 0}
+										</div>
+									</div>
+								)}
 								columns={columns}
 								dataSource={
 									userData.sort((a, b) => {

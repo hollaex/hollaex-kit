@@ -51,6 +51,7 @@ import {
 	setSnackDialog,
 	requestTiers,
 } from 'actions/appActions';
+import { setSocketprices } from 'actions/assetActions';
 import { p2pAddMessage, p2pGetStatus } from 'actions/p2pAction';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
@@ -130,6 +131,24 @@ class Container extends Component {
 	};
 
 	resetTimer = debounce(this._resetTimer, 250);
+
+	transformPriceData = (priceData) => {
+		const transformedData = {};
+
+		if (priceData && typeof priceData === 'object') {
+			Object.keys(priceData).forEach((coin) => {
+				const coinData = priceData[coin];
+				if (
+					coinData &&
+					typeof coinData === 'object' &&
+					coinData?.price !== undefined
+				) {
+					transformedData[coin] = coinData?.price;
+				}
+			});
+		}
+		return transformedData;
+	};
 
 	initSocketConnections = async () => {
 		await this.setPublicWS();
@@ -277,12 +296,18 @@ class Container extends Component {
 				}
 			})
 			.catch((err) => {
-				if (!err.response) {
+				const reason = err?.reason || err;
+				const status = reason?.response?.status;
+
+				if (status === 401) {
 					this.props.logout(ERROR_TOKEN_EXPIRED);
-				} else if (err.response && err.response.status === 400) {
+				} else if (status === 400) {
 					this.props.setNotification(NOTIFICATIONS.UNDEFINED_ERROR);
 				} else {
-					const message = err.message || JSON.stringify(err);
+					const message =
+						reason?.response?.data?.message ||
+						reason?.message ||
+						JSON.stringify(reason);
 					this.props.setNotification(NOTIFICATIONS.ERROR, message);
 				}
 			})
@@ -420,7 +445,15 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade', `p2pChat`],
+					args: [
+						'trade',
+						'wallet',
+						'order',
+						'deposit',
+						'usertrade',
+						'p2pChat',
+						'price',
+					],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -594,9 +627,9 @@ class Container extends Component {
 						}
 					}
 					break;
-				case 'usertrade':
-					this.props.addUserTrades(data.data);
-					break;
+				// case 'usertrade':
+				// 	this.props.addUserTrades(data.data);
+				// 	break;
 				case 'wallet':
 					this.props.setBalance(data.data);
 					break;
@@ -783,6 +816,12 @@ class Container extends Component {
 						}
 					}
 
+					break;
+				case 'price':
+					if (data?.action === 'partial' || data?.action === 'update') {
+						const transformedPrices = this.transformPriceData(data?.data);
+						this.props.setSocketprices(transformedPrices);
+					}
 					break;
 				default:
 					break;
@@ -1089,6 +1128,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestTiers: bindActionCreators(requestTiers, dispatch),
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 	setUserData: bindActionCreators(setUserData, dispatch),
+	setSocketprices: bindActionCreators(setSocketprices, dispatch),
 });
 
 export default connect(

@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
+import { message } from 'antd';
 import {
 	CustomTabs,
 	CustomMobileTabs,
@@ -20,6 +21,7 @@ import { logout, requestVerificationEmail } from 'actions/authAction';
 import { MAX_NUMBER_BANKS } from 'config/constants';
 
 import { isBrowser, isMobile } from 'react-device-detect';
+import CloudflareTurnstile from 'components/CloudflareTurnstile';
 import VerificationHome from './VerificationHome';
 import MobileVerification from './MobileVerification';
 import VerificationSentModal from './VerificationSentModal';
@@ -59,6 +61,8 @@ class Verification extends Component {
 		user: {},
 		activePage: 'email',
 		showVerificationSentModal: false,
+		verificationEmailCaptcha: '',
+		verificationEmailCaptchaKey: 0,
 	};
 
 	componentDidMount() {
@@ -149,6 +153,8 @@ class Verification extends Component {
 				return 'kyc';
 			} else if (search.includes('banks')) {
 				return 'bank';
+			} else if (search.includes('payment-accounts')) {
+				return 'user_payments';
 			}
 		}
 
@@ -270,13 +276,35 @@ class Verification extends Component {
 
 	sendVerificationEmail = () => {
 		const { user: { email } = {} } = this.props;
-		return requestVerificationEmail({ email })
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+
+		if (turnstileEnabled && !this.state.verificationEmailCaptcha) {
+			message.error(STRINGS['INVALID_CAPTCHA']);
+			return;
+		}
+
+		return requestVerificationEmail({
+			email,
+			captcha: this.state.verificationEmailCaptcha,
+		})
 			.then(() => {
-				this.setState({ showVerificationSentModal: true });
+				this.setState((prevState) => ({
+					showVerificationSentModal: true,
+					verificationEmailCaptcha: '',
+					verificationEmailCaptchaKey:
+						prevState.verificationEmailCaptchaKey + 1,
+				}));
 			})
 			.catch((error) => {
 				if (error.response && error.response.status === 404) {
-					this.setState({ showVerificationSentModal: true });
+					this.setState((prevState) => ({
+						showVerificationSentModal: true,
+						verificationEmailCaptcha: '',
+						verificationEmailCaptchaKey:
+							prevState.verificationEmailCaptchaKey + 1,
+					}));
 				} else {
 					const errors = {};
 					if (error.response) {
@@ -284,7 +312,7 @@ class Verification extends Component {
 					} else {
 						errors._error = error.message;
 					}
-					console.error(errors);
+					message.error(errors?._error);
 				}
 			});
 	};
@@ -386,6 +414,11 @@ class Verification extends Component {
 			}
 		}
 		const identity_status = id_data.status || 0;
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+		const activeTheme = this.props.activeTheme;
+
 		const tabUtils = {
 			email: {
 				title: isMobile ? (
@@ -418,7 +451,22 @@ class Verification extends Component {
 									className="caps"
 									label={STRINGS['USER_VERIFICATION.EMAIL_VERIFICATION']}
 									onClick={this.sendVerificationEmail}
+									disabled={
+										turnstileEnabled && !this.state.verificationEmailCaptcha
+									}
 								/>
+								{turnstileEnabled && (
+									<div className="mt-3">
+										<CloudflareTurnstile
+											key={`verification-email-turnstile-${this.state.verificationEmailCaptchaKey}`}
+											siteKey={turnstileSiteKey}
+											theme={activeTheme}
+											onToken={(token) =>
+												this.setState({ verificationEmailCaptcha: token })
+											}
+										/>
+									</div>
+								)}
 							</div>
 						)}
 					</div>
@@ -788,6 +836,7 @@ const mapStateToProps = (state) => {
 	return {
 		ultimate_fiat: state.app.features.ultimate_fiat,
 		activeLanguage: state.app.language,
+		activeTheme: state.app.theme,
 		// token: state.auth.token,
 		user: state.user,
 		enabledPlugins: state.app.enabledPlugins,

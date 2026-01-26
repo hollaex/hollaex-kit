@@ -40,6 +40,7 @@ const handleCurrencyDeposit = (req, res) => {
 		txid,
 		address,
 		is_confirmed,
+		onhold,
 		rejected,
 		created_at,
 		network,
@@ -104,10 +105,11 @@ const handleCurrencyDeposit = (req, res) => {
 					domain
 				);
 			} else {
+				const shouldHold = !!onhold;
 				const depositData = {
 					amount,
 					currency: coinName,
-					status: is_confirmed ? 'COMPLETED' : 'PENDING',
+					status: (is_confirmed && !shouldHold) ? 'COMPLETED' : 'PENDING',
 					address,
 					transaction_id: txid,
 					network,

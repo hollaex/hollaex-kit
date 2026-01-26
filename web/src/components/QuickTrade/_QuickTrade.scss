@@ -212,7 +212,150 @@ $close-icon--height: 2rem;
 	.input-group__select_disabled {
 		font-size: 1.2rem;
 	}
+
+	.active-otc-limit-order-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		width: 100%;
+		.active-otc-limit-order-item {
+			border: 1px solid $colors-border;
+			border-radius: 5px;
+			display: flex;
+			transition: all 0.2s ease;
+
+			&.inactive {
+				opacity: 0.5;
+			}
+
+			.base-info-container {
+				padding: 2%;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				width: 34%;
+				font-size: 1.2rem;
+				background: $app-sidebar-background;
+			}
+			.quote-info-container {
+				padding: 2%;
+				width: 65%;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				position: relative;
+				overflow: hidden;
+				.progress-bar-background {
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 100%;
+					background: linear-gradient(
+						270deg,
+						transparent 0%,
+						$buy 100%,
+						transparent 100%
+					);
+					opacity: 0.2;
+					transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+					z-index: 0;
+					border-radius: 0 4px 4px 0;
+					&::after {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background: linear-gradient(
+							90deg,
+							transparent 0%,
+							$app-background-color 50%,
+							transparent 100%
+						);
+						opacity: 0.3;
+					}
+					&.progress-completed {
+						background-color: $colors-notifications-blue;
+						opacity: 0.25;
+					}
+				}
+				@keyframes shimmer {
+					0% {
+						transform: translateX(-100%);
+					}
+					100% {
+						transform: translateX(100%);
+					}
+				}
+				.quote-info-content {
+					display: flex;
+					flex-direction: column;
+					gap: 1rem;
+					align-items: flex-start;
+					font-size: 1.2rem;
+					position: relative;
+					z-index: 1;
+					.quote-info-receiving-amount {
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+					}
+				}
+				.order-complete-amount {
+					color: $buy;
+				}
+				.completed-check-icon {
+					color: $colors-main-black;
+					font-size: 1.2rem;
+					margin-left: 0.5rem;
+				}
+				.cancel-order-btn {
+					background: $app-sidebar-background;
+					border-radius: 50%;
+					padding: 5px 8px;
+					color: $colors-black;
+					position: relative;
+					z-index: 2;
+				}
+			}
+		}
+		.no-data {
+			.no-active-orders-icon {
+				width: 3rem;
+				height: 3rem;
+				svg {
+					width: 2.5rem;
+					height: 2.5rem;
+				}
+			}
+		}
+
+		.active-otc-limit-order-pair-button {
+			padding: 0.5rem 1rem;
+			background-color: $app-background-color;
+			border: 1px solid $colors-border;
+			border-radius: 5px;
+			font-weight: normal;
+			font-size: 1rem;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background-color: $app-sidebar-background;
+			}
+
+			&.active {
+				border: 2px solid $colors-main-black;
+				color: $colors-main-black;
+				font-weight: bold;
+			}
+		}
+	}
 }
+
 .quick_trade-wrapper.width-none {
 	min-width: unset !important;
 	max-width: unset !important;
@@ -222,7 +365,7 @@ $close-icon--height: 2rem;
 	// background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
-	height: 664px;
+	min-height: 664px;
 	border: 1px solid $colors-super-pale-black;
 	font-size: 1.3rem;
 
@@ -418,6 +561,8 @@ $close-icon--height: 2rem;
 	.ReactModal__Content {
 		width: 40rem;
 		.limit-order-success-popup-container {
+			padding: 2%;
+
 			.limit-order-success-popup-title {
 				padding-bottom: 4%;
 				display: flex;
@@ -436,7 +581,6 @@ $close-icon--height: 2rem;
 				}
 			}
 			.limit-order-success-popup-content {
-				padding: 2% 3%;
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
@@ -446,16 +590,14 @@ $close-icon--height: 2rem;
 					.order-details-label {
 						font-weight: bold;
 						font-size: 1.1rem;
-						margin-bottom: 0.5rem;
+						margin-bottom: 1rem;
 						display: block;
 					}
 					.order-details-text {
 						margin-bottom: 0.5rem;
 						font-size: 1.2rem;
-						.limit-order-asset-icon {
-							position: relative;
-							top: 3px;
-						}
+						display: flex;
+						align-items: flex-start;
 					}
 					.conversion-price-text {
 						color: $colors-black;
@@ -464,7 +606,7 @@ $close-icon--height: 2rem;
 				}
 				.limit-order-success-note {
 					width: 100%;
-					padding-top: 1rem;
+					padding-top: 1.6rem;
 					border-top: 1px solid $colors-border;
 				}
 				.limit-order-success-balance-reminder {

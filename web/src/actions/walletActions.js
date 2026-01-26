@@ -145,6 +145,32 @@ export const getUserTrades = ({ symbol, limit = 50, page = 1, ...rest }) => {
 	};
 };
 
+export const getOrders = ({
+	page = 1,
+	limit = 50,
+	open,
+	symbol,
+	start_date,
+	end_date,
+}) => {
+	let dataParams = { page, limit };
+	if (open !== undefined) {
+		dataParams.open = open;
+	}
+	if (symbol) {
+		dataParams.symbol = symbol;
+	}
+	if (start_date) {
+		dataParams.start_date = start_date;
+	}
+	if (end_date) {
+		dataParams.end_date = end_date;
+	}
+
+	const query = querystring.stringify(dataParams);
+	return axios.get(`${ENDPOINTS.ORDERS}?${query}`);
+};
+
 export const getUserOrders = ({
 	symbol,
 	limit = 50,

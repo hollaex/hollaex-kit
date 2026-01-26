@@ -6,11 +6,13 @@ import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
+import { Help } from 'components';
 import { getNetworkLabelByKey } from 'utils/wallet';
 import { Link } from 'react-router';
 import { getTabParams } from '../AdminFinancials/Assets';
 import RemoveConfirmation from '../Confirmation';
 import { updateConstants } from '../Trades/actions';
+import { updateAssetCoins } from '../AdminFinancials/action';
 import { Input } from 'antd';
 import { renderAsset } from '../Deposits/utils';
 import { CloseOutlined } from '@ant-design/icons';
@@ -96,6 +98,9 @@ const Final = ({
 			? coinFormData?.logo
 			: ''
 	);
+	const [isEditNetworkVisible, setIsEditNetworkVisible] = useState(false);
+	const [editableNetwork, setEditableNetwork] = useState('');
+	const [isSavingNetwork, setIsSavingNetwork] = useState(false);
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
@@ -653,9 +658,42 @@ const Final = ({
 						)}
 					</div>
 					<div className="preview-detail-container">
-						<div className="title">Parameters</div>
+						<div className="title d-flex align-items-center">
+							<span>Parameters</span>
+							<span
+								style={{
+									display: 'inline-flex',
+									alignSelf: 'flex-start',
+									transform: 'translateY(-10px)',
+								}}
+							>
+								<Help
+									tip={
+										<span>
+											Learn how to configure asset parameters.{' '}
+											<a
+												className="link-text underline-text"
+												href="https://docs.hollaex.com/how-tos/assets-and-trading-pairs/configure-asset-parameters"
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												View docs
+											</a>
+										</span>
+									}
+								/>
+							</span>
+						</div>
 						<div>
 							<b>Status:</b> {coinFormData.active ? 'Active' : 'Not active'}
+						</div>
+						<div>
+							<b>Allow deposit:</b>{' '}
+							{coinFormData.allow_deposit ? 'Enabled' : 'Disabled'}
+						</div>
+						<div>
+							<b>Allow withdrawal:</b>{' '}
+							{coinFormData.allow_withdrawal ? 'Enabled' : 'Disabled'}
 						</div>
 						<div>
 							<b>Estimated Price:</b> {coinFormData.estimated_price}
@@ -689,6 +727,38 @@ const Final = ({
 						) : null}
 					</div>
 					<div className="preview-detail-container">
+						<div className="title">Network</div>
+						{coinFormData.network ? (
+							<div>
+								<b>Supported networks:</b>{' '}
+								{coinFormData.network
+									.split(',')
+									.map((net) => net && net.trim())
+									.filter(Boolean)
+									.map(
+										(net) => networkMap[net.toLowerCase()] || net.toUpperCase()
+									)
+									.join(', ')}
+								{isConfigure ? (
+									<div className="btn-wrapper">
+										<Button
+											className="green-btn"
+											type="primary"
+											onClick={() => {
+												setEditableNetwork(coinFormData.network || '');
+												setIsEditNetworkVisible(true);
+											}}
+										>
+											Edit
+										</Button>
+									</div>
+								) : null}
+							</div>
+						) : (
+							<div>-</div>
+						)}
+					</div>
+					<div className="preview-detail-container">
 						<div className="title">Withdrawal Fee</div>
 						<div>
 							{withdrawal_fees ? (
@@ -698,6 +768,16 @@ const Final = ({
 									<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
 								</Fragment>
 							)}
+							<div className="description-small mt-2">
+								Prefer not to change fees directly? Add a markup instead.{' '}
+								<span
+									className="link-text underline-text"
+									onClick={() => onHandleActiveTab('1')}
+									style={{ cursor: 'pointer' }}
+								>
+									Go to markup fees
+								</span>
+							</div>
 							{isConfigure && (
 								<div className="btn-wrapper">
 									<Button
@@ -715,6 +795,16 @@ const Final = ({
 							<div className="title">Deposit Fee</div>
 							<div>
 								{deposit_fees && <div>{renderFees(deposit_fees)}</div>}
+								<div className="description-small mt-2">
+									Prefer not to change fees directly? Add a markup instead.{' '}
+									<span
+										className="link-text underline-text"
+										onClick={() => onHandleActiveTab('1')}
+										style={{ cursor: 'pointer' }}
+									>
+										Go to markup fees
+									</span>
+								</div>
 								{isConfigure && (
 									<div className="btn-wrapper">
 										<Button
@@ -864,6 +954,61 @@ const Final = ({
 								removeContent={'Assets'}
 								isLoading={isLoading}
 							/>
+						</Modal>
+					) : null}
+					{isEditNetworkVisible ? (
+						<Modal
+							visible={isEditNetworkVisible}
+							footer={null}
+							onCancel={() => setIsEditNetworkVisible(false)}
+						>
+							<div className="admin-asset-wrapper">
+								<div className="title">Edit network</div>
+								<div className="mb-2">
+									Enter comma-separated network codes (e.g. eth,bnb,matic)
+								</div>
+								<Input
+									value={editableNetwork}
+									placeholder="eth,bnb,matic"
+									onChange={(e) => setEditableNetwork(e.target.value)}
+								/>
+								<div className="btn-wrapper mt-3">
+									<Button
+										type="primary"
+										className="green-btn"
+										loading={isSavingNetwork}
+										onClick={async () => {
+											try {
+												setIsSavingNetwork(true);
+												const payload = {
+													symbol: coinFormData.symbol,
+													code:
+														coinFormData.code ||
+														(coinFormData.symbol || '').toLowerCase(),
+													network: (editableNetwork || '').trim(),
+												};
+												await updateAssetCoins(payload);
+												message.success('Network updated.');
+												if (handleEdit) {
+													handleEdit({
+														...coinFormData,
+														network: payload.network,
+													});
+												}
+												setIsEditNetworkVisible(false);
+											} catch (error) {
+												message.error(
+													error?.data?.message || 'Failed to update network'
+												);
+											} finally {
+												setIsSavingNetwork(false);
+											}
+										}}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
 						</Modal>
 					) : null}
 				</Fragment>

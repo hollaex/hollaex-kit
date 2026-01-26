@@ -394,7 +394,10 @@
 				"FULL_NAME_PLACEHOLDER": "Digita il tuo nome completo come appare sul tuo documento di identità",
 				"GENDER_LABEL": "Genere",
 				"GENDER_PLACEHOLDER": "Digita il tuo sesso",
-				"GENDER_OPTIONS": { "MAN": "Maschio", "WOMAN": "Femmina" },
+				"GENDER_OPTIONS": {
+					"MAN": "Maschio",
+					"WOMAN": "Femmina"
+				},
 				"NATIONALITY_LABEL": "Nazionalità",
 				"NATIONALITY_PLACEHOLDER": "Digita la nazionalità sul tuo documento di identità",
 				"DOB_LABEL": "Data di nascita",
@@ -735,7 +738,9 @@
 			"TITLE": "Cronologia accessi",
 			"IP_ADDRESS": "Indirizzo IP",
 			"TIME": "Appuntamento",
-			"CONTENT": { "TITLE": "Cronologia accessi" }
+			"CONTENT": {
+				"TITLE": "Cronologia accessi"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "Blocca il conto",
@@ -1006,13 +1011,31 @@
 	},
 	"CURRENCY": "Valuta",
 	"TYPE": "Tipo",
-	"TYPES_VALUES": { "market": "mercato", "limit": "limite" },
-	"TYPES": { "MARKET": "mercato", "LIMIT": "limite" },
+	"TYPES_VALUES": {
+		"market": "mercato",
+		"limit": "limite"
+	},
+	"TYPES": {
+		"MARKET": "mercato",
+		"LIMIT": "limite"
+	},
 	"SIDE": "Lato",
-	"SIDES_VALUES": { "buy": "acquistare", "sell": "vendere" },
-	"SIDES_VERBS": { "buy": "comprato", "sell": "venduto" },
-	"SIDES": { "BUY": "acquistare", "SELL": "vendere" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "SU", "OFF": "spento" },
+	"SIDES_VALUES": {
+		"buy": "acquistare",
+		"sell": "vendere"
+	},
+	"SIDES_VERBS": {
+		"buy": "comprato",
+		"sell": "venduto"
+	},
+	"SIDES": {
+		"BUY": "acquistare",
+		"SELL": "vendere"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "SU",
+		"OFF": "spento"
+	},
 	"SIZE": "Misurare",
 	"PRICE": "Prezzo",
 	"AVERAGE": "Media",
@@ -1506,7 +1529,9 @@
 	"EXPIRED_INFO_1": "Il tuo processo è terminato.",
 	"EXPIRED_INFO_2": "Collateralizza il tuo scambio per riattivarlo.",
 	"EXPIRED_BUTTON_TXT": "ATTIVA SCAMBIO",
-	"TRADE_POSTS": { "LEARN_MORE": "Saperne di più" },
+	"TRADE_POSTS": {
+		"LEARN_MORE": "Saperne di più"
+	},
 	"OPEN_WALLET": "Portafoglio aperto",
 	"CUMULATIVE_AMOUNT_SYMBOL": "Totale",
 	"POST_ONLY": "Posta solo",
@@ -1581,7 +1606,10 @@
 	"FEE_REDUCTION": "Riduzione canone",
 	"FEE_REDUCTION_DESCRIPTION": "*al tuo account è applicato uno sconto sulle commissioni. La riduzione viene applicata alle commissioni di trading in base al tuo account.",
 	"CHANGE_PASSWORD_FAILED": "modifica della password non riuscita",
-	"MARKET_OPTIONS": { "LIST": "Elenco", "CARD": "Carta" },
+	"MARKET_OPTIONS": {
+		"LIST": "Elenco",
+		"CARD": "Carta"
+	},
 	"ALL": "Tutto",
 	"ASSET_TXT": "Risorsa",
 	"ONE_DAY": "1 giorno",
@@ -1659,7 +1687,9 @@
 	"VERIFY_BANK_WITHDRAW": "Per effettuare un prelievo è necessario completare la verifica che include la verifica dei dati bancari. Fare clic sul pulsante Procedi in basso.",
 	"VERIFICATION_TITLE": "Verifica completa",
 	"WITHDRAW_NOTE": "Nota: puoi prelevare solo su un conto a tuo nome.",
-	"USER_PAYMENT": { "TITLE": "Pagamenti" },
+	"USER_PAYMENT": {
+		"TITLE": "Pagamenti"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Controlla il tuo ordine e confermalo qui sotto.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Gli importi da ricevere sono stime e non includono la commissione di negoziazione",
 	"ORDER_EXPIRED_MSG": "Ordine scaduto. Si prega di aggiornare!",
@@ -1700,7 +1730,10 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Pagina delle informazioni sulle risorse",
-	"MARKET_ROW": { "NATIVE": "Nativo", "NO_NATIVE": "Nessuna fonte nativa" },
+	"MARKET_ROW": {
+		"NATIVE": "Nativo",
+		"NO_NATIVE": "Nessuna fonte nativa"
+	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Risorse digitali",
 		"GO_BACK": "Torna indietro",
@@ -1778,7 +1811,9 @@
 		"TITLE": "La pagina non si apre automaticamente?",
 		"TEXT": "Il tuo browser potrebbe bloccare la pagina. Prova invece a copiare e incollare il link qui sotto:"
 	},
-	"TERMS_OF_SERVICES": { "TO_GET_ACCESS": "Per ottenere l'accesso, contatta" },
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Per ottenere l'accesso, contatta"
+	},
 	"FEES_AND_LIMITS": {
 		"LINK": "visualizza le mie commissioni e limiti",
 		"COIN_PAGE_LINK": "Commissioni e limiti di negoziazione",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from 'antd';
 const Search = Input.Search;
 
@@ -7,12 +7,26 @@ export const InputBox = ({
 	onSearch = () => {},
 	type = 'text',
 	enterButton = 'SEND',
-}) => (
-	<Search
-		placeholder={placeholder}
-		onSearch={onSearch}
-		type={type}
-		enterButton={enterButton}
-		size="large"
-	/>
-);
+}) => {
+	const [value, setValue] = useState('');
+
+	const handleSearch = (val = '') => {
+		const searchValue = val?.trim();
+		if (searchValue) {
+			onSearch(searchValue);
+			setValue('');
+		}
+	};
+
+	return (
+		<Search
+			placeholder={placeholder}
+			value={value}
+			onChange={(e) => setValue(e.target?.value)}
+			onSearch={handleSearch}
+			type={type}
+			enterButton={enterButton}
+			size="large"
+		/>
+	);
+};

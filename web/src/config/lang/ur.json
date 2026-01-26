@@ -388,7 +388,10 @@
 				"FULL_NAME_PLACEHOLDER": "اپنا پورا نام ٹائپ کریں جیسا کہ آپ کی شناختی دستاویز پر ظاہر ہوتا ہے۔",
 				"GENDER_LABEL": "صنف",
 				"GENDER_PLACEHOLDER": "ٹائپ کریں کہ آپ کی جنس کیا ہے۔",
-				"GENDER_OPTIONS": { "MAN": "مرد", "WOMAN": "عورت" },
+				"GENDER_OPTIONS": {
+					"MAN": "مرد",
+					"WOMAN": "عورت"
+				},
 				"NATIONALITY_LABEL": "قومیت",
 				"NATIONALITY_PLACEHOLDER": "آپ کی شناختی دستاویز پر قومیت درج کریں۔",
 				"DOB_LABEL": "پیدائش کی تاریخ",
@@ -729,7 +732,9 @@
 			"TITLE": "لاگ ان کی تاریخ",
 			"IP_ADDRESS": "IP اڈریس",
 			"TIME": "تاریخ اور وقت",
-			"CONTENT": { "TITLE": "لاگ ان کی تاریخ" }
+			"CONTENT": {
+				"TITLE": "لاگ ان کی تاریخ"
+			}
 		},
 		"FREEZE": {
 			"TITLE": "اکاؤنٹ منجمد کریں۔",
@@ -908,8 +913,14 @@
 				"CARD": "سب سے زیادہ انعامات، سب سے زیادہ بونس",
 				"TEXT": "آپ کی کمائی پر سب سے زیادہ بونس انعامات"
 			},
-			"3": { "CARD": "", "TEXT": "" },
-			"4": { "CARD": "", "TEXT": "" }
+			"3": {
+				"CARD": "",
+				"TEXT": ""
+			},
+			"4": {
+				"CARD": "",
+				"TEXT": ""
+			}
 		},
 		"INSTALL_METAMASK_DETAILS": {
 			"TITLE": "میٹا ماسک انسٹال کریں۔",
@@ -1016,7 +1027,10 @@
 	},
 	"CURRENCY": "کرنسی",
 	"TYPE": "قسم",
-	"TYPES_VALUES": { "market": "مارکیٹ", "limit": "حد" },
+	"TYPES_VALUES": {
+		"market": "مارکیٹ",
+		"limit": "حد"
+	},
 	"TYPES": {
 		"مارکیٹ": "مارکیٹ",
 		"حد": "حد",
@@ -1024,10 +1038,23 @@
 		"LIMIT": "حد"
 	},
 	"SIDE": "Side",
-	"SIDES_VALUES": { "buy": "خریدیں", "sell": "فروخت کریں" },
-	"SIDES_VERBS": { "buy": "خریدا", "sell": "فروخت" },
-	"SIDES": { "فروخت کریں": "فروخت کریں", "BUY": "خریدنے", "SELL": "فروخت" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "شروع", "OFF": "بند" },
+	"SIDES_VALUES": {
+		"buy": "خریدیں",
+		"sell": "فروخت کریں"
+	},
+	"SIDES_VERBS": {
+		"buy": "خریدا",
+		"sell": "فروخت"
+	},
+	"SIDES": {
+		"فروخت کریں": "فروخت کریں",
+		"BUY": "خریدنے",
+		"SELL": "فروخت"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "شروع",
+		"OFF": "بند"
+	},
 	"SIZE": "سائز",
 	"PRICE": "قیمت",
 	"AVERAGE": "اوسط",
@@ -1502,7 +1529,9 @@
 	"EXPIRED_INFO_1": "آپ کا ٹرائل ختم ہو گیا ہے۔",
 	"EXPIRED_INFO_2": "اپنے تبادلے کو دوبارہ چالو کرنے کے لیے اسے کولیٹرلائز کریں۔",
 	"EXPIRED_BUTTON_TXT": "ایکسچینج کو چالو کریں۔",
-	"TRADE_POSTS": { "LEARN_MORE": "اورجانیے" },
+	"TRADE_POSTS": {
+		"LEARN_MORE": "اورجانیے"
+	},
 	"OPEN_WALLET": " بٹوا کھولیں۔",
 	"CUMULATIVE_AMOUNT_SYMBOL": "کل",
 	"POST_ONLY": "صرف پوسٹ کریں۔",
@@ -1570,7 +1599,10 @@
 	"FEE_REDUCTION": "فیس میں کمی",
 	"FEE_REDUCTION_DESCRIPTION": "*آپ کے اکاؤنٹ پر فیس کی چھوٹ ہے۔ کمی آپ کے اکاؤنٹ کی بنیاد پر ٹریڈنگ فیس پر لاگو ہوتی ہے۔",
 	"CHANGE_PASSWORD_FAILED": "پاس ورڈ تبدیل کرنے میں ناکام",
-	"MARKET_OPTIONS": { "LIST": "فہرست", "CARD": "کارڈ" },
+	"MARKET_OPTIONS": {
+		"LIST": "فہرست",
+		"CARD": "کارڈ"
+	},
 	"ALL": "تمام",
 	"ASSET_TXT": "اثاثہ",
 	"ONE_DAY": "1 دن",
@@ -1647,7 +1679,9 @@
 	"VERIFY_BANK_WITHDRAW": "رقم نکلوانے کے لیے آپ کو اپنی تصدیق مکمل کرنی ہوگی جس میں آپ کے بینک کی تفصیلات کی تصدیق بھی شامل ہے۔ براہ کرم نیچے آگے بڑھنے والے بٹن پر کلک کریں۔",
 	"VERIFICATION_TITLE": "مکمل تصدیق",
 	"WITHDRAW_NOTE": "براہ کرم نوٹ کریں: آپ صرف اپنے نام کے اکاؤنٹ میں رقم نکال سکتے ہیں۔",
-	"USER_PAYMENT": { "TITLE": "ادائیگیاں" },
+	"USER_PAYMENT": {
+		"TITLE": "ادائیگیاں"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "براہ کرم اپنا آرڈر چیک کریں اور نیچے اس کی تصدیق کریں۔",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "وصول کی جانے والی رقم تخمینہ ہے اور اس میں ٹریڈنگ فیس شامل نہیں ہے۔",
 	"ORDER_EXPIRED_MSG": "آرڈر کی میعاد ختم ہوگئی۔ براہ کرم ریفریش کریں!",

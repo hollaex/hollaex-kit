@@ -26,12 +26,23 @@ class UserPaymentVerification extends Component {
 		super(props);
 		const { user_payments } = this.props;
 		const tabs = this.getTabs(user_payments);
+		const firstTabKey = Object.keys(tabs || {})[0];
 
 		this.state = {
 			formFields: {},
 			tabs,
-			activeTab: undefined,
+			// Ensure a payment method is always selected so we can generate fields
+			// and submit with a valid `type` to POST /user/bank.
+			activeTab: firstTabKey,
 		};
+	}
+
+	componentDidMount() {
+		// If there is a default tab, generate its fields immediately (non-mobile renders fields inline).
+		const { activeTab } = this.state;
+		if (activeTab) {
+			this.generateFormFields(activeTab);
+		}
 	}
 
 	UNSAFE_componentWillUpdate(_, nextState) {

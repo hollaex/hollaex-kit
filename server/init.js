@@ -77,6 +77,7 @@ const checkStatus = () => {
 			links: {},
 			strings: {},
 			captcha: {},
+			cloudflare_turnstile: {},
 			defaults: {},
 			features: {},
 			meta: {},
@@ -90,7 +91,8 @@ const checkStatus = () => {
 			dust: {},
 			google_oauth: {},
 			auto_deposit: {},
-			auto_withdrawal: {}
+			auto_withdrawal: {},
+			force_two_factor_authentication_withdrawal: {}
 		},
 		email: {}
 	};
@@ -99,6 +101,7 @@ const checkStatus = () => {
 		security: {},
 		accounts: {},
 		captcha: {},
+		cloudflare_turnstile: {},
 		emails: {},
 		smtp: {}
 	};

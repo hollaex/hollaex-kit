@@ -128,29 +128,31 @@ const FiatFees = ({ coins }) => {
 
 	const requesCoinConfiguration = (page = 1, limit = 50) => {
 		setIsLoading(true);
-		// getCoinConfiguration({ page, limit, ...queryValues })
 		requestAdminData()
 			.then((response) => {
-				const data = response?.data?.kit?.fiat_fees || {};
+				const fiatFeesData = response?.data?.kit?.fiat_fees || {};
+				const filteredData = {};
 
-				for (const coin of Object.values(coins)) {
-					if (coin.type === 'fiat') {
-						data[coin.symbol] = {
-							...(data[coin.symbol] || {
-								symbol: coin.symbol,
+				for (const coinSymbol in fiatFeesData) {
+					const coin = coins[coinSymbol];
+					if (coin && coin.type === 'fiat') {
+						filteredData[coinSymbol] = {
+							...(fiatFeesData[coinSymbol] || {
+								symbol: coinSymbol,
 								fee_markup: null,
 							}),
-							fullname: coin.fullname,
-							min: data?.[coin.symbol]?.min || coin.min,
-							max: data?.[coin.symbol]?.max || coin.max,
+							fullname: coin?.fullname,
+							min: fiatFeesData[coinSymbol]?.min || coin?.min,
+							max: fiatFeesData[coinSymbol]?.max || coin?.max,
 							increment_unit:
-								data?.[coin.symbol]?.increment_unit || coin.increment_unit,
-							icon_id: coin.icon_id,
+								fiatFeesData[coinSymbol]?.increment_unit ||
+								coin?.increment_unit,
+							icon_id: coin?.icon_id,
 						};
 					}
 				}
-				setCoinCustomizations(Object.values(data));
-				setCoinData(data);
+				setCoinCustomizations(Object.values(filteredData));
+				setCoinData(filteredData);
 
 				setQueryFilters({
 					total: response.count,
@@ -162,9 +164,10 @@ const FiatFees = ({ coins }) => {
 
 				setIsLoading(false);
 			})
-			.catch((error) => {
-				// const message = error.message;
+			.catch((err) => {
 				setIsLoading(false);
+				const error = err && err.data ? err.data.message : err.message;
+				console.error('error', error);
 			});
 	};
 

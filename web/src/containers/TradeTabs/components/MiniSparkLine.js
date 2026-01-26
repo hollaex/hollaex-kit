@@ -73,14 +73,16 @@ export const MiniSparkLine = ({
 
 	useEffect(() => {
 		const updatedChartData = [...chartData];
-		const chartLen = updatedChartData.length - 1;
-		updatedChartData[chartLen] = {
-			y: updatedChartData[chartLen],
-			marker: {
-				enabled: true,
-			},
-		};
-		setFinalChartData(updatedChartData);
+		if (updatedChartData?.length > 0) {
+			const chartLen = updatedChartData.length - 1;
+			updatedChartData[chartLen] = {
+				y: updatedChartData[chartLen],
+				marker: {
+					enabled: true,
+				},
+			};
+			setFinalChartData(updatedChartData);
+		}
 	}, [chartData]);
 
 	return (

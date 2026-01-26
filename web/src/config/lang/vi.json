@@ -249,7 +249,10 @@
 			"INFORMATION_PENDING_2": "Thủ tục này có thể mất 10-30 phút. Chúng tôi sẽ gửi email thông báo khi {0} được chấp thuận trên blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Đã gửi yêu cầu", "BUTTON_TEXT": "Đồng ý" },
+	"REFERRAL_SUCCESS": {
+		"TITLE": "Đã gửi yêu cầu",
+		"BUTTON_TEXT": "Đồng ý"
+	},
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Vui lòng nhập mã xác nhận để tiếp tục",
 		"OTP_LABEL": "Mã OTP",
@@ -451,7 +454,10 @@
 				"FULL_NAME_PLACEHOLDER": "Vui lòng nhập tên đầy đủ trùng khớp với giấy tờ tùy thân của quý khácht",
 				"GENDER_LABEL": "Giới tính",
 				"GENDER_PLACEHOLDER": "Vui lòng nhập giới tính của quý khách",
-				"GENDER_OPTIONS": { "MAN": "Nam", "WOMAN": "Nữ" },
+				"GENDER_OPTIONS": {
+					"MAN": "Nam",
+					"WOMAN": "Nữ"
+				},
 				"NATIONALITY_LABEL": "Quốc tịch",
 				"NATIONALITY_PLACEHOLDER": "Vui lòng nhập thông tin trùng khớp với giấy tờ tùy thân của quý khách",
 				"DOB_LABEL": "Ngày sinh",
@@ -871,12 +877,27 @@
 	},
 	"CURRENCY": "Loại tiền",
 	"TYPE": "Type",
-	"TYPES_VALUES": { "market": "chợ", "limit": "giới hạn" },
-	"TYPES": { "MARKET": "Thị trường", "LIMIT": "CHỈ ĐỊNH" },
+	"TYPES_VALUES": {
+		"market": "chợ",
+		"limit": "giới hạn"
+	},
+	"TYPES": {
+		"MARKET": "Thị trường",
+		"LIMIT": "CHỈ ĐỊNH"
+	},
 	"SIDE": "Bên",
-	"SIDES_VALUES": { "buy": "Mua", "sell": "Bán" },
-	"SIDES": { "BUY": "Mua", "SELL": "Bán" },
-	"DEFAULT_TOGGLE_OPTIONS": { "ON": "Bật", "OFF": "Tắt" },
+	"SIDES_VALUES": {
+		"buy": "Mua",
+		"sell": "Bán"
+	},
+	"SIDES": {
+		"BUY": "Mua",
+		"SELL": "Bán"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "Bật",
+		"OFF": "Tắt"
+	},
 	"SIZE": "Số lượng",
 	"PRICE": "Giá",
 	"FEE": "Fee",
@@ -1389,7 +1410,10 @@
 	"OPEN_WALLET": "Ví mở",
 	"ALL": "TẤT CẢ",
 	"VIEW_ALL": "XEM CHI TIẾT",
-	"MARKET_OPTIONS": { "LIST": "Danh sách", "CARD": "Biểu đồ" },
+	"MARKET_OPTIONS": {
+		"LIST": "Danh sách",
+		"CARD": "Biểu đồ"
+	},
 	"MARKETS_TABLE": {
 		"VIEW_MARKETS": "XEM THỊ TRƯỜNG ",
 		"TITLE": "thị trường sống",
@@ -1685,7 +1709,10 @@
 		"LABEL": "Số tiền để di chuyển",
 		"FEE": "Phí giao dịch: {0} {1}"
 	},
-	"SIDES_VERBS": { "buy": "mua", "sell": "đã bán" },
+	"SIDES_VERBS": {
+		"buy": "mua",
+		"sell": "đã bán"
+	},
 	"AVERAGE": "Trung bình",
 	"ORDER_HISTORY": "Lịch sử đơn hàng",
 	"CURRENCY_WALLET": {
@@ -1860,7 +1887,9 @@
 	"VERIFY_BANK_WITHDRAW": "Để thực hiện rút tiền, bạn được yêu cầu hoàn thành xác minh bao gồm xác minh chi tiết ngân hàng của bạn. Vui lòng nhấp vào nút tiếp tục bên dưới.",
 	"VERIFICATION_TITLE": "Hoàn thành xác minh",
 	"WITHDRAW_NOTE": "Xin lưu ý: Bạn chỉ có thể rút tiền vào tài khoản do bạn đứng tên.",
-	"USER_PAYMENT": { "TITLE": "thanh toán" },
+	"USER_PAYMENT": {
+		"TITLE": "thanh toán"
+	},
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Vui lòng kiểm tra đơn đặt hàng của bạn và xác nhận nó dưới đây.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Số tiền nhận được là ước tính và không bao gồm phí giao dịch",
 	"ORDER_EXPIRED_MSG": "Đơn đặt hàng đã hết hạn. Hãy làm mới!",
@@ -1901,7 +1930,10 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Trang thông tin tài sản",
-	"MARKET_ROW": { "NATIVE": "Tự nhiên", "NO_NATIVE": "Không có nguồn bản địa" },
+	"MARKET_ROW": {
+		"NATIVE": "Tự nhiên",
+		"NO_NATIVE": "Không có nguồn bản địa"
+	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Tài sản kỹ thuật số",
 		"GO_BACK": "Quay lại",

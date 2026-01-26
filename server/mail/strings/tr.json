@@ -37,8 +37,16 @@
 			"title": "${currency} Çekimi Reddedildi"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p> Sayın ${name} </p><p> ${address} adresine, ${amount} miktarında, ${currency} çekim isteğinde bulundunuz. <br /><br />Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Adres: ${address}<br /><span id=\"network\">Ağ: ${network}</span><br /><br />Çekimi onaylamak için, lütfen aşağıdaki butona tıklayınız.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Onay</Button></a></div><p>Eğer bu isteği yanlışlıkla yaptıysanız, hiç bir şey yapmanıza gerek yoktur, hesabınızda bir değişiklik olmayacaktır.</p><p>İsteğin geldiği kaynak: ${ip}</p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><p> Sayın ${name} </p><p> ${address} adresine, ${amount} miktarında, ${currency} çekim isteğinde bulundunuz. <br /><br />Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br /><div id='address'>Adres: ${address}<br /></div><div id='network'>Ağ: ${network}<br /></div><br />Çekimi onaylamak için, lütfen aşağıdaki butona tıklayınız.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Onay</Button></a></div><p>Eğer bu isteği yanlışlıkla yaptıysanız, hiç bir şey yapmanıza gerek yoktur, hesabınızda bir değişiklik olmayacaktır.</p><p>İsteğin geldiği kaynak: ${ip}</p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Çekim İsteği"
+		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Sayın ${name} </p><p>Staking talebiniz oluşturuldu.</p><p>Staking: ${stake_name}<br />Miktar: ${amount} ${currency}<br />Ödül para birimi: ${reward_currency}<br />Durum: ${status}<br /><span id='duration'>Süre: ${duration} gün<br /></span><span id='start_date'>Başlangıç tarihi: ${start_date}<br /></span><span id='end_date'>Bitiş tarihi: ${end_date}<br /></span></p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"title": "Staking oluşturuldu"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Sayın ${name} </p><p>Staking işleminiz sonuçlandırıldı ve kapatıldı.</p><p>Staking: ${stake_name}<br />Durum: ${status}<br />İade: ${amount_returned} ${currency}<br /><span id='reward_amount'>Ödül: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Bitiş tarihi: ${end_date}<br /></span></p><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"title": "Staking sonuçlandı"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Kullanıcı Onayı Gerekmektedir</h3><div> \"${email}\" kullanıcısı, onay için belgelerini yüklemiştir. Lütfen dökümanlarını inceleyiniz.</div></div>",
@@ -89,19 +97,19 @@
 			"title": "Şifre Değişikliği Doğrulama Kodu"
 		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> Sayın ${name} </p><p> ${api_name} cüzdanınızda bekleyen, ${amount} ${currency} yeni yatırımınız vardır. Lütfen işlem onaylanana kadar bekleyiniz. Onay sonrası, fonlarınız cüzdanınıza işlenecektir. Yatırımınızın blokzincirde ${confirmation} adet onaya ihtiyacı vardır.</p><p>Miktar: ${amount} ${currency}<br />Statü: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><span id=\"network\">Ağ: ${network}</span><br />Ücret: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><div><p> Sayın ${name} </p><p> ${api_name} cüzdanınızda bekleyen, ${amount} ${currency} yeni yatırımınız vardır. Lütfen işlem onaylanana kadar bekleyiniz. Onay sonrası, fonlarınız cüzdanınıza işlenecektir. Yatırımınızın blokzincirde ${confirmation} adet onaya ihtiyacı vardır.</p><p>Miktar: ${amount} ${currency}<br />Statü: ${status}<br /><div id='address'>Adres: ${address}<br /></div>İşlem ID: ${transaction_id}<br /><div id='network'>Ağ: ${network}<br /></div>Ücret: ${fee} ${fee_coin}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Yatırımı Bekliyor"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Sayın ${name} </p><p> ${currency} cinsinden, ${amount} ${currency} yatırımınız onaylanmış ve tamamlanmıştır. Bakiyenize, ${currency} cüzdanınızdan erişebilirsiniz.</p><p>Miktar: ${amount} ${currency}<br />Durum: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><div id=\"network\">Ağ: ${network}</div><br />Ücret: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><div><p> Sayın ${name} </p><p> ${currency} cinsinden, ${amount} ${currency} yatırımınız onaylanmış ve tamamlanmıştır. Bakiyenize, ${currency} cüzdanınızdan erişebilirsiniz.</p><p>Miktar: ${amount} ${currency}<br />Durum: ${status}<br /><div id='address'>Adres: ${address}<br /></div>İşlem ID: ${transaction_id}<br /><div id='network'>Ağ: ${network}<br /></div>Ücret: ${fee} ${fee_coin}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Yatırımı Tamamlandı"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> Sayın ${name} </p><p> ${amount} ${currency} için çekim isteğinde bulundunuz. Çekim talebiniz işlemdedir ve kısa süre içerisinde onaylanacaktır.</p><p>Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Durum: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><span id=\"network\">Ağ: ${network}</span><br /><ul>${explorers}</ul><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><p> Sayın ${name} </p><p> ${amount} ${currency} için çekim isteğinde bulundunuz. Çekim talebiniz işlemdedir ve kısa süre içerisinde onaylanacaktır.</p><p>Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Durum: ${status}<br /><div id='address'>Adres: ${address}<br /></div>İşlem ID: ${transaction_id}<br /><div id='network'>Ağ: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Çekimi Bekliyor"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> Sayın ${name} </p><p> ${amount} ${currency} için çekiminiz tamamlanmıştır.</p><p>Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Durum: ${status}<br />Adres: ${address}<br />İşlem ID: ${transaction_id}<br /><span id=\"network\">Ağ: ${network}</span><br /><ul>${explorers}</ul><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
+			"html": "<div><p> Sayın ${name} </p><p> ${amount} ${currency} için çekiminiz tamamlanmıştır.</p><p>Miktar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Durum: ${status}<br /><div id='address'>Adres: ${address}<br /></div>İşlem ID: ${transaction_id}<br /><div id='network'>Ağ: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> İyi dileklerimizle<br> ${api_name} takımı </p></div>",
 			"title": "${currency} Çekimi Tamamlandı"
 		},
 		"DOC_REJECTED": {
@@ -189,7 +197,7 @@
 			"html": "<div><p>Merhaba ${name},</p><p>Hesabınıza yeni bir cihaz veya konumdan giriş yapılmaya çalışıldığını fark ettik. Eğer bu sizseniz, lütfen aşağıdaki kodu kullanarak girişi onaylayın. Aksi takdirde, hesabınızı korumak için hemen önlem alın.</p><p><strong>Giriş Detayları:</strong><br />IP Adresi: ${ip}<br />Konum: ${location}<br />Cihaz: ${device}<br />Zaman: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p><strong>Eğer bu siz değilseniz</strong>, <a href=\"${freeze_account_link}\">hesabınızı hemen dondurmanızı</a> öneririz.</p><p>Saygılarımızla,<br />${api_name} Ekibi</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>Sayın ${name}</p><p>${address} adresine ${amount} ${currency} çekim talebinde bulundunuz.<br /><br />Tutar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br />Adres: ${address}<br /><span id=\"network\">Ağ: ${network}</span><br /><br />Bu çekimi onaylamak için lütfen aşağıdaki doğrulama kodunu kullanın.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Bu kod sınırlı süre için geçerlidir ve devam etmek için girilmelidir.</p><p>Eğer bu talebi siz yapmadıysanız, lütfen <a href=\"${freeze_account_link}\">hesabınızı dondurun</a> ve derhal bildirin.</p><p>Talebin başlatıldığı cihaz/IP: ${ip}</p><p>Saygılarımızla<br />${api_name} ekibi</p></div>",
+			"html": "<div><p>Sayın ${name}</p><p>${address} adresine ${amount} ${currency} çekim talebinde bulundunuz.<br /><br />Tutar: ${amount} ${currency}<br />Ücret: ${fee} ${fee_coin}<br /><div id='address'>Adres: ${address}<br /></div><div id='network'>Ağ: ${network}<br /></div><br />Bu çekimi onaylamak için lütfen aşağıdaki doğrulama kodunu kullanın.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Bu kod sınırlı süre için geçerlidir ve devam etmek için girilmelidir.</p><p>Eğer bu talebi siz yapmadıysanız, lütfen <a href=\"${freeze_account_link}\">hesabınızı dondurun</a> ve derhal bildirin.</p><p>Talebin başlatıldığı cihaz/IP: ${ip}</p><p>Saygılarımızla<br />${api_name} ekibi</p></div>",
 			"title": "${currency} Çekim Talebi"
 		},
 		"RESET_PASSWORD_CODE": {

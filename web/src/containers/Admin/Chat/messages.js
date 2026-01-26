@@ -25,8 +25,12 @@ const renderItem = (deleteMessage, banUser, bannedUsers) => ({
 			]}
 		>
 			<List.Item.Meta
-				title={`${message} - ${username}`}
-				description={JSON.stringify(rest)}
+				title={
+					<span className="text-white">
+						{message} - {username}
+					</span>
+				}
+				description={<span className="text-white">{JSON.stringify(rest)}</span>}
 			/>
 		</List.Item>
 	);

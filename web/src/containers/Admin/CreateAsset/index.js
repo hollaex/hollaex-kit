@@ -125,13 +125,39 @@ class CreateAsset extends Component {
 
 	generateInitialFees = () => {
 		const { editAsset } = this.props;
+		return this.generateFeesFromCoin(editAsset);
+	};
+
+	generateFeesFromCoin = (coin, feeKind = 'withdrawal') => {
 		const initialFees = {};
-		const { network, symbol } = editAsset;
-		const networks = network ? network.split(',') : [symbol];
-		networks.forEach((key) => {
+		if (!coin) return initialFees;
+		const { network, symbol } = coin;
+		// Build networks from coin.network, trimming spaces and normalizing case
+		const networks = network
+			? Array.from(
+					new Set(
+						network
+							.split(',')
+							.map((n) => (n || '').trim().toLowerCase())
+							.filter(Boolean)
+					)
+			  )
+			: [symbol];
+		const existingFees =
+			feeKind === 'deposit'
+				? coin?.deposit_fees || {}
+				: coin?.withdrawal_fees || {};
+
+		networks.forEach((rawKey) => {
+			const key = (rawKey || '').trim().toLowerCase();
+			const existing = existingFees[key] || {};
 			initialFees[key] = {
-				value: 0,
-				symbol: editAsset?.symbol,
+				value: existing.value || 0,
+				symbol: existing.symbol || coin?.symbol,
+				max: existing.max,
+				min: existing.min,
+				type: existing.type || 'static',
+				active: existing.active,
 			};
 		});
 		return initialFees;
@@ -864,10 +890,14 @@ class CreateAsset extends Component {
 						handleNext={this.handleNext}
 					/>
 				);
-			case 'edit_withdrawal_fees':
+			case 'edit_withdrawal_fees': {
+				const feeSource =
+					(this.props.editAsset && Object.keys(this.props.editAsset).length
+						? this.props.editAsset
+						: coinFormData) || {};
 				return (
 					<WithdrawalFee
-						coinFormData={coinFormData}
+						coinFormData={feeSource}
 						updateFormData={this.props.updateFormData}
 						handleClose={this.props.onClose}
 						coins={this.props.exchangeCoins}
@@ -877,10 +907,14 @@ class CreateAsset extends Component {
 						handleSymbolChange={this.handleSymbolChange}
 						tierValues={currentCoins}
 						assetType={this.props.assetType}
-						withdrawalFees={this.state.withdrawalFees}
+						withdrawalFees={this.generateFeesFromCoin(
+							feeSource,
+							this.props.assetType === 'deposit' ? 'deposit' : 'withdrawal'
+						)}
 						handleInitialValues={this.handleInitialValues}
 					/>
 				);
+			}
 			case 'update_confirm':
 				return (
 					<div>

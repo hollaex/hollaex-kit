@@ -33,8 +33,16 @@
 			"title": "${currency} سحب مرفوض"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p> ${name}العزيز </p><p>لقد قدّمت طلب سحب${currency} بمبلغ ${amount} الى ${address}<br /><br />المبلغ: ${amount}<br />الرسوم: ${fee} ${currency}<br />العنوان: ${address}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><br />لتأكيد هذا السحب ، انقر على الزر أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">أيٍّد</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات في حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><p> ${name}العزيز </p><p>لقد قدّمت طلب سحب${currency} بمبلغ ${amount} الى ${address}<br /><br />المبلغ: ${amount}<br />الرسوم: ${fee} ${currency}<br /><div id='address'>العنوان: ${address}<br /></div><div id='network'>شبكة الاتصال: ${network}<br /></div><br />لتأكيد هذا السحب ، انقر على الزر أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">أيٍّد</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات في حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} سحب  طلب"
+		},
+		"STAKE_CREATED": {
+			"html": "<div><p> ${name}العزيز </p><p>تم إنشاء طلب التخزين.</p><p>التخزين: ${stake_name}<br />المبلغ: ${amount} ${currency}<br />عملة المكافأة: ${reward_currency}<br />الحالة: ${status}<br /><span id='duration'>المدة: ${duration} يومًا<br /></span><span id='start_date'>تاريخ البدء: ${start_date}<br /></span><span id='end_date'>تاريخ الانتهاء: ${end_date}<br /></span></p><p> تحية<br> فريق${api_name} </p></div>",
+			"title": "تم إنشاء التخزين"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> ${name}العزيز </p><p>تمت تسوية التخزين وإغلاقه.</p><p>التخزين: ${stake_name}<br />الحالة: ${status}<br />المعاد: ${amount_returned} ${currency}<br /><span id='reward_amount'>المكافأة: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>تاريخ الانتهاء: ${end_date}<br /></span></p><p> تحية<br> فريق${api_name} </p></div>",
+			"title": "تمت تسوية التخزين"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>مطلوب التحقق من المستخدم</h3><div>قام المستخدم '${email}' بتحميل مستنداته للتحقق منها. يرجى التحقق من وثائقه.</div></div>",
@@ -85,19 +93,19 @@
 			"title": "Change Password Verification Code"
 		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> ${name}العزيز </p><p> ${amount} لديك إيداع جديد بمبلغ ${currency} في قيد الانتظار في محفظتك ${api_name} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك. ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><div><p> ${name}العزيز </p><p> ${amount} لديك إيداع جديد بمبلغ ${currency} في قيد الانتظار في محفظتك ${api_name} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك. ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br /><div id='address'>العنوان: ${address}<br /></div>معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}<br /></div>الرسوم: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} ايداع pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}العزيز </p><p> تم تأكيد وديعة ${currency} بمبلغ ${amount} ${currency} واكتملت وهي متوفرة في محفظتك ${currency}.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}</div><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><div><p> ${name}العزيز </p><p> تم تأكيد وديعة ${currency} بمبلغ ${amount} ${currency} واكتملت وهي متوفرة في محفظتك ${currency}.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br /><div id='address'>العنوان: ${address}<br /></div>معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}<br /></div>الرسوم: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} ايداع completed"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> ${name}العزيز </p><p>لقد قدمت طلب سحب بمبلغ ${amount} ${currency} إلى عنوان. ${address}. حالة السحب الخاصة بك في قيد الإنتظار وستتم معالجتها قريبًا.</p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><ul>${explorers}</ul><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><p> ${name}العزيز </p><p>لقد قدمت طلب سحب بمبلغ ${amount} ${currency} إلى عنوان. ${address}. حالة السحب الخاصة بك في قيد الإنتظار وستتم معالجتها قريبًا.</p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br /><div id='address'>العنوان: ${address}<br /></div>معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} سحب request"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> ${name}العزيز </p><p>تمت معالجة طلب سحبك بمبلغ ${amount} ${currency} و نقله إلى عنوان.${address}. </p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><ul>${explorers}</ul><p> تحية<br> فريق${api_name} </p></div>",
+			"html": "<div><p> ${name}العزيز </p><p>تمت معالجة طلب سحبك بمبلغ ${amount} ${currency} و نقله إلى عنوان.${address}. </p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br /><div id='address'>العنوان: ${address}<br /></div>معرّف المعاملة: ${transaction_id}<br /><div id='network'>شبكة الاتصال: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> تحية<br> فريق${api_name} </p></div>",
 			"title": "${currency} سحب completed"
 		},
 		"DOC_REJECTED": {
@@ -189,7 +197,7 @@
 			"html": "<div><p>عزيزي ${name}،</p><p>لاحظنا محاولة تسجيل دخول حديثة إلى حسابك من جهاز أو موقع جديد. يرجى استخدام الرمز أدناه لتأكيد تسجيل الدخول إذا كنت أنت من قام بذلك. إذا لم تكن أنت، اتخذ إجراءً فورياً لحماية حسابك.</p><p><strong>تفاصيل تسجيل الدخول:</strong><br />عنوان IP: ${ip}<br />الموقع: ${location}<br />الجهاز: ${device}<br />الوقت: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>إذا <strong>لم تكن أنت</strong>، ننصحك <a href=\"${freeze_account_link}\">بتجميد حسابك</a> فوراً لمنع أي وصول غير مصرح به.</p><p>مع التحية،<br />فريق ${api_name}</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لقد طلبت سحب مبلغ ${amount} ${currency} إلى العنوان ${address}.<br /><br />المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${fee_coin}<br />العنوان: ${address}<br /><span id=\"network\">الشبكة: ${network}</span><br /><br />لتأكيد هذا السحب، يرجى استخدام رمز التحقق أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>هذا الرمز صالح لفترة محدودة ويجب إدخاله للمتابعة.</p><p>إذا لم تكن أنت من قدّم هذا الطلب، يرجى <a href=\"${freeze_account_link}\">تجميد حسابك</a> والإبلاغ فوراً.</p><p>تم تشغيل الطلب من: ${ip}</p><p>تحياتي<br>فريق ${api_name}</p></div>",
+			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لقد طلبت سحب مبلغ ${amount} ${currency} إلى العنوان ${address}.<br /><br />المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${fee_coin}<br /><div id='address'>العنوان: ${address}<br /></div><div id='network'>الشبكة: ${network}<br /></div><br />لتأكيد هذا السحب، يرجى استخدام رمز التحقق أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>هذا الرمز صالح لفترة محدودة ويجب إدخاله للمتابعة.</p><p>إذا لم تكن أنت من قدّم هذا الطلب، يرجى <a href=\"${freeze_account_link}\">تجميد حسابك</a> والإبلاغ فوراً.</p><p>تم تشغيل الطلب من: ${ip}</p><p>تحياتي<br>فريق ${api_name}</p></div>",
 			"title": "طلب سحب ${currency}"
 		},
 		"RESET_PASSWORD_CODE": {

@@ -17,6 +17,7 @@ import Details from 'containers/QuickTrade/components/Details';
 import Header from 'containers/QuickTrade/components/Header';
 import Footer from 'containers/QuickTrade/components/Footer';
 import Balance from 'containers/QuickTrade/components/Balance';
+import ActiveOTCLimitOrders from 'containers/QuickTrade/components/ActiveOTCLimitOrders';
 import QuoteResult from 'containers/QuickTrade/QuoteResult';
 import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
 import QuoteExpiredBlock from './QuoteExpiredBlock';
@@ -49,7 +50,10 @@ import {
 	formatPercentage,
 	formatToCurrency,
 	roundNumber,
+	formatNumber,
 } from 'utils/currency';
+import { cancelOrder, cancelAllOrders } from 'actions/orderAction';
+import { getOrders } from 'actions/walletActions';
 
 export const PAIR2_STATIC_SIZE = 0.000001;
 export const SPENDING = {
@@ -82,6 +86,9 @@ const QuickTrade = ({
 	setIsActiveFavQuickTrade,
 	transactionPair,
 	setTransactionPair,
+	cancelOrder,
+	cancelAllOrders,
+	wsPriceData = {},
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -139,13 +146,19 @@ const QuickTrade = ({
 	const [isSelectTarget, setIsSelectTarget] = useState(false);
 	const [showLimitOrderSuccess, setShowLimitOrderSuccess] = useState(false);
 	const [limitOrderData, setLimitOrderData] = useState(null);
+	const [orderHistory, setOrderHistory] = useState([]);
+	const [isLoadingOrders, setIsLoadingOrders] = useState(false);
 
 	const errorRef = useRef(null);
 	const chartDataRef = useRef(null);
 	const lineChartRef = useRef(null);
+	const cancelingOrderRef = useRef(false);
 	const selectTargetRef = useRef(null);
 	const loadingTimeoutRef = useRef(null);
 	const targetAmountRecalcTimeoutRef = useRef(null);
+	const fetchOrdersDebounceRef = useRef(null);
+	const isFetchingOrdersRef = useRef(false);
+	const ordersContainerRef = useRef(null);
 
 	const resetForm = () => {
 		setTargetAmount();
@@ -259,52 +272,7 @@ const QuickTrade = ({
 				selectedTarget &&
 				selectedSource
 			) {
-				const chartDataKey = activeQuickTradePair ? activeQuickTradePair : pair;
-				const chartPriceData =
-					lineChartData?.price || chartData[chartDataKey]?.price;
-				let marketLastPrice = null;
-
-				if (chartPriceData && chartPriceData.length > 0) {
-					const lastPrice = chartPriceData[chartPriceData?.length - 1];
-					const [chartBase, chartQuote] = chartDataKey?.split('-');
-
-					if (chartBase === selectedSource && chartQuote === selectedTarget) {
-						marketLastPrice = lastPrice;
-					} else if (
-						chartBase === selectedTarget &&
-						chartQuote === selectedSource
-					) {
-						marketLastPrice = 1 / lastPrice;
-					}
-				}
-
-				if (!marketLastPrice) {
-					const expectedSymbol = `${selectedSource}-${selectedTarget}`;
-					const expectedFlippedSymbol = `${selectedTarget}-${selectedSource}`;
-
-					if (
-						chartData[expectedSymbol]?.price &&
-						chartData[expectedSymbol]?.price?.length > 0
-					) {
-						marketLastPrice =
-							chartData[expectedSymbol]?.price[
-								chartData[expectedSymbol]?.price?.length - 1
-							];
-					} else if (
-						chartData[expectedFlippedSymbol]?.price &&
-						chartData[expectedFlippedSymbol]?.price?.length > 0
-					) {
-						marketLastPrice =
-							1 /
-							chartData[expectedFlippedSymbol]?.price[
-								chartData[expectedFlippedSymbol]?.price?.length - 1
-							];
-					}
-				}
-
-				const calculatedInvertedPrice = marketLastPrice
-					? 1 / marketLastPrice
-					: null;
+				const calculatedInvertedPrice = calculateInvertedPrice();
 
 				if (calculatedInvertedPrice && calculatedInvertedPrice > 0) {
 					if (loadingTimeoutRef.current) {
@@ -329,18 +297,43 @@ const QuickTrade = ({
 		}
 	};
 
+	const convertDisplayPriceToInvertedPrice = (displayPrice) => {
+		if (!isQuickTradeLimitOrder || !displayPrice) return displayPrice;
+
+		const quickTradePairSymbol = getQuickTradePairInfo();
+		if (!quickTradePairSymbol) return displayPrice;
+
+		const [pairBase, pairQuote] = quickTradePairSymbol?.split('-') || [];
+		const fromAsset = selectedSource?.toLowerCase();
+		const toAsset = selectedTarget?.toLowerCase();
+		const pairBaseLower = pairBase?.toLowerCase();
+		const pairQuoteLower = pairQuote?.toLowerCase();
+
+		if (fromAsset === pairBaseLower && toAsset === pairQuoteLower) {
+			return 1 / displayPrice;
+		}
+
+		if (fromAsset === pairQuoteLower && toAsset === pairBaseLower) {
+			return displayPrice;
+		}
+
+		return displayPrice;
+	};
+
 	const onChangeCustomPrice = (value) => {
 		setLimitOrderPriceDisplay(value);
 		const numValue = parseFloat(value);
 		if (!isNaN(numValue) && numValue > 0) {
-			setCustomInvertedPrice(numValue);
-			if (sourceAmount && numValue && selectedTarget) {
+			const invertedPriceValue = convertDisplayPriceToInvertedPrice(numValue);
+			setCustomInvertedPrice(invertedPriceValue);
+
+			if (sourceAmount && invertedPriceValue && selectedTarget) {
 				if (loadingTimeoutRef.current) {
 					clearTimeout(loadingTimeoutRef.current);
 				}
 				setLoading(true);
 				setSpending(SPENDING.SOURCE);
-				const calculatedTarget = sourceAmount / numValue;
+				const calculatedTarget = sourceAmount / invertedPriceValue;
 				const decimalPoint = getDecimals(
 					coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
 				);
@@ -418,33 +411,119 @@ const QuickTrade = ({
 
 		try {
 			if (shouldPlaceLimitOrder()) {
-				const orderSymbol = symbol || `${selectedSource}-${selectedTarget}`;
-				const orderPrice = invertedPrice;
-				const orderSize = sourceAmount;
-				const orderSide = 'sell';
+				const quickTradePairInfo =
+					quicktradePairs[symbol] || quicktradePairs[flipPair(symbol)];
+				const quickTradePair = quickTradePairInfo?.symbol || symbol;
+				const [pairBase, pairQuote] = quickTradePair?.split('-') || [];
+				const fromAsset = selectedSource?.toLowerCase();
+				const toAsset = selectedTarget?.toLowerCase();
+				const isSameDirection =
+					fromAsset === pairBase?.toLowerCase() &&
+					toAsset === pairQuote?.toLowerCase();
+				const direction = quicktradePairs[symbol] ? 'sell' : 'buy';
 
+				const rawOrderPrice = customInvertedPrice
+					? isSameDirection
+						? 1 / customInvertedPrice
+						: customInvertedPrice
+					: null;
+
+				const pairData = pairs[quickTradePair] || {};
+				const incrementPrice =
+					pairData?.increment_price ||
+					(pairQuote ? coins[pairQuote]?.increment_unit : null) ||
+					PAIR2_STATIC_SIZE;
+				const incrementSize =
+					pairData?.increment_size ||
+					(pairBase ? coins[pairBase]?.increment_unit : null) ||
+					PAIR2_STATIC_SIZE;
+
+				const priceDecimalPoint = getDecimals(incrementPrice);
+				const sizeDecimalPoint = getDecimals(incrementSize);
+
+				let orderPrice = null;
+				if (rawOrderPrice) {
+					if (incrementPrice > 0) {
+						let roundedPrice = formatNumber(rawOrderPrice, priceDecimalPoint);
+						roundedPrice = math.multiply(
+							math.floor(math.divide(roundedPrice, incrementPrice)),
+							incrementPrice
+						);
+						orderPrice = formatNumber(roundedPrice, priceDecimalPoint);
+					} else {
+						orderPrice = formatNumber(rawOrderPrice, priceDecimalPoint);
+					}
+				}
+
+				const rawOrderSize =
+					fromAsset === pairBase?.toLowerCase() ? sourceAmount : targetAmount;
+				let orderSize = null;
+				if (rawOrderSize) {
+					if (incrementSize > 0) {
+						let roundedSize = formatNumber(rawOrderSize, sizeDecimalPoint);
+						roundedSize = math.multiply(
+							math.floor(math.divide(roundedSize, incrementSize)),
+							incrementSize
+						);
+						orderSize = formatNumber(roundedSize, sizeDecimalPoint);
+					} else {
+						orderSize = formatNumber(rawOrderSize, sizeDecimalPoint);
+					}
+				}
+
+				const pairType = quickTradePairInfo?.type;
 				const orderData = {
-					side: orderSide,
-					symbol: orderSymbol?.toLowerCase(),
+					side: direction,
+					symbol: quickTradePair?.toLowerCase(),
 					price: orderPrice,
 					size: orderSize,
 					type: 'limit',
-					meta: {
-						broker: 'otc',
-					},
+					...(pairType === TYPES.NETWORK || pairType === TYPES.BROKER
+						? {
+								meta: {
+									broker: 'otc',
+								},
+						  }
+						: {}),
 				};
 
 				const { data } = await createLimitOrder(orderData);
 				setData(data);
+				const conversionDisplay = getConversionPriceForDisplay();
+				const getDisplayPriceForSuccess = () => {
+					if (
+						limitOrderPriceDisplay &&
+						parseFloat(limitOrderPriceDisplay) > 0
+					) {
+						const userPrice = parseFloat(limitOrderPriceDisplay);
+						if (conversionDisplay?.base && conversionDisplay?.quote) {
+							return {
+								base: conversionDisplay.base,
+								quote: conversionDisplay.quote,
+								price: userPrice,
+							};
+						}
+					}
+					return conversionDisplay;
+				};
 				setLimitOrderData({
 					sourceAmount,
 					targetAmount,
 					selectedSource,
 					selectedTarget,
 					invertedPrice,
+					conversionPriceDisplay: getDisplayPriceForSuccess(),
 				});
+				setShowModal(false);
 				setShowLimitOrderSuccess(true);
 				resetForm();
+				if (fetchOrdersDebounceRef.current) {
+					clearTimeout(fetchOrdersDebounceRef.current);
+				}
+				fetchOrdersDebounceRef.current = setTimeout(() => {
+					fetchOrders();
+					fetchOrdersDebounceRef.current = null;
+				}, 500);
 			} else {
 				const { data } = await executeQuickTrade(token);
 				setData(data);
@@ -600,9 +679,9 @@ const QuickTrade = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coins, pair]);
 
-	const getPricingData = (price = []) => {
+	const getPricingData = (price = [], wsPrice = null) => {
 		const firstPrice = price[0];
-		const lastPrice = price[price?.length - 1];
+		const lastPrice = wsPrice ? wsPrice : price[price?.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
 			(priceDifference / firstPrice) * 100
@@ -624,8 +703,14 @@ const QuickTrade = ({
 
 	const calculateSlippage = () => {
 		const { price = [] } = chartData[symbol] || chartData[flippedPair] || {};
-		const pricingData = getPricingData(price);
-		const lastPrice = parseFloat(pricingData?.lastPrice?.replace(/,/g, ''));
+		const activePair =
+			activeQuickTradePair || getQuickTradePairInfo() || symbol;
+		const [base = '', quote = ''] = activePair?.split('-') || [];
+		const wsPrice = wsPriceData[base] / wsPriceData[quote] || null;
+		const pricingData = getPricingData(price, wsPrice);
+		const lastPrice = wsPrice
+			? wsPrice
+			: parseFloat(pricingData?.lastPrice?.replace(/,/g, ''));
 
 		const sourcePrice = parseFloat(sourceAmount);
 		const targetPrice = parseFloat(targetAmount);
@@ -643,6 +728,111 @@ const QuickTrade = ({
 
 		const slippage = ((executedPrice - lastPrice) / lastPrice) * 100;
 		setSlippagePercentage(slippage);
+	};
+
+	const normalizePair = (pairSymbol) => {
+		if (!pairSymbol || !quicktradePairs) return pairSymbol;
+		const quickTradePairInfo =
+			quicktradePairs[pairSymbol] || quicktradePairs[flipPair(pairSymbol)];
+		return quickTradePairInfo?.symbol || pairSymbol;
+	};
+
+	const getOrdersCountForSymbol = () => {
+		if (!selectedSource || !selectedTarget || !orderHistory?.length) return 0;
+		const currentSymbol = `${selectedSource?.toLowerCase()}-${selectedTarget?.toLowerCase()}`;
+		const flippedSymbol = `${selectedTarget?.toLowerCase()}-${selectedSource?.toLowerCase()}`;
+		return orderHistory.filter(
+			(order) =>
+				order?.symbol?.toLowerCase() === currentSymbol ||
+				order?.symbol?.toLowerCase() === flippedSymbol
+		).length;
+	};
+
+	const handleScrollToOrders = () => {
+		if (ordersContainerRef.current) {
+			ordersContainerRef.current.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
+		}
+	};
+
+	const renderOrdersCountLink = () => {
+		const ordersCount = getOrdersCountForSymbol();
+		if (!ordersCount || ordersCount === 0) {
+			return null;
+		}
+		return (
+			<>
+				<span className="secondary-text px-2">•</span>
+				<EditWrapper stringId={'QUICK_TRADE_COMPONENT.ORDERS_COUNT'}>
+					<span
+						className="pointer blue-link underline-text"
+						onClick={handleScrollToOrders}
+					>
+						{STRINGS.formatString(
+							STRINGS['QUICK_TRADE_COMPONENT.ORDERS_COUNT'],
+							ordersCount
+						)}
+					</span>
+				</EditWrapper>
+			</>
+		);
+	};
+
+	const fetchOrders = async () => {
+		if (preview || cancelingOrderRef.current || isFetchingOrdersRef.current) {
+			return;
+		}
+
+		if (fetchOrdersDebounceRef.current) {
+			clearTimeout(fetchOrdersDebounceRef.current);
+		}
+
+		fetchOrdersDebounceRef.current = setTimeout(async () => {
+			isFetchingOrdersRef.current = true;
+			setIsLoadingOrders(true);
+			try {
+				const params = { open: true };
+				const response = await getOrders(params);
+				const ordersData = response?.data?.data || response?.data || [];
+				const ordersArray = Array.isArray(ordersData) ? ordersData : [];
+				setOrderHistory(ordersArray);
+				isFetchingOrdersRef.current = false;
+				setIsLoadingOrders(false);
+			} catch (error) {
+				console.error(`Error fetching orders:`, error);
+				setOrderHistory([]);
+				isFetchingOrdersRef.current = false;
+				setIsLoadingOrders(false);
+			}
+			fetchOrdersDebounceRef.current = null;
+		}, 300);
+	};
+
+	const handleCancelOrder = (orderId) => {
+		cancelingOrderRef.current = true;
+
+		setOrderHistory((prevOrders) =>
+			prevOrders.filter((order) => order?.id !== orderId)
+		);
+
+		setTimeout(() => {
+			cancelOrder(orderId, {});
+			setTimeout(() => {
+				cancelingOrderRef.current = false;
+				fetchOrders();
+			}, 1000);
+		}, 100);
+	};
+
+	const handleCancelAllOrders = (symbol) => {
+		cancelingOrderRef.current = true;
+		cancelAllOrders(symbol);
+		setTimeout(() => {
+			cancelingOrderRef.current = false;
+			fetchOrders();
+		}, 1000);
 	};
 
 	useEffect(() => {
@@ -704,12 +894,16 @@ const QuickTrade = ({
 		const symbol = `${selectedSource}-${selectedTarget}`;
 		const flippedSymbol = flipPair(symbol);
 
+		let currentSymbol = null;
 		if (quicktradePairs[symbol] || chain_trade_config?.active) {
-			setSymbol(symbol);
-			goToPair(symbol);
+			currentSymbol = symbol;
 		} else if (quicktradePairs[flippedSymbol]) {
-			setSymbol(flippedSymbol);
-			goToPair(flippedSymbol);
+			currentSymbol = flippedSymbol;
+		}
+
+		if (currentSymbol) {
+			setSymbol(currentSymbol);
+			goToPair(currentSymbol);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSource, selectedTarget, quicktradePairs]);
@@ -756,6 +950,9 @@ const QuickTrade = ({
 			if (targetAmountRecalcTimeoutRef?.current) {
 				clearTimeout(targetAmountRecalcTimeoutRef.current);
 			}
+			if (fetchOrdersDebounceRef?.current) {
+				clearTimeout(fetchOrdersDebounceRef.current);
+			}
 			clearDebouncedQuote && clearDebouncedQuote.cancel();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -788,6 +985,11 @@ const QuickTrade = ({
 		}, 0);
 	}, [pair, chartData, activeQuickTradePair]);
 
+	useEffect(() => {
+		fetchOrders();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const isExpired = !isLimitOrderWithPrice && time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
@@ -815,10 +1017,6 @@ const QuickTrade = ({
 		setIsHighSlippageDetected(false);
 	};
 
-	const onHandleHighSlippageReview = () => {
-		onHandleReview();
-	};
-
 	const onSourceAmountChange = (value) => {
 		setSpending(SPENDING.SOURCE);
 		setSourceAmount(value);
@@ -827,25 +1025,30 @@ const QuickTrade = ({
 			isQuickTradeLimitOrder &&
 			customInvertedPrice !== null &&
 			customInvertedPrice > 0 &&
-			value &&
 			selectedTarget
 		) {
-			const numValue = parseFloat(value);
-			if (!isNaN(numValue) && numValue > 0) {
-				if (loadingTimeoutRef.current) {
-					clearTimeout(loadingTimeoutRef.current);
+			if (loadingTimeoutRef.current) {
+				clearTimeout(loadingTimeoutRef.current);
+			}
+			if (value) {
+				const numValue = parseFloat(value);
+				if (!isNaN(numValue) && numValue > 0) {
+					setLoading(true);
+					loadingTimeoutRef.current = setTimeout(() => {
+						const calculatedTarget = numValue / customInvertedPrice;
+						const decimalPoint = getDecimals(
+							coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+						);
+						const roundedTarget = roundNumber(calculatedTarget, decimalPoint);
+						setTargetAmount(roundedTarget);
+						setLoading(false);
+						loadingTimeoutRef.current = null;
+					}, 100);
+				} else {
+					setTargetAmount('');
 				}
-				setLoading(true);
-				const calculatedTarget = numValue / customInvertedPrice;
-				const decimalPoint = getDecimals(
-					coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
-				);
-				const roundedTarget = roundNumber(calculatedTarget, decimalPoint);
-				setTargetAmount(roundedTarget);
-				loadingTimeoutRef.current = setTimeout(() => {
-					setLoading(false);
-					loadingTimeoutRef.current = null;
-				}, 100);
+			} else {
+				setTargetAmount('');
 			}
 		}
 	};
@@ -899,48 +1102,90 @@ const QuickTrade = ({
 			(data) => data === pair || data === flipPair(pair)
 		) || [];
 
-	const getMarketLastPrice = () => {
-		if (!selectedSource || !selectedTarget) return null;
+	const getOrderbookPrice = () => {
+		if (!isQuickTradeLimitOrder) {
+			if (!selectedSource || !selectedTarget) return null;
 
-		const chartDataKey = activeQuickTradePair ? activeQuickTradePair : pair;
+			const chartDataKey = activeQuickTradePair ? activeQuickTradePair : pair;
+			const chartPriceData =
+				lineChartData?.price || chartData[chartDataKey]?.price;
+			if (chartPriceData && chartPriceData.length > 0) {
+				const [chartBase, chartQuote] = chartDataKey?.split('-');
+				const wsPrice =
+					wsPriceData[chartBase] / wsPriceData[chartQuote] || null;
+				const lastPrice = wsPrice
+					? wsPrice
+					: chartPriceData[chartPriceData?.length - 1];
+
+				if (chartBase === selectedSource && chartQuote === selectedTarget) {
+					return lastPrice;
+				} else if (
+					chartBase === selectedTarget &&
+					chartQuote === selectedSource
+				) {
+					return 1 / lastPrice;
+				}
+			}
+
+			const expectedSymbol = `${selectedSource}-${selectedTarget}`;
+			const expectedFlippedSymbol = `${selectedTarget}-${selectedSource}`;
+
+			if (
+				chartData[expectedSymbol]?.price &&
+				chartData[expectedSymbol]?.price?.length > 0
+			) {
+				const [base, quote] = expectedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					return wsPriceData[base] / wsPriceData[quote];
+				}
+				return chartData[expectedSymbol]?.price[
+					chartData[expectedSymbol]?.price?.length - 1
+				];
+			}
+			if (
+				chartData[expectedFlippedSymbol]?.price &&
+				chartData[expectedFlippedSymbol]?.price?.length > 0
+			) {
+				const [base, quote] = expectedFlippedSymbol?.split('-');
+				if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+					const lastPrice = wsPriceData[quote] / wsPriceData[base];
+					return 1 / lastPrice;
+				}
+				return (
+					1 /
+					chartData[expectedFlippedSymbol]?.price[
+						chartData[expectedFlippedSymbol]?.price?.length - 1
+					]
+				);
+			}
+
+			return null;
+		}
+
+		const quickTradePairSymbol = getQuickTradePairInfo();
+		if (!quickTradePairSymbol) return null;
+
+		const chartDataKey = activeQuickTradePair || quickTradePairSymbol;
 		const chartPriceData =
 			lineChartData?.price || chartData[chartDataKey]?.price;
-
-		if (chartPriceData && chartPriceData.length > 0) {
-			const lastPrice = chartPriceData[chartPriceData?.length - 1];
-			const [chartBase, chartQuote] = chartDataKey?.split('-');
-
-			if (chartBase === selectedSource && chartQuote === selectedTarget) {
-				return lastPrice;
-			} else if (
-				chartBase === selectedTarget &&
-				chartQuote === selectedSource
-			) {
-				return 1 / lastPrice;
+		const [base = '', quote = ''] = chartDataKey?.split('-');
+		if (chartPriceData && chartPriceData?.length > 0) {
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
 			}
+			return chartPriceData[chartPriceData?.length - 1];
 		}
 
-		const expectedSymbol = `${selectedSource}-${selectedTarget}`;
-		const expectedFlippedSymbol = `${selectedTarget}-${selectedSource}`;
-
 		if (
-			chartData[expectedSymbol]?.price &&
-			chartData[expectedSymbol]?.price?.length > 0
+			chartData[quickTradePairSymbol]?.price &&
+			chartData[quickTradePairSymbol]?.price?.length > 0
 		) {
-			return chartData[expectedSymbol]?.price[
-				chartData[expectedSymbol]?.price?.length - 1
+			if (base && quote && wsPriceData[base] && wsPriceData[quote]) {
+				return wsPriceData[base] / wsPriceData[quote];
+			}
+			return chartData[quickTradePairSymbol]?.price[
+				chartData[quickTradePairSymbol]?.price?.length - 1
 			];
-		}
-		if (
-			chartData[expectedFlippedSymbol]?.price &&
-			chartData[expectedFlippedSymbol]?.price?.length > 0
-		) {
-			return (
-				1 /
-				chartData[expectedFlippedSymbol]?.price[
-					chartData[expectedFlippedSymbol]?.price?.length - 1
-				]
-			);
 		}
 
 		return null;
@@ -949,10 +1194,7 @@ const QuickTrade = ({
 	const shouldPlaceLimitOrder = () => {
 		if (!isQuickTradeLimitOrder) return false;
 
-		const currentMarketLastPrice = getMarketLastPrice();
-		const currentCalculatedInvertedPrice = currentMarketLastPrice
-			? 1 / currentMarketLastPrice
-			: null;
+		const currentCalculatedInvertedPrice = calculateInvertedPrice();
 		const isCustomPriceSet =
 			customInvertedPrice !== null && customInvertedPrice !== undefined;
 		const priceDiffers =
@@ -961,16 +1203,100 @@ const QuickTrade = ({
 				: false;
 
 		return (
-			isCustomPriceSet && priceDiffers && currentMarketLastPrice && sourceAmount
+			isCustomPriceSet &&
+			priceDiffers &&
+			currentCalculatedInvertedPrice &&
+			sourceAmount
 		);
 	};
 
-	const marketLastPrice = getMarketLastPrice();
-	const calculatedInvertedPrice = marketLastPrice ? 1 / marketLastPrice : null;
+	const getQuickTradePairInfo = () => {
+		if (!isQuickTradeLimitOrder) {
+			return null;
+		}
+		const quickTradePairInfo =
+			quicktradePairs[symbol] || quicktradePairs[flipPair(symbol)];
+		return quickTradePairInfo?.symbol || null;
+	};
+
+	const getDisplayPrice = (actualOrderbookPrice, base, quote) => {
+		if (!actualOrderbookPrice || !base || !quote) return null;
+		return {
+			base,
+			quote,
+			price: actualOrderbookPrice,
+		};
+	};
+
+	const getConversionPriceForDisplay = () => {
+		if (!isQuickTradeLimitOrder) {
+			return {
+				base: selectedTarget,
+				quote: selectedSource,
+				price: invertedPrice,
+			};
+		}
+
+		const quickTradePairSymbol = getQuickTradePairInfo();
+		if (!quickTradePairSymbol) {
+			return {
+				base: selectedTarget,
+				quote: selectedSource,
+				price: invertedPrice,
+			};
+		}
+
+		const [pairBase, pairQuote] = quickTradePairSymbol?.split('-') || [];
+		const orderbookPrice = getOrderbookPrice();
+
+		if (orderbookPrice) {
+			return getDisplayPrice(orderbookPrice, pairBase, pairQuote);
+		}
+
+		return {
+			base: pairBase,
+			quote: pairQuote,
+			price: invertedPrice || 0,
+		};
+	};
+
+	const calculateInvertedPrice = () => {
+		if (!isQuickTradeLimitOrder) {
+			const marketLastPrice = getOrderbookPrice();
+			return marketLastPrice ? 1 / marketLastPrice : null;
+		}
+
+		const orderbookPrice = getOrderbookPrice();
+		if (!orderbookPrice) return null;
+
+		const quickTradePairSymbol = getQuickTradePairInfo();
+		if (!quickTradePairSymbol) return null;
+
+		const [pairBase, pairQuote] = quickTradePairSymbol?.split('-') || [];
+		const fromAsset = selectedSource?.toLowerCase();
+		const toAsset = selectedTarget?.toLowerCase();
+		const pairBaseLower = pairBase?.toLowerCase();
+		const pairQuoteLower = pairQuote?.toLowerCase();
+
+		if (fromAsset === pairBaseLower && toAsset === pairQuoteLower) {
+			return 1 / orderbookPrice;
+		}
+
+		if (fromAsset === pairQuoteLower && toAsset === pairBaseLower) {
+			return orderbookPrice;
+		}
+
+		return null;
+	};
+
+	const marketLastPrice = getOrderbookPrice();
+	const calculatedInvertedPrice = calculateInvertedPrice();
 	const invertedPrice =
 		customInvertedPrice !== null
 			? customInvertedPrice
 			: calculatedInvertedPrice;
+
+	const conversionPriceDisplay = getConversionPriceForDisplay();
 
 	return (
 		<Fragment>
@@ -1069,7 +1395,7 @@ const QuickTrade = ({
 									/>
 									<Button
 										label={STRINGS['QUICK_TRADE_COMPONENT.REVIEW_ORDER']}
-										onClick={onHandleHighSlippageReview}
+										onClick={onHandleReview}
 										type="button"
 										className="w-100"
 									/>
@@ -1101,62 +1427,60 @@ const QuickTrade = ({
 									</EditWrapper>
 								</div>
 								<div className="limit-order-success-popup-content">
-									<div className="limit-order-success-order-details">
+									<div className="limit-order-success-order-details pb-2">
 										<EditWrapper stringId="QUICK_TRADE_COMPONENT.ORDER_DETAILS">
 											<span className="order-details-label">
 												{STRINGS['QUICK_TRADE_COMPONENT.ORDER_DETAILS']}
 											</span>
 										</EditWrapper>
 										{limitOrderData && (
-											<div className="order-details-text d-flex align-items-center flex-wrap">
-												<span className="d-flex align-items-center">
-													{coins[limitOrderData.selectedSource]?.icon_id && (
-														<span className="mr-2 limit-order-asset-icon">
-															<Coin
-																iconId={
-																	coins[limitOrderData?.selectedSource]?.icon_id
-																}
-																type="CS6"
-															/>
-														</span>
+											<div className="order-details-text">
+												{coins[limitOrderData.selectedSource]?.icon_id && (
+													<span className="mr-2 limit-order-asset-icon">
+														<Coin
+															iconId={
+																coins[limitOrderData?.selectedSource]?.icon_id
+															}
+															type="CS6"
+														/>
+													</span>
+												)}
+												<EditWrapper stringId="QUICK_TRADE_COMPONENT.CONVERT_ORDER_DETAILS">
+													{STRINGS.formatString(
+														STRINGS[
+															'QUICK_TRADE_COMPONENT.CONVERT_ORDER_DETAILS'
+														],
+														formatToCurrency(
+															limitOrderData?.sourceAmount,
+															coins[limitOrderData?.selectedSource]
+																?.increment_unit || PAIR2_STATIC_SIZE,
+															limitOrderData?.sourceAmount < 1 &&
+																countDecimals(limitOrderData?.sourceAmount) > 8
+														),
+														limitOrderData?.selectedSource?.toUpperCase(),
+														formatToCurrency(
+															limitOrderData?.targetAmount,
+															coins[limitOrderData?.selectedTarget]
+																?.increment_unit || PAIR2_STATIC_SIZE,
+															limitOrderData?.targetAmount < 1 &&
+																countDecimals(limitOrderData?.targetAmount) > 8
+														),
+														limitOrderData?.selectedTarget?.toUpperCase()
 													)}
-													<EditWrapper stringId="QUICK_TRADE_COMPONENT.CONVERT_ORDER_DETAILS">
-														{STRINGS.formatString(
-															STRINGS[
-																'QUICK_TRADE_COMPONENT.CONVERT_ORDER_DETAILS'
-															],
-															formatToCurrency(
-																limitOrderData?.sourceAmount,
-																0,
-																limitOrderData?.sourceAmount < 1 &&
-																	countDecimals(limitOrderData?.sourceAmount) >
-																		8
-															),
-															limitOrderData?.selectedSource?.toUpperCase(),
-															formatToCurrency(
-																limitOrderData?.targetAmount,
-																0,
-																limitOrderData?.targetAmount < 1 &&
-																	countDecimals(limitOrderData?.targetAmount) >
-																		8
-															),
-															limitOrderData?.selectedTarget?.toUpperCase()
-														)}
-													</EditWrapper>
-													{coins[limitOrderData?.selectedTarget]?.icon_id && (
-														<span className="ml-2 limit-order-asset-icon">
-															<Coin
-																iconId={
-																	coins[limitOrderData?.selectedTarget]?.icon_id
-																}
-																type="CS6"
-															/>
-														</span>
-													)}
-												</span>
+												</EditWrapper>
+												{coins[limitOrderData?.selectedTarget]?.icon_id && (
+													<span className="ml-2 limit-order-asset-icon">
+														<Coin
+															iconId={
+																coins[limitOrderData?.selectedTarget]?.icon_id
+															}
+															type="CS6"
+														/>
+													</span>
+												)}
 											</div>
 										)}
-										{limitOrderData && limitOrderData?.invertedPrice && (
+										{limitOrderData && limitOrderData?.conversionPriceDisplay && (
 											<div className="conversion-price-text">
 												<EditWrapper stringId="QUICK_TRADE_COMPONENT.CONVERSION_PRICE">
 													({STRINGS['QUICK_TRADE_COMPONENT.CONVERSION_PRICE']}{' '}
@@ -1165,12 +1489,18 @@ const QuickTrade = ({
 															STRINGS[
 																'QUICK_TRADE_COMPONENT.CONVERSION_ASSET_PRICE'
 															],
-															limitOrderData?.selectedTarget?.toUpperCase(),
+															limitOrderData?.conversionPriceDisplay?.base?.toUpperCase(),
 															formatToCurrency(
-																limitOrderData?.invertedPrice,
-																0
+																limitOrderData?.conversionPriceDisplay?.price,
+																0,
+																limitOrderData?.conversionPriceDisplay?.price <
+																	1 &&
+																	countDecimals(
+																		limitOrderData?.conversionPriceDisplay
+																			?.price
+																	) > 8
 															),
-															limitOrderData?.selectedSource?.toUpperCase()
+															limitOrderData?.conversionPriceDisplay?.quote?.toUpperCase()
 														)}
 													</span>
 													)
@@ -1193,7 +1523,8 @@ const QuickTrade = ({
 													<span className="bold important-text">
 														{formatToCurrency(
 															limitOrderData.sourceAmount,
-															0,
+															coins[limitOrderData?.selectedSource]
+																?.increment_unit || PAIR2_STATIC_SIZE,
 															limitOrderData.sourceAmount < 1 &&
 																countDecimals(limitOrderData.sourceAmount) > 8
 														)}
@@ -1338,15 +1669,18 @@ const QuickTrade = ({
 									<div className="quick_trade-last-price d-flex flex-column align-items-start secondary-text mt-2">
 										{!showAdvanced ? (
 											<div className="d-flex align-items-center w-100 justify-content-between">
-												<div
-													className="pointer blue-link"
-													onClick={onToggleAdvanced}
-												>
-													<EditWrapper stringId={'ORDER_ENTRY_SHOW_ADVANCE'}>
-														<span className="underline-text">
-															{STRINGS['ORDER_ENTRY_SHOW_ADVANCE']}
-														</span>
-													</EditWrapper>
+												<div className="d-flex align-items-center gap-2">
+													<div
+														className="pointer blue-link"
+														onClick={onToggleAdvanced}
+													>
+														<EditWrapper stringId={'ORDER_ENTRY_SHOW_ADVANCE'}>
+															<span className="underline-text">
+																{STRINGS['ORDER_ENTRY_SHOW_ADVANCE']}
+															</span>
+														</EditWrapper>
+													</div>
+													{renderOrdersCountLink()}
 												</div>
 												<EditWrapper
 													stringId={
@@ -1357,29 +1691,34 @@ const QuickTrade = ({
 														STRINGS[
 															'QUICK_TRADE_COMPONENT.CONVERSION_ASSET_PRICE'
 														],
-														selectedTarget?.toUpperCase(),
+														conversionPriceDisplay?.base?.toUpperCase(),
 														formatToCurrency(
-															invertedPrice,
+															conversionPriceDisplay?.price,
 															0,
-															invertedPrice < 1 &&
-																countDecimals(invertedPrice) > 8
+															conversionPriceDisplay?.price < 1 &&
+																countDecimals(conversionPriceDisplay?.price) > 8
 														),
-														selectedSource?.toUpperCase()
+														conversionPriceDisplay?.quote?.toUpperCase()
 													)}
 												</EditWrapper>
 											</div>
 										) : (
 											<>
 												<div className="d-flex align-items-center w-100 justify-content-between mb-2">
-													<div
-														className="pointer blue-link"
-														onClick={onToggleAdvanced}
-													>
-														<EditWrapper stringId={'ORDER_ENTRY_HIDE_ADVANCE'}>
-															<span className="underline-text">
-																{STRINGS['ORDER_ENTRY_HIDE_ADVANCE']}
-															</span>
-														</EditWrapper>
+													<div className="d-flex align-items-center gap-2">
+														<div
+															className="pointer blue-link"
+															onClick={onToggleAdvanced}
+														>
+															<EditWrapper
+																stringId={'ORDER_ENTRY_HIDE_ADVANCE'}
+															>
+																<span className="underline-text">
+																	{STRINGS['ORDER_ENTRY_HIDE_ADVANCE']}
+																</span>
+															</EditWrapper>
+														</div>
+														{renderOrdersCountLink()}
 													</div>
 												</div>
 												<div className="w-100 mt-2">
@@ -1409,13 +1748,22 @@ const QuickTrade = ({
 													</div>
 													<div className="d-flex align-items-center justify-content-end mb-2">
 														<span className="mr-2 conversion-asset-text">
-															{STRINGS.formatString(
-																STRINGS[
-																	'QUICK_TRADE_COMPONENT.PRICE_PER_FORMAT'
-																],
-																selectedTarget?.toUpperCase(),
-																selectedSource?.toUpperCase()
-															)}
+															{conversionPriceDisplay?.base &&
+															conversionPriceDisplay?.quote
+																? STRINGS.formatString(
+																		STRINGS[
+																			'QUICK_TRADE_COMPONENT.PRICE_PER_FORMAT'
+																		],
+																		conversionPriceDisplay.base.toUpperCase(),
+																		conversionPriceDisplay.quote.toUpperCase()
+																  )
+																: STRINGS.formatString(
+																		STRINGS[
+																			'QUICK_TRADE_COMPONENT.PRICE_PER_FORMAT'
+																		],
+																		selectedTarget?.toUpperCase(),
+																		selectedSource?.toUpperCase()
+																  )}
 														</span>
 														<Input
 															type="number"
@@ -1487,6 +1835,20 @@ const QuickTrade = ({
 						</div>
 					</div>
 				</div>
+				{!preview && isLoggedIn() && (
+					<ActiveOTCLimitOrders
+						orders={orderHistory}
+						coins={coins}
+						onCancelOrder={handleCancelOrder}
+						onCancelAllOrders={handleCancelAllOrders}
+						selectedSource={selectedSource}
+						selectedTarget={selectedTarget}
+						quicktradePairs={quicktradePairs}
+						isLoadingOrders={isLoadingOrders}
+						ordersContainerRef={ordersContainerRef}
+						normalizePair={normalizePair}
+					/>
+				)}
 			</div>
 			<Dialog
 				isOpen={showModal}
@@ -1523,6 +1885,7 @@ const QuickTrade = ({
 							calculatedInvertedPrice={calculatedInvertedPrice}
 							limitOrderPriceDisplay={limitOrderPriceDisplay}
 							isLimitOrderWithPrice={isLimitOrderWithPrice}
+							conversionPriceDisplay={conversionPriceDisplay}
 						/>
 					) : (
 						<QuoteResult
@@ -1548,6 +1911,8 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setTransactionPair: bindActionCreators(setTransactionPair, dispatch),
+	cancelOrder: bindActionCreators(cancelOrder, dispatch),
+	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
 });
 
 const mapStateToProps = (store) => {
@@ -1568,6 +1933,7 @@ const mapStateToProps = (store) => {
 		chain_trade_config: store.app.constants.chain_trade_config,
 		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
 		transactionPair: store.app.transactionPair,
+		wsPriceData: store.asset.wsPriceData,
 	};
 };
 

@@ -33,8 +33,16 @@
 			"title": "${currency} برداشت مردود شد"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br />آدرس: ${address}<br /><span id='network'>شبکه: ${network}</span><br /><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br /><div id='address'>آدرس: ${address}<br /></div><div id='network'>شبکه: ${network}<br /></div><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} برداشت درخواست"
+		},
+		"STAKE_CREATED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>درخواست استیکینگ شما ایجاد شد.</p><p>استیکینگ: ${stake_name}<br />مبلغ: ${amount} ${currency}<br />ارز پاداش: ${reward_currency}<br />وضعیت: ${status}<br /><span id='duration'>مدت: ${duration} روز<br /></span><span id='start_date'>تاریخ شروع: ${start_date}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "ایجاد استیکینگ"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p>  کاربر عزیز${name} </p><p>استیکینگ شما تسویه و بسته شد.</p><p>استیکینگ: ${stake_name}<br />وضعیت: ${status}<br />بازگشتی: ${amount_returned} ${currency}<br /><span id='reward_amount'>پاداش: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>تاریخ پایان: ${end_date}<br /></span></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"title": "تسویه استیکینگ"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",
@@ -85,19 +93,19 @@
 			"title": "کد تأیید تغییر گذرواژه"
 		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> کاربر عزیز${name} </p><p> شما یک واریز جدید به مبلغ ${amount} ${currency} دارید که در حال انتظار برای واریز به کیف پول ${api_name} می باشد. لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید. تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.` </p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"html": "<div><div><p> کاربر عزیز${name} </p><p> شما یک واریز جدید به مبلغ ${amount} ${currency} دارید که در حال انتظار برای واریز به کیف پول ${api_name} می باشد. لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید. تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.` </p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br /><div id='address'>آدرس: ${address}<br /></div>شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}<br /></div>کارمزد: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} واریز pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}</div><br />کارمزد: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br /><div id='address'>آدرس: ${address}<br /></div>شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}<br /></div>کارمزد: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} واریز completed"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> کاربر عزیز${name} </p><p>شما درخواست برداشت به مبلغ ${amount} ${currency}.و به آدرس ${address} ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.</p><p>مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> با تشکر<br> ${api_name} تیم </p></div>",
+			"html": "<div><p> کاربر عزیز${name} </p><p>شما درخواست برداشت به مبلغ ${amount} ${currency}.و به آدرس ${address} ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.</p><p>مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br /><div id='address'>آدرس: ${address}<br /></div>شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> با تشکر<br> ${api_name} تیم </p></div>",
 			"title": "${currency} برداشت request"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> کاربر عزیز${name} </p><p>درخواست برداشت شما به مبلغ ${amount} ${currency} درحال انجام و ارسال به آدرس ${address} می باشد.<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><p> کاربر عزیز${name} </p><p>درخواست برداشت شما به مبلغ ${amount} ${currency} درحال انجام و ارسال به آدرس ${address} می باشد.<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br /><div id='address'>آدرس: ${address}<br /></div>شماره پیگیری تراکنش: ${transaction_id}<br /><div id='network'>شبکه: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} برداشت completed"
 		},
 		"DOC_REJECTED": {
@@ -189,7 +197,7 @@
 			"html": "<div><p>${name} عزیز،</p><p>یک تلاش ورود جدید از دستگاه یا مکان جدید به حساب شما مشاهده شده است. لطفاً اگر این ورود توسط شما بوده است، از کد زیر برای تأیید آن استفاده کنید. در غیر این صورت، بلافاصله برای حفاظت از حساب خود اقدام کنید.</p><p><strong>جزئیات ورود:</strong><br />آدرس IP: ${ip}<br />مکان: ${location}<br />دستگاه: ${device}<br />زمان: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>اگر این ورود <strong>توسط شما نبوده است</strong>، توصیه می‌کنیم <a href=\"${freeze_account_link}\">حساب خود را فورا مسدود کنید</a> تا از دسترسی غیرمجاز جلوگیری شود.</p><p>با احترام،<br />تیم ${api_name}</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>کاربر محترم ${name}</p><p>شما درخواست برداشت ${amount} ${currency} به آدرس ${address} داده‌اید.<br /><br />مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${fee_coin}<br />آدرس: ${address}<br /><span id=\"network\">شبکه: ${network}</span><br /><br />برای تأیید این برداشت، لطفاً از کد تأیید زیر استفاده کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد برای مدت محدودی معتبر است و باید برای ادامه وارد شود.</p><p>اگر شما این درخواست را ثبت نکرده‌اید، لطفاً <a href=\"${freeze_account_link}\">حساب خود را مسدود کنید</a> و بلافاصله گزارش دهید.</p><p>درخواست از: ${ip}</p><p>با احترام<br>تیم ${api_name}</p></div>",
+			"html": "<div><p>کاربر محترم ${name}</p><p>شما درخواست برداشت ${amount} ${currency} به آدرس ${address} داده‌اید.<br /><br />مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${fee_coin}<br /><div id='address'>آدرس: ${address}<br /></div><div id='network'>شبکه: ${network}<br /></div><br />برای تأیید این برداشت، لطفاً از کد تأیید زیر استفاده کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد برای مدت محدودی معتبر است و باید برای ادامه وارد شود.</p><p>اگر شما این درخواست را ثبت نکرده‌اید، لطفاً <a href=\"${freeze_account_link}\">حساب خود را مسدود کنید</a> و بلافاصله گزارش دهید.</p><p>درخواست از: ${ip}</p><p>با احترام<br>تیم ${api_name}</p></div>",
 			"title": "درخواست برداشت ${currency}"
 		},
 		"RESET_PASSWORD_CODE": {

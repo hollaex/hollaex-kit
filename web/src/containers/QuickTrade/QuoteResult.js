@@ -80,8 +80,8 @@ const QuoteResult = ({
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(
 						STRINGS['QUOTE_SUCCESS_REVIEW_MESSAGE'],
-						STRINGS[`SIDES_VERBS.${data.side}`],
-						formatToCurrency(data.size, pairData.increment_size),
+						STRINGS[`SIDES_VERBS.${data?.side}`],
+						formatToCurrency(data?.size, pairData?.increment_size),
 						display_name
 					)}
 				</div>

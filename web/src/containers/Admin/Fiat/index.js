@@ -148,6 +148,7 @@ const Fiatmarkets = ({
 								coins={coins[0]}
 								isUpgrade={isUpgrade}
 								onramp={onrampData}
+								setOnRamp={setOnRamp}
 								user_payments={user_payments}
 								paymentsMethodsData={userPaymentsData}
 								setConfig={setConfig}

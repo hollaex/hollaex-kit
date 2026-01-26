@@ -9,6 +9,7 @@ import { formatDate } from 'utils';
 import { CloseOutlined } from '@ant-design/icons';
 import SessionFilters from './SessionFilters';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+import './SessionFilters.scss';
 
 const SessionTable = () => {
 	const [userData, setUserData] = useState([]);
@@ -224,7 +225,7 @@ const SessionTable = () => {
 	};
 
 	return (
-		<div>
+		<div className="admin-session-table">
 			<div style={{ color: '#ccc' }}>
 				Below are details of currently active user sessions. Revoking a session
 				will log the user out from their account.

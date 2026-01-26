@@ -12,8 +12,10 @@ const renderItem = (unbanUser, bannedUsers) => (user_id) => {
 			]}
 		>
 			<List.Item.Meta
-				title={`USER ID: ${user_id}`}
-				description={`USERNAME: ${bannedUsers[user_id]}`}
+				title={<span className="text-white">USER ID: {user_id}</span>}
+				description={
+					<span className="text-white">USERNAME: {bannedUsers[user_id]}</span>
+				}
 			/>
 		</List.Item>
 	);

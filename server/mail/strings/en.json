@@ -29,19 +29,19 @@
 			"title": "${currency} Deposit rejected"
 		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> Dear ${name} </p><p> You have a new deposit for ${amount} ${currency} pending in your ${api_name} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br />Fee: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><div><p> Dear ${name} </p><p> You have a new deposit for ${amount} ${currency} pending in your ${api_name} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br /><div id='address'>Address: ${address}<br /></div>Transaction ID: ${transaction_id}<br /><div id='network'>Network: ${network}<br /></div>Fee: ${fee} ${fee_coin}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} Deposit pending"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> Dear ${name} </p><p> Your ${currency} deposit for ${amount} ${currency} is confirmed and completed and it is available in your ${currency} wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br /><div id=\"address\">Address: ${address}</div><br />Transaction ID: ${transaction_id}<br /><div id=\"network\">Network: ${network}</div><br />Fee: ${fee} ${fee_coin}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><div><p> Dear ${name} </p><p> Your ${currency} deposit for ${amount} ${currency} is confirmed and completed and it is available in your ${currency} wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br /><div id='address'>Address: ${address}<br /></div>Transaction ID: ${transaction_id}<br /><div id='network'>Network: ${network}<br /></div>Fee: ${fee} ${fee_coin}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} Deposit completed"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> Dear ${name} </p><p>You made a withdrawal request for ${amount} ${currency}. Your withdrawal status is pending and will be processed shortly.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><p> Dear ${name} </p><p>You made a withdrawal request for ${amount} ${currency}. Your withdrawal status is pending and will be processed shortly.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br /><div id='address'>Address: ${address}<br /></div>Transaction ID: ${transaction_id}<br /><div id='network'>Network: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} withdrawal pending"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> Dear ${name} </p><p>Your withdrawal request for ${amount} ${currency} is processed.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><p> Dear ${name} </p><p>Your withdrawal request for ${amount} ${currency} is processed.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br /><div id='address'>Address: ${address}<br /></div>Transaction ID: ${transaction_id}<br /><div id='network'>Network: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} withdrawal completed"
 		},
 		"WITHDRAWAL_CANCEL": {
@@ -49,8 +49,16 @@
 			"title": "${currency} Withdrawal rejected"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p> Dear ${name} </p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}<br /><br />Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Address: ${address}<br /><span id=\"network\">Network: ${network}</span><br /><br />In order to confirm this withdrawal, please click the button below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+			"html": "<div><p> Dear ${name} </p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}<br /><br />Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br /><div id='address'>Address: ${address}<br /></div><div id='network'>Network: ${network}<br /></div><br />In order to confirm this withdrawal, please click the button below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
 			"title": "${currency} Withdrawal Request"
+		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking request has been created.</p><p>Stake: ${stake_name}<br />Amount: ${amount} ${currency}<br />Reward currency: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duration: ${duration} days<br /></span><span id='start_date'>Start date: ${start_date}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Created"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Your staking has been settled and closed.</p><p>Stake: ${stake_name}<br />Status: ${status}<br />Returned: ${amount_returned} ${currency}<br /><span id='reward_amount'>Reward: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>End date: ${end_date}<br /></span></p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Staking Settled"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>User Verification Required</h3><div>User \"${email}\" uploaded his documents for verification. Please verify his documents.</div></div>",
@@ -189,7 +197,7 @@
 			"html": "<div><p>Dear ${name},</p><p>We noticed a recent login attempt on your account from a new device or location. Please use the code below to confirm this login if it was you. If not, take immediate action to protect your account.</p><p><strong>Login Details:</strong><br />IP Address: ${ip}<br />Location: ${location}<br />Device: ${device}<br />Time: ${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>If this was <strong>not you</strong>, we recommend <a href=\"${freeze_account_link}\">freezing your account</a> immediately to prevent unauthorized access.</p><p>Regards,<br />${api_name} Team</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>Dear ${name}</p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}.<br /><br />Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Address: ${address}<br /><span id=\"network\">Network: ${network}</span><br /><br />To confirm this withdrawal, please use the verification code below.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>This code is valid for a limited time and must be entered to proceed.</p><p>If you did not make this request, please <a href=\"${freeze_account_link}\">freeze your account</a> and report this immediately.</p><p>Request initiated from: ${ip}</p><p>Regards<br />${api_name} team</p></div>",
+			"html": "<div><p>Dear ${name}</p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}.<br /><br />Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br /><div id='address'>Address: ${address}<br /></div><div id='network'>Network: ${network}<br /></div><br />To confirm this withdrawal, please use the verification code below.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>This code is valid for a limited time and must be entered to proceed.</p><p>If you did not make this request, please <a href=\"${freeze_account_link}\">freeze your account</a> and report this immediately.</p><p>Request initiated from: ${ip}</p><p>Regards<br />${api_name} team</p></div>",
 			"title": "${currency} Withdrawal Request"
 		},
 		"RESET_PASSWORD_CODE": {

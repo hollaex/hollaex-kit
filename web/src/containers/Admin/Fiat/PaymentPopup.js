@@ -232,7 +232,7 @@ const PaymentAccountPopup = ({
 	const handleNext = () => {
 		updatePlugin(plugin);
 		handleClosePlugin(false);
-		formUpdate('plugin', plugin);
+		formUpdate('plugin', plugin, false, null, 'add');
 	};
 
 	const handleOpenPayment = () => {

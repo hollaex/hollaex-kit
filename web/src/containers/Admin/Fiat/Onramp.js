@@ -21,6 +21,8 @@ const Onramp = ({
 	getUpdatedKitData = () => {},
 	isLoading = false,
 	setIsLoading = () => {},
+	setOnRamp = () => {},
+	setConfig = () => {},
 }) => {
 	const [coins, setCoins] = useState([]);
 	const [type, setType] = useState('');
@@ -61,7 +63,7 @@ const Onramp = ({
 				(item) => item.symbol === selectedAsset
 			);
 			coins = [...coins, ...selectedAssetData];
-			setCoins(coins);
+			// setCoins(coins);
 			let value = {};
 			selectedAssetData.forEach((d) => {
 				if (d.symbol === selectedAsset) {
@@ -93,7 +95,9 @@ const Onramp = ({
 							color: item?.meta?.color,
 							fullname: item?.fullname,
 						},
-					];
+					]?.filter(
+						({ symbol }) => !Object.keys(onramp || {})?.includes(symbol)
+					);
 				}
 			});
 		setFiatCoins(filteredFiatCoins);
@@ -139,7 +143,42 @@ const Onramp = ({
 		}
 	};
 
+	const handleAddPlugin = (type, plugin) => {
+		let pluginData = {};
+		if (type === 'plugin') {
+			pluginData = {
+				...onramp,
+				[selectedAsset]: {
+					...onramp[selectedAsset],
+					[plugin]: {
+						data: plugin,
+						type: 'plugin',
+					},
+				},
+			};
+		} else {
+			pluginData = {
+				...onramp,
+				[selectedAsset]: {
+					...onramp[selectedAsset],
+					[plugin]: {
+						data: [],
+						type: 'manual',
+					},
+				},
+			};
+		}
+		setOnRamp(pluginData);
+	};
+
 	const formUpdate = (val, plugin, isCustomPay, curIndex, currentType = '') => {
+		if (currentType === 'add') {
+			handleAddPlugin(val, plugin);
+		}
+		let selectedAssetData = allCoins;
+		selectedAssetData = selectedAssetData?.filter(
+			(item) => item?.symbol === selectedAsset
+		);
 		setOnrampIndex(
 			onramp && onramp[coinSymbol]
 				? Object.keys(onramp[coinSymbol]).length + 1
@@ -149,6 +188,7 @@ const Onramp = ({
 		setFormType(val);
 		setCustomName(plugin);
 		if (currentType && currentType === 'add') {
+			setCoins([...coins, ...selectedAssetData]);
 			setIsProceed(true);
 		}
 		if (currentType) setCurrentType(currentType);
@@ -209,7 +249,9 @@ const Onramp = ({
 			coinData.push(item);
 		}
 	});
-
+	coinData = coinData?.filter(({ symbol }) =>
+		Object.keys(onramp || {})?.includes(symbol)
+	);
 	return (
 		<div className="ramp-wrapper">
 			<Spin spinning={isLoading || !allCoins.length} size="large">
@@ -254,7 +296,7 @@ const Onramp = ({
 									handleRamp(
 										'onramp',
 										true,
-										selectedCoin?.symbol,
+										fiatCoins?.[0]?.symbol,
 										null,
 										null,
 										true
@@ -401,6 +443,7 @@ const Onramp = ({
 													isUpgrade={isUpgrade}
 													originalonramp={onramp}
 													pluginName={pluginName}
+													selectedAsset={selectedAsset}
 													currentsymbol={item?.symbol}
 													isPaymentForm={formType === 'plugin' && customName}
 													setCoindata={setCoindata}
@@ -420,7 +463,9 @@ const Onramp = ({
 													}
 													currentOnrampType={currentType}
 													OnsetCurrentType={setCurrentType}
-													isProceed={isProceed}
+													isProceed={
+														isProceed && selectedAsset === item?.symbol
+													}
 													setIsProceed={setIsProceed}
 													isModalVisible={isVisible}
 													isLoading={isLoading}
@@ -429,6 +474,9 @@ const Onramp = ({
 													isDisable={isDisable}
 													onrampIndex={onrampIndex}
 													setOnrampIndex={setOnrampIndex}
+													setOnRamp={setOnRamp}
+													setCoins={setCoins}
+													setConfig={setConfig}
 												/>
 											</div>
 										) : null}

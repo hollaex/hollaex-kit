@@ -33,8 +33,16 @@
 			"title": "${currency} 提款 拒绝"
 		},
 		"WITHDRAWAL_REQUEST": {
-			"html": "<div><p> ${name} </p><p>你已提出${currency}提款申请，金额为${amount}至${address}。<br /><br />金额: ${amount}<br />手续费: ${fee} ${currency}<br />地址: ${address}<br /><span id='network'>网络: ${network}</span><br /><br />为完成此次提款申请，请点击下方按钮。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认</Button></a></div><p>如果该请求是错误的，请忽略，并且你的账号不会有任何改变</p><p>提出申请的出处: ${ip}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><p> ${name} </p><p>你已提出${currency}提款申请，金额为${amount}至${address}。<br /><br />金额: ${amount}<br />手续费: ${fee} ${currency}<br /><div id='address'>地址: ${address}<br /></div><div id='network'>网络: ${network}<br /></div><br />为完成此次提款申请，请点击下方按钮。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认</Button></a></div><p>如果该请求是错误的，请忽略，并且你的账号不会有任何改变</p><p>提出申请的出处: ${ip}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 提款 申请"
+		},
+		"STAKE_CREATED": {
+			"html": "<div><p> ${name} </p><p>您的质押请求已创建。</p><p>质押: ${stake_name}<br />金额: ${amount} ${currency}<br />奖励币种: ${reward_currency}<br />状态: ${status}<br /><span id='duration'>期限: ${duration} 天<br /></span><span id='start_date'>开始日期: ${start_date}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已创建"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> ${name} </p><p>您的质押已结算并关闭。</p><p>质押: ${stake_name}<br />状态: ${status}<br />返还: ${amount_returned} ${currency}<br /><span id='reward_amount'>奖励: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已结算"
 		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>需要用戶驗證</h3><div> 用戶'${email}'上傳了他的文件以供驗證。 請核實他的文件。</div></div>",
@@ -81,19 +89,19 @@
 			"title": "密码修改验证码"
 		},
 		"DEPOSIT_PENDING": {
-			"html": "<div><div><p> ${name} </p><p> 你的${api_name}钱包中有一笔${amount} ${currency}的新存款正在等待处理，待交易被确认后，资金才会进入到你的钱包中，该交易需要在区块链上进行${confirmation}确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br />手续费: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><div><p> ${name} </p><p> 你的${api_name}钱包中有一笔${amount} ${currency}的新存款正在等待处理，待交易被确认后，资金才会进入到你的钱包中，该交易需要在区块链上进行${confirmation}确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br /><div id='address'>地址: ${address}<br /></div>交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}<br /></div>手续费: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 存款待處理"
 		},
 		"DEPOSIT_COMPLETED": {
-			"html": "<div><div><p> ${name}  </p><p> 你的${amount} ${currency}存款已完成。你的${currency}可在钱包中进行确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}</div><br />手续费: ${fee} ${currency}<br /><ul><div id=\"explorers\">${explorers}</div></ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><div><p> ${name}  </p><p> 你的${amount} ${currency}存款已完成。你的${currency}可在钱包中进行确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br /><div id='address'>地址: ${address}<br /></div>交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}<br /></div>手续费: ${fee} ${currency}<br /><ul><div id='explorers'>${explorers}</div></ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 存款完成"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> ${name} </p><p>你向该地址${address}申请了${amount} ${currency}的提款请求，该提款地址正在等待处理并会很快得到处理。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br /><ul>${explorers}</ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><p> ${name} </p><p>你向该地址${address}申请了${amount} ${currency}的提款请求，该提款地址正在等待处理并会很快得到处理。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br /><div id='address'>地址: ${address}<br /></div>交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 提款待處理"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> ${name} </p><p>你的${amount} ${currency}已向该地址${address}提款完毕。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br /><ul>${explorers}</ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"html": "<div><p> ${name} </p><p>你的${amount} ${currency}已向该地址${address}提款完毕。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br /><div id='address'>地址: ${address}<br /></div>交易 ID: ${transaction_id}<br /><div id='network'>网络: ${network}<br /></div><ul><div id='explorers'>${explorers}</div></ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 提款完成"
 		},
 		"DOC_REJECTED": {
@@ -185,7 +193,7 @@
 			"html": "<div><p>亲爱的 ${name}，</p><p>我们注意到有一项从新设备或位置发起的登录尝试。若为您本人操作，请使用以下验证码确认登录。如非您本人操作，请立即采取措施保护您的账户安全。</p><p><strong>登录详情：</strong><br />IP地址：${ip}<br />位置：${location}<br />设备：${device}<br />时间：${time}</p><div style=\"margin: 20px 0; padding: 10px; border: 1px dashed #333333; text-align: center; border-radius: 6px;\"><span style=\"font-size: 20px; letter-spacing: 2px; font-weight: bold; color: #333333;\">${confirmation_code}</span></div><p>如果<strong>不是您本人</strong>，我们建议您立即<a href=\"${freeze_account_link}\">冻结账户</a>以防止未经授权的访问。</p><p>此致敬礼，<br />${api_name} 团队</p></div>"
 		},
 		"WITHDRAWAL_REQUEST_CODE": {
-			"html": "<div><p>尊敬的 ${name}</p><p>您已请求将 ${amount} ${currency} 提取至地址 ${address}。<br /><br />金额：${amount} ${currency}<br />手续费：${fee} ${fee_coin}<br />地址：${address}<br /><span id=\"network\">网络：${network}</span><br /><br />要确认此次提现，请使用下面的验证码。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>此验证码有效期有限，必须输入才能继续操作。</p><p>如果您并未发起此请求，请立即<a href=\"${freeze_account_link}\">冻结账户</a>并立刻报告。</p><p>请求发起自：${ip}</p><p>此致<br />${api_name} 团队</p></div>",
+			"html": "<div><p>尊敬的 ${name}</p><p>您已请求将 ${amount} ${currency} 提取至地址 ${address}。<br /><br />金额：${amount} ${currency}<br />手续费：${fee} ${fee_coin}<br /><div id='address'>地址：${address}<br /></div><div id='network'>网络：${network}<br /></div><br />要确认此次提现，请使用下面的验证码。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>此验证码有效期有限，必须输入才能继续操作。</p><p>如果您并未发起此请求，请立即<a href=\"${freeze_account_link}\">冻结账户</a>并立刻报告。</p><p>请求发起自：${ip}</p><p>此致<br />${api_name} 团队</p></div>",
 			"title": "${currency} 提现请求"
 		},
 		"RESET_PASSWORD_CODE": {

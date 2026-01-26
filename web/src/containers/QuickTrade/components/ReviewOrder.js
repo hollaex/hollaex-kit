@@ -27,9 +27,39 @@ const ReviewOrder = ({
 	calculatedInvertedPrice,
 	limitOrderPriceDisplay,
 	isLimitOrderWithPrice,
+	conversionPriceDisplay,
 }) => {
 	const showTimer = time && expiry;
 
+	const getDisplayPrice = () => {
+		if (limitOrderPriceDisplay && parseFloat(limitOrderPriceDisplay) > 0) {
+			const userPrice = parseFloat(limitOrderPriceDisplay);
+			if (conversionPriceDisplay?.base && conversionPriceDisplay?.quote) {
+				return {
+					base: conversionPriceDisplay?.base,
+					quote: conversionPriceDisplay?.quote,
+					price: userPrice,
+				};
+			}
+		}
+		if (
+			conversionPriceDisplay?.base &&
+			conversionPriceDisplay?.quote &&
+			conversionPriceDisplay?.price
+		) {
+			return conversionPriceDisplay;
+		}
+		if (invertedPrice && selectedSource && selectedTarget) {
+			return {
+				base: selectedTarget,
+				quote: selectedSource,
+				price: invertedPrice,
+			};
+		}
+		return null;
+	};
+
+	const displayPrice = getDisplayPrice();
 	const invertedPrice =
 		limitOrderPriceDisplay && parseFloat(limitOrderPriceDisplay) > 0
 			? parseFloat(limitOrderPriceDisplay)
@@ -176,47 +206,54 @@ const ReviewOrder = ({
 							amount={targetAmount}
 							decimalPoint={targetDecimalPoint}
 						/>
-						{isQuickTradeLimitOrder && invertedPrice && (
+						{isQuickTradeLimitOrder && displayPrice && (
 							<div className="d-flex flex-column align-items-end">
 								<div className="quote_content mb-3 secondary-text">
 									(
 									{STRINGS.formatString(
 										STRINGS['QUICK_TRADE_COMPONENT.CONVERSION_ASSET_PRICE'],
-										selectedTarget?.toUpperCase(),
+										displayPrice?.base?.toUpperCase(),
 										formatToCurrency(
-											invertedPrice,
+											displayPrice?.price,
 											0,
-											invertedPrice < 1 && countDecimals(invertedPrice) > 8
+											displayPrice?.price < 1 &&
+												countDecimals(displayPrice?.price) > 8
 										),
-										selectedSource?.toUpperCase()
+										displayPrice?.quote?.toUpperCase()
 									)}
 									)
 								</div>
-								{sourceAmount && invertedPrice && targetAmount && (
+								{sourceAmount && displayPrice?.price && targetAmount && (
 									<div className="quote_content review-block-wrapper w-100 text-right pt-3 important-text">
-										{STRINGS['QUICK_TRADE_COMPONENT.CONVERSION_TEXT']}:{' '}
-										{formatToCurrency(
-											sourceAmount,
-											0,
-											sourceAmount < 1 && countDecimals(sourceAmount) > 8
-										)}
-										{selectedSource?.toUpperCase()} /{' '}
-										{formatToCurrency(
-											invertedPrice,
-											0,
-											invertedPrice < 1 && countDecimals(invertedPrice) > 8
-										)}
-										{selectedTarget?.toUpperCase()} ={' '}
 										<span className="bold">
+											{STRINGS['QUICK_TRADE_COMPONENT.CONVERSION_TEXT']}
+										</span>
+										:{' '}
+										<div>
 											{formatToCurrency(
-												targetAmount,
-												0,
-												targetAmount < 1 && countDecimals(targetAmount) > 8
+												sourceAmount,
+												sourceDecimalPoint,
+												sourceAmount < 1 && countDecimals(sourceAmount) > 8
 											)}{' '}
-										</span>
-										<span className="bold">
-											{selectedTarget?.toUpperCase()}
-										</span>
+											{displayPrice?.quote?.toUpperCase()} /{' '}
+											{formatToCurrency(
+												displayPrice?.price,
+												0,
+												displayPrice?.price < 1 &&
+													countDecimals(displayPrice?.price) > 8
+											)}{' '}
+											{displayPrice?.quote?.toUpperCase()} ={' '}
+											<span className="bold">
+												{formatToCurrency(
+													targetAmount,
+													targetDecimalPoint,
+													targetAmount < 1 && countDecimals(targetAmount) > 8
+												)}{' '}
+											</span>
+											<span className="bold">
+												{displayPrice?.base?.toUpperCase()}
+											</span>
+										</div>
 									</div>
 								)}
 							</div>

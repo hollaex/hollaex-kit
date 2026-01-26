@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Spin, Switch, message, Button } from 'antd';
+import { debounce } from 'lodash';
 import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
@@ -12,6 +13,7 @@ import './index.css';
 import '../Trades/index.css';
 import '../../Admin/General/index.css';
 import { handleUpgrade } from 'utils/utils';
+import { isIntentionalClosure, NORMAL_CLOSURE_CODE } from 'utils/webSocket';
 
 const TabPane = Tabs.TabPane;
 
@@ -25,6 +27,10 @@ class Chat extends Component {
 		isActive: false,
 	};
 
+	debouncedReconnect = debounce(() => {
+		this.connectToChat(getToken());
+	}, 1000);
+
 	componentDidMount() {
 		this.connectToChat(getToken());
 		if (this.props.constants.features) {
@@ -33,6 +39,7 @@ class Chat extends Component {
 	}
 
 	componentWillUnmount() {
+		this.debouncedReconnect.cancel();
 		this.disconnectFromChat();
 	}
 
@@ -119,6 +126,15 @@ class Chat extends Component {
 
 		chatWs.onerror = (evt) => {
 			console.error('chat socket error', evt);
+		};
+
+		chatWs.onclose = (evt) => {
+			console.info('Chat socket closed');
+			this.setState({ ready: false });
+
+			if (!isIntentionalClosure(evt)) {
+				this.debouncedReconnect();
+			}
 		};
 
 		// const chatWs = io(`${WS_URL}/chat`, {
@@ -233,10 +249,10 @@ class Chat extends Component {
 	disconnectFromChat = () => {
 		const { chatWs, ready } = this.state;
 		if (chatWs) {
-			if (ready) {
+			if (ready && chatWs.readyState === WebSocket.OPEN) {
 				chatWs.send(JSON.stringify({ op: 'unsubscribe', args: ['chat'] }));
 			}
-			chatWs.close();
+			chatWs.close(NORMAL_CLOSURE_CODE);
 		}
 		this.wsInterval && clearInterval(this.wsInterval);
 	};

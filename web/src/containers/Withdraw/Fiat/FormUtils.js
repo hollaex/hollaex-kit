@@ -36,17 +36,42 @@ export const generateFormValues = (
 ) => {
 	const { fullname, min, increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
 
-	let MAX = mathjs.divide(withdrawal_limit, prices[symbol]);
-	if (withdrawal_limit === 0) MAX = '';
-	if (withdrawal_limit === -1) MAX = 0;
+	// `prices[symbol]` can be undefined on first load while oracle prices are still fetching.
+	// Avoid crashing the withdraw page; skip MAX validation until we have a usable price.
+	const currentPrice = prices ? prices[symbol] : undefined;
+	let MAX = '';
+	if (withdrawal_limit === -1) {
+		MAX = 0;
+	} else if (withdrawal_limit === 0) {
+		MAX = '';
+	} else if (
+		currentPrice !== undefined &&
+		currentPrice !== null &&
+		`${currentPrice}` !== '0'
+	) {
+		MAX = mathjs.divide(withdrawal_limit, currentPrice);
+	}
 
 	const fields = {};
 
 	if (banks) {
 		const banksOptions = banks.map((bankData) => {
 			const { id, ...rest } = bankData;
-			const { bank_name, name, account_number, account, email } = { ...rest };
-			const defaultLabel = Object.entries(rest)[0][1];
+			const {
+				bank_name,
+				name,
+				account_number,
+				account,
+				email,
+				phone_number,
+			} = { ...rest };
+			const defaultLabel = (Object.entries(rest).find(
+				([key, value]) =>
+					!HIDDEN_KEYS.includes(key) &&
+					value !== undefined &&
+					value !== null &&
+					`${value}`.length
+			) || [])[1];
 			return {
 				value: id,
 				label:
@@ -54,6 +79,7 @@ export const generateFormValues = (
 					account_number ||
 					account ||
 					email ||
+					phone_number ||
 					name ||
 					defaultLabel,
 			};

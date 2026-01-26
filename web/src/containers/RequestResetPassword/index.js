@@ -6,8 +6,12 @@ import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 
 import { SubmissionError, change } from 'redux-form';
+import { requiredWithCustomMessage } from 'components/Form/validations';
 import { requestResetPassword } from 'actions/authAction';
-import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
+import ResetPasswordForm, {
+	generateFormFields,
+	FORM_NAME,
+} from './ResetPasswordForm';
 import { IconTitle, Dialog, MobileBarBack } from 'components';
 import { ContactForm } from 'containers';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
@@ -15,6 +19,7 @@ import STRINGS from 'config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
+import CloudflareTurnstile from 'components/CloudflareTurnstile';
 
 let errorTimeOut = null;
 
@@ -52,6 +57,13 @@ class RequestResetPassword extends Component {
 	}
 
 	onSubmitRequestResetPassword = (values) => {
+		const turnstileSiteKey = this.props.constants?.cloudflare_turnstile
+			?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+		if (turnstileEnabled && !values?.captcha) {
+			throw new SubmissionError({ _error: STRINGS['INVALID_CAPTCHA'] });
+		}
+
 		return requestResetPassword(values)
 			.then((res) => {
 				this.setState({ success: true });
@@ -89,8 +101,29 @@ class RequestResetPassword extends Component {
 	};
 
 	render() {
-		const { languageClasses, icons: ICONS, openContactForm } = this.props;
-		const { success, showContactForm, formFields } = this.state;
+		const {
+			languageClasses,
+			icons: ICONS,
+			openContactForm,
+			activeTheme,
+			constants = {},
+		} = this.props;
+		const { success, showContactForm } = this.state;
+
+		const turnstileSiteKey = constants?.cloudflare_turnstile?.site_key;
+		const turnstileEnabled = !!turnstileSiteKey && turnstileSiteKey !== 'null';
+
+		const formFields = {
+			...generateFormFields(activeTheme),
+			...(turnstileEnabled
+				? {
+						captcha: {
+							type: 'hidden',
+							validate: [requiredWithCustomMessage(STRINGS['INVALID_CAPTCHA'])],
+						},
+				  }
+				: {}),
+		};
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -140,6 +173,17 @@ class RequestResetPassword extends Component {
 							<ResetPasswordForm
 								onSubmit={this.onSubmitRequestResetPassword}
 								formFields={formFields}
+								extraContent={
+									turnstileEnabled ? (
+										<CloudflareTurnstile
+											siteKey={turnstileSiteKey}
+											theme={activeTheme}
+											onToken={(token) =>
+												this.props.change(FORM_NAME, 'captcha', token)
+											}
+										/>
+									) : null
+								}
 							/>
 							{isMobile && <BottomLink />}
 						</div>

@@ -97,6 +97,7 @@ exports.LEVEL_UPGRADE_NOT_ELIGIBLE = 'You are not eligible for level upgrade.';
 exports.SERVICE_NOT_AVAILABLE = 'Service not available';
 
 exports.INVALID_CAPTCHA = 'Invalid captcha';
+exports.RESET_PASSWORD_REQUEST_SENT_IF_USER_EXISTS = 'Reset password request is sent if the user exists.';
 exports.INVALID_USERNAME =
 	'Invalid username. Username must be 3-15 characters length and only contains lowercase charaters, numbers or underscore';
 exports.USERNAME_CANNOT_BE_CHANGED = 'Username can not be changed';
@@ -266,6 +267,7 @@ exports.EMAIL_EXISTS = 'This email already exists';
 exports.CANNOT_CHANGE_DELETED_EMAIL = 'Cannot change deleted email';
 exports.FAILED_GET_QUOTE = 'Failed to get the quote';
 exports.WITHDRAWAL_DISABLED = 'Withdrawal disabled for this user';
+exports.WITHDRAWAL_OTP_REQUIRED = 'Two-factor authentication (OTP) must be enabled to withdraw';
 exports.FEATURE_NOT_ACTIVE = 'This feature is not active on the exchange';
 exports.ADDRESSBOOK_MISSING_FIELDS = 'Each address must contain both address, network, currency and label fields';
 exports.ADDRESSBOOK_ALREADY_EXISTS = 'Address label already exists in the payload';
@@ -276,3 +278,4 @@ exports.P2P_DEAL_NOT_FOUND = 'P2P Deal not found!';
 exports.INVALID_NUMBER = 'Value is not a number';
 exports.INVALID_AUTOTRADE_CONFIG = 'This pair does not exist';
 exports.SUBACCOUNT_CANNOT_GENERATE_ADDRESS = 'Subaccounts cannot generate deposit addresses';
+exports.WITHDRAWAL_LIMIT_ERROR = 'You have reached your withdrawal limit for your tier';

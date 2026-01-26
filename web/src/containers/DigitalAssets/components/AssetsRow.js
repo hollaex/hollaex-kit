@@ -10,7 +10,7 @@ import { MiniSparkLine } from 'containers/TradeTabs/components/MiniSparkLine';
 import { getLastValuesFromParts } from 'utils/array';
 import { unique } from 'utils/data';
 import { Loading } from './utils';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import { formatByLastPrice } from 'utils/currency';
 
 const AssetsRow = ({
 	coinData,
@@ -21,6 +21,7 @@ const AssetsRow = ({
 	icons,
 	coins,
 	selectedButton,
+	wsPriceData = {},
 }) => {
 	const {
 		icon_id,
@@ -31,10 +32,10 @@ const AssetsRow = ({
 		priceDifferencePercent,
 		oneDayPriceDifference,
 		oneDayPriceDifferencePercent,
-		lastPrice,
 		key,
-		increment_unit,
 	} = coinData;
+
+	const wsPrice = wsPriceData[symbol] ? wsPriceData[symbol] : null;
 
 	const getAllAvailableMarkets = (key) => {
 		if (quicktrade?.length) {
@@ -96,7 +97,6 @@ const AssetsRow = ({
 	};
 
 	const markets = getAllAvailableMarkets(symbol);
-	const roundPrice = lastPrice?.split(',')?.join('');
 
 	return (
 		<tr id={`market-list-row-${key}`} className="table-row table-bottom-border">
@@ -137,15 +137,10 @@ const AssetsRow = ({
 						<div>
 							<div className="d-flex justify-content-end">
 								<span className="title-font last-price-label">
-									{lastPrice && '$'}
+									{wsPrice && '$'}
 								</span>
 								<span className="title-font last-price-label">
-									{lastPrice
-										? formatCurrencyByIncrementalUnit(
-												roundPrice,
-												increment_unit
-										  )
-										: '-'}
+									{wsPrice ? formatByLastPrice(wsPrice) : '-'}
 								</span>
 							</div>
 							{(oneDayPriceDifferencePercent && oneDayPriceDifference) ||
@@ -227,12 +222,10 @@ const AssetsRow = ({
 					{!loading ? (
 						<div className="d-flex justify-content-end">
 							<span className="title-font last-price-label">
-								{lastPrice && '$'}
+								{wsPrice && '$'}
 							</span>
 							<span className="title-font last-price-label">
-								{lastPrice
-									? formatCurrencyByIncrementalUnit(roundPrice, increment_unit)
-									: '-'}
+								{wsPrice ? formatByLastPrice(wsPrice) : '-'}
 							</span>
 						</div>
 					) : (
@@ -357,6 +350,7 @@ const AssetsRow = ({
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 export default connect(mapStateToProps)(AssetsRow);

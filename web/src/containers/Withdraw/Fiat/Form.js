@@ -230,8 +230,9 @@ const mapStateToProps = (state, ownProps) => ({
 	activeLanguage: state.app.language,
 	activeTheme: state.app.theme,
 	constants: state.app.constants,
+	ultimate_fiat: state.app.features.ultimate_fiat,
 	banks: withdrawalOptionsSelector(state, ownProps),
-	prices: state.asset.oraclePrices,
+	prices: state.asset.wsPriceData,
 	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
 });
 

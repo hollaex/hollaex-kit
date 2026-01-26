@@ -87,9 +87,61 @@ const checkIp = async (remoteip = '') => {
 	return;
 };
 
-const checkCaptcha = (captcha = '', remoteip = '') => {
-	// Google Recaptcha is deprecated feature from v2.10.3.
-	return;
+const checkCaptcha = (captcha = '', remoteip = '', headers = {}) => {
+	// Backward-compatible bypass for legacy mobile clients:
+	// if they send the custom header `custom-device`, skip captcha verification.
+	// Note: Node lower-cases incoming header keys.
+	try {
+		const headerObj = headers?.headers ? headers.headers : headers;
+		if (headerObj && headerObj['custom-device']) {
+			loggerAuth.info('helpers/auth/checkCaptcha skipped due to custom-device header', remoteip);
+			return;
+		}
+	} catch (err) {
+		loggerAuth.error('helpers/auth/checkCaptcha cutom-header catch ALERT', err.message);
+	}
+
+	// Cloudflare Turnstile verification (server-side).
+	const turnstileSecret = getKitSecrets()?.cloudflare_turnstile?.secret_key;
+	const turnstileSiteKey = getKitConfig()?.cloudflare_turnstile?.site_key;
+
+	if (!turnstileSiteKey || !turnstileSecret) {
+		loggerAuth.error('helpers/auth/checkCaptcha turnstile not set so skipped', remoteip);
+		return;
+	}
+
+	if (!captcha || typeof captcha !== 'string') {
+		loggerAuth.error('helpers/auth/checkCaptcha turnstile not found', captcha,remoteip);
+		throw new Error(INVALID_CAPTCHA);
+	}
+
+	return rp({
+		method: 'POST',
+		uri: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+		form: {
+			secret: turnstileSecret,
+			response: captcha,
+			...(remoteip ? { remoteip } : {})
+		},
+		json: true,
+		timeout: 10000
+	})
+		.then((result) => {
+			if (!result || result.success !== true) {
+				loggerAuth.error(
+					'helpers/auth/checkCaptcha turnstile failed',
+					remoteip,
+					result?.['error-codes'] || result
+				);
+				throw new Error(INVALID_CAPTCHA);
+			}
+			loggerAuth.info('helpers/auth/checkCaptcha turnstile success', remoteip);
+			return;
+		})
+		.catch((err) => {
+			loggerAuth.error('helpers/auth/checkCaptcha turnstile error', remoteip, err?.message);
+			throw new Error(INVALID_CAPTCHA);
+		});
 };
 
 const validatePassword = (userPassword, inputPassword) => {
@@ -303,7 +355,7 @@ const createResetPasswordCode = (userId, version) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
+const sendResetPasswordCode = (email, captcha, ip, domain, version, headers = {}) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -313,7 +365,11 @@ const sendResetPasswordCode = (email, captcha, ip, domain, version) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([createResetPasswordCode(user.id, version), user, checkCaptcha(captcha, ip)]);
+			return all([
+				createResetPasswordCode(user.id, version),
+				user,
+				checkCaptcha(captcha, ip, headers)
+			]);
 		})
 		.then(([code, user]) => {
 			// Create a freeze-account token (valid for 6 hours) tied to the reset code
@@ -889,7 +945,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 				} else if (!permissions.every((permission) => token[permission] === true)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
-						apiKey
+						apiKey,
+						permissions,
+						token
 					);
 					throw new Error(API_KEY_NOT_PERMITTED);
 				} else {
@@ -903,7 +961,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
-							scopes: [token.role]
+							scopes: [token.role],
+							is_subaccount: token?.user?.is_subaccount === true
 						};
 					}
 				}
@@ -1293,7 +1352,7 @@ const findTokenByApiKey = (apiKey) => {
 						{
 							model: getModel('user'),
 							as: 'user',
-							attributes: ['id', 'email', 'network_id']
+							attributes: ['id', 'email', 'network_id', 'is_subaccount']
 						}
 					]
 				});
