@@ -1,4 +1,5 @@
 import querystring from 'query-string';
+import { message } from 'antd';
 import { requestAuthenticated } from '../../../utils';
 import axios from 'axios';
 const handleError = (err) => err.data;
@@ -34,5 +35,14 @@ export const requestTradesDownload = (values) => {
 			document.body.appendChild(link);
 			link.click();
 		})
-		.catch(handleError);
+		.catch((err) => {
+			const error =
+				err?.response &&
+				err?.response?.data &&
+				err?.response?.data &&
+				err?.response?.data?.message
+					? err?.response?.data?.message
+					: err?.message;
+			message.error(error);
+		});
 };

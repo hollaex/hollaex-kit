@@ -256,6 +256,7 @@ class MarketSelector extends Component {
 							}
 							showCross
 							isFocus={true}
+							autoComplete="off"
 						/>
 						{coinsData?.length > 0 && (
 							<div

@@ -997,7 +997,7 @@ const OtcDeskContainer = ({
 					/>
 				</div>
 			</div> */}
-			{pairs.length && (
+			{pairs?.length ? (
 				<Otcdeskpopup
 					previewData={previewData}
 					type={type}
@@ -1036,7 +1036,7 @@ const OtcDeskContainer = ({
 					editData={editData}
 					setEditData={setEditData}
 				/>
-			)}
+			) : null}
 		</div>
 	);
 };
