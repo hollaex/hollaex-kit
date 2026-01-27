@@ -446,11 +446,6 @@ class AppWrapper extends React.Component {
 			});
 	};
 
-	isSocketDataReady = () => {
-		const { pairs } = this.props;
-		return Object.keys(pairs).length;
-	};
-
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -770,7 +765,7 @@ class AppWrapper extends React.Component {
 							<Layout>
 								<Content style={{ marginLeft: 50, marginTop: 0 }}>
 									<div className="content-wrapper admin-content-wrapper">
-										{appLoaded && this.isSocketDataReady() ? (
+										{appLoaded ? (
 											children
 										) : (
 											<Spin size="large" className="m-top" />
@@ -876,7 +871,7 @@ class AppWrapper extends React.Component {
 							<Content>
 								<div className="admin-content-head">{this.getTitle()}</div>
 								<div className="content-wrapper admin-content-wrapper">
-									{appLoaded && this.isSocketDataReady() ? (
+									{appLoaded ? (
 										React.cloneElement(children, {
 											isConfigure: isConfigure,
 											showConfigure: this.showConfigure,
