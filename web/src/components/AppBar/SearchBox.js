@@ -24,6 +24,7 @@ class SearchBox extends React.Component {
 			name,
 			showCross = false,
 			isFocus,
+			autoComplete,
 		} = this.props;
 		const searchField = {
 			search: {
@@ -38,6 +39,7 @@ class SearchBox extends React.Component {
 				placeholder: placeHolder,
 				onChange: handleSearch,
 				showCross: showCross,
+				autoComplete: autoComplete,
 				onCrossClick: (e) => {
 					handleSearch('');
 					this.props.dispatch(reset(FORM_NAME));
