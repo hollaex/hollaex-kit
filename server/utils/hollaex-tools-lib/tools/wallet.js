@@ -1313,18 +1313,22 @@ const getWallets = async (
 		...opts
 	})
 		.then(async (wallets) => {
-			if (wallets.data.length > 0) {
-				const networkIds = wallets.data.map((wallet) => wallet.user_id);
+			const walletData = Array.isArray(wallets?.data) ? wallets.data : [];
+			if (walletData.length > 0) {
+				const networkIds = walletData.map((wallet) => wallet.user_id);
 				const idDictionary = await mapNetworkIdToKitId(networkIds);
-				for (let wallet of wallets.data) {
+				for (let wallet of walletData) {
 					const user_kit_id = idDictionary[wallet.user_id];
 					wallet.network_id = wallet.user_id;
 					wallet.user_id = user_kit_id;
 					if (wallet.User) wallet.User.id = user_kit_id;
 				}
 			}
-			if(format === 'csv'){
-				const csv = parse(wallets.data, Object.keys(wallets.data[0]));
+			if (format === 'csv') {
+				if (walletData.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(walletData, Object.keys(walletData[0]));
 				return csv;
 			}
 			return wallets;
