@@ -27,6 +27,7 @@ import { FORM_NAME } from './form';
 import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
 import { IconTitle } from 'hollaex-web-lib';
+import STRINGS from 'config/localizedStrings';
 
 class Withdraw extends Component {
 	state = {
@@ -221,8 +222,14 @@ class Withdraw extends Component {
 			address,
 			amount: math.eval(values.amount),
 			currency: currentCurrency,
-			method: selectedWithdrawMethod === 'Email' ? 'email' : 'address',
-			network: selectedWithdrawMethod === 'Email' ? 'email' : network,
+			method:
+				selectedWithdrawMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+					? 'email'
+					: 'address',
+			network:
+				selectedWithdrawMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+					? 'email'
+					: network,
 		};
 
 		delete paramData.fee_type;
