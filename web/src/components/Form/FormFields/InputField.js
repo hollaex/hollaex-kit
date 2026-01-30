@@ -30,6 +30,7 @@ const InputField = (props) => {
 		showCross,
 		ishorizontalfield,
 		isFocus,
+		autoComplete = 'on',
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
@@ -44,6 +45,7 @@ const InputField = (props) => {
 						error: displayError,
 					})}
 					type={type}
+					autoComplete={autoComplete}
 					{...input}
 					{...rest}
 					onFocus={(e) => {

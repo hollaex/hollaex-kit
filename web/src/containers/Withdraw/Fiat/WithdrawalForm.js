@@ -329,12 +329,14 @@ class Index extends Component {
 								className="flex-direction-column"
 							/>
 							<div className="text-align-center py-4">
-								<EditWrapper stringId="NO_VERIFIED_BANK_DESC">
-									{STRINGS.formatString(
-										STRINGS['NO_VERIFIED_BANK_DESC'],
-										coins[currency].fullname
-									)}
-								</EditWrapper>
+								{currency && coins[currency] && (
+									<EditWrapper stringId="NO_VERIFIED_BANK_DESC">
+										{STRINGS.formatString(
+											STRINGS['NO_VERIFIED_BANK_DESC'],
+											coins[currency]?.fullname
+										)}
+									</EditWrapper>
+								)}
 							</div>
 						</Fragment>
 					)}

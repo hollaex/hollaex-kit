@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 import { formatCurrency } from '../../../utils/index';
 import { requestActiveOrders, requestCancelOrders } from './action';
+import { requestTradesDownload } from '../TradeHistory/actions';
 
 const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
@@ -149,20 +150,29 @@ class PairsSection extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		const { open, pair } = this.props;
-		if (pair !== prevProps.pair || open !== prevProps.open) {
+		const { open, pair, filterDates = {} } = this.props;
+		if (
+			pair !== prevProps.pair ||
+			open !== prevProps.open ||
+			JSON.stringify(filterDates) !== JSON.stringify(prevProps?.filterDates)
+		) {
 			this.handleTrades();
 		}
 	}
 
 	handleTrades = (page = 1, limit = this.state.limit) => {
-		const { pair, userId, open } = this.props;
+		const { pair, userId, open, filterDates } = this.props;
 		requestActiveOrders({
 			user_id: userId,
 			symbol: pair || null,
 			page,
 			limit,
 			open,
+			...(filterDates?.start_date &&
+				filterDates?.end_date && {
+					start_date: encodeURIComponent(filterDates?.start_date),
+					end_date: encodeURIComponent(filterDates?.end_date),
+				}),
 		})
 			.then((res) => {
 				if (res) {
@@ -242,6 +252,19 @@ class PairsSection extends Component {
 		}
 	};
 
+	onHandleTradeDownload = () => {
+		const { pair, baseCoin, quoteCoin, filterDates } = this.props;
+		requestTradesDownload({
+			format: 'csv',
+			...(baseCoin && quoteCoin ? { symbol: pair } : {}),
+			...(filterDates?.start_date &&
+				filterDates?.end_date && {
+					start_date: filterDates?.start_date,
+					end_date: filterDates?.end_date,
+				}),
+		});
+	};
+
 	render() {
 		const { buyOrders, buyCurrentTablePage } = this.state;
 
@@ -256,6 +279,14 @@ class PairsSection extends Component {
 							<Spin size="large" />
 						) : (
 							<Col>
+								<div>
+									<span
+										className="pointer"
+										onClick={() => this.onHandleTradeDownload()}
+									>
+										Download table
+									</span>
+								</div>
 								<Table
 									className="blue-admin-table"
 									columns={COLUMNS}
