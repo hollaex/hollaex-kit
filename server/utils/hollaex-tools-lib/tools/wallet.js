@@ -1079,6 +1079,7 @@ const mintAssetByKitId = async (
 	amount,
 	opts = {
 		description: null,
+		network: null,
 		transactionId: null,
 		status: null,
 		email: null,
@@ -1108,6 +1109,7 @@ const mintAssetByNetworkId = (
 	amount,
 	opts = {
 		description: null,
+		network: null,
 		transactionId: null,
 		status: null,
 		email: null,
@@ -1147,6 +1149,7 @@ const burnAssetByKitId = async (
 	amount,
 	opts = {
 		description: null,
+		network: null,
 		transactionId: null,
 		status: null,
 		email: null,
@@ -1176,6 +1179,7 @@ const burnAssetByNetworkId = (
 	amount,
 	opts = {
 		description: null,
+		network: null,
 		transactionId: null,
 		status: null,
 		email: null,
