@@ -271,7 +271,7 @@ const RenderWithdraw = ({
 		if (defaultCurrency) {
 			if (
 				selectedCurrency &&
-				(selectedMethod === 'Email' ||
+				(selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ||
 					networkOption <= 1 ||
 					selectedAsset?.networkData)
 			) {
@@ -869,7 +869,9 @@ const RenderWithdraw = ({
 									placeholder={STRINGS['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
 									onChange={onHandleChangeMethod}
 									value={
-										selectedMethod === 'Address'
+										selectedMethod ===
+											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+										(selectedMethod && selectedMethod === 'Address')
 											? STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']
 											: selectedMethod
 									}
