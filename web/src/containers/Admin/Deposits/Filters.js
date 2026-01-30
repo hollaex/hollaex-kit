@@ -17,9 +17,11 @@ const getFilters = (coinOptions) => [
 		placeholder: 'Status',
 		key: 'status',
 		className: 'adjacent-fields pl-2',
+		emptyLabel: 'All',
 		options: [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' },
+			{ value: 'onhold', text: 'On Hold' },
 			{ value: 'dismissed', text: 'Dismissed' },
 			{ value: 'rejected', text: 'Rejected' },
 		],
@@ -28,6 +30,20 @@ const getFilters = (coinOptions) => [
 
 const getStatusValue = (key, params) => {
 	if (
+		key === 'status' &&
+		params.onhold === undefined &&
+		params.dismissed === undefined &&
+		params.rejected === undefined &&
+		params[key] === undefined
+	) {
+		return '';
+	} else if (
+		key === 'status' &&
+		params.onhold !== undefined &&
+		params[key] === undefined
+	) {
+		return 'onhold';
+	} else if (
 		key === 'status' &&
 		params.dismissed !== undefined &&
 		params[key] === undefined
@@ -58,7 +74,8 @@ export const Filters = ({
 		coinOptions.push({ value: data, text: data.toUpperCase() });
 	});
 	const fieldProps = getFilters(coinOptions);
-	const allowQuery = !loading && hasChanges && Object.keys(params).length > 0;
+	const allowQuery =
+		!loading && (hasChanges || Object.keys(params).length === 0);
 	return (
 		<div>
 			<Alert
@@ -67,7 +84,7 @@ export const Filters = ({
 				showIcon
 				className="filter-alert"
 			/>
-			{Object.keys(params).length === 0 && (
+			{Object.keys(params).length === 0 && !allowQuery && (
 				<Alert
 					message="You have to select at least one filter to perform a query"
 					type="warning"

@@ -94,23 +94,20 @@ class Deposits extends Component {
 		page = 1,
 		limit = 50
 	) => {
-		if (Object.keys(queryParams).length === 0) {
-			return this.setState({
-				loading: false,
-				fetched: false,
-				queryParams: {},
-			});
-		}
+		const requestParams =
+			Object.keys(queryParams).length > 0
+				? queryParams
+				: { type: this.props.type || 'deposit' };
 
 		this.setState({
 			loading: true,
 			error: '',
 			queryDone: JSON.stringify(queryParams),
-			queryType: queryParams.type,
+			queryType: requestParams.type,
 		});
 		requestDeposits({
 			...values,
-			...queryParams,
+			...requestParams,
 			page,
 			limit,
 		})
@@ -200,6 +197,8 @@ class Deposits extends Component {
 			const queryParams = { ...this.props.queryParams };
 			delete queryParams.dismissed;
 			delete queryParams.status;
+			delete queryParams.rejected;
+			delete queryParams.onhold;
 			this.setState({ searchValue: value.trim(), queryParams: values });
 			this.requestDeposits(values, queryParams);
 		}
@@ -229,26 +228,37 @@ class Deposits extends Component {
 					case 'dismissed':
 						delete queryParams[key];
 						delete queryParams.rejected;
+						delete queryParams.onhold;
 						queryParams.dismissed = true;
 						break;
 					case 'rejected':
 						delete queryParams[key];
 						delete queryParams.dismissed;
+						delete queryParams.onhold;
 						queryParams.rejected = true;
+						break;
+					case 'onhold':
+						delete queryParams[key];
+						delete queryParams.dismissed;
+						delete queryParams.rejected;
+						queryParams.onhold = true;
 						break;
 					case 'false':
 						queryParams.dismissed = false;
 						queryParams.rejected = false;
+						delete queryParams.onhold;
 						queryParams[key] = value;
 						break;
 					case 'true':
 						delete queryParams.dismissed;
 						delete queryParams.rejected;
+						delete queryParams.onhold;
 						queryParams[key] = value;
 						break;
 					default:
 						delete queryParams.rejected;
 						delete queryParams.dismissed;
+						delete queryParams.onhold;
 						delete queryParams[key];
 						break;
 				}
@@ -258,6 +268,8 @@ class Deposits extends Component {
 		} else {
 			if (key === 'status') {
 				delete queryParams.dismissed;
+				delete queryParams.rejected;
+				delete queryParams.onhold;
 			}
 			delete queryParams[key];
 		}
