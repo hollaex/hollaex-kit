@@ -36,6 +36,14 @@
 			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Sie haben einen ${currency} Auszahlungsantrag von ${amount} an die Adresse ${address} gemacht<br /><br />Betrag: ${amount}<br />Gebühr: ${fee} ${currency}<br /><div id='address'>Adresse: ${address}<br /></div><div id='network'>Netzwerk: ${network}<br /></div><br />Um diese Auszahlung zu bestätigen, klicken Sie bitte auf die Taste unten.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Bestätigen</Button></a></div><p>Wenn diese Anfrage fälschlicherweise gestellt wurde, können Sie sie getrost ignorieren; es werden keine Änderungen an Ihrem Konto vorgenommen.</p><p>Anfrage initiiert von: ${ip}</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
 			"title": "${currency} Abbuchung Anfrage"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihre Staking-Anfrage wurde erstellt.</p><p>Staking: ${stake_name}<br />Betrag: ${amount} ${currency}<br />Belohnungswährung: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Dauer: ${duration} Tage<br /></span><span id='start_date'>Startdatum: ${start_date}<br /></span><span id='end_date'>Enddatum: ${end_date}<br /></span></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Staking erstellt"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Sehr geehrte/r ${name} </p><p>Ihr Staking wurde abgerechnet und geschlossen.</p><p>Staking: ${stake_name}<br />Status: ${status}<br />Rückzahlung: ${amount_returned} ${currency}<br /><span id='reward_amount'>Belohnung: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Enddatum: ${end_date}<br /></span></p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Staking abgerechnet"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Benutzerverifizierung erforderlich</h3><div>Der Benutzer '${email}' hat seine Dokumente zur Überprüfung hochgeladen. Bitte verifizieren Sie seine Dokumente.</div></div>",
 			"title": "Benutzerverifizierung"

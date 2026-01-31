@@ -11,6 +11,7 @@ export const SelectValue = ({
 	options,
 	description,
 	className,
+	emptyLabel = '-----',
 }) => (
 	<div className={classname('filter-select-wrapper', className)}>
 		<div className="filter-select-label">{label}</div>
@@ -22,7 +23,7 @@ export const SelectValue = ({
 				placeholder={label}
 			>
 				<Option value="" key="">
-					-----
+					{emptyLabel}
 				</Option>
 				{options.map(({ value, text }) => (
 					<Option value={value} key={value}>

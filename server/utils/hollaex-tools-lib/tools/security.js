@@ -961,7 +961,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						checkPermission({ swagger: { apiPath: originalUrl }, method }, token);
 						return {
 							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
-							scopes: [token.role]
+							scopes: [token.role],
+							is_subaccount: token?.user?.is_subaccount === true
 						};
 					}
 				}
@@ -1351,7 +1352,7 @@ const findTokenByApiKey = (apiKey) => {
 						{
 							model: getModel('user'),
 							as: 'user',
-							attributes: ['id', 'email', 'network_id']
+							attributes: ['id', 'email', 'network_id', 'is_subaccount']
 						}
 					]
 				});

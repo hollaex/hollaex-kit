@@ -4,12 +4,23 @@ import axios from 'axios';
 const handleError = (err) => err.data;
 
 export const requestActiveOrders = (values = {}) => {
-	const { open, user_id, symbol = '', side, page = 1, limit = 50 } = values;
+	const {
+		open,
+		user_id,
+		symbol = '',
+		side,
+		page = 1,
+		limit = 50,
+		start_date = '',
+		end_date = '',
+	} = values;
 	let query = `page=${page}&limit=${limit}`;
 	if (user_id) query = `${query}&user_id=${user_id}`;
 	if (symbol) query = `${query}&symbol=${symbol}`;
 	if (side) query = `${query}&side=${side}`;
 	query = `${query}&open=${open}`;
+	if (start_date) query = `${query}&start_date=${start_date}`;
+	if (end_date) query = `${query}&end_date=${end_date}`;
 
 	return requestAuthenticated(`/admin/trades?${query}`)
 		.catch(handleError)

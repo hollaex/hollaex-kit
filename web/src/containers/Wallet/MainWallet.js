@@ -67,7 +67,7 @@ class Wallet extends Component {
 			this.props.coins,
 			this.props.pairs,
 			this.props.totalAsset,
-			this.props.oraclePrices,
+			this.props.wsPriceData,
 			this.props.constants,
 			this.props.contracts,
 			this.props.isFetching,
@@ -91,7 +91,7 @@ class Wallet extends Component {
 			nextProps.coins,
 			nextProps.pairs,
 			nextProps.totalAsset,
-			nextProps.oraclePrices,
+			nextProps.wsPriceData,
 			nextProps.constants,
 			nextProps.contracts,
 			nextProps.isFetching,
@@ -123,7 +123,7 @@ class Wallet extends Component {
 				this.props.coins,
 				this.props.pairs,
 				this.props.totalAsset,
-				this.props.oraclePrices,
+				this.props.wsPriceData,
 				this.props.constants,
 				this.props.contracts,
 				this.props.isFetching,
@@ -157,11 +157,11 @@ class Wallet extends Component {
 		this.props.setActiveBalanceHistory(false);
 	};
 
-	getMobileSlider = (coins, oraclePrices) => {
+	getMobileSlider = (coins, wsPriceData) => {
 		const result = {};
 		Object.keys(coins).map((key) => {
 			const temp = coins[key];
-			return (result[key] = { ...temp, oraclePrice: oraclePrices[key] });
+			return (result[key] = { ...temp, wsPrice: wsPriceData[key] });
 		});
 		return { ...result };
 	};
@@ -199,7 +199,7 @@ class Wallet extends Component {
 		coins,
 		pairs,
 		total,
-		oraclePrices,
+		wsPriceData,
 		{ features: { stake_page = false, cefi_stake = false } = {} } = {},
 		contracts = {},
 		isFetching,
@@ -278,7 +278,7 @@ class Wallet extends Component {
 						prices={prices}
 						navigate={this.goToPage}
 						coins={coins}
-						searchResult={this.getMobileSlider(coins, oraclePrices)}
+						searchResult={this.getMobileSlider(coins, wsPriceData)}
 						router={this.props.router}
 						totalAssets={totalAssets}
 						loading={isFetching}
@@ -443,7 +443,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,
-	oraclePrices: store.asset.oraclePrices,
+	wsPriceData: store.asset.wsPriceData,
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	assets: assetsSelector(store),

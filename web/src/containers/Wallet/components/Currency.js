@@ -12,17 +12,17 @@ const Currency = ({ currency, balance, coins, searchResult }) => {
 		.sort(([key_a], [key_b]) => {
 			const price_a = calculateOraclePrice(
 				balance[`${key_a}_balance`],
-				searchResult[key_a].oraclePrice
+				searchResult[key_a]?.wsPrice
 			);
 			const price_b = calculateOraclePrice(
 				balance[`${key_b}_balance`],
-				searchResult[key_b].oraclePrice
+				searchResult[key_b]?.wsPrice
 			);
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 	return (
 		<div className="d-flex justify-content-center align-items-center wallet-currency f-1">
-			{sortedSearchResults.map(([key, { min, oraclePrice }]) => {
+			{sortedSearchResults.map(([key, { min, wsPrice }]) => {
 				const balanceValue = balance[`${key}_balance`];
 				const { display_name } = coins[key] || DEFAULT_COIN_DATA;
 				const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -30,7 +30,7 @@ const Currency = ({ currency, balance, coins, searchResult }) => {
 					key === BASE_CURRENCY
 						? formatToCurrency(balanceValue, min)
 						: formatToCurrency(
-								calculateOraclePrice(balanceValue, oraclePrice),
+								calculateOraclePrice(balanceValue, wsPrice),
 								baseCoin.min
 						  );
 				if (key === currency) {

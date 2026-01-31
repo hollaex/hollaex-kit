@@ -29,7 +29,6 @@ import {
 	withdrawNetwork,
 	withdrawNetworkOptions,
 } from 'actions/appActions';
-import { getPrices } from 'actions/assetActions';
 import {
 	calculateFee,
 	calculateFeeCoin,
@@ -58,6 +57,7 @@ const RenderWithdraw = ({
 	onHandleScan,
 	selectedNetwork,
 	optionalTag,
+	wsPriceData,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -240,7 +240,7 @@ const RenderWithdraw = ({
 		// ) {
 		// 	setIsWarning(true);
 		// }
-		getOraclePrices();
+		getSocketPrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 
 		return () => {
@@ -271,7 +271,7 @@ const RenderWithdraw = ({
 		if (defaultCurrency) {
 			if (
 				selectedCurrency &&
-				(selectedMethod === 'Email' ||
+				(selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ||
 					networkOption <= 1 ||
 					selectedAsset?.networkData)
 			) {
@@ -322,10 +322,9 @@ const RenderWithdraw = ({
 		isValidUserEmail,
 	]);
 
-	const getOraclePrices = async () => {
+	const getSocketPrices = async () => {
 		try {
-			const prices = await getPrices({ coins });
-			setPrices(prices);
+			setPrices(wsPriceData);
 		} catch (error) {
 			console.error(error);
 		}
@@ -870,7 +869,9 @@ const RenderWithdraw = ({
 									placeholder={STRINGS['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
 									onChange={onHandleChangeMethod}
 									value={
-										selectedMethod === 'Address'
+										selectedMethod ===
+											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+										(selectedMethod && selectedMethod === 'Address')
 											? STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']
 											: selectedMethod
 									}
@@ -1674,6 +1675,7 @@ const mapStateToForm = (state) => ({
 	receiverWithdrawalEmail: state.app.receiverWithdrawalEmail,
 	optionalTag: state.app.withdrawFields.optionalTag,
 	scannedAddress: state.wallet.scannedAddress,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

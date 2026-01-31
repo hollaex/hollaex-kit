@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Button, message, Modal, Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
+import { connect } from 'react-redux';
 
 import { DonutChart, Coin } from '../../../components';
 import { generateCryptoAddress, requestUserBalance } from './actions';
 import { requestUserData } from '../User/actions';
-import { getPrices, generateChartData } from '../../../actions/assetActions';
+import { generateChartData } from '../../../actions/assetActions';
 import { isSupport } from '../../../utils/token';
 import {
 	calculateBalancePrice,
@@ -26,7 +27,7 @@ const INITIAL_STATE = {
 	generateWalletStep: 'step-1',
 	generateAddressParams: {},
 	totalAvaliableAsset: 0,
-	oraclePrices: {},
+	wsPriceData: {},
 };
 
 class UserBalance extends Component {
@@ -46,8 +47,8 @@ class UserBalance extends Component {
 			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins) ||
 			JSON.stringify(prevState.userInformation) !==
 				JSON.stringify(this.state.userInformation) ||
-			JSON.stringify(prevState.oraclePrices) !==
-				JSON.stringify(this.state.oraclePrices)
+			JSON.stringify(prevState.wsPriceData) !==
+				JSON.stringify(this.state?.wsPriceData)
 		) {
 			this.handleChartData();
 			const wallet = this.state.userInformation.wallet || [];
@@ -72,7 +73,7 @@ class UserBalance extends Component {
 					}
 					const balance = this.state.userBalance[`${key}_balance`];
 					const estimated =
-						(balance || 0) * (Number(this.state.oraclePrices?.[key]) || 0);
+						(balance || 0) * (Number(this.state.wsPriceData?.[key]) || 0);
 					return {
 						...value,
 						...addressData,
@@ -190,17 +191,24 @@ class UserBalance extends Component {
 		];
 	};
 
-	handleChartData = async () => {
-		const { coins } = this.props;
+	handleChartData = () => {
+		const { coins, wsPriceData } = this.props;
 		const { userBalance } = this.state;
-		const prices = await getPrices({ coins });
-		const totalAsset = calculateBalancePrice(userBalance, prices, coins);
-		const chartData = generateChartData(userBalance, prices, coins, totalAsset);
-		this.setState({
-			chartData,
-			totalAvaliableAsset: totalAsset,
-			oraclePrices: prices,
-		});
+
+		if (wsPriceData && Object.keys(wsPriceData)?.length > 0) {
+			const totalAsset = calculateBalancePrice(userBalance, wsPriceData, coins);
+			const chartData = generateChartData(
+				userBalance,
+				wsPriceData,
+				coins,
+				totalAsset
+			);
+			this.setState({
+				chartData,
+				totalAvaliableAsset: totalAsset,
+				wsPriceData,
+			});
+		}
 	};
 
 	handleBalance = (userData, isSupportUser) => {
@@ -411,5 +419,7 @@ class UserBalance extends Component {
 		);
 	}
 }
-
-export default UserBalance;
+const mapStateToProps = (state) => ({
+	wsPriceData: state.asset.wsPriceData,
+});
+export default connect(mapStateToProps)(UserBalance);

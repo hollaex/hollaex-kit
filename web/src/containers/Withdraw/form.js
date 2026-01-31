@@ -246,7 +246,7 @@ class Form extends Component {
 				? coins[currentCurrency]?.network
 				: coins[currentCurrency]?.symbol;
 		let values = { ...data };
-		if (selectedMethod === 'Email') {
+		if (selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']) {
 			values = {
 				...data,
 				email: receiverWithdrawalEmail,
@@ -352,19 +352,28 @@ class Form extends Component {
 
 		const formData = {
 			...data,
-			fee: selectedMethod === 'Email' ? 0 : getFee,
+			fee: selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? 0 : getFee,
 			amount: getWithdrawAmount,
 			destination_tag: optionalTag && optionalTag,
 			address:
-				selectedMethod === 'Email'
+				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
 					? ''
 					: // : optionalTag
 					  // ? `${getWithdrawAddress}:${optionalTag}`
 					  getWithdrawAddress,
-			network: selectedMethod === 'Email' ? 'email' : currentNetwork,
+			network:
+				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+					? 'email'
+					: currentNetwork,
 			fee_coin: feeCoin,
-			method: selectedMethod === 'Email' ? 'email' : 'address',
-			email: selectedMethod === 'Email' ? receiverWithdrawalEmail : null,
+			method:
+				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+					? 'email'
+					: 'address',
+			email:
+				selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+					? receiverWithdrawalEmail
+					: null,
 		};
 		const coinObject = coins[getWithdrawCurrency] || coins[currency];
 		const { dialogIsOpen, dialogOtpOpen } = this.state;

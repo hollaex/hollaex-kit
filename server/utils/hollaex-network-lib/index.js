@@ -2499,6 +2499,7 @@ class HollaExNetwork {
 		description: null,
 		transactionId: null,
 		address: null,
+		network: null,
 		status: true,
 		dismissed: false,
 		rejected: false,
@@ -2538,34 +2539,28 @@ class HollaExNetwork {
 			data.address = opts.address;
 		}
 
+		if (isString(opts.network)) {
+			data.network = opts.network;
+		}
+
 		if (isBoolean(opts.status)) {
 			data.status = opts.status;
-		} else {
-			data.status = true;
 		}
 
 		if (isBoolean(opts.rejected)) {
 			data.rejected = opts.rejected;
-		} else {
-			data.rejected = false;
 		}
 
 		if (isBoolean(opts.dismissed)) {
 			data.dismissed = opts.dismissed;
-		} else {
-			data.dismissed = false;
 		}
 
 		if (isBoolean(opts.waiting)) {
 			data.waiting = opts.waiting;
-		} else {
-			data.waiting = false;
 		}
 		
 		if (isBoolean(opts.onhold)) {
 			data.onhold = opts.onhold;
-		} else {
-			data.onhold = false;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -2695,6 +2690,7 @@ class HollaExNetwork {
 	 * @param {number} amount - Amount to burn.
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer.
+     * @param {string} opts.network - Blockchain network for burn.
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
 	 * @param {string} opts.address - Custom address for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
@@ -2705,6 +2701,7 @@ class HollaExNetwork {
 	 */
 	burnAsset(userId, currency, amount, opts = {
 		description: null,
+		network: null,
 		transactionId: null,
 		address: null,
 		status: true,
@@ -2744,6 +2741,10 @@ class HollaExNetwork {
 
 		if (opts.address) {
 			data.address = opts.address;
+		}
+
+		if (opts.network) {
+			data.network = opts.network;
 		}
 
 		if (isBoolean(opts.status)) {

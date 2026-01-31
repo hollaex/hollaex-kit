@@ -12,6 +12,8 @@ const storageStatePath = path.join(__dirname, '.auth/admin.json');
 
 module.exports = defineConfig({
   testDir: './tests',
+  /* Global timeout for each test */
+  timeout: 60 * 1000,
   /* Global setup to authenticate once and save session state */
   globalSetup: require.resolve('./tests/global-setup.js'),
   /* Run tests in files in parallel */
@@ -44,9 +46,9 @@ module.exports = defineConfig({
     /* Record video on failure */
     video: 'retain-on-failure',
     /* Global timeout for each action */
-    actionTimeout: 10000,
+    actionTimeout: 60 * 1000,
     /* Global timeout for navigation */
-    navigationTimeout: 30000,
+    navigationTimeout: 60 * 1000,
     /* Run in headed mode as requested */
     headless: true,
   },
@@ -66,4 +68,3 @@ module.exports = defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-

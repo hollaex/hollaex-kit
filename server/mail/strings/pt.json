@@ -36,6 +36,14 @@
 			"html": "<div><p> Dear ${name} </p><p>Você fez uma solicitação de saque de ${currency} de ${amount} para ${address}<br /><br />Quantia: ${amount}<br />Taxa: ${fee} ${currency}<br /><div id='address'>Endereço: ${address}<br /></div><div id='network'>Rede: ${network}<br /></div><br />Para confirmar este saque, por favor clique no botão abaixo.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmar</Button></a></div><p>Se esta solicitação foi feita por engano, gentileza ignorá-la; nenhuma alteração será feita em sua conta.</p><p>Solicitação iniciada em: ${ip}</p><p> Saudações<br> ${api_name} equipe </p></div>",
 			"title": "${currency} Saque Solicitação"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> Dear ${name} </p><p>Sua solicitação de staking foi criada.</p><p>Staking: ${stake_name}<br />Quantia: ${amount} ${currency}<br />Moeda de recompensa: ${reward_currency}<br />Status: ${status}<br /><span id='duration'>Duração: ${duration} dias<br /></span><span id='start_date'>Data de início: ${start_date}<br /></span><span id='end_date'>Data de término: ${end_date}<br /></span></p><p> Saudações<br> ${api_name} equipe </p></div>",
+			"title": "Staking criado"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> Dear ${name} </p><p>Seu staking foi liquidado e encerrado.</p><p>Staking: ${stake_name}<br />Status: ${status}<br />Devolvido: ${amount_returned} ${currency}<br /><span id='reward_amount'>Recompensa: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>Data de término: ${end_date}<br /></span></p><p> Saudações<br> ${api_name} equipe </p></div>",
+			"title": "Staking liquidado"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>Verificação de usuário necessária</h3><div>O usuário '${email}' fez o upload de seus documentos para verificação. Por favor, verifique-os.</div></div>",
 			"title": "Verificação de usuário"

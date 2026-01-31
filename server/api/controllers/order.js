@@ -228,9 +228,9 @@ const getQuickTrade = (req, res) => {
 		});
 };
 
-const executeHedging = async (symbol, side, size, price) => {
+const executeHedging = async (symbol, side, size, price, tradeId = null) => {
 	await toolsLib.sleep(1000);
-	toolsLib.broker.reverseTransaction({ symbol, side, size, price });
+	toolsLib.broker.reverseTransaction({ symbol, side, size, price, trade_id: tradeId });
 };
 
 const orderExecute = (req, res) => {
@@ -257,8 +257,8 @@ const orderExecute = (req, res) => {
 
 	toolsLib.order.executeUserOrder(user_id, opts, token, req)
 		.then((result) => {
-			const { symbol, side, size, price } = result;
-			executeHedging(symbol, side, size, price);
+			const { symbol, side, size, price, id } = result;
+			executeHedging(symbol, side, size, price, id);
 			return res.json(result);
 		})
 		.catch((err) => {

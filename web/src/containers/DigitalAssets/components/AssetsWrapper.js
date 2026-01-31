@@ -11,11 +11,7 @@ import AssetsCards from './AssetsCards';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
-import {
-	formatPercentage,
-	formatToCurrency,
-	countDecimals,
-} from 'utils/currency';
+import { formatPercentage } from 'utils/currency';
 import { SearchBox } from 'components';
 import { setCoinsData, setIsRefreshAssets } from 'actions/appActions';
 import { quicktradePairSelector } from 'containers/QuickTrade/components/utils';
@@ -60,15 +56,13 @@ class AssetsWrapper extends Component {
 		return index;
 	};
 
-	getPriceDetails = (price) => {
+	getPriceDetails = (price, wsPrice = null) => {
 		const firstPrice = price[0];
-		const lastPrice = price[price.length - 1];
+		const lastPrice = wsPrice ? wsPrice : price[price?.length - 1];
 		const priceDifference = lastPrice - firstPrice;
 		const priceDifferencePercent = formatPercentage(
 			(priceDifference / firstPrice) * 100
 		);
-		const formattedNumber = (val) =>
-			formatToCurrency(val, 0, val < 1 && countDecimals(val) > 8);
 
 		const priceDifferencePercentVal = Number(
 			priceDifferencePercent.replace('%', '')
@@ -78,11 +72,10 @@ class AssetsWrapper extends Component {
 			priceDifference,
 			priceDifferencePercent,
 			priceDifferencePercentVal,
-			lastPrice: formattedNumber(lastPrice),
 		};
 	};
 
-	getPricingData = (chartData) => {
+	getPricingData = (chartData, wsPrice = null) => {
 		const { price = [], time } = chartData || {};
 
 		if (time?.length > 0 && price?.length > 0) {
@@ -90,8 +83,7 @@ class AssetsWrapper extends Component {
 				priceDifference,
 				priceDifferencePercent,
 				priceDifferencePercentVal,
-				lastPrice,
-			} = this.getPriceDetails(price);
+			} = this.getPriceDetails(price, wsPrice);
 
 			const indexOneDay = this.getIndexofOneDay(time);
 			const oneDayChartPrices = price.slice(indexOneDay, price.length);
@@ -100,7 +92,7 @@ class AssetsWrapper extends Component {
 				priceDifference: oneDayPriceDifference,
 				priceDifferencePercent: oneDayPriceDifferencePercent,
 				priceDifferencePercentVal: oneDayPriceDifferencePercenVal,
-			} = this.getPriceDetails(oneDayChartPrices);
+			} = this.getPriceDetails(oneDayChartPrices, wsPrice);
 
 			return {
 				oneDayPriceDifference,
@@ -109,30 +101,66 @@ class AssetsWrapper extends Component {
 				priceDifference,
 				priceDifferencePercent,
 				priceDifferencePercentVal,
-				lastPrice,
 			};
 		}
 		return {};
 	};
 
+	getSortFunctions = () => {
+		const { coins } = this.props;
+		return {
+			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
+				data.sort(
+					(a, b) =>
+						(coins[b?.symbol]?.market_cap || 0) -
+						(coins[a?.symbol]?.market_cap || 0)
+				),
+			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) >= 0
+					)
+					?.sort(
+						(a, b) =>
+							(b?.oneDayPriceDifferencePercenVal || 0) -
+							(a?.oneDayPriceDifferencePercenVal || 0)
+					),
+			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
+				data
+					?.filter(
+						({ oneDayPriceDifferencePercenVal }) =>
+							(oneDayPriceDifferencePercenVal || 0) <= 0
+					)
+					?.sort(
+						(a, b) =>
+							(a?.oneDayPriceDifferencePercenVal || 0) -
+							(b?.oneDayPriceDifferencePercenVal || 0)
+					),
+			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
+				data?.sort((a, b) => new Date(b?.created_at) - new Date(a?.created_at)),
+		};
+	};
+
 	getCoinsData = (coinsList, chartValues) => {
-		const { coins, quicktradePairs, setCoinsData } = this.props;
+		const {
+			coins,
+			quicktradePairs,
+			setCoinsData,
+			wsPriceData = {},
+		} = this.props;
+		const { selectedButton } = this.state;
 		// const topAssets = [];
 		// const remainingAssets = [];
-		const coinsData = coinsList
+		let coinsData = coinsList
 			.map((name) => {
-				const {
-					code,
-					icon_id,
-					symbol,
-					fullname,
-					type,
-					created_at,
-					increment_unit,
-				} = coins[name];
+				const { code, icon_id, symbol, fullname, type, created_at } = coins[
+					name
+				];
 
 				const key = `${code}-usdt`;
-				const pricingData = this.getPricingData(chartValues[key]);
+				const wsPrice = wsPriceData[symbol] || null;
+				const pricingData = this.getPricingData(chartValues[key], wsPrice);
 
 				return {
 					...pricingData,
@@ -143,17 +171,20 @@ class AssetsWrapper extends Component {
 					fullname,
 					type,
 					key,
-					increment_unit,
 					networkType: quicktradePairs[key]?.type,
 					created_at,
 				};
 			})
-			?.filter(({ type }) => type === 'blockchain')
-			?.sort(
-				(a, b) =>
-					(coins[b?.symbol]?.market_cap || 0) -
-					(coins[a?.symbol]?.market_cap || 0)
-			);
+			?.filter(({ type }) => type === 'blockchain');
+
+		const sortFunctions = this.getSortFunctions();
+		const sortKey =
+			selectedButton || STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP'];
+
+		coinsData = sortFunctions[sortKey]
+			? sortFunctions[sortKey](coinsData)
+			: coinsData;
+
 		// pinned_assets.forEach((pin) => {
 		// 	const asset = coinsData.find(({ symbol }) => symbol === pin);
 		// 	if (asset) {
@@ -295,41 +326,9 @@ class AssetsWrapper extends Component {
 
 	handleMarket = (value) => {
 		const { page, searchValue } = this.state;
-		const { coinsData, coins } = this.props;
+		const { coinsData } = this.props;
 
-		const sortFunctions = {
-			[STRINGS['DIGITAL_ASSETS.CARDS.MARKET_CAP']]: (data) =>
-				data.sort(
-					(a, b) =>
-						(coins[b?.symbol]?.market_cap || 0) -
-						(coins[a?.symbol]?.market_cap || 0)
-				),
-			[STRINGS['DIGITAL_ASSETS.CARDS.GAINERS']]: (data) =>
-				data
-					?.filter(
-						({ oneDayPriceDifferencePercenVal }) =>
-							(oneDayPriceDifferencePercenVal || 0) >= 0
-					)
-					?.sort(
-						(a, b) =>
-							(b.oneDayPriceDifferencePercenVal || 0) -
-							(a.oneDayPriceDifferencePercenVal || 0)
-					),
-			[STRINGS['DIGITAL_ASSETS.CARDS.LOSERS']]: (data) =>
-				data
-					?.filter(
-						({ oneDayPriceDifferencePercenVal }) =>
-							(oneDayPriceDifferencePercenVal || 0) <= 0
-					)
-					?.sort(
-						(a, b) =>
-							(a.oneDayPriceDifferencePercenVal || 0) -
-							(b.oneDayPriceDifferencePercenVal || 0)
-					),
-			[STRINGS['DEPOSIT_STATUS.NEW']]: (data) =>
-				data?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
-		};
-
+		const sortFunctions = this.getSortFunctions();
 		const updatedCoinsData = sortFunctions[value]
 			? sortFunctions[value](coinsData)
 			: coinsData;
@@ -559,6 +558,7 @@ const mapStateToProps = (state, props) => ({
 	coinsData: state.app.coinsData,
 	pinned_assets: state.app.pinned_assets,
 	isRefreshAssets: state.app.isRefreshAssets,
+	wsPriceData: state.asset.wsPriceData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

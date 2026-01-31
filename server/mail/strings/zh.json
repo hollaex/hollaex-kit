@@ -36,6 +36,14 @@
 			"html": "<div><p> ${name} </p><p>你已提出${currency}提款申请，金额为${amount}至${address}。<br /><br />金额: ${amount}<br />手续费: ${fee} ${currency}<br /><div id='address'>地址: ${address}<br /></div><div id='network'>网络: ${network}<br /></div><br />为完成此次提款申请，请点击下方按钮。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认</Button></a></div><p>如果该请求是错误的，请忽略，并且你的账号不会有任何改变</p><p>提出申请的出处: ${ip}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
 			"title": "${currency} 提款 申请"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> ${name} </p><p>您的质押请求已创建。</p><p>质押: ${stake_name}<br />金额: ${amount} ${currency}<br />奖励币种: ${reward_currency}<br />状态: ${status}<br /><span id='duration'>期限: ${duration} 天<br /></span><span id='start_date'>开始日期: ${start_date}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已创建"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> ${name} </p><p>您的质押已结算并关闭。</p><p>质押: ${stake_name}<br />状态: ${status}<br />返还: ${amount_returned} ${currency}<br /><span id='reward_amount'>奖励: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>结束日期: ${end_date}<br /></span></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+			"title": "质押已结算"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>需要用戶驗證</h3><div> 用戶'${email}'上傳了他的文件以供驗證。 請核實他的文件。</div></div>",
 			"title": "用户验证"

@@ -2,7 +2,8 @@
 
 const { getModel } = require('./database/model');
 const { SERVER_PATH } = require('../constants');
-const { STAKE_SUPPORTED_PLANS } = require(`${SERVER_PATH}/constants`);
+const { STAKE_SUPPORTED_PLANS, WS_PUBSUB_STAKE_CHANNEL } = require(`${SERVER_PATH}/constants`);
+const { loggerStake } = require('../../../config/logger');
 const { getUserByKitId, createAuditLog } = require('./user');
 const { subscribedToCoin, getKitConfig, getAssetsPrices } = require('./common');
 const { transferAssetByKitIds, getUserBalanceByKitId } = require('./wallet');
@@ -14,6 +15,7 @@ const dbQuery = require('./database/query');
 const moment = require('moment');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
+const { publisher } = require('./database/redis');
 
 const {
 	NO_DATA_FOR_CSV,
@@ -460,6 +462,7 @@ const getExchangeStakers = async (
 		order: null,
 		start_date: null,
 		end_date: null,
+		status: null,
 		format: null
 	}) => {
 
@@ -472,7 +475,8 @@ const getExchangeStakers = async (
 			created_at: timeframe,
 			...(opts.user_id && { user_id: opts.user_id }),
 			...(opts.stake_id && { stake_id: opts.stake_id }),
-			...(opts.currency && { currency: opts.currency })
+			...(opts.currency && { currency: opts.currency }),
+			...(opts.status && { status: opts.status })
 		},
 		order: [ordering],
 		include: [
@@ -559,6 +563,17 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 
 	await transferAssetByKitIds(user_id, stakePool.account_id, stakePool.currency, amount, 'User transfer stake', false, { category: 'stake' });
 
+	loggerStake.info(
+		'hollaex-tools-lib/stake/createExchangeStaker transfer success',
+		'user id',
+		user_id,
+		'stake id',
+		stake_id,
+		'amount',
+		amount,
+		'currency',
+		stakePool.currency
+	);
 
 	try {
 		const stakerData = await getModel('staker').create(staker, {
@@ -575,8 +590,38 @@ const createExchangeStaker = async (stake_id, amount, user_id) => {
 			]
 		});
 
+		publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+			topic: 'stake',
+			action: 'insert',
+			user_id: user.id,
+			user_network_id: user.network_id,
+			data: stakerData.get({ plain: true }),
+			time: moment().unix()
+		}));
+
+		sendEmail(
+			MAILTYPE.STAKE_CREATED,
+			user.email,
+			{
+				stake_name: stakePool.name,
+				amount,
+				currency: stakePool.currency,
+				reward_currency: stakePool.reward_currency || stakePool.currency,
+				status: stakerData.status,
+				duration: stakePool.duration,
+				start_date: stakerData.created_at,
+				end_date: stakerData.closing
+			},
+			user.settings
+		);
+
 		return stakerData;
 	} catch (error) {
+		loggerStake.info(
+			'hollaex-tools-lib/stake/createExchangeStaker error',
+			'error',
+			error.message
+		);
 		const adminAccount = await getUserByKitId(1);
 		sendEmail(
 			MAILTYPE.ALERT,
@@ -639,7 +684,7 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 		slashed: slashedValues.slashingEarning,
 		unstaked_date: new Date()
 	};
-	return staker.update(updatedStaker, {
+	const updatedRecord = await staker.update(updatedStaker, {
 		fields: [
 			'status',
 			'amount',
@@ -648,6 +693,17 @@ const deleteExchangeStaker = async (staker_id, user_id) => {
 			'unstaked_date'
 		]
 	});
+
+	publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+		topic: 'stake',
+		action: 'delete',
+		user_id: user.id,
+		user_network_id: user.network_id,
+		data: updatedRecord.get({ plain: true }),
+		time: moment().unix()
+	}));
+
+	return updatedRecord;
 };
 
 const updateExchangeStaker = async (id, data = {}, auditInfo) => {
@@ -656,6 +712,8 @@ const updateExchangeStaker = async (id, data = {}, auditInfo) => {
 	if (!staker) {
 		throw new Error(STAKER_NOT_EXIST);
 	}
+
+	const user = await getUserByKitId(staker.user_id);
 
 	if (data.nav !== undefined) {
 		const nav = Number(data.nav);
@@ -698,9 +756,22 @@ const updateExchangeStaker = async (id, data = {}, auditInfo) => {
 		return staker;
 	}
 
-	return staker.update(updatedStaker, {
+	const updatedRecord = await staker.update(updatedStaker, {
 		fields
 	});
+
+	if (user) {
+		publisher.publish(WS_PUBSUB_STAKE_CHANNEL, JSON.stringify({
+			topic: 'stake',
+			action: 'update',
+			user_id: user.id,
+			user_network_id: user.network_id,
+			data: updatedRecord.get({ plain: true }),
+			time: moment().unix()
+		}));
+	}
+
+	return updatedRecord;
 };
 
 const unstakeEstimateSlash = async (staker_id) => {

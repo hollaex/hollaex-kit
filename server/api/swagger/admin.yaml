@@ -3785,12 +3785,6 @@ paths:
         - Admin
       parameters:
         - in: query
-          name: id
-          description: Unique identifier for the staker entry.
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: user_id
           description: The ID of the user who has locked funds and staked.
           required: false
@@ -3808,17 +3802,10 @@ paths:
           required: false
           type: string
         - in: query
-          name: reward
-          description: The amount the user has received as rewards.
+          name: status
+          description: Status of the staker entry (e.g. staking, unstaking, closed).
           required: false
-          type: number
-          format: double
-        - in: query
-          name: slashed
-          description: The amount slashed.
-          required: false
-          type: number
-          format: double
+          type: string
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"

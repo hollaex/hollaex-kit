@@ -20,7 +20,6 @@ import {
 	Dialog,
 } from 'components';
 import { openContactForm } from 'actions/appActions';
-import { getPrices as getOraclePrices } from 'actions/assetActions';
 import {
 	calculateOraclePrice,
 	formatCurrencyByIncrementalUnit,
@@ -43,7 +42,7 @@ const DustSection = ({
 	coins,
 	balances,
 	dust: { quote = 'xht' } = { quote: 'xht' },
-	pricesInNative,
+	wsPriceData,
 	openContactForm,
 }) => {
 	const [dustAssets, setDustAssets] = useState([]);
@@ -66,24 +65,14 @@ const DustSection = ({
 
 	const getPrices = useCallback(async () => {
 		try {
-			const response = await Promise.all([
-				getOraclePrices({
-					coins,
-					quote: DUST_DEFINITION.quote,
-				}),
-				getOraclePrices({
-					coins,
-					quote: quote,
-				}),
-			]);
-			setPricesInDustDefinitionQuote(response[0]);
-			setPricesInDustQuote(response[1]);
+			setPricesInDustDefinitionQuote(wsPriceData || {});
+			setPricesInDustQuote(wsPriceData || {});
 			setInitialized(true);
 		} catch (err) {
 			console.error(err);
 			setInitialized(true);
 		}
-	}, [coins, quote]);
+	}, [wsPriceData]);
 
 	const calculateDustAssets = () => {
 		const dust = {};
@@ -119,7 +108,7 @@ const DustSection = ({
 
 	useEffect(() => {
 		getPrices();
-	}, [getPrices, pricesInNative]);
+	}, [getPrices, wsPriceData]);
 
 	useEffect(() => {
 		calculateDustAssets();
@@ -414,7 +403,7 @@ const DustSection = ({
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
-	pricesInNative: state.asset.oraclePrices,
+	wsPriceData: state.asset.wsPriceData,
 	dust: state.app.constants.dust,
 });
 
