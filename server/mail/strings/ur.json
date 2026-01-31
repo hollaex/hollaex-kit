@@ -56,6 +56,14 @@
 			"html": "<div><p> میرےعزیز ${name} </p><p>پ نے کی ہے۔ ${currency} واپسی کی درخواست ${amount} کو ${address}<br /><br />رقم: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br /><div id='address'>پتہ: ${address}<br /></div><div id='network'>نیٹ ورک: ${network}<br /></div><br />اس واپسی کی تصدیق کرنے کے لیے، براہ کرم نیچے دیئے گئے بٹن پر کلک کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !اہم; font-size: 14px; min-width: 11rem;\">تصدیق کریں۔</Button></a></div><p>اگر یہ درخواست غلطی سے کی گئی تھی، تو اسے نظر انداز کرنا محفوظ ہے۔ آپ کے اکاؤنٹ میں کوئی تبدیلی نہیں کی جائے گی۔</p><p>سے درخواست شروع کی گئی۔: ${ip}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
 			"title": "${currency} واپسی کی درخواست"
 		},
+		"STAKE_CREATED": {
+			"html": "<div><p> محترم ${name} </p><p>آپ کی اسٹیکنگ کی درخواست بنائی گئی ہے۔</p><p>اسٹیکنگ: ${stake_name}<br />رقم: ${amount} ${currency}<br />انعامی کرنسی: ${reward_currency}<br />حالت: ${status}<br /><span id='duration'>مدت: ${duration} دن<br /></span><span id='start_date'>شروع کی تاریخ: ${start_date}<br /></span><span id='end_date'>اختتام کی تاریخ: ${end_date}<br /></span></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اسٹیکنگ بنائی گئی"
+		},
+		"STAKE_SETTLED": {
+			"html": "<div><p> محترم ${name} </p><p>آپ کی اسٹیکنگ طے ہو چکی ہے اور بند کر دی گئی ہے۔</p><p>اسٹیکنگ: ${stake_name}<br />حالت: ${status}<br />واپس کی گئی رقم: ${amount_returned} ${currency}<br /><span id='reward_amount'>انعام: ${reward_amount} ${reward_currency}<br /></span><span id='end_date'>اختتام کی تاریخ: ${end_date}<br /></span></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اسٹیکنگ طے ہو گئی"
+		},
 		"USER_VERIFICATION": {
 			"html": "<div><h3>صارف کی تصدیق کی ضرورت ہے۔</h3><div>User \"${email}\" تصدیق کے لیے اپنی دستاویزات اپ لوڈ کیں۔ براہ کرم اس کے دستاویزات کی تصدیق کریں۔</div></div>",
 			"title": "صارف کی تصدیق"

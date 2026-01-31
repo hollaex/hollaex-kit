@@ -34,6 +34,11 @@
 	background-color: var(--admin_panel_table_tbody_hover);
 }
 
+.ant-table-title {
+	background-color: var(--admin_panel_table_thead);
+	color: var(--admin_panel_main_font);
+}
+
 .stake-pool-modal {
 	.stake-pool-modal-content {
 		.otc-Container {

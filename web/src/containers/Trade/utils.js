@@ -92,7 +92,7 @@ const getChartClose = (state) => state.orderbook.chart_last_close;
 const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
 export const getFavourites = (state) => state.app.favourites;
-const getPrices = (state) => state.asset.oraclePrices;
+const getPrices = (state) => state.asset.wsPriceData;
 const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;

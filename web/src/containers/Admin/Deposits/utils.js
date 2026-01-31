@@ -247,12 +247,27 @@ export const renderRowContent = ({
 	amount,
 	fee,
 	created_at,
+	updated_at,
 	currency,
 	fee_coin,
+	id,
+	network,
+	processing,
+	waiting,
+	onhold,
+	dismissed,
+	rejected,
+	status,
+	transaction_id,
 	coins,
 }) => {
+	const renderFlag = (value) =>
+		value === undefined ? '-' : value ? 'Yes' : 'No';
+	const renderValue = (value) =>
+		value === undefined || value === null || value === '' ? '-' : value;
 	return (
 		<div>
+			{id !== undefined && <div>Record Id: {id}</div>}
 			<div>
 				Amount: {amount} {currency}
 			</div>
@@ -260,7 +275,16 @@ export const renderRowContent = ({
 				Fee: {fee} {fee_coin}
 			</div>
 			{address && <div>Address: {address}</div>}
+			{transaction_id && <div>Transaction Id: {transaction_id}</div>}
+			<div>Network: {renderValue(network)}</div>
+			<div>
+				Status: {renderFlag(status)} | Rejected: {renderFlag(rejected)} |
+				Dismissed: {renderFlag(dismissed)} | Processing:{' '}
+				{renderFlag(processing)} | Waiting: {renderFlag(waiting)} | On Hold:{' '}
+				{renderFlag(onhold)}
+			</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
+			{updated_at && <div>Last update: {formatDate(updated_at)}</div>}
 			{description && <div>Description: {description}</div>}
 		</div>
 	);

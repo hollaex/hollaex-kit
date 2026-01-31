@@ -21,7 +21,10 @@ class QuickTradeContainer extends PureComponent {
 			fetchingAuth,
 		} = this.props;
 
-		if (quick_trade && !fetchingAuth) {
+		if (
+			(quick_trade && !fetchingAuth) ||
+			Object.keys(this.props?.pairs || {})?.length === 0
+		) {
 			router.push('/account');
 		}
 	}

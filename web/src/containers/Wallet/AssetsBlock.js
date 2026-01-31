@@ -641,7 +641,7 @@ const AssetsBlock = ({
 											increment_unit,
 											allow_deposit,
 											allow_withdrawal,
-											oraclePrice,
+											wsPrice,
 											balance,
 											fullname,
 											symbol = '',
@@ -657,7 +657,7 @@ const AssetsBlock = ({
 										key === BASE_CURRENCY
 											? formatCurrencyByIncrementalUnit(balance, increment_unit)
 											: formatCurrencyByIncrementalUnit(
-													calculateOraclePrice(balance, oraclePrice),
+													calculateOraclePrice(balance, wsPrice),
 													baseCoin.increment_unit
 											  );
 									return (

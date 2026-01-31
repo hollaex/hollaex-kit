@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Select, Button, Modal, Input, message } from 'antd';
+import {
+	Row,
+	Select,
+	Button,
+	Modal,
+	Input,
+	message,
+	DatePicker,
+	Form,
+} from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import PairsSection from './PairsSection';
 import { submitOrderByAdmin } from './action';
 import _debounce from 'lodash/debounce';
@@ -31,6 +40,14 @@ const QuickTradesList = ({
 	const [selectedEmailData2, setSelectedEmailData2] = useState({});
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [orderPayload, setOrderPayload] = useState({});
+	const [filterDates, setFilterDates] = useState({
+		start_date: null,
+		end_date: null,
+	});
+	const [isSearchEnabled, setIsSearchEnabled] = useState(false);
+
+	const [form] = Form.useForm();
+	const { RangePicker } = DatePicker;
 
 	// useEffect(() => {
 	// 	setOptions(getOptions(pairs));
@@ -130,6 +147,52 @@ const QuickTradesList = ({
 			return false;
 		}
 		return true;
+	};
+
+	const onHandleFilterDates = (value) => {
+		if (value && value?.length) {
+			const start_date = value[0]?.format();
+			const end_date = value[1]?.format();
+			setFilterDates({
+				end_date,
+				start_date,
+			});
+		}
+	};
+
+	const onHandleSubmit = () => {
+		const formData = form?.getFieldsValue();
+
+		const base = formData?.baseCoin || '';
+		const quote = formData?.quoteCoin || '';
+
+		if (formData?.dateRange) {
+			onHandleFilterDates(formData?.dateRange);
+		}
+		setBaseCoin(base);
+		setQuoteCoin(quote);
+		setPair(base && quote ? `${base}-${quote}` : '');
+	};
+
+	const onReset = () => {
+		form.resetFields();
+
+		setBaseCoin(null);
+		setQuoteCoin(null);
+		setPair(null);
+		setFilterDates({
+			start_date: null,
+			end_date: null,
+		});
+		setIsSearchEnabled(false);
+	};
+
+	const onHandleFormValues = (_, allValues) => {
+		const { baseCoin, quoteCoin, dateRange } = allValues;
+		const enabled =
+			(baseCoin && quoteCoin) || (dateRange && dateRange?.length === 2);
+
+		setIsSearchEnabled(enabled);
 	};
 
 	return (
@@ -462,43 +525,50 @@ const QuickTradesList = ({
 						value={pair}
 						onChange={setPair}
 					/> */}
-					<Select
-						style={{
-							width: 100,
-							marginRight: 10,
+					<Form
+						form={form}
+						layout="inline"
+						initialValues={{
+							baseCoin: null,
+							quoteCoin: null,
+							dateRange: null,
 						}}
-						value={baseCoin}
-						placeholder="Base"
-						options={coinOptions}
-						onChange={(val) => {
-							setBaseCoin(val);
-							setPair(`${val}-${quoteCoin ? quoteCoin : ''}`);
-						}}
-					/>
-					<Select
-						style={{
-							width: 100,
-						}}
-						value={quoteCoin}
-						placeholder="Quote"
-						options={coinOptions}
-						onChange={(val) => {
-							setQuoteCoin(val);
-							setPair(`${baseCoin ? baseCoin : ''}-${val}`);
-						}}
-					/>
-					<Button
-						className="green-btn"
-						type="primary"
-						style={{ marginLeft: 15 }}
-						onClick={() => {
-							setBaseCoin(null);
-							setQuoteCoin(null);
-							setPair(null);
-						}}
+						onValuesChange={onHandleFormValues}
 					>
-						Reset
-					</Button>
+						<Form.Item name="baseCoin" className="mr-2">
+							<Select placeholder="Base" options={coinOptions} />
+						</Form.Item>
+
+						<Form.Item name="quoteCoin" className="mr-2">
+							<Select placeholder="Quote" options={coinOptions} />
+						</Form.Item>
+
+						<Form.Item name="dateRange">
+							<RangePicker
+								size="small"
+								format="DD/MM/YYYY"
+								allowClear={false}
+							/>
+						</Form.Item>
+
+						<Form.Item className="mr-2">
+							<Button
+								className="green-btn"
+								type="primary"
+								icon={<SearchOutlined />}
+								onClick={onHandleSubmit}
+								disabled={!isSearchEnabled}
+							>
+								Search
+							</Button>
+						</Form.Item>
+
+						<Form.Item>
+							<Button className="green-btn" type="primary" onClick={onReset}>
+								Reset
+							</Button>
+						</Form.Item>
+					</Form>
 
 					{/* <Select
 						style={{
@@ -525,11 +595,16 @@ const QuickTradesList = ({
 			</div>
 			<Row>
 				<PairsSection
-					key={`${pair}_${type}`}
+					key={`${pair}_${type}_${filterDates?.start_date?.toString() || ''}_${
+						filterDates?.end_date?.toString() || ''
+					}`}
 					userId={userId}
 					pair={pair}
 					open={type}
 					getThisExchangeOrder={getThisExchangeOrder}
+					baseCoin={baseCoin}
+					quoteCoin={quoteCoin}
+					filterDates={filterDates}
 				/>
 			</Row>
 		</div>

@@ -335,7 +335,7 @@ const Transfer = ({ coins = {}, assets }) => {
 			: null;
 
 		const asset = Array.isArray(assetObj) ? assetObj[1] : assetObj;
-		const oraclePrice = asset?.oraclePrice || asset?.estimated_price;
+		const wsPrice = asset?.wsPrice || asset?.estimated_price;
 		const incrementUnit = coins[confirmData?.currency]?.increment_unit;
 
 		const amount = Number(confirmData?.amount);
@@ -345,9 +345,9 @@ const Transfer = ({ coins = {}, assets }) => {
 		if (symbol === BASE_CURRENCY?.toLowerCase()) {
 			return formatCurrencyByIncrementalUnit(amount, incrementUnit);
 		}
-		if (oraclePrice && !isNaN(oraclePrice)) {
+		if (wsPrice && !isNaN(wsPrice)) {
 			return formatCurrencyByIncrementalUnit(
-				calculateOraclePrice(amount, oraclePrice),
+				calculateOraclePrice(amount, wsPrice),
 				incrementUnit
 			);
 		}

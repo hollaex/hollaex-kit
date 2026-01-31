@@ -2,7 +2,7 @@
 
 const { getPublicData } = require('./publicData');
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, WS_PUBSUB_WITHDRAWAL_CHANNEL, ROLES } = require('../constants');
+const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, WS_PUBSUB_WITHDRAWAL_CHANNEL, WS_PUBSUB_STAKE_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
@@ -24,6 +24,7 @@ const WebSocket = require('ws');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.subscribe(WS_PUBSUB_WITHDRAWAL_CHANNEL);
+subscriber.subscribe(WS_PUBSUB_STAKE_CHANNEL);
 
 subscriber.on('message', (channel, data) => {
 	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
@@ -41,6 +42,14 @@ subscriber.on('message', (channel, data) => {
 			notifyAdmin(data)
 		} catch (err) {
 			loggerWebsocket.error('ws/sub/subscriber withdrawal message', err.message);
+		}
+	} else if (channel === WS_PUBSUB_STAKE_CHANNEL) {
+		try {
+			data = JSON.parse(data);
+			handleStakeData(data);
+			notifyAdmin(data)
+		} catch (err) {
+			loggerWebsocket.error('ws/sub/subscriber stake message', err.message);
 		}
 	}
 });
@@ -99,6 +108,12 @@ const initializeTopic = (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			break;
 		case 'withdrawal':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+			break;
+		case 'stake':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -175,6 +190,13 @@ const terminateTopic = (topic, ws, symbol) => {
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
 			break;
 		case 'withdrawal':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws, 'private');
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
+			break;
+		case 'stake':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -298,6 +320,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
 			removeSubscriber(WEBSOCKET_CHANNEL('withdrawal', ws.auth.sub.networkId), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL('stake', ws.auth.sub.networkId), ws, 'private');
 			removeSubscriber(WEBSOCKET_CHANNEL('admin'), ws, 'private');
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
@@ -386,6 +409,18 @@ const handleDepositWithdrawalData = (data) => {
 		default:
 			break;
 	}
+};
+
+const handleStakeData = (data) => {
+	if (data.topic !== 'stake') {
+		return;
+	}
+	each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_network_id)], (ws) => {
+		if (ws.readyState === WebSocket.OPEN) {
+			delete data.user_network_id;
+			ws.send(JSON.stringify(data));
+		}
+	});
 };
 
 const notifyAdmin = (data) => {
