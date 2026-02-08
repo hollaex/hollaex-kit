@@ -34,6 +34,7 @@ const {
 	INVALID_PASSWORD,
 	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
+	PASSWORD_ALREADY_SET,
 	CODE_NOT_FOUND,
 	INVALID_TOKEN_TYPE,
 	NO_AUTH_TOKEN,
@@ -285,6 +286,22 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 		});
 };
 
+const setInitialUserPassword = (email, password) => {
+	if (!isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+	return dbQuery.findOne('user', { where: { email: email } })
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			if (user.password !== 'notset') {
+				throw new Error(PASSWORD_ALREADY_SET);
+			}
+			return user.update({ password: password }, { fields: ['password'] });
+		});
+};
+
 const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
 		.then((data) => {
@@ -338,7 +355,9 @@ const createResetPasswordCode = (userId, version) => {
 
 	let code;
 	//Generate new random code
-	if (version === 'v3') {
+	if (version === 'v4') {
+		code = Math.floor(100000 + Math.random() * 900000).toString();
+	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
@@ -386,7 +405,7 @@ const sendResetPasswordCode = (email, captcha, ip, domain, version, headers = {}
 				})
 			).then(() => {
 				sendEmail(
-					version === 'v3' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
+					version === 'v3' || version === 'v4' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
 					email,
 					{ code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` },
 					user.settings,
@@ -1482,6 +1501,7 @@ module.exports = {
 	validatePassword,
 	sendResetPasswordCode,
 	changeUserPassword,
+	setInitialUserPassword,
 	confirmChangeUserPassword,
 	hasUserOtpEnabled,
 	verifyOtpBeforeAction,

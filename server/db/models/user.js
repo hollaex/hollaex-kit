@@ -57,7 +57,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			password: {
 				type: DataTypes.STRING,
-				allowNull: ''
+				allowNull: true
 			},
 			full_name: {
 				type: DataTypes.STRING,
@@ -201,12 +201,14 @@ module.exports = function (sequelize, DataTypes) {
 		user.username = user.email.substr(0, user.email.indexOf('@'));
 		user.affiliation_code = generateAffiliationCode();
 		const isVirtualEmail = typeof user.email === 'string' && user.email.endsWith('_virtual');
-		if (!isVirtualEmail && user.password) {
+		if (!user.password) {
+			user.password = isVirtualEmail ? 'virtual' : 'notset';
+			return;
+		}
+		if (user.password) {
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
-		} else {
-			user.password = 'virtual';
 		}
 		return;
 	});
