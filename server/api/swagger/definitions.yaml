@@ -36,8 +36,30 @@ definitions:
         enum:
           - v2
           - v3
+          - v4
       long_term:
         type: boolean
+  SignupAuthentication:
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
+        maxLength: 256
+      password:
+        type: string
+        format: password
+        maxLength: 128
+      referral:
+        type: string
+        maxLength: 256
+      version:
+        type: string
+        enum:
+          - v2
+          - v3
+          - v4
   GoogleAuthentication:
     type: object
     required:
@@ -281,6 +303,18 @@ definitions:
         maxLength: 6
       version:
         type: string
+  SetInitialPassword:
+    type: object
+    required:
+      - password
+      - email
+    properties:
+      password:
+        type: string
+        maxLength: 128
+      email:
+        type: string
+        maxLength: 256
   LoginsResponse:
     type: object
     properties:
@@ -347,6 +381,7 @@ definitions:
         enum:
           - v2
           - v3
+          - v4
   OtpRequest:
     type: object
     required:

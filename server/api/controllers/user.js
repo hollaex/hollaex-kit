@@ -33,7 +33,10 @@ const {
 	RESET_PASSWORD_REQUEST_SENT_IF_USER_EXISTS,
 	GOOGLE_ACCOUNT_MISMATCH,
 	SERVICE_NOT_AVAILABLE,
-	SUBACCOUNT_CANNOT_GENERATE_ADDRESS
+	SUBACCOUNT_CANNOT_GENERATE_ADDRESS,
+	PASSWORD_SET,
+	PASSWORD_NOT_SET,
+	USER_REGISTERED_EMAIL_CODE
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
@@ -112,7 +115,16 @@ const signUpUser = (req, res) => {
 			return toolsLib.security.checkCaptcha(captcha, ip, req.headers);
 		})
 		.then(() => toolsLib.user.signUpUser(email, password, { referral }, version))
-		.then(() => res.status(201).json({ message: USER_REGISTERED }))
+		.then(() => {
+			const requiresVerification = toolsLib.getKitConfig().email_verification_required;
+			const successMessage = requiresVerification ? USER_REGISTERED_EMAIL_CODE : USER_REGISTERED;
+			const messageObj = errorMessageConverter({ message: successMessage }, req?.auth?.sub?.lang);
+			return res.status(201).json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/signUpUser', err.message);
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
@@ -206,7 +218,9 @@ const getVerifyUser = (req, res) => {
 				// Validate captcha before resending verification email to reduce spam/bot abuse.
 				await toolsLib.security.checkCaptcha(captcha, ip, req.headers);
 				let verificationCode;
-				if (version === 'v3') {
+				if (version === 'v4') {
+					verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+				} else if (version === 'v3') {
 					const letters = Array.from({ length: 2 }, () =>
 						String.fromCharCode(65 + crypto.randomInt(0, 26))
 					).join('');
@@ -218,7 +232,7 @@ const getVerifyUser = (req, res) => {
 				toolsLib.user.storeVerificationCode(user, verificationCode);
 
 				sendEmail(
-					version === 'v3' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+					version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
 					email,
 					verificationCode,
 					{},
@@ -262,6 +276,13 @@ const getVerifyUser = (req, res) => {
 const verifyUser = (req, res) => {
 	const { verification_code, email } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
+	const ip = req.headers['x-real-ip'];
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/verifyUser',
+		{ verification_code, email },
+		ip
+	);
 
 	toolsLib.user.verifyUser(email, verification_code, domain)
 		.then(() => {
@@ -478,6 +499,10 @@ const loginPost = async (req, res) => {
 				const message = createAttemptMessage(loginData, user, domain);
 				throw new Error((err?.message || INVALID_OTP_CODE) + message);
 			}
+		}
+
+		if (user.password === 'notset') {
+			throw new Error(PASSWORD_NOT_SET);
 		}
 
 		const passwordIsValid = await toolsLib.security.validatePassword(
@@ -1066,6 +1091,102 @@ const changePassword = (req, res) => {
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
 			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
 		});
+};
+
+const setInitialPassword = async (req, res) => {
+	let { email } = req.swagger.params.data.value;
+	const { password } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+	const origin = req.headers.origin;
+	const referer = req.headers.referer;
+
+	if (typeof email !== 'string' || !isEmail(email)) {
+		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid email', email);
+		const messageObj = errorMessageConverter({ message: PROVIDE_VALID_EMAIL }, req?.auth?.sub?.lang);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+
+	email = email.toLowerCase().trim();
+	loggerUser.verbose(req.uuid, 'controllers/user/setInitialPassword', email);
+
+	try {
+		const user = await toolsLib.security.setInitialUserPassword(email, password);
+
+		if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
+			throw new Error(USER_EMAIL_NOT_VERIFIED);
+		}
+
+		let device;
+		if (req.headers['custom-device']) {
+			device = req.headers['user-agent'];
+		} else {
+			const userAgent = req.headers['user-agent'];
+			const result = detector.detect(userAgent);
+
+			const truncate = (str, maxLen = 100) => {
+				if (!str || typeof str !== 'string') return '';
+				return str.substring(0, maxLen);
+			};
+
+			let deviceParts = [
+				truncate(result.device.brand, 100),
+				truncate(result.device.model, 100),
+				truncate(result.device.type, 100),
+				truncate(result.client.name, 100),
+				truncate(result.client.type, 100),
+				truncate(result.os.name, 100)
+			].filter(Boolean);
+
+			device = deviceParts.join(' ').trim();
+
+			const encoder = new TextEncoder();
+			while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
+				deviceParts.pop();
+				device = deviceParts.join(' ').trim();
+			}
+		}
+
+		let userRole;
+		if (user.role) {
+			const roles = toolsLib.getRoles();
+			userRole = roles.find((role) => role.role_name === user.role);
+		}
+
+		const token = await toolsLib.security.issueToken(
+			user.id,
+			user.network_id,
+			user.email,
+			ip,
+			TOKEN_TIME_NORMAL,
+			user.settings.language,
+			userRole?.permissions,
+			userRole?.configs,
+			user.role
+		);
+
+		await toolsLib.user.createUserLogin(
+			user,
+			ip,
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			false,
+			true
+		);
+
+		return res.json({ message: PASSWORD_SET, token });
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
 };
 
 const confirmChangePassword = (req, res) => {
@@ -2378,6 +2499,7 @@ module.exports = {
 	getUser,
 	updateSettings,
 	changePassword,
+	setInitialPassword,
 	confirmChangePassword,
 	setUsername,
 	getUserLogins,

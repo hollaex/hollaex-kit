@@ -41,10 +41,8 @@ const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
 const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
-const { isMainThread, workerData } = require('worker_threads');
+const { isMainThread, workerData, parentPort } = require('worker_threads');
 const { Plugin } = require('../db/models');
-const { checkStatus } = require('../init');
-const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
 const rateLimit = require('express-limiter');
 
 const initPluginProcess = async ({ PORT }) => {
@@ -175,32 +173,20 @@ if (!isMainThread) {
 		'plugins/plugin-process',
 		'Plugin thread initializing'
 	);
-	checkStatus()
-		.then(async () => {
-			await sleep(2 * 1000);
-
-			loggerPlugin.verbose(
-				'plugins/plugin-process',
-				'Plugin thread checkStatus complete'
-			);
-			try {
-				initPluginProcess(JSON.parse(workerData));
-			} catch (err) {
-				loggerPlugin.error(
-					'plugins/plugin-process',
-					'error while starting plugin',
-					err.message
-				);
-			}
-		})
-		.catch(() => {
+	let started = false;
+	parentPort.on('message', (message) => {
+		if (started || message !== 'start') {
+			return;
+		}
+		started = true;
+		try {
+			initPluginProcess(JSON.parse(workerData));
+		} catch (err) {
 			loggerPlugin.error(
 				'plugins/plugin-process',
-				'API Initialization failed',
+				'error while starting plugin',
 				err.message
 			);
-			setTimeout(() => { process.exit(1); }, 1000 * 5);
-		});
-
-
+		}
+	});
 }
