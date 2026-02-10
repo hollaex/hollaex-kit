@@ -186,15 +186,14 @@ class Trade extends PureComponent {
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
 		this.reconnectTimeout = null;
-		this.layoutChangeTimeout = null;
+		this.handleRedirectCondition = debounce(this.onHandleRedirect, 1000);
 	}
 
-	UNSAFE_componentWillMount() {
+	onHandleRedirect = () => {
 		const {
 			isReady,
 			router,
 			constants: { features: { pro_trade = false } = {} } = {},
-			setIsProTrade,
 		} = this.props;
 		if (
 			!isReady ||
@@ -203,6 +202,13 @@ class Trade extends PureComponent {
 		) {
 			router.push('/summary');
 		}
+	};
+
+	UNSAFE_componentWillMount() {
+		const { setIsProTrade } = this.props;
+
+		this.handleRedirectCondition();
+
 		this.setSymbol(this.props.routeParams.pair);
 		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 		setIsProTrade(true);
@@ -287,6 +293,7 @@ class Trade extends PureComponent {
 		this.priceRef = null;
 		this.sizeRef = null;
 		this.sliderRef = null;
+		this.handleRedirectCondition && this.handleRedirectCondition.cancel();
 	}
 
 	setSymbol = (symbol = '') => {
