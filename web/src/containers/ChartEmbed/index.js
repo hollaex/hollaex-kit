@@ -23,14 +23,6 @@ class ChartEmbed extends PureComponent {
 	symbolTimeout = null;
 
 	UNSAFE_componentWillMount() {
-		const {
-			isReady,
-			router,
-			constants: { features: { pro_trade = false } = {} } = {},
-		} = this.props;
-		if (!isReady || !pro_trade) {
-			router.push('/summary');
-		}
 		this.setSymbol(this.props.routeParams.pair);
 	}
 
