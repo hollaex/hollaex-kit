@@ -205,7 +205,7 @@ module.exports = function (sequelize, DataTypes) {
 			user.password = isVirtualEmail ? 'virtual' : 'notset';
 			return;
 		}
-		if (user.password) {
+		if (user.password && user.password !== 'virtual' && user.password !== 'notset' && user.password !== 'thirdparty') {
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
@@ -218,10 +218,14 @@ module.exports = function (sequelize, DataTypes) {
 			user.email = user.email.toLowerCase();
 		}
 		const updatedFields = user.changed();
-		if (Array.isArray(updatedFields) && updatedFields.includes('password'))
+		if (Array.isArray(updatedFields) && updatedFields.includes('password')) {
+			if (user.password === 'virtual' || user.password === 'notset' || user.password === 'thirdparty') {
+				return;
+			}
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
+		}
 	});
 
 	User.associate = (models) => {
