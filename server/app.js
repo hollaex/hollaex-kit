@@ -32,9 +32,6 @@ checkStatus()
 
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
-		if (process.env.NODE_ENV !== 'test') {
-			rateLimitMiddleware(app);
-		}
 		helmetMiddleware(app);
 
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
@@ -60,6 +57,9 @@ checkStatus()
 		swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
 			app.use(middleware.swaggerMetadata());
+			if (process.env.NODE_ENV !== 'test') {
+				rateLimitMiddleware(app);
+			}
 			app.use(initializeSwaggerSecurity(middleware));
 
 			app.use(middleware.swaggerValidator({ validateResponse: true }));

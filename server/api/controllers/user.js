@@ -776,15 +776,24 @@ const loginWithGoogle = async (req, res) => {
 		// Verify Google token and get user data
 		const googleUserData = await toolsLib.user.verifyGoogleToken(google_token);
 		const email = googleUserData.email.toLowerCase().trim();
+		const tokenGoogleId = googleUserData.google_id || googleUserData.sub;
 
-		// Check if user exists
-		const user = await toolsLib.user.getUserByEmail(email, false);
+		// Check if user exists, otherwise create it
+		let user = await toolsLib.user.getUserByEmail(email, false);
 		if (!user) {
-			throw new Error(USER_NOT_FOUND);
+			const randomPassword = 'thirdparty';
+			await toolsLib.user.signUpUser(email, randomPassword, {
+				google_id: tokenGoogleId,
+				email_verified: true,
+				activated: true
+			}, version);
+			user = await toolsLib.user.getUserByEmail(email, false);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 		}
 
 		// If user has google_id set and it does not match, reject
-		const tokenGoogleId = googleUserData.google_id || googleUserData.sub;
 		if (user.google_id && tokenGoogleId && user.google_id !== tokenGoogleId) {
 			throw new Error(GOOGLE_ACCOUNT_MISMATCH);
 		}
@@ -1117,71 +1126,7 @@ const setInitialPassword = async (req, res) => {
 	try {
 		const user = await toolsLib.security.setInitialUserPassword(email, password);
 
-		if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
-			throw new Error(USER_EMAIL_NOT_VERIFIED);
-		}
-
-		let device;
-		if (req.headers['custom-device']) {
-			device = req.headers['user-agent'];
-		} else {
-			const userAgent = req.headers['user-agent'];
-			const result = detector.detect(userAgent);
-
-			const truncate = (str, maxLen = 100) => {
-				if (!str || typeof str !== 'string') return '';
-				return str.substring(0, maxLen);
-			};
-
-			let deviceParts = [
-				truncate(result.device.brand, 100),
-				truncate(result.device.model, 100),
-				truncate(result.device.type, 100),
-				truncate(result.client.name, 100),
-				truncate(result.client.type, 100),
-				truncate(result.os.name, 100)
-			].filter(Boolean);
-
-			device = deviceParts.join(' ').trim();
-
-			const encoder = new TextEncoder();
-			while (encoder.encode(device).length > 1000 && deviceParts.length > 1) {
-				deviceParts.pop();
-				device = deviceParts.join(' ').trim();
-			}
-		}
-
-		let userRole;
-		if (user.role) {
-			const roles = toolsLib.getRoles();
-			userRole = roles.find((role) => role.role_name === user.role);
-		}
-
-		const token = await toolsLib.security.issueToken(
-			user.id,
-			user.network_id,
-			user.email,
-			ip,
-			TOKEN_TIME_NORMAL,
-			user.settings.language,
-			userRole?.permissions,
-			userRole?.configs,
-			user.role
-		);
-
-		await toolsLib.user.createUserLogin(
-			user,
-			ip,
-			device,
-			domain,
-			origin,
-			referer,
-			token,
-			false,
-			true
-		);
-
-		return res.json({ message: PASSWORD_SET, token });
+		return res.json({ message: PASSWORD_SET });
 	} catch (err) {
 		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword', err.message);
 		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);

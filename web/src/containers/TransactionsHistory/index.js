@@ -458,7 +458,7 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol, coins, discount, prices) {
-		const { withdrawalPopup, orders } = this.props;
+		const { orders } = this.props;
 		const { pairs, icons: ICONS } = this.props;
 		let type = STRINGS['TIME'];
 		const ordersArray = Array.isArray(orders?.data) ? orders.data : [];
@@ -509,13 +509,13 @@ class TransactionsHistory extends Component {
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,
-					withdrawalPopup,
+					this.withdrawalPopup,
 					ICONS
 				),
 				withdrawals: generateWithdrawalsHeaders(
 					symbol,
 					coins,
-					withdrawalPopup,
+					this.withdrawalPopup,
 					ICONS
 				),
 			},
