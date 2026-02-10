@@ -467,8 +467,8 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permis
 
 		if (!isNumber(newKitConfig?.referral_history_config?.earning_rate)) {
 			throw new Error('Earning rate with data type number required for plugin');
-		} else if (newKitConfig?.referral_history_config?.earning_rate < 1 || newKitConfig?.referral_history_config?.earning_rate > 100) {
-			throw new Error('Earning rate must be within the range of 1 ~ 100');
+		} else if (newKitConfig?.referral_history_config?.earning_rate < 0 || newKitConfig?.referral_history_config?.earning_rate > 100) {
+			throw new Error('Earning rate must be within the range of 0 ~ 100');
 		} else if (!isNumber(newKitConfig?.referral_history_config?.minimum_amount)) {
 			throw new Error('Minimum amount must be integer');
 		} else if (newKitConfig?.referral_history_config?.minimum_amount < 0) {
