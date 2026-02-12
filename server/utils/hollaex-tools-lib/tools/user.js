@@ -3827,10 +3827,13 @@ const createUserAutoTrade = async (user_id, {
 		throw new Error('You can\'t have more than 20 auto trades');
 	}
 
-	const { getUserBalanceByKitId } = require('./wallet');
-	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${spend_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+	// Only check balance when auto trade will be active
+	if (active !== false) {
+		const { getUserBalanceByKitId } = require('./wallet');
+		const balance = await getUserBalanceByKitId(user_id);
+		if (balance[`${spend_coin}_available`] < spend_amount) {
+			throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+		}
 	}
 
 	return autoTradeModel.create({
@@ -3923,10 +3926,15 @@ const updateUserAutoTrade = async (user_id, {
 		throw new Error('Auto trade not found');
 	}
 
-	const { getUserBalanceByKitId } = require('./wallet');
-	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${spend_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+	// Only check balance when auto trade will be active (skip when disabling/pausing)
+	if (active !== false) {
+		const amountToCheck = spend_amount ?? trade.spend_amount;
+		const coinToCheck = spend_coin ?? trade.spend_coin;
+		const { getUserBalanceByKitId } = require('./wallet');
+		const balance = await getUserBalanceByKitId(user_id);
+		if (balance[`${coinToCheck}_available`] < amountToCheck) {
+			throw new Error(`Balance insufficient for auto trade: ${coinToCheck} size: ${amountToCheck}`);
+		}
 	}
 
 	return await trade.update({
