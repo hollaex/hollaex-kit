@@ -80,6 +80,9 @@
 		"ws-heartbeat": "1.1.0",
 		"yamljs": "0.3.0"
 	},
+	"overrides": {
+		"ip": "2.0.1"
+	},
 	"devDependencies": {
 		"chai": "4.2.0",
 		"eslint": "8.41.0",
