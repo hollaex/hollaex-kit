@@ -23,6 +23,9 @@ const isMainnet = process.env.NODE_ENV === 'production';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'verbose';
 
 const formatObject = (param) => {
+	if (param instanceof Error) {
+		return param.stack || `${param.name}: ${param.message}`;
+	}
 	if (isObject(param)) {
 		return JSON.stringify(param);
 	}
@@ -34,6 +37,9 @@ const all = format((info) => {
 	const message = formatObject(info.message);
 	const rest = splat.map(formatObject).join(' ');
 	info.message = `${message} ${rest}`;
+	if (info.level === 'error' && APM_ENABLED) {
+		apm.captureError(new Error(info.message));
+	}
 	return info;
 });
 
