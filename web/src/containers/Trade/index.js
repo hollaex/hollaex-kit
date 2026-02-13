@@ -190,8 +190,14 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillMount() {
-		const { setIsProTrade } = this.props;
-
+		const {
+			router,
+			constants: { features: { pro_trade = false } = {} } = {},
+			setIsProTrade,
+		} = this.props;
+		if (!pro_trade) {
+			router.push('/summary');
+		}
 		this.setSymbol(this.props.routeParams.pair);
 		this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
 		setIsProTrade(true);
