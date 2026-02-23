@@ -2609,8 +2609,8 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount must be in increments of 10');
 	}
 
-	if (earning_rate < 1) {
-		throw new Error('earning rate cannot be less than 1');
+	if (earning_rate < 0) {
+		throw new Error('earning rate cannot be negative');
 	}
 
 	if (earning_rate > 100) {
