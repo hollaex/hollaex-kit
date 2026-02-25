@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { SubmissionError } from 'redux-form';
 import { updateUserData } from './actions';
 import { AdminHocForm } from '../../../components';
@@ -49,6 +50,8 @@ const DataFields = {
 	dob: {
 		type: 'date',
 		label: 'Date of birth',
+		showTime: { format: 'HH:mm' },
+		dateFormat: 'YYYY/MM/DD HH:mm',
 	},
 	phone_number: {
 		type: 'text',
@@ -70,6 +73,11 @@ const onSubmit = (onChangeSuccess, handleClose) => (values) => {
 	Object.keys(DataFields).forEach((key) => {
 		if (key === 'gender') {
 			submitData[key] = values[key] === 'Woman';
+		} else if (key === 'dob' && values[key]) {
+			const momentValue = moment.isMoment(values[key])
+				? values[key]
+				: moment(String(values[key]), DataFields?.dob?.dateFormat);
+			submitData[key] = momentValue.toISOString();
 		} else {
 			submitData[key] = values[key];
 		}
@@ -94,12 +102,13 @@ const onSubmit = (onChangeSuccess, handleClose) => (values) => {
 };
 
 const generateInitialValues = (initialValues) => {
-	const values = {
+	const { dob = '' } = initialValues;
+	return {
 		...initialValues,
 		...initialValues.address,
 		gender: initialValues.gender ? 'Woman' : 'Man',
+		dob: dob ? moment(dob) : dob,
 	};
-	return values;
 };
 
 const UserData = ({

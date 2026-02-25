@@ -4,7 +4,7 @@ import { DatePicker, Input, Select, Button, Checkbox } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY/MM/DD HH:mm';
 
 const DateField = ({ handleRemove, name, value, onHandleFieldChange }) => {
 	const onChangeStart = (date, dateString) => {
@@ -27,6 +27,7 @@ const DateField = ({ handleRemove, name, value, onHandleFieldChange }) => {
 					className="mr-2"
 					onChange={onChangeStart}
 					format={dateFormat}
+					showTime={{ format: 'HH:mm' }}
 					value={value?.start_date ? moment(value?.start_date, dateFormat) : ''}
 				/>
 			</div>
@@ -43,6 +44,7 @@ const DateField = ({ handleRemove, name, value, onHandleFieldChange }) => {
 				<DatePicker
 					onChange={onChangeEnd}
 					format={dateFormat}
+					showTime={{ format: 'HH:mm' }}
 					value={value?.end_date ? moment(value?.end_date, dateFormat) : ''}
 				/>
 			</div>
