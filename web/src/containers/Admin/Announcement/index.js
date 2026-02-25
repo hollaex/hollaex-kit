@@ -425,9 +425,11 @@ const AnnouncementDetails = ({
 		}));
 	};
 
+	const onHandleIsoString = (date) => (date ? date?.toISOString() : null);
+
 	const handleDateUpdate = (dates) => ({
-		start_date: dates?.[0] || null,
-		end_date: dates?.[1] || null,
+		start_date: onHandleIsoString(dates?.[0]),
+		end_date: onHandleIsoString(dates?.[1]),
 	});
 
 	const onHandleHighlightDateSelect = (dates) => {
@@ -482,14 +484,24 @@ const AnnouncementDetails = ({
 	};
 
 	const onHandleProceed = () => {
+		const formattedDates =
+			selectHighlightLifeSpan?.isPopupSelectRange &&
+			selectedHighlightStartDate &&
+			selectedHighlightEndDate
+				? {
+						start_date: onHandleIsoString(selectedHighlightStartDate),
+						end_date: onHandleIsoString(selectedHighlightEndDate),
+				  }
+				: {};
+
 		if (renderHighlightAnnouncement?.isHighlightPopup) {
-			editDetail(selectedHighlightPopup);
+			editDetail({ ...selectedHighlightPopup, ...formattedDates });
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightPopup: false,
 			}));
 		} else if (renderHighlightAnnouncement?.isHighlightTopbar) {
-			editDetail(selectedHighlightTopbar);
+			editDetail({ ...selectedHighlightTopbar, ...formattedDates });
 			setRenderHighlightAnnouncement((prev) => ({
 				...prev,
 				isHighlightTopbar: false,
@@ -796,6 +808,8 @@ const AnnouncementDetails = ({
 								size="small"
 								value={highlightDateRange}
 								onChange={(dates) => onHandleHighlightDateSelect(dates)}
+								showTime={{ format: 'HH:mm' }}
+								format={'YYYY-MM-DD HH:mm'}
 							/>
 						</div>
 					</div>
