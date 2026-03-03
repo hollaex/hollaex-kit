@@ -284,6 +284,11 @@ definitions:
             type: boolean
           popup_order_canceled:
             type: boolean
+      watchlist:
+        type: array
+        items:
+          type: string
+        description: List of trading pair symbols for the user's watchlist
   ChangePassword:
     type: object
     required:

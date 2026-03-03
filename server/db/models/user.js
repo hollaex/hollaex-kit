@@ -38,7 +38,8 @@ const SETTINGS_DATA_DEFAULT = {
 	},
 	chat: {
 		set_username: false
-	}
+	},
+	watchlist: []
 };
 
 const BANK_DATA_DEFAULT = [];

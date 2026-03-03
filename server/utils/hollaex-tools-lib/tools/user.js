@@ -1257,7 +1257,8 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 
 const DEFAULT_SETTINGS = {
 	language: getKitConfig().defaults.language,
-	orderConfirmationPopup: true
+	orderConfirmationPopup: true,
+	watchlist: []
 };
 
 const joinSettings = (userSettings = {}, newSettings = {}) => {
@@ -1328,7 +1329,8 @@ const INITIAL_SETTINGS = () => {
 		},
 		chat: {
 			set_username: false
-		}
+		},
+		watchlist: []
 	};
 };
 

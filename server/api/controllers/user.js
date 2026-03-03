@@ -87,7 +87,8 @@ const INITIAL_SETTINGS = () => {
 		},
 		chat: {
 			set_username: false
-		}
+		},
+		watchlist: []
 	};
 };
 
