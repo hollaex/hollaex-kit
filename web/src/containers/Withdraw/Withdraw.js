@@ -7,13 +7,14 @@ import { Button, Input, Select } from 'antd';
 import BigNumber from 'bignumber.js';
 import math from 'mathjs';
 
-import { Coin, EditWrapper } from 'components';
+import { Coin, EditWrapper, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	CaretDownOutlined,
 	CheckOutlined,
 	CloseOutlined,
 	ExclamationCircleFilled,
+	UserSwitchOutlined,
 } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import {
@@ -46,6 +47,8 @@ import { roundNumber, toFixed } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setScannedAddress } from 'actions/walletActions';
 import { getNetworkNameByKey } from 'utils/wallet';
+import { checkAccountStatus, getMainAccountToken, setToken } from 'utils/token';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 const RenderWithdraw = ({
 	coins,
@@ -58,6 +61,8 @@ const RenderWithdraw = ({
 	selectedNetwork,
 	optionalTag,
 	wsPriceData,
+	user,
+	icons: Icons,
 	...rest
 }) => {
 	const { Option } = Select;
@@ -824,618 +829,688 @@ const RenderWithdraw = ({
 			? isActiveWithdrawNetwork && isActiveWithdrawNetwork?.active !== false
 			: true;
 
+	const onHandleSwitchToMainAccount = () => {
+		const mainAccountToken = getMainAccountToken();
+		if (mainAccountToken) {
+			setToken(mainAccountToken);
+			window.location.reload();
+		}
+	};
+
 	return (
-		<div
-			className={
-				isValidField?.isDisbaleWithdraw
-					? 'withdraw-deposit-disable mt-1'
-					: 'mt-1'
-			}
-		>
-			<div>
-				<div className="d-flex">
-					<div className="custom-field d-flex flex-column align-items-center">
-						<span className="custom-step-selected">1</span>
-						<span
-							className={`custom-line${currStep.stepTwo ? '-selected' : ''} ${
-								selectedMethod ===
-									STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] &&
-								isMobile &&
-								isMobile &&
-								'custom-line-selected-mobile '
-							}`}
-						></span>
-					</div>
-					<div
-						className={
-							isMobile
-								? 'd-flex w-100 flex-column'
-								: 'd-flex w-100 justify-content-between'
-						}
-					>
-						<div className="mt-2 ml-5 withdraw-main-label-selected">
-							{renderLabel('WITHDRAWALS_FORM_METHOD')}
-						</div>
-						<div
-							className={
-								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
-							}
-						>
-							<div className="d-flex">
-								<Select
-									className="custom-select-input-style elevated select-field"
-									dropdownClassName="custom-select-style"
-									suffixIcon={<CaretDownOutlined />}
-									placeholder={STRINGS['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
-									onChange={onHandleChangeMethod}
-									value={
-										selectedMethod ===
-											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
-										(selectedMethod && selectedMethod === 'Address')
-											? STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']
-											: selectedMethod
-									}
-									getPopupContainer={handlePopupContainer}
-								>
-									{methodOptions.map((val, inx) => (
-										<Option key={inx} value={val}>
-											{val}
-										</Option>
-									))}
-								</Select>
-								{currStep.stepTwo && <CheckOutlined className="mt-3 ml-3" />}
-							</div>
-							{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] && (
-								<div className="email-text">
-									{renderLabel('WITHDRAWALS_FORM_MAIL_INFO')}
-								</div>
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-			<div>
-				<div className="d-flex">
-					<div className="custom-field d-flex flex-column align-items-center">
-						<span
-							className={`custom-step${currStep.stepTwo ? '-selected' : ''}`}
-						>
-							2
+		<div>
+			{user?.is_subaccount ? (
+				<div className="withdrawal-block">
+					<Image
+						iconId="WITHDRAWAL_BLOCK"
+						icon={Icons['WITHDRAWAL_BLOCK']}
+						wrapperClassName="withdrawal-block-icon mb-4"
+					/>
+					<EditWrapper stringId="WITHDRAWAL_BLOCK.TITLE">
+						<span className="fs-16 bold">
+							{STRINGS['WITHDRAWAL_BLOCK.TITLE']}
 						</span>
-						<span
-							className={`custom-line${currStep.stepTwo ? '-selected' : ''}`}
-						></span>
-					</div>
-					<div
-						className={
-							isMobile
-								? 'd-flex w-100 flex-column'
-								: 'd-flex w-100 justify-content-between'
-						}
-					>
-						<div
-							className={`mt-2 ml-5 withdraw-main-label${
-								currStep.stepTwo ? '-selected' : ''
-							}`}
-						>
-							{renderLabel('ACCORDIAN.SELECT_ASSET')}
-						</div>
-						<div
-							className={
-								isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
-							}
-						>
-							{currStep.stepTwo && (
-								<div>
-									<div className="mb-3 d-flex">
-										{topAssets.map((data, inx) => {
-											return (
-												<span
-													key={inx}
-													className={`currency-label ${
-														selectedAsset?.selectedCurrency === data
-															? 'opacity-100'
-															: 'opacity-30'
-													}`}
-													onClick={() => onHandleChangeSelect(data, true)}
-												>
-													{renderPinnedAsset(data)}
-												</span>
-											);
-										})}
-									</div>
-									<div className="d-flex">
-										<Select
-											showSearch={true}
-											filterOption={filterCoinOptions}
-											className="custom-select-input-style elevated select-field"
-											dropdownClassName="custom-select-style"
-											suffixIcon={<CaretDownOutlined />}
-											placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-											allowClear={
-												selectedAsset?.selectedCurrency ? true : false
-											}
-											value={
-												selectedAsset?.selectedCurrency &&
-												`${
-													coins[selectedAsset?.selectedCurrency].fullname
-												} (${selectedAsset?.selectedCurrency.toUpperCase()})`
-											}
-											onClear={() => onHandleClear('coin')}
-											onSelect={(e) => {
-												const curr = onHandleSymbol(e);
-												onHandleChangeSelect(curr);
-											}}
-											getPopupContainer={handlePopupContainer}
-										>
-											{Object.entries(coins).map(
-												([_, { symbol, fullname, icon_id }]) => (
-													<Option
-														key={`${fullname} (${symbol.toUpperCase()})`}
-														value={`${fullname} (${symbol.toUpperCase()})`}
-													>
-														<div
-															className="d-flex gap-1"
-															onClick={() => onHandleChangeSelect(symbol)}
-														>
-															<Coin iconId={icon_id} type="CS3" />
-															<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
-														</div>
-													</Option>
-												)
-											)}
-										</Select>
-										{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
-											isEmailAndAddress && renderNetwork ? (
-												<CheckOutlined className="mt-3 ml-3" />
-											) : (
-												<CloseOutlined className="mt-3 ml-3" />
-											)
-										) : currStep.stepThree ||
-										  (selectedAsset?.selectedCurrency && selectedMethod) ? (
-											<CheckOutlined className="mt-3 ml-3" />
-										) : (
-											<CloseOutlined className="mt-3 ml-3" />
-										)}
-									</div>
-								</div>
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-			{selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] && (
-				<div>
-					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column align-items-center">
-							<span
-								className={`custom-step${
-									isEmailAndAddress || selectedAsset?.selectedCurrency
-										? '-selected'
-										: ''
-								}`}
-							>
-								3
-							</span>
-							<span
-								className={`custom-line${
-									currStep.stepThree ||
-									(selectedAsset?.selectedCurrency && selectedMethod)
-										? '-selected'
-										: ''
-								} ${isMobile && 'custom-line-network-selected '}`}
-							></span>
-						</div>
-						<div
-							className={
-								isMobile
-									? 'd-flex w-100 flex-column'
-									: 'd-flex w-100 justify-content-between'
-							}
-						>
-							<div
-								className={`mt-2 ml-5 withdraw-main-label${
-									currStep.stepThree ||
-									(selectedAsset?.selectedCurrency && selectedMethod)
-										? '-selected'
-										: ''
-								}`}
-							>
-								{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+					</EditWrapper>
+					<EditWrapper stringId="WITHDRAWAL_BLOCK.DESCRIPTION_1">
+						{STRINGS['WITHDRAWAL_BLOCK.DESCRIPTION_1']}
+					</EditWrapper>
+					{checkAccountStatus('is_subaccount') && (
+						<>
+							<div className="mt-3">
+								<EditWrapper stringId="WITHDRAWAL_BLOCK.DESCRIPTION_2">
+									{STRINGS['WITHDRAWAL_BLOCK.DESCRIPTION_2']}
+								</EditWrapper>
 							</div>
-							{(currStep.stepThree ||
-								(selectedAsset?.selectedCurrency && selectedMethod)) && (
+							<Button
+								className="withdrawal-block-btn mt-3"
+								onClick={() => onHandleSwitchToMainAccount()}
+							>
+								<UserSwitchOutlined />
+								<EditWrapper stringId="SUB_ACCOUNT_SYSTEM.SWITCH_TO_MAIN_ACCOUNT">
+									{STRINGS['SUB_ACCOUNT_SYSTEM.SWITCH_TO_MAIN_ACCOUNT']}
+								</EditWrapper>
+							</Button>
+						</>
+					)}
+				</div>
+			) : (
+				<div
+					className={
+						isValidField?.isDisbaleWithdraw
+							? 'withdraw-deposit-disable mt-1'
+							: 'mt-1'
+					}
+				>
+					<div>
+						<div className="d-flex">
+							<div className="custom-field d-flex flex-column align-items-center">
+								<span className="custom-step-selected">1</span>
+								<span
+									className={`custom-line${
+										currStep.stepTwo ? '-selected' : ''
+									} ${
+										selectedMethod ===
+											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] &&
+										isMobile &&
+										isMobile &&
+										'custom-line-selected-mobile '
+									}`}
+								></span>
+							</div>
+							<div
+								className={
+									isMobile
+										? 'd-flex w-100 flex-column'
+										: 'd-flex w-100 justify-content-between'
+								}
+							>
+								<div className="mt-2 ml-5 withdraw-main-label-selected">
+									{renderLabel('WITHDRAWALS_FORM_METHOD')}
+								</div>
 								<div
 									className={
 										isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
 									}
 								>
-									<div
-										className={
-											coinLength?.length === 1 &&
-											isActiveWithdrawNetwork?.active === false
-												? 'd-flex withdraw-network-field select-field-disabled'
-												: 'd-flex withdraw-network-field'
-										}
-									>
+									<div className="d-flex">
 										<Select
-											showSearch={true}
-											filterOption={filterNetworkOptions}
-											placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-											className={`custom-select-input-style elevated ${
-												coinLength && coinLength.length > 1
-													? 'select-field'
-													: 'disabled'
-											}`}
-											dropdownClassName="custom-select-style withdraw-selected-network"
+											className="custom-select-input-style elevated select-field"
+											dropdownClassName="custom-select-style"
 											suffixIcon={<CaretDownOutlined />}
-											allowClear={selectedAsset?.networkData ? true : false}
-											onChange={onHandleChangeNetwork}
+											placeholder={STRINGS['WITHDRAW_PAGE.METHOD_FIELD_LABEL']}
+											onChange={onHandleChangeMethod}
 											value={
-												defaultCurrency &&
-												!isValidField?.isPinnedAssets &&
-												coinLength?.length < 1 ? (
-													renderNetworkWithLabel(
-														coins[defaultNetwork]?.icon_id,
-														defaultNetwork
-													)
-												) : coinLength && coinLength.length <= 1 ? (
-													<span className="d-flex">
-														{renderNetworkWithLabel(networkIcon, network)}
-														{coins[network] &&
-														currencyNetwork(network)?.active !== false ? (
-															<span className="ml-1 secondary-text">
-																(
-																<span>
-																	{calculateFeeMarkup(
-																		selectedAsset?.selectedCurrency,
-																		network,
-																		coins,
-																		coin_customizations
-																	)}
-																</span>
-																<span className="ml-1">
-																	{calculateFeeCoin(
-																		selectedAsset?.selectedCurrency,
-																		network,
-																		coins
-																	)?.toUpperCase()}
-																</span>
-																)
-															</span>
-														) : (
-															<EditWrapper stringId="LEVELS.BLOCKED">
-																<span className="ml-1 secondary-text">
-																	({STRINGS['LEVELS.BLOCKED']})
-																</span>
-															</EditWrapper>
-														)}
-													</span>
-												) : coinLength && coinLength.length > 1 ? (
-													getWithdrawNetworkOptions ? (
-														<span className="d-flex">
-															{renderNetworkWithLabel(
-																networkOptionsIcon,
-																getWithdrawNetworkOptions
-															)}
-															{coins[getWithdrawNetworkOptions] &&
-															currencyNetwork(getWithdrawNetworkOptions)
-																?.active !== false ? (
-																<span className="ml-1 secondary-text">
-																	(
-																	<span>
-																		{calculateFeeMarkup(
-																			selectedAsset?.selectedCurrency,
-																			getWithdrawNetworkOptions,
-																			coins,
-																			coin_customizations
-																		)}
-																	</span>
-																	<span className="ml-1">
-																		{calculateFeeCoin(
-																			selectedAsset?.selectedCurrency,
-																			getWithdrawNetworkOptions,
-																			coins
-																		)?.toUpperCase()}
-																	</span>
-																	)
-																</span>
-															) : (
-																<EditWrapper stringId="LEVELS.BLOCKED">
-																	<span className="ml-1 secondary-text">
-																		({STRINGS['LEVELS.BLOCKED']})
-																	</span>
-																</EditWrapper>
-															)}
-														</span>
-													) : null
-												) : (
-													coins[getWithdrawCurrency]?.symbol.toUpperCase()
-												)
+												selectedMethod ===
+													STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+												(selectedMethod && selectedMethod === 'Address')
+													? STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS']
+													: selectedMethod
 											}
-											disabled={
-												(coinLength && coinLength.length === 1) ||
-												!(coinLength && coinLength.length)
-											}
-											onClear={() => onHandleClear('network')}
 											getPopupContainer={handlePopupContainer}
 										>
-											{coinLength?.map((data, inx) => {
-												const getSelectedSymbol = data;
-												const isActiveNetwork =
-													currencyNetwork(getSelectedSymbol)?.active !== false;
-												return (
-													<Option
-														key={inx}
-														value={data}
-														disabled={!isActiveNetwork}
-													>
-														<div className="d-flex withdraw-network-options">
-															<div>
-																{renderNetworkWithLabel(
-																	coins[data]?.icon_id,
-																	data
-																)}
-															</div>
-															{isActiveNetwork ? (
-																<span className="secondary-text">
-																	{calculateFeeMarkup(
-																		selectedAsset?.selectedCurrency,
-																		data,
-																		coins,
-																		coin_customizations
-																	)}
-																	<span className="ml-1">
-																		{calculateFeeCoin(
-																			selectedAsset?.selectedCurrency,
-																			data,
-																			coins
-																		)?.toUpperCase()}
-																	</span>
-																</span>
-															) : (
-																<EditWrapper stringId="LEVELS.BLOCKED">
-																	<span className="ml-1 secondary-text">
-																		({STRINGS['LEVELS.BLOCKED']})
-																	</span>
-																</EditWrapper>
-															)}
-														</div>
-													</Option>
-												);
-											})}
+											{methodOptions.map((val, inx) => (
+												<Option key={inx} value={val}>
+													{val}
+												</Option>
+											))}
 										</Select>
-										{selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
-										isEmailAndAddress &&
-										renderNetwork ? (
+										{currStep.stepTwo && (
 											<CheckOutlined className="mt-3 ml-3" />
-										) : (
-											<CloseOutlined className="mt-3 ml-3" />
 										)}
 									</div>
-									<div className="d-flex mt-2 warning-text">
-										<ExclamationCircleFilled className="mt-1" />
-										<div className="ml-2 w-75">
-											{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+									{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] && (
+										<div className="email-text">
+											{renderLabel('WITHDRAWALS_FORM_MAIL_INFO')}
 										</div>
-									</div>
+									)}
 								</div>
-							)}
+							</div>
 						</div>
 					</div>
-				</div>
-			)}
-			<div
-				className={`${
-					hasTag.includes(getWithdrawCurrency) &&
-					selectedMethod &&
-					selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
-					'destination-field'
-				} ${isMobile && isMobile && 'destination-field-mobile'}`}
-			>
-				<div className="d-flex h-25 ">
+					<div>
+						<div className="d-flex">
+							<div className="custom-field d-flex flex-column align-items-center">
+								<span
+									className={`custom-step${
+										currStep.stepTwo ? '-selected' : ''
+									}`}
+								>
+									2
+								</span>
+								<span
+									className={`custom-line${
+										currStep.stepTwo ? '-selected' : ''
+									}`}
+								></span>
+							</div>
+							<div
+								className={
+									isMobile
+										? 'd-flex w-100 flex-column'
+										: 'd-flex w-100 justify-content-between'
+								}
+							>
+								<div
+									className={`mt-2 ml-5 withdraw-main-label${
+										currStep.stepTwo ? '-selected' : ''
+									}`}
+								>
+									{renderLabel('ACCORDIAN.SELECT_ASSET')}
+								</div>
+								<div
+									className={
+										isMobile ? 'select-wrapper mobile-view' : 'select-wrapper'
+									}
+								>
+									{currStep.stepTwo && (
+										<div>
+											<div className="mb-3 d-flex">
+												{topAssets.map((data, inx) => {
+													return (
+														<span
+															key={inx}
+															className={`currency-label ${
+																selectedAsset?.selectedCurrency === data
+																	? 'opacity-100'
+																	: 'opacity-30'
+															}`}
+															onClick={() => onHandleChangeSelect(data, true)}
+														>
+															{renderPinnedAsset(data)}
+														</span>
+													);
+												})}
+											</div>
+											<div className="d-flex">
+												<Select
+													showSearch={true}
+													filterOption={filterCoinOptions}
+													className="custom-select-input-style elevated select-field"
+													dropdownClassName="custom-select-style"
+													suffixIcon={<CaretDownOutlined />}
+													placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
+													allowClear={
+														selectedAsset?.selectedCurrency ? true : false
+													}
+													value={
+														selectedAsset?.selectedCurrency &&
+														`${
+															coins[selectedAsset?.selectedCurrency].fullname
+														} (${selectedAsset?.selectedCurrency.toUpperCase()})`
+													}
+													onClear={() => onHandleClear('coin')}
+													onSelect={(e) => {
+														const curr = onHandleSymbol(e);
+														onHandleChangeSelect(curr);
+													}}
+													getPopupContainer={handlePopupContainer}
+												>
+													{Object.entries(coins).map(
+														([_, { symbol, fullname, icon_id }]) => (
+															<Option
+																key={`${fullname} (${symbol.toUpperCase()})`}
+																value={`${fullname} (${symbol.toUpperCase()})`}
+															>
+																<div
+																	className="d-flex gap-1"
+																	onClick={() => onHandleChangeSelect(symbol)}
+																>
+																	<Coin iconId={icon_id} type="CS3" />
+																	<div>{`${fullname} (${symbol.toUpperCase()})`}</div>
+																</div>
+															</Option>
+														)
+													)}
+												</Select>
+												{selectedMethod ===
+												STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
+													isEmailAndAddress && renderNetwork ? (
+														<CheckOutlined className="mt-3 ml-3" />
+													) : (
+														<CloseOutlined className="mt-3 ml-3" />
+													)
+												) : currStep.stepThree ||
+												  (selectedAsset?.selectedCurrency &&
+														selectedMethod) ? (
+													<CheckOutlined className="mt-3 ml-3" />
+												) : (
+													<CloseOutlined className="mt-3 ml-3" />
+												)}
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+					{selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] && (
+						<div>
+							<div className="d-flex h-25">
+								<div className="custom-field d-flex flex-column align-items-center">
+									<span
+										className={`custom-step${
+											isEmailAndAddress || selectedAsset?.selectedCurrency
+												? '-selected'
+												: ''
+										}`}
+									>
+										3
+									</span>
+									<span
+										className={`custom-line${
+											currStep.stepThree ||
+											(selectedAsset?.selectedCurrency && selectedMethod)
+												? '-selected'
+												: ''
+										} ${isMobile && 'custom-line-network-selected '}`}
+									></span>
+								</div>
+								<div
+									className={
+										isMobile
+											? 'd-flex w-100 flex-column'
+											: 'd-flex w-100 justify-content-between'
+									}
+								>
+									<div
+										className={`mt-2 ml-5 withdraw-main-label${
+											currStep.stepThree ||
+											(selectedAsset?.selectedCurrency && selectedMethod)
+												? '-selected'
+												: ''
+										}`}
+									>
+										{renderLabel('ACCORDIAN.SELECT_NETWORK')}
+									</div>
+									{(currStep.stepThree ||
+										(selectedAsset?.selectedCurrency && selectedMethod)) && (
+										<div
+											className={
+												isMobile
+													? 'select-wrapper mobile-view'
+													: 'select-wrapper'
+											}
+										>
+											<div
+												className={
+													coinLength?.length === 1 &&
+													isActiveWithdrawNetwork?.active === false
+														? 'd-flex withdraw-network-field select-field-disabled'
+														: 'd-flex withdraw-network-field'
+												}
+											>
+												<Select
+													showSearch={true}
+													filterOption={filterNetworkOptions}
+													placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
+													className={`custom-select-input-style elevated ${
+														coinLength && coinLength.length > 1
+															? 'select-field'
+															: 'disabled'
+													}`}
+													dropdownClassName="custom-select-style withdraw-selected-network"
+													suffixIcon={<CaretDownOutlined />}
+													allowClear={selectedAsset?.networkData ? true : false}
+													onChange={onHandleChangeNetwork}
+													value={
+														defaultCurrency &&
+														!isValidField?.isPinnedAssets &&
+														coinLength?.length < 1 ? (
+															renderNetworkWithLabel(
+																coins[defaultNetwork]?.icon_id,
+																defaultNetwork
+															)
+														) : coinLength && coinLength.length <= 1 ? (
+															<span className="d-flex">
+																{renderNetworkWithLabel(networkIcon, network)}
+																{coins[network] &&
+																currencyNetwork(network)?.active !== false ? (
+																	<span className="ml-1 secondary-text">
+																		(
+																		<span>
+																			{calculateFeeMarkup(
+																				selectedAsset?.selectedCurrency,
+																				network,
+																				coins,
+																				coin_customizations
+																			)}
+																		</span>
+																		<span className="ml-1">
+																			{calculateFeeCoin(
+																				selectedAsset?.selectedCurrency,
+																				network,
+																				coins
+																			)?.toUpperCase()}
+																		</span>
+																		)
+																	</span>
+																) : (
+																	<EditWrapper stringId="LEVELS.BLOCKED">
+																		<span className="ml-1 secondary-text">
+																			({STRINGS['LEVELS.BLOCKED']})
+																		</span>
+																	</EditWrapper>
+																)}
+															</span>
+														) : coinLength && coinLength.length > 1 ? (
+															getWithdrawNetworkOptions ? (
+																<span className="d-flex">
+																	{renderNetworkWithLabel(
+																		networkOptionsIcon,
+																		getWithdrawNetworkOptions
+																	)}
+																	{coins[getWithdrawNetworkOptions] &&
+																	currencyNetwork(getWithdrawNetworkOptions)
+																		?.active !== false ? (
+																		<span className="ml-1 secondary-text">
+																			(
+																			<span>
+																				{calculateFeeMarkup(
+																					selectedAsset?.selectedCurrency,
+																					getWithdrawNetworkOptions,
+																					coins,
+																					coin_customizations
+																				)}
+																			</span>
+																			<span className="ml-1">
+																				{calculateFeeCoin(
+																					selectedAsset?.selectedCurrency,
+																					getWithdrawNetworkOptions,
+																					coins
+																				)?.toUpperCase()}
+																			</span>
+																			)
+																		</span>
+																	) : (
+																		<EditWrapper stringId="LEVELS.BLOCKED">
+																			<span className="ml-1 secondary-text">
+																				({STRINGS['LEVELS.BLOCKED']})
+																			</span>
+																		</EditWrapper>
+																	)}
+																</span>
+															) : null
+														) : (
+															coins[getWithdrawCurrency]?.symbol.toUpperCase()
+														)
+													}
+													disabled={
+														(coinLength && coinLength.length === 1) ||
+														!(coinLength && coinLength.length)
+													}
+													onClear={() => onHandleClear('network')}
+													getPopupContainer={handlePopupContainer}
+												>
+													{coinLength?.map((data, inx) => {
+														const getSelectedSymbol = data;
+														const isActiveNetwork =
+															currencyNetwork(getSelectedSymbol)?.active !==
+															false;
+														return (
+															<Option
+																key={inx}
+																value={data}
+																disabled={!isActiveNetwork}
+															>
+																<div className="d-flex withdraw-network-options">
+																	<div>
+																		{renderNetworkWithLabel(
+																			coins[data]?.icon_id,
+																			data
+																		)}
+																	</div>
+																	{isActiveNetwork ? (
+																		<span className="secondary-text">
+																			{calculateFeeMarkup(
+																				selectedAsset?.selectedCurrency,
+																				data,
+																				coins,
+																				coin_customizations
+																			)}
+																			<span className="ml-1">
+																				{calculateFeeCoin(
+																					selectedAsset?.selectedCurrency,
+																					data,
+																					coins
+																				)?.toUpperCase()}
+																			</span>
+																		</span>
+																	) : (
+																		<EditWrapper stringId="LEVELS.BLOCKED">
+																			<span className="ml-1 secondary-text">
+																				({STRINGS['LEVELS.BLOCKED']})
+																			</span>
+																		</EditWrapper>
+																	)}
+																</div>
+															</Option>
+														);
+													})}
+												</Select>
+												{selectedMethod !==
+													STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
+												isEmailAndAddress &&
+												renderNetwork ? (
+													<CheckOutlined className="mt-3 ml-3" />
+												) : (
+													<CloseOutlined className="mt-3 ml-3" />
+												)}
+											</div>
+											<div className="d-flex mt-2 warning-text">
+												<ExclamationCircleFilled className="mt-1" />
+												<div className="ml-2 w-75">
+													{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
+												</div>
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
+					)}
 					<div
-						className={`custom-field d-flex flex-column align-items-center ${
+						className={`${
 							hasTag.includes(getWithdrawCurrency) &&
 							selectedMethod &&
 							selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
 							'destination-field'
 						} ${isMobile && isMobile && 'destination-field-mobile'}`}
 					>
-						<span
-							className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
-						>
-							{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? 3 : 4}
-						</span>
-						<span
-							className={`custom-line${isEmailAndAddress ? '-selected' : ''} ${
-								isMobile && 'custom-line-selected-mobile'
-							}`}
-						></span>
-					</div>
-					<div
-						className={
-							isMobile
-								? 'd-flex w-100 flex-column'
-								: 'd-flex w-100 justify-content-between'
-						}
-					>
-						<div
-							className={`mt-2 ml-5 withdraw-main-label${
-								isEmailAndAddress ? '-selected' : ''
-							}`}
-						>
-							{renderLabel(
-								selectedMethod ===
-									STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
-									selectedMethod === 'Address'
-									? 'ACCORDIAN.DESTINATION'
-									: 'FORM_FIELDS.EMAIL_LABEL'
-							)}
-						</div>
-						<div className="destination-field-wrapper">
-							{isEmailAndAddress &&
-								renderNetwork &&
-								getActiveWithdraw &&
-								getActiveWithdraw && (
-									<div
-										className={
-											isMobile
-												? 'd-flex flex-row select-wrapper mobile-view'
-												: 'd-flex flex-row select-wrapper'
-										}
-									>
-										{selectedMethod ===
+						<div className="d-flex h-25 ">
+							<div
+								className={`custom-field d-flex flex-column align-items-center ${
+									hasTag.includes(getWithdrawCurrency) &&
+									selectedMethod &&
+									selectedMethod !== STRINGS['FORM_FIELDS.EMAIL_LABEL'] &&
+									'destination-field'
+								} ${isMobile && isMobile && 'destination-field-mobile'}`}
+							>
+								<span
+									className={`custom-step${
+										isEmailAndAddress ? '-selected' : ''
+									}`}
+								>
+									{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+										? 3
+										: 4}
+								</span>
+								<span
+									className={`custom-line${
+										isEmailAndAddress ? '-selected' : ''
+									} ${isMobile && 'custom-line-selected-mobile'}`}
+								></span>
+							</div>
+							<div
+								className={
+									isMobile
+										? 'd-flex w-100 flex-column'
+										: 'd-flex w-100 justify-content-between'
+								}
+							>
+								<div
+									className={`mt-2 ml-5 withdraw-main-label${
+										isEmailAndAddress ? '-selected' : ''
+									}`}
+								>
+									{renderLabel(
+										selectedMethod ===
 											STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
-										selectedMethod === 'Address' ? (
-											<div className="destination-input-wrapper">
-												{getAddress && getAddress?.length === 0 && (
+											selectedMethod === 'Address'
+											? 'ACCORDIAN.DESTINATION'
+											: 'FORM_FIELDS.EMAIL_LABEL'
+									)}
+								</div>
+								<div className="destination-field-wrapper">
+									{isEmailAndAddress &&
+										renderNetwork &&
+										getActiveWithdraw &&
+										getActiveWithdraw && (
+											<div
+												className={
+													isMobile
+														? 'd-flex flex-row select-wrapper mobile-view'
+														: 'd-flex flex-row select-wrapper'
+												}
+											>
+												{selectedMethod ===
+													STRINGS['WITHDRAW_PAGE.WITHDRAWAL_CONFIRM_ADDRESS'] ||
+												selectedMethod === 'Address' ? (
+													<div className="destination-input-wrapper">
+														{getAddress && getAddress?.length === 0 && (
+															<Input
+																className="destination-input-field destination-input-address-field"
+																onChange={(e) =>
+																	onHandleAddress(e.target.value, 'address')
+																}
+																value={getWithdrawAddress}
+																placeholder={
+																	STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
+																}
+																suffix={renderScanIcon(onHandleScan)}
+															></Input>
+														)}
+														{getAddress && getAddress?.length > 0 && (
+															<Select
+																placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
+																className="custom-select-input-style elevated select-field destination-select-field"
+																dropdownClassName="custom-select-style"
+																suffixIcon={<CaretDownOutlined />}
+																allowClear={
+																	selectedAsset?.addressField ? true : false
+																}
+																value={selectedAsset?.addressField}
+																onChange={onchangeAddressField}
+																onDropdownVisibleChange={
+																	handleDropdownVisibleChange
+																}
+																onClear={() => onHandleClear('address')}
+																getPopupContainer={handlePopupContainer}
+															>
+																{selectAddressField?.map((data) => {
+																	return (
+																		<Option key={data?.value}>
+																			<div
+																				className={
+																					data?.value === 'View address book'
+																						? 'withdraw-dropdown-address'
+																						: data?.value !== 'New Address' &&
+																						  data?.value !==
+																								'View address book' &&
+																						  'withdraw-dropdown-address-options'
+																				}
+																			>
+																				{data?.label}
+																			</div>
+																		</Option>
+																	);
+																})}
+															</Select>
+														)}
+														{selectedAsset.addressField === 'New Address' && (
+															<div className="d-flex">
+																<Input
+																	className="destination-input-field destination-input-address-field"
+																	onChange={(e) =>
+																		onHandleAddress(e.target.value, 'address')
+																	}
+																	value={getWithdrawAddress}
+																	placeholder={
+																		STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
+																	}
+																	suffix={renderScanIcon(onHandleScan)}
+																></Input>
+															</div>
+														)}
+														{!selectedAsset.addressField &&
+															!selectedAsset.addressField && (
+																<div className="blue-link address-link">
+																	<Link to="/wallet/address-book">
+																		<EditWrapper stringId="ADDRESS_BOOK.MANAGE_ADDRESS_BOOK">
+																			{
+																				STRINGS[
+																					'ADDRESS_BOOK.MANAGE_ADDRESS_BOOK'
+																				]
+																			}
+																		</EditWrapper>
+																	</Link>
+																</div>
+															)}
+													</div>
+												) : (
 													<Input
-														className="destination-input-field destination-input-address-field"
+														className="destination-input-field"
 														onChange={(e) =>
-															onHandleAddress(e.target.value, 'address')
+															onHandleAddress(e.target.value, 'email')
 														}
-														value={getWithdrawAddress}
+														value={receiverWithdrawalEmail}
 														placeholder={
-															STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
+															STRINGS['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
 														}
-														suffix={renderScanIcon(onHandleScan)}
 													></Input>
 												)}
-												{getAddress && getAddress?.length > 0 && (
-													<Select
-														placeholder={STRINGS['WITHDRAW_PAGE.SELECT']}
-														className="custom-select-input-style elevated select-field destination-select-field"
-														dropdownClassName="custom-select-style"
-														suffixIcon={<CaretDownOutlined />}
-														allowClear={
-															selectedAsset?.addressField ? true : false
-														}
-														value={selectedAsset?.addressField}
-														onChange={onchangeAddressField}
-														onDropdownVisibleChange={
-															handleDropdownVisibleChange
-														}
-														onClear={() => onHandleClear('address')}
-														getPopupContainer={handlePopupContainer}
-													>
-														{selectAddressField?.map((data) => {
-															return (
-																<Option key={data?.value}>
-																	<div
-																		className={
-																			data?.value === 'View address book'
-																				? 'withdraw-dropdown-address'
-																				: data?.value !== 'New Address' &&
-																				  data?.value !== 'View address book' &&
-																				  'withdraw-dropdown-address-options'
-																		}
-																	>
-																		{data?.label}
-																	</div>
-																</Option>
-															);
-														})}
-													</Select>
+												{selectedMethod ===
+												STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
+													isValidField?.isValidEmail ? (
+														<CheckOutlined className="mt-3 ml-3" />
+													) : (
+														<CloseOutlined className="mt-3 ml-3" />
+													)
+												) : isValidAddress ? (
+													<CheckOutlined className="mt-3 ml-3" />
+												) : (
+													<CloseOutlined className="mt-3 ml-3" />
 												)}
-												{selectedAsset.addressField === 'New Address' && (
-													<div className="d-flex">
-														<Input
-															className="destination-input-field destination-input-address-field"
-															onChange={(e) =>
-																onHandleAddress(e.target.value, 'address')
-															}
-															value={getWithdrawAddress}
-															placeholder={
-																STRINGS['WITHDRAW_PAGE.WITHDRAW_ADDRESS']
-															}
-															suffix={renderScanIcon(onHandleScan)}
-														></Input>
-													</div>
-												)}
-												{!selectedAsset.addressField &&
-													!selectedAsset.addressField && (
-														<div className="blue-link address-link">
-															<Link to="/wallet/address-book">
-																<EditWrapper stringId="ADDRESS_BOOK.MANAGE_ADDRESS_BOOK">
-																	{STRINGS['ADDRESS_BOOK.MANAGE_ADDRESS_BOOK']}
-																</EditWrapper>
-															</Link>
-														</div>
-													)}
 											</div>
-										) : (
-											<Input
-												className="destination-input-field"
-												onChange={(e) =>
-													onHandleAddress(e.target.value, 'email')
-												}
-												value={receiverWithdrawalEmail}
-												placeholder={
-													STRINGS['WITHDRAW_PAGE.WITHDRAW_EMAIL_ADDRESS']
-												}
-											></Input>
 										)}
-										{selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL'] ? (
-											isValidField?.isValidEmail ? (
-												<CheckOutlined className="mt-3 ml-3" />
-											) : (
-												<CloseOutlined className="mt-3 ml-3" />
-											)
-										) : isValidAddress ? (
-											<CheckOutlined className="mt-3 ml-3" />
-										) : (
-											<CloseOutlined className="mt-3 ml-3" />
-										)}
-									</div>
-								)}
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			{isCondition && (
-				<div>
-					<div className="d-flex h-25">
-						<div className="custom-field d-flex flex-column align-items-center">
-							<span
-								className={`custom-line-extra-large ${
-									isEmailAndAddress ? 'custom-line-extra-large-active' : ''
-								}`}
-							></span>
-							<span
-								className={`custom-step${isEmailAndAddress ? '-selected' : ''}`}
-							>
-								5
-							</span>
-							<span
-								className={`custom-line${
-									isEmailAndAddress ? '-selected-large' : ''
-								}`}
-							></span>
-						</div>
-						<div
-							className={
-								isMobile
-									? 'd-flex w-100 flex-column'
-									: 'd-flex w-100 justify-content-between'
-							}
-						>
-							<div
-								className={`mt-3 pt-4 ml-5 withdraw-main-label${
-									isEmailAndAddress ? '-selected' : ''
-								}`}
-							>
-								{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
-							</div>
-							{isEmailAndAddress && (
+					{isCondition && (
+						<div>
+							<div className="d-flex h-25">
+								<div className="custom-field d-flex flex-column align-items-center">
+									<span
+										className={`custom-line-extra-large ${
+											isEmailAndAddress ? 'custom-line-extra-large-active' : ''
+										}`}
+									></span>
+									<span
+										className={`custom-step${
+											isEmailAndAddress ? '-selected' : ''
+										}`}
+									>
+										5
+									</span>
+									<span
+										className={`custom-line${
+											isEmailAndAddress ? '-selected-large' : ''
+										}`}
+									></span>
+								</div>
 								<div
 									className={
 										isMobile
-											? 'd-flex select-wrapper mobile-view'
-											: 'd-flex select-wrapper mt-4'
+											? 'd-flex w-100 flex-column'
+											: 'd-flex w-100 justify-content-between'
 									}
 								>
-									{/* <div className="d-flex justify-content-end width-80 mb-2">
+									<div
+										className={`mt-3 pt-4 ml-5 withdraw-main-label${
+											isEmailAndAddress ? '-selected' : ''
+										}`}
+									>
+										{renderLabel('ACCORDIAN.OPTIONAL_TAG')}
+									</div>
+									{isEmailAndAddress && (
+										<div
+											className={
+												isMobile
+													? 'd-flex select-wrapper mobile-view'
+													: 'd-flex select-wrapper mt-4'
+											}
+										>
+											{/* <div className="d-flex justify-content-end width-80 mb-2">
 										<div className={isCheck ? 'opacity-100' : 'opacity-30'}>
 											<Checkbox
 												className="pr-3 check-optional"
@@ -1447,33 +1522,35 @@ const RenderWithdraw = ({
 											<span>No Tag</span>
 										</div>
 									</div> */}
-									<div>
-										<Input
-											onChange={(e) => onHandleOptionalTag(e.target.value)}
-											value={optionalTag}
-											className="destination-input-field"
-											type={
-												selectedAsset === 'xrp' || selectedAsset === 'xlm'
-													? 'number'
-													: 'text'
-											}
-											// disabled={isCheck}
-										></Input>
-										{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
-									</div>
-									<div className="d-flex mt-2 warning-text">
-										<ExclamationCircleFilled className="mt-1" />
-										<div className="ml-2 w-75">
-											{renderLabel('WITHDRAWALS_FORM_DESTINATION_TAG_WARNING')}
+											<div>
+												<Input
+													onChange={(e) => onHandleOptionalTag(e.target.value)}
+													value={optionalTag}
+													className="destination-input-field"
+													type={
+														selectedAsset === 'xrp' || selectedAsset === 'xlm'
+															? 'number'
+															: 'text'
+													}
+													// disabled={isCheck}
+												></Input>
+												{optionalTag && <CheckOutlined className="mt-3 ml-3" />}
+											</div>
+											<div className="d-flex mt-2 warning-text">
+												<ExclamationCircleFilled className="mt-1" />
+												<div className="ml-2 w-75">
+													{renderLabel(
+														'WITHDRAWALS_FORM_DESTINATION_TAG_WARNING'
+													)}
+												</div>
+											</div>
 										</div>
-									</div>
+									)}
 								</div>
-							)}
+							</div>
 						</div>
-					</div>
-				</div>
-			)}
-			{/* <Modal
+					)}
+					{/* <Modal
 				title={STRINGS['WITHDRAW_PAGE.WARNING']}
 				visible={isWarning}
 				onCancel={() => setIsWarning(false)}
@@ -1492,172 +1569,186 @@ const RenderWithdraw = ({
 			>
 				{renderRemoveTag()}
 			</Modal> */}
-			<div>
-				<div className="d-flex h-25">
-					<div className="custom-field d-flex flex-column align-items-center">
-						<span
-							className={`custom-step${renderAmountField ? '-selected' : ''}`}
-						>
-							{isCondition
-								? 6
-								: selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
-								? 4
-								: 5}
-						</span>
-						<span
-							className={renderAmountField ? 'custom-line-selected-end' : ''}
-						></span>
-					</div>
-					<div
-						className={
-							isMobile
-								? 'd-flex w-100 flex-column'
-								: 'd-flex w-100 justify-content-between'
-						}
-					>
-						<div className=" d-flex mt-2 ml-5">
-							<span className="amount-field-icon">
-								<Coin iconId={iconId} type="CS4" />
-							</span>
-							<span
-								className={`${
-									getWithdrawCurrency && `ml-2`
-								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
-							>
-								{getWithdrawCurrency.toUpperCase()}
-							</span>
-							<div
-								className={`${
-									getWithdrawCurrency && `ml-2`
-								} withdraw-main-label${renderAmountField ? '-selected' : ''}`}
-							>
-								{renderLabel('ACCORDIAN.AMOUNT')}
+					<div>
+						<div className="d-flex h-25">
+							<div className="custom-field d-flex flex-column align-items-center">
+								<span
+									className={`custom-step${
+										renderAmountField ? '-selected' : ''
+									}`}
+								>
+									{isCondition
+										? 6
+										: selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
+										? 4
+										: 5}
+								</span>
+								<span
+									className={
+										renderAmountField ? 'custom-line-selected-end' : ''
+									}
+								></span>
 							</div>
-						</div>
-						{renderAmountField && (
 							<div
 								className={
 									isMobile
-										? 'd-flex flex-column select-wrapper mobile-view'
-										: 'd-flex flex-column select-wrapper'
+										? 'd-flex w-100 flex-column'
+										: 'd-flex w-100 justify-content-between'
 								}
 							>
-								<div className="d-flex">
-									<Input
-										disabled={getWithdrawAmount < 0}
-										onChange={(e) => onHandleAmount(e.target.value)}
-										value={getWithdrawAmount}
-										className={
-											(isErrorMaxAmountField && isErrorMinAmountField) ||
-											(maxAmount &&
-												maxAmount &&
-												isErrorMinAmountField &&
-												isErrorMinAmountField)
-												? `destination-input-field field-error`
-												: `destination-input-field`
-										}
-										suffix={renderAmountIcon()}
-										type="number"
-										placeholder={STRINGS['WITHDRAW_PAGE.ENTER_AMOUNT']}
-									></Input>
-									{!isAmount && !isErrorMinAmountField ? (
-										<CheckOutlined className="mt-3 ml-3" />
-									) : (
-										<CloseOutlined className="mt-3 ml-3" />
-									)}
-								</div>
-								{isErrorMaxAmountField && (
-									<div className="d-flex mt-2 warning_text">
-										<ExclamationCircleFilled className="mt-1 mr-1" />
-										{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
-									</div>
-								)}
-								{maxAmount && maxAmount && isErrorMinAmountField ? (
-									<div className="d-flex mt-2 warning_text">
-										<ExclamationCircleFilled className="mt-1 mr-1" />
-										{STRINGS.formatString(
-											STRINGS['WITHDRAW_PAGE.MIN_AMOUNT_WARNING_INFO'],
-											minAmount,
-											selectedAsset
-										)}
-									</div>
-								) : null}
-								{!maxAmount && !withdrawalLimitError && maxAmount === 0 && (
-									<div className="d-flex mt-2 warning-text">
-										<ExclamationCircleFilled className="mt-1 mr-1" />
-										{renderLabel('WITHDRAW_PAGE.ZERO_BALANCE')}
-									</div>
-								)}
-								{withdrawalLimitError && (
-									<div className="d-flex mt-2 warning_text">
-										<ExclamationCircleFilled className="mt-1 mr-1" />
-										{withdrawalLimitError}
-									</div>
-								)}
-
-								{currStep.stepFive && (
-									<div
-										className={`d-flex h-25 ${
-											!isMobile ? 'bottom-wrapper' : ''
+								<div className=" d-flex mt-2 ml-5">
+									<span className="amount-field-icon">
+										<Coin iconId={iconId} type="CS4" />
+									</span>
+									<span
+										className={`${
+											getWithdrawCurrency && `ml-2`
+										} withdraw-main-label${
+											renderAmountField ? '-selected' : ''
 										}`}
 									>
-										<div className="custom-field d-flex flex-column align-items-center line-wrapper">
-											<span
-												className={
-													currStep.stepFive ? 'custom-line-selected-end' : ''
-												}
-											></span>
-										</div>
-										<div className="bottom-content-wrapper">
-											<div className="bottom-content">
-												{renderEstimatedValueAndFee(
-													renderLabel,
-													'ACCORDIAN.ESTIMATED',
-													estimatedFormat
-												)}
-												<span>--</span>
-												{renderEstimatedValueAndFee(
-													renderLabel,
-													'ACCORDIAN.TRANSACTION_FEE',
-													withdrawFeeFormat
-												)}
-											</div>
-										</div>
+										{getWithdrawCurrency.toUpperCase()}
+									</span>
+									<div
+										className={`${
+											getWithdrawCurrency && `ml-2`
+										} withdraw-main-label${
+											renderAmountField ? '-selected' : ''
+										}`}
+									>
+										{renderLabel('ACCORDIAN.AMOUNT')}
 									</div>
-								)}
-								{currStep.stepFive && (
-									<div className="d-flex h-25 bottom-btn-wrapper">
-										{isCondition && (
-											<div className="custom-field d-flex flex-column align-items-center line-wrapper">
-												<span
-													className={
-														currStep.stepFive ? 'custom-line-selected-end' : ''
-													}
-												></span>
+								</div>
+								{renderAmountField && (
+									<div
+										className={
+											isMobile
+												? 'd-flex flex-column select-wrapper mobile-view'
+												: 'd-flex flex-column select-wrapper'
+										}
+									>
+										<div className="d-flex">
+											<Input
+												disabled={getWithdrawAmount < 0}
+												onChange={(e) => onHandleAmount(e.target.value)}
+												value={getWithdrawAmount}
+												className={
+													(isErrorMaxAmountField && isErrorMinAmountField) ||
+													(maxAmount &&
+														maxAmount &&
+														isErrorMinAmountField &&
+														isErrorMinAmountField)
+														? `destination-input-field field-error`
+														: `destination-input-field`
+												}
+												suffix={renderAmountIcon()}
+												type="number"
+												placeholder={STRINGS['WITHDRAW_PAGE.ENTER_AMOUNT']}
+											></Input>
+											{!isAmount && !isErrorMinAmountField ? (
+												<CheckOutlined className="mt-3 ml-3" />
+											) : (
+												<CloseOutlined className="mt-3 ml-3" />
+											)}
+										</div>
+										{isErrorMaxAmountField && (
+											<div className="d-flex mt-2 warning_text">
+												<ExclamationCircleFilled className="mt-1 mr-1" />
+												{renderLabel('WITHDRAW_PAGE.MAX_AMOUNT_WARNING_INFO')}
 											</div>
 										)}
-										{isCondition && (
-											<span className="cross-line-selected"></span>
+										{maxAmount && maxAmount && isErrorMinAmountField ? (
+											<div className="d-flex mt-2 warning_text">
+												<ExclamationCircleFilled className="mt-1 mr-1" />
+												{STRINGS.formatString(
+													STRINGS['WITHDRAW_PAGE.MIN_AMOUNT_WARNING_INFO'],
+													minAmount,
+													selectedAsset
+												)}
+											</div>
+										) : null}
+										{!maxAmount && !withdrawalLimitError && maxAmount === 0 && (
+											<div className="d-flex mt-2 warning-text">
+												<ExclamationCircleFilled className="mt-1 mr-1" />
+												{renderLabel('WITHDRAW_PAGE.ZERO_BALANCE')}
+											</div>
 										)}
-										<div className="withdraw-btn-wrapper">
-											<Button
-												disabled={
-													isAmount ||
-													(isErrorMinAmountField && isErrorMinAmountField)
-												}
-												onClick={onOpenDialog}
-												className="mb-3"
+										{withdrawalLimitError && (
+											<div className="d-flex mt-2 warning_text">
+												<ExclamationCircleFilled className="mt-1 mr-1" />
+												{withdrawalLimitError}
+											</div>
+										)}
+
+										{currStep.stepFive && (
+											<div
+												className={`d-flex h-25 ${
+													!isMobile ? 'bottom-wrapper' : ''
+												}`}
 											>
-												{STRINGS['WITHDRAWALS_BUTTON_TEXT'].toUpperCase()}
-											</Button>
-										</div>
+												<div className="custom-field d-flex flex-column align-items-center line-wrapper">
+													<span
+														className={
+															currStep.stepFive
+																? 'custom-line-selected-end'
+																: ''
+														}
+													></span>
+												</div>
+												<div className="bottom-content-wrapper">
+													<div className="bottom-content">
+														{renderEstimatedValueAndFee(
+															renderLabel,
+															'ACCORDIAN.ESTIMATED',
+															estimatedFormat
+														)}
+														<span>--</span>
+														{renderEstimatedValueAndFee(
+															renderLabel,
+															'ACCORDIAN.TRANSACTION_FEE',
+															withdrawFeeFormat
+														)}
+													</div>
+												</div>
+											</div>
+										)}
+										{currStep.stepFive && (
+											<div className="d-flex h-25 bottom-btn-wrapper">
+												{isCondition && (
+													<div className="custom-field d-flex flex-column align-items-center line-wrapper">
+														<span
+															className={
+																currStep.stepFive
+																	? 'custom-line-selected-end'
+																	: ''
+															}
+														></span>
+													</div>
+												)}
+												{isCondition && (
+													<span className="cross-line-selected"></span>
+												)}
+												<div className="withdraw-btn-wrapper">
+													<Button
+														disabled={
+															isAmount ||
+															(isErrorMinAmountField && isErrorMinAmountField)
+														}
+														onClick={onOpenDialog}
+														className="mb-3"
+													>
+														{STRINGS['WITHDRAWALS_BUTTON_TEXT'].toUpperCase()}
+													</Button>
+												</div>
+											</div>
+										)}
 									</div>
 								)}
 							</div>
-						)}
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 };
@@ -1676,6 +1767,7 @@ const mapStateToForm = (state) => ({
 	optionalTag: state.app.withdrawFields.optionalTag,
 	scannedAddress: state.wallet.scannedAddress,
 	wsPriceData: state.asset.wsPriceData,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1695,4 +1787,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setScannedAddress: bindActionCreators(setScannedAddress, dispatch),
 });
 
-export default connect(mapStateToForm, mapDispatchToProps)(RenderWithdraw);
+export default connect(
+	mapStateToForm,
+	mapDispatchToProps
+)(withConfig(RenderWithdraw));
