@@ -1455,6 +1455,10 @@ $app-menu-width: calc(100vw - 40rem);
 			font-size: 12px;
 			align-items: flex-start;
 			background-color: $app-sidebar-background;
+			.email-text {
+				word-break: break-word;
+				max-width: 100%;
+			}
 			.blue-link:hover {
 				cursor: pointer;
 			}

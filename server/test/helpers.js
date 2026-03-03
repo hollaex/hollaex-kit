@@ -1,7 +1,7 @@
 const path = require('path');
 
 process.env.NODE_ENV = 'test';
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+// require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const crypto = require('crypto');
 const chai = require('chai'),
 	chaiHTTP = require('chai-http'),
@@ -32,8 +32,8 @@ function getAdminUser() {
 
 function getNewUserCredentials() {
 	return {
-	  	email: `${_.shuffle('test_auth'.split('')).join('')}.${Math.floor(Math.random() * 10000)}@mail.com`,
-     	password: "test112233.",
+	  	email: `ali+1@hollaex.com`,
+     	password: "bitholla123.",
 	};
 }
 
@@ -43,13 +43,13 @@ async function loginAs(user, session = true) {
 		user.id,
 		user.network_id,
 		user.email,
-		null,
-		user.is_admin,
-		user.is_support,
-		user.is_supervisor,
-		user.is_kyc,
-		user.is_communicator);
-
+		'127.0.0.1',
+		'24 hours',
+		'en',
+		[],
+		'user',
+		{}
+	);
 	if(session) {
 		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
@@ -63,7 +63,6 @@ async function loginAs(user, session = true) {
 		})
 
 	}
-	
 	return token;
 }
 

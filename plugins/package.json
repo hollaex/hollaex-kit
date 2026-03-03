@@ -102,6 +102,10 @@
     "webpack-bundle-analyzer": "3.9.0",
     "webpack-cli": "3.3.12"
   },
+  "overrides": {
+    "ejs": "3.1.7",
+    "ua-parser-js": "0.7.41"
+  },
   "bugs": {
     "url": "https://github.com/bitholla/hollaex-plugins/issues"
   },

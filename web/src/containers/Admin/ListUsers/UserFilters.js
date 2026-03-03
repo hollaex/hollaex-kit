@@ -106,7 +106,7 @@ const UseFilters = ({
 		//eslint-disable-next-line
 	}, [isActiveFilterUser]);
 
-	const dateFormat = 'YYYY/MM/DD';
+	const dateFormat = 'YYYY/MM/DD HH:mm';
 
 	const canReset = filters?.find(
 		(filter) => filter.value != null && filter.value !== ''
@@ -261,6 +261,7 @@ const UseFilters = ({
 										setFilters(newFilters);
 									}}
 									format={dateFormat}
+									showTime={{ format: 'HH:mm' }}
 								/>
 							)}
 						</div>

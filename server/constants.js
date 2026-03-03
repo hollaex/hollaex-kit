@@ -370,7 +370,8 @@ exports.SETTING_KEYS = [
 	'audio',
 	'risk',
 	'chat',
-	'app'
+	'app',
+	'watchlist'
 ];
 
 exports.OMITTED_USER_FIELDS = [

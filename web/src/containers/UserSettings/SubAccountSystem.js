@@ -26,7 +26,6 @@ import {
 	switchSubAccount,
 	deactivateSubAccount,
 } from './actions';
-import { requestUserData } from 'containers/Admin/User/actions';
 import { setToken } from 'utils/token';
 import { handlePopupContainer } from 'utils/utils';
 
@@ -77,7 +76,6 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 	const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 	const [subAccounts, setSubAccounts] = useState([]);
 	const [isCreateSubAccount, setIsCreateSubAccount] = useState(false);
-	const [subAccountUser, setSubAccountUser] = useState({});
 	const [isTransferDialog, setIsTransferDialog] = useState(false);
 	const [isSwitchAccountDialog, setIsSwitchAccountDialog] = useState(false);
 	const [isConfirmSwitchDialog, setIsConfirmSwitchDialog] = useState(false);
@@ -190,30 +188,9 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isFormValid, generatePayload, formData?.accountType, fetchSubAccounts]);
 
-	const getUser = useCallback(async () => {
-		try {
-			const response = await requestUserData({
-				id: transferData?.selectedAccount?.id,
-			});
-			setSubAccountUser(response?.data ?? {});
-		} catch (error) {
-			console.error(error);
-		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [transferData?.selectedAccount?.id]);
-
 	useEffect(() => {
 		fetchSubAccounts();
 	}, [fetchSubAccounts]);
-
-	useEffect(() => {
-		const selectedAccount = transferData?.selectedAccount;
-		const direction = transferData?.direction;
-		if (isTransferDialog && selectedAccount && direction === 'out') {
-			getUser();
-		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isTransferDialog, transferData, getUser]);
 
 	useEffect(() => {
 		return () => {
@@ -240,36 +217,20 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 	const handleCloseTransferDialog = useCallback(() => {
 		setIsTransferDialog(false);
 		setTransferData(INITIAL_TRANSFER_DATA);
-		setSubAccountUser({});
 	}, []);
 
 	const handleTransferInputChange = useCallback((field, value) => {
 		setTransferData((prev) => ({ ...prev, [field]: value }));
 	}, []);
 
-	const getAvailableBalance = useMemo(() => {
-		const selectedAsset = transferData?.selectedAsset;
-		const direction = transferData?.direction;
-		const userBalance = user?.balance;
-
-		if (!selectedAsset) return 0;
-		const subAccountBalance = Array.isArray(subAccountUser)
-			? subAccountUser?.[0]?.balance
-			: subAccountUser?.balance;
-		const balance = direction === 'out' ? subAccountBalance : userBalance;
-		const assetBalance = balance?.[`${selectedAsset}_available`];
-		return assetBalance || 0;
-	}, [transferData, subAccountUser, user]);
-
 	const isTransferFormValid = useMemo(() => {
 		return (
 			transferData?.selectedAccount &&
 			transferData?.selectedAsset?.trim() &&
 			transferData?.amount?.trim() &&
-			parseFloat(transferData?.amount) > 0 &&
-			getAvailableBalance > 0
+			parseFloat(transferData?.amount) > 0
 		);
-	}, [transferData, getAvailableBalance]);
+	}, [transferData]);
 
 	const handleTransferSubmit = useCallback(async () => {
 		if (!isTransferFormValid) return;
@@ -309,7 +270,6 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 					error?.message ??
 					STRINGS?.['SUB_ACCOUNT_SYSTEM.TRANSFER_FAILED']
 			);
-			setSubAccountUser({});
 		}
 	}, [
 		isTransferFormValid,
@@ -825,15 +785,6 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 							dropdownClassName="custom-select-style select-option-wrapper transfer-select-dropdown"
 						>
 							{availableCoins?.map((coin) => {
-								const direction = transferData?.direction;
-								const balance =
-									direction === 'out'
-										? Array.isArray(subAccountUser)
-											? subAccountUser?.[0]?.balance
-											: subAccountUser?.balance
-										: user?.balance;
-								const assetBalance = balance?.[`${coin?.value}_available`] || 0;
-
 								return (
 									<Option
 										key={coin?.value}
@@ -847,29 +798,12 @@ const SubAccountSystem = ({ icons: ICONS, coins, user, router }) => {
 												</div>
 												<span>{coin?.label}</span>
 											</div>
-											<span className="transfer-asset-balance secondary-text">
-												{assetBalance}
-											</span>
 										</div>
 									</Option>
 								);
 							})}
 						</Select>
 					</div>
-
-					{transferData?.selectedAsset && (
-						<div className="mt-2">
-							<EditWrapper stringId="AUTO_TRADER.AVAL_BALANCE">
-								<span className="secondary-text">
-									{STRINGS?.formatString(
-										STRINGS?.['AUTO_TRADER.AVAL_BALANCE'],
-										getAvailableBalance,
-										transferData?.selectedAsset?.toUpperCase()
-									)}
-								</span>
-							</EditWrapper>
-						</div>
-					)}
 
 					<div className="mt-3">
 						<div className="d-flex align-items-center">
