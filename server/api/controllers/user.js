@@ -1111,7 +1111,7 @@ const setInitialPassword = async (req, res) => {
 	const referer = req.headers.referer;
 
 	if (typeof email !== 'string' || !isEmail(email)) {
-		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid email', email);
+		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid email', email, ip, domain, origin, referer);
 		const messageObj = errorMessageConverter({ message: PROVIDE_VALID_EMAIL }, req?.auth?.sub?.lang);
 		return res.status(400).json({
 			message: messageObj?.message,
@@ -2431,6 +2431,312 @@ const fetchAnnouncements = (req, res) => {
 		});
 };
 
+const requestPasskeyOptions = async (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/requestPasskeyOptions', req.auth);
+
+	try {
+		const { generateRegistrationOptions } = require('@simplewebauthn/server');
+		const { rpName, rpID } = toolsLib.security.getPasskeyConfig(req);
+		const userId = req.auth.sub.id;
+		const userEmail = req.auth.sub.email;
+		const userName = userEmail.split('@')[0];
+
+		const existingPasskeys = await toolsLib.database.findAll('passkey', { where: { user_id: userId } });
+		const excludeCredentials = existingPasskeys.map((pk) => ({
+			id: pk.credential_id,
+			transports: pk.transports || []
+		}));
+
+		const options = await generateRegistrationOptions({
+			rpName,
+			rpID,
+			userName: userEmail,
+			userDisplayName: userName,
+			attestationType: 'none',
+			excludeCredentials: excludeCredentials.length > 0 ? excludeCredentials : undefined,
+			authenticatorSelection: {
+				residentKey: 'preferred',
+				userVerification: 'preferred'
+			}
+		});
+
+		await toolsLib.database.client.setexAsync(
+			`passkey:reg:challenge:${options.challenge}`,
+			5 * 60,
+			'1'
+		);
+
+		return res.json(options);
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/requestPasskeyOptions', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
+};
+
+const passkeyAuthOptions = async (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/passkeyAuthOptions');
+
+	try {
+		const { generateAuthenticationOptions } = require('@simplewebauthn/server');
+		const { rpID } = toolsLib.security.getPasskeyConfig(req);
+		const email = req.swagger.params.email?.value;
+
+		if (!email || !isEmail(email)) {
+			throw new Error('Valid email is required');
+		}
+
+		const user = await toolsLib.user.getUserByEmail(email.toLowerCase().trim());
+		const passkeys = user
+			? await toolsLib.database.findAll('passkey', { where: { user_id: user.id } })
+			: [];
+		if (!user || passkeys.length === 0) {
+			throw new Error('Passkey is not activated for this account');
+		}
+
+		const allowCredentials = passkeys.map((pk) => ({
+			id: pk.credential_id,
+			transports: pk.transports || []
+		}));
+
+		const options = await generateAuthenticationOptions({
+			rpID,
+			allowCredentials,
+			userVerification: 'preferred'
+		});
+
+		await toolsLib.database.client.setexAsync(
+			`passkey:auth:challenge:${options.challenge}`,
+			5 * 60,
+			'1'
+		);
+
+		return res.json({
+			passkey_available: true,
+			options
+		});
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/passkeyAuthOptions', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
+};
+
+const verifyPasskeyLogin = async (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/verifyPasskeyLogin');
+
+	try {
+		const { verifyAuthenticationResponse } = require('@simplewebauthn/server');
+		const { rpID, allowedOrigins } = toolsLib.security.getPasskeyConfig(req);
+		const ip = req.headers['x-real-ip'];
+		const device = req.headers['custom-device'] ? req.headers['user-agent'] : (req.headers['user-agent'] || '').substring(0, 1000);
+		const domain = req.headers['x-real-origin'] || req.headers.origin;
+		const { challenge, credential } = req.swagger.params.data.value;
+
+		if (!challenge || !credential) {
+			throw new Error('challenge and credential are required');
+		}
+
+		const challengeKey = `passkey:auth:challenge:${challenge}`;
+		const storedChallenge = await toolsLib.database.client.getAsync(challengeKey);
+		if (!storedChallenge) {
+			throw new Error('Invalid passkey challenge');
+		}
+		await toolsLib.database.client.delAsync(challengeKey);
+
+		const passkeys = await toolsLib.database.findAll('passkey', {
+			where: { credential_id: credential.id }
+		});
+		const passkey = passkeys && passkeys[0];
+		if (!passkey) {
+			throw new Error(INVALID_CREDENTIALS);
+		}
+
+		const publicKey = passkey.public_key instanceof Buffer
+			? new Uint8Array(passkey.public_key)
+			: new Uint8Array(Buffer.from(passkey.public_key));
+
+		const verification = await verifyAuthenticationResponse({
+			response: credential,
+			expectedChallenge: challenge,
+			expectedOrigin: allowedOrigins,
+			expectedRPID: rpID,
+			credential: {
+				id: passkey.credential_id,
+				publicKey,
+				counter: Number(passkey.counter),
+				transports: passkey.transports || []
+			}
+		});
+
+		if (!verification.verified) {
+			throw new Error(INVALID_CREDENTIALS);
+		}
+
+		await toolsLib.database.update(
+			'passkey',
+			{ counter: verification.authenticationInfo.newCounter },
+			{ where: { id: passkey.id } }
+		);
+
+		const user = await toolsLib.user.getUserByKitId(passkey.user_id);
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		}
+
+		if (user.verification_level === 0) {
+			throw new Error(USER_NOT_VERIFIED);
+		} else if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
+			throw new Error(USER_EMAIL_NOT_VERIFIED);
+		} else if (!user.activated) {
+			throw new Error(USER_NOT_ACTIVATED);
+		}
+
+		const lastLogins = await toolsLib.user.findUserLastLogins(user);
+		const successfulRecords = (lastLogins || []).filter((login) => login.status);
+		const geo = geoip.lookup(ip);
+		const country = geo?.country || '';
+		const suspiciousLoginEnabled = toolsLib?.getKitConfig()?.suspicious_login?.active;
+		let suspiciousLogin = false;
+		if (suspiciousLoginEnabled && SMTP_SERVER()?.length > 0 && isArray(lastLogins) && lastLogins.length > 0) {
+			suspiciousLogin = !successfulRecords?.find((login) => login.country === country);
+		}
+
+		if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
+			const version = 'v2';
+			const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+			const loginData = await toolsLib.user.createSuspiciousLogin(
+				user,
+				ip,
+				device,
+				country,
+				domain,
+				req.headers.origin,
+				req.headers.referer,
+				null,
+				false
+			);
+			const data = {
+				id: loginData.id,
+				email: user.email,
+				verification_code,
+				ip,
+				time: new Date(),
+				device,
+				country,
+				user_id: user.id,
+			};
+			await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
+			await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
+			sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, user.email, data, user.settings, domain);
+			throw new Error('Suspicious login detected, please check your email.');
+		}
+
+		const userRole = user.role ? toolsLib.getRoles().find((r) => r.role_name === user.role) : null;
+		const token = await toolsLib.security.issueToken(
+			user.id,
+			user.network_id,
+			user.email,
+			ip,
+			TOKEN_TIME_NORMAL,
+			user.settings.language,
+			userRole?.permissions,
+			userRole?.configs,
+			user.role
+		);
+
+		await toolsLib.user.createUserLogin(
+			user,
+			ip,
+			device,
+			domain,
+			req.headers.origin,
+			req.headers.referer,
+			token,
+			false,
+			true
+		);
+
+		publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+			type: 'user',
+			data: { action: 'login', user_id: user.id },
+		}));
+
+		if (!req.body?.data?.service) {
+			sendEmail(MAILTYPE.LOGIN, user.email, { ip, time: new Date(), device, country }, user.settings, domain);
+		}
+
+		return res.status(201).json({ token });
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/verifyPasskeyLogin', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 401).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
+};
+
+const activatePasskey = async (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/activatePasskey', req.auth);
+
+	try {
+		const { verifyRegistrationResponse } = require('@simplewebauthn/server');
+		const { rpName, rpID, allowedOrigins } = toolsLib.security.getPasskeyConfig(req);
+		const userId = req.auth.sub.id;
+		const { challenge, credential, webauthn_user_id } = req.swagger.params.data.value;
+
+		if (!challenge || !credential || !webauthn_user_id) {
+			throw new Error('challenge, credential, and webauthn_user_id are required');
+		}
+
+		const challengeKey = `passkey:reg:challenge:${challenge}`;
+		const storedChallenge = await toolsLib.database.client.getAsync(challengeKey);
+		if (!storedChallenge) {
+			throw new Error('Passkey verification failed');
+		}
+		await toolsLib.database.client.delAsync(challengeKey);
+
+		const verification = await verifyRegistrationResponse({
+			response: credential,
+			expectedChallenge: challenge,
+			expectedOrigin: allowedOrigins,
+			expectedRPID: rpID
+		});
+
+		if (!verification.verified || !verification.registrationInfo) {
+			throw new Error('Passkey verification failed');
+		}
+
+		const { credential: regCredential, credentialDeviceType, credentialBackedUp } = verification.registrationInfo;
+
+		const publicKeyBuffer = Buffer.from(regCredential.publicKey);
+		const transports = Array.isArray(regCredential.transports) ? regCredential.transports : [];
+
+		await toolsLib.database.create('passkey', {
+			user_id: userId,
+			credential_id: regCredential.id,
+			public_key: publicKeyBuffer,
+			webauthn_user_id,
+			counter: regCredential.counter,
+			device_type: credentialDeviceType,
+			backed_up: credentialBackedUp,
+			transports
+		});
+
+		publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+			type: 'user',
+			data: {
+				action: 'passkey_enabled',
+				user_id: userId
+			}
+		}));
+
+		return res.json({ message: 'Passkey created successfully' });
+	} catch (err) {
+		loggerUser.error(req.uuid, 'controllers/user/activatePasskey', err.message);
+		const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+		return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
+};
+
 module.exports = {
 	signUpUser,
 	signUpUserWithGoogle,
@@ -2485,5 +2791,9 @@ module.exports = {
 	deleteUserAutoTrade,
 	fetchAnnouncements,
 	confirmLogin,
-	freezeUserByCode
+	freezeUserByCode,
+	requestPasskeyOptions,
+	activatePasskey,
+	passkeyAuthOptions,
+	verifyPasskeyLogin
 };

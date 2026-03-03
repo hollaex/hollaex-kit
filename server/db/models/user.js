@@ -244,6 +244,7 @@ module.exports = function (sequelize, DataTypes) {
 		User.hasMany(models.Affiliation, {
 			foreignKey: 'referer_id'
 		});
+		User.hasMany(models.Passkey);
 	};
 
 	return User;

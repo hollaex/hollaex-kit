@@ -104,7 +104,7 @@
   },
   "overrides": {
     "ejs": "3.1.7",
-    "ua-parser-js": "0.7.40"
+    "ua-parser-js": "0.7.41"
   },
   "bugs": {
     "url": "https://github.com/bitholla/hollaex-plugins/issues"
