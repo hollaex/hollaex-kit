@@ -28,6 +28,7 @@ const nestedIcons = {
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/stake-unstake-light.png',
 	STAKING_PANEL_BACKGROUND: '/assets/stake/stake-unstake-light.png',
 	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
+	WITHDRAWAL_BLOCK: '/assets/images/withdrawal-block-light.svg',
 };
 
 const icons = flatten(nestedIcons, options);
