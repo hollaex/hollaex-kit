@@ -51,7 +51,7 @@ import {
 	setSnackDialog,
 	requestTiers,
 } from 'actions/appActions';
-import { setSocketprices } from 'actions/assetActions';
+import { setSocketprices, setPricesAndAsset } from 'actions/assetActions';
 import { p2pAddMessage, p2pGetStatus } from 'actions/p2pAction';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import { getToken, isLoggedIn } from 'utils/token';
@@ -83,6 +83,9 @@ class Container extends Component {
 	limitTimeOut = null;
 
 	componentDidMount() {
+		this.debouncedSetPricesAndAsset = debounce(() => {
+			this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+		}, 2000);
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
@@ -100,6 +103,9 @@ class Container extends Component {
 	}
 
 	componentWillUnmount() {
+		if (this.debouncedSetPricesAndAsset) {
+			this.debouncedSetPricesAndAsset.cancel();
+		}
 		if (this.state.publicSocket) {
 			this.state.publicSocket.close();
 		}
@@ -821,6 +827,9 @@ class Container extends Component {
 					if (data?.action === 'partial' || data?.action === 'update') {
 						const transformedPrices = this.transformPriceData(data?.data);
 						this.props.setSocketprices(transformedPrices);
+						if (this.debouncedSetPricesAndAsset) {
+							this.debouncedSetPricesAndAsset();
+						}
 					}
 					break;
 				default:
@@ -1079,6 +1088,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
+	balance: store.user.balance,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
 	verification_level: store.user.verification_level,
@@ -1129,6 +1139,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setPairsTradesFetched: bindActionCreators(setPairsTradesFetched, dispatch),
 	setUserData: bindActionCreators(setUserData, dispatch),
 	setSocketprices: bindActionCreators(setSocketprices, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 });
 
 export default connect(

@@ -73,7 +73,11 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
-		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+		this.props.setPricesAndAsset(
+			this.props.balance,
+			this.props.coins,
+			this.state.baseCurrency
+		);
 
 		if (this.props.location.pathname.includes('/wallet/history')) {
 			this.setState({ activeBalanceHistory: true });
@@ -143,8 +147,12 @@ class Wallet extends Component {
 			});
 
 			this.priceAssetsTimeout = setTimeout(() => {
-				this.props.setPricesAndAsset(this.props.balance, this.props.coins);
-			}, [1000]);
+				this.props.setPricesAndAsset(
+					this.props.balance,
+					this.props.coins,
+					this.state.baseCurrency
+				);
+			}, 1000);
 		}
 
 		if (pathname === '/wallet' && search && search !== prevSearch) {
@@ -187,7 +195,13 @@ class Wallet extends Component {
 	};
 
 	setBaseCurrency = (baseCurrency) => {
-		this.setState({ baseCurrency });
+		this.setState({ baseCurrency }, () => {
+			this.props.setPricesAndAsset(
+				this.props.balance,
+				this.props.coins,
+				baseCurrency
+			);
+		});
 	};
 
 	generateSections = (
@@ -229,6 +243,7 @@ class Wallet extends Component {
 						coins={coins}
 						pairs={pairs}
 						totalAssets={totalAssets}
+						baseCurrency={baseCurrency}
 						changeSymbol={changeSymbol}
 						navigate={this.goToPage}
 						assets={searchAssets(assets, searchValue, isZeroBalanceHidden)}
@@ -281,6 +296,7 @@ class Wallet extends Component {
 						searchResult={this.getMobileSlider(coins, wsPriceData)}
 						router={this.props.router}
 						totalAssets={totalAssets}
+						baseCurrency={baseCurrency}
 						loading={isFetching}
 						BASE_CURRENCY={BASE_CURRENCY}
 					/>
@@ -323,7 +339,11 @@ class Wallet extends Component {
 	};
 
 	onHandleRefresh = () => {
-		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+		this.props.setPricesAndAsset(
+			this.props.balance,
+			this.props.coins,
+			this.state.baseCurrency
+		);
 	};
 
 	render() {
