@@ -73,11 +73,18 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
+		const displayCurrency =
+			this.props.user?.settings?.interface?.display_currency ||
+			this.state.baseCurrency;
 		this.props.setPricesAndAsset(
 			this.props.balance,
 			this.props.coins,
-			this.state.baseCurrency
+			displayCurrency
 		);
+		// Sync baseCurrency when user is already loaded to avoid duplicate call in componentDidUpdate
+		if (displayCurrency && displayCurrency !== this.state.baseCurrency) {
+			this.setState({ baseCurrency: displayCurrency });
+		}
 
 		if (this.props.location.pathname.includes('/wallet/history')) {
 			this.setState({ activeBalanceHistory: true });
@@ -101,6 +108,20 @@ class Wallet extends Component {
 			nextProps.isFetching,
 			nextProps.assets
 		);
+		// Refresh when wsPriceData first arrives (after initial mount) - avoids "Zero assets"
+		// when WebSocket prices arrive after the first setPricesAndAsset call
+		const prevHasPrices =
+			this.props.wsPriceData && Object.keys(this.props.wsPriceData).length > 0;
+		const nextHasPrices =
+			nextProps.wsPriceData && Object.keys(nextProps.wsPriceData).length > 0;
+		if (!prevHasPrices && nextHasPrices) {
+			this.props.setPricesAndAsset(
+				nextProps.balance,
+				nextProps.coins,
+				nextProps.user?.settings?.interface?.display_currency ||
+					this.state.baseCurrency
+			);
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
