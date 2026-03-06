@@ -960,7 +960,8 @@ const mintAsset = (req, res) => {
 		status,
 		email,
 		fee,
-		address
+		address,
+		network
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1010,6 +1011,7 @@ const mintAsset = (req, res) => {
 					status,
 					email,
 					address,
+					network,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}
@@ -1126,7 +1128,8 @@ const burnAsset = (req, res) => {
 		status,
 		email,
 		fee,
-		address
+		address,
+		network
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1175,6 +1178,7 @@ const burnAsset = (req, res) => {
 					email,
 					fee,
 					address,
+					network,
 					additionalHeaders: {
 						'x-forwarded-for': req.headers['x-forwarded-for']
 					}

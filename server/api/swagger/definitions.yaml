@@ -1368,6 +1368,9 @@ definitions:
       fee:
         type: number
         format: double
+      network:
+        type: string
+        description: Blockchain network of transaction
   MintBurnUpdate:
     type: object
     required:
