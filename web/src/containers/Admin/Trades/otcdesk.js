@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
@@ -17,7 +17,6 @@ import {
 } from './actions';
 import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { setPricesAndAsset } from 'actions/assetActions';
 import Otcdeskpopup from './Otcdeskpopup';
 import { requestUsers } from '../ListUsers/actions';
 import { getTickers, setBroker } from 'actions/appActions';
@@ -49,11 +48,11 @@ const OtcDeskContainer = ({
 	coinData,
 	balanceData,
 	wsPriceData,
-	setPricesAndAsset,
 	setBroker,
 	constants,
 	markets,
 	getTickers,
+	usdtToDisplayRate,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [type, setType] = useState('step1');
@@ -68,7 +67,7 @@ const OtcDeskContainer = ({
 	const [coinSecondary, setCoinSecondary] = useState(coins);
 	const [deskStateData, setdeskStateData] = useState({});
 	const [isOpenDesk, setOpenDesk] = useState(false);
-	const [tableLoading, setTableLoading] = useState(false);
+	const [tableLoading, setTableLoading] = useState(true);
 	const [emailOptions, setEmailOptions] = useState([]);
 	const [userData, setUserData] = useState([]);
 	const [pairBaseBalance, setPairBaseBalance] = useState(0);
@@ -79,12 +78,12 @@ const OtcDeskContainer = ({
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
+	const [localUsdtToDisplayRate, setLocalUsdtToDisplayRate] = useState(1);
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
 
 	const getBrokerData = useCallback(async () => {
-		setTableLoading(true);
 		try {
 			const res = await getBroker();
 			setBrokerData(res);
@@ -109,10 +108,6 @@ const OtcDeskContainer = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpen]);
-
-	useEffect(() => {
-		setPricesAndAsset(balanceData, coinData);
-	}, [balanceData, coinData, setPricesAndAsset]);
 
 	useEffect(() => {
 		const data = coins.filter((item) => item.symbol !== exchange.coins[0]);
@@ -231,6 +226,7 @@ const OtcDeskContainer = ({
 	const handleSearch = _debounce(searchUser, 1000);
 
 	useEffect(() => {
+		setLocalUsdtToDisplayRate(usdtToDisplayRate);
 		return () => {
 			handleSearch.cancel();
 		};
@@ -856,29 +852,34 @@ const OtcDeskContainer = ({
 				!isCoinHidden &&
 				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
 			) {
-				result[key] = { ...temp, wsPrice: wsPriceData[key] };
+				const wsPrice = (wsPriceData[key] || 1) * (localUsdtToDisplayRate ?? 1);
+				result[key] = { ...temp, wsPrice };
 			}
 			return key;
 		});
 		return { ...result };
 	};
 
-	const searchResult = getSearchResult(coinData, balanceData, wsPriceData);
+	const searchResult = useMemo(() => {
+		return getSearchResult(coinData, balanceData, wsPriceData);
+		// eslint-disable-next-line
+	}, [coinData, balanceData, wsPriceData, localUsdtToDisplayRate]);
 
-	const sortedSearchResults = Object.entries(searchResult)
-		.filter(([key]) => balanceData.hasOwnProperty(`${key}_balance`))
-		.sort(([key_a], [key_b]) => {
-			const price_a = calculateOraclePrice(
-				balanceData[`${key_a}_balance`],
-				searchResult[key_a]?.wsPrice
-			);
-			const price_b = calculateOraclePrice(
-				balanceData[`${key_b}_balance`],
-				searchResult[key_b]?.wsPrice
-			);
-			return price_a < price_b ? 1 : -1; // descending order
-		});
-
+	const sortedSearchResults = useMemo(() => {
+		return Object.entries(searchResult)
+			.filter(([key]) => balanceData.hasOwnProperty(`${key}_balance`))
+			.sort(([key_a], [key_b]) => {
+				const price_a = calculateOraclePrice(
+					balanceData[`${key_a}_balance`],
+					searchResult[key_a]?.wsPrice
+				);
+				const price_b = calculateOraclePrice(
+					balanceData[`${key_b}_balance`],
+					searchResult[key_b]?.wsPrice
+				);
+				return price_a < price_b ? 1 : -1;
+			});
+	}, [searchResult, balanceData]);
 	const handlePrice = async (formula, increment_size, spread, id) => {
 		try {
 			setPriceLoading(id);
@@ -1048,10 +1049,10 @@ const mapStateToProps = (store) => ({
 	wsPriceData: store.asset.wsPriceData,
 	constants: store.app.constants,
 	markets: MarketsSelector(store),
+	usdtToDisplayRate: store.asset.usdtToDisplayRate,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 	setBroker: bindActionCreators(setBroker, dispatch),
 	getTickers: bindActionCreators(getTickers, dispatch),
 });

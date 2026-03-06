@@ -10,8 +10,9 @@ import {
 	calculateOraclePrice,
 } from 'utils/currency';
 import { Coin } from 'components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import './index.scss';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 class Wallets extends Component {
 	state = {
 		users: [],
@@ -96,7 +97,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error, wsPriceData } = this.state;
-		const { coins } = this.props;
+		const { coins, usdtToDisplayRate } = this.props;
 		const sortedCoins = Object.keys(coins).sort();
 
 		const data = [];
@@ -138,8 +139,9 @@ class Wallets extends Component {
 		sortedCoins.forEach((coin) => {
 			if (balance && balance[`${coin}_balance`]) {
 				const inc_unit = coins[coin]?.increment_unit;
-				const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-				const price = wsPriceData?.[coin] || 0;
+				const baseCoin =
+					coins[localStorage.getItem('base_currnecy')] || WS_QUOTE_CURRENCY;
+				const price = wsPriceData?.[coin] * (usdtToDisplayRate || 1);
 				const est = calculateOraclePrice(balance[`${coin}_balance`], price);
 				let asset = {
 					symbol: coin,
@@ -212,6 +214,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	coins: state.app.coins,
 	wsPriceData: state.asset.wsPriceData,
+	usdtToDisplayRate: state.asset.usdtToDisplayRate,
 });
 
 export default connect(mapStateToProps)(Wallets);

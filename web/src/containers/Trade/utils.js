@@ -93,6 +93,7 @@ const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
 export const getFavourites = (state) => state.app.favourites;
 const getPrices = (state) => state.asset.wsPriceData;
+const getUsdtToDisplayRate = (state) => state.asset.usdtToDisplayRate ?? 1;
 const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
@@ -274,6 +275,7 @@ export const unsortedMarketsSelector = createSelector(
 		getPrices,
 		getNativeCurrency,
 		getDisplayCurrency,
+		getUsdtToDisplayRate,
 	],
 	(
 		pairKeys,
@@ -282,7 +284,8 @@ export const unsortedMarketsSelector = createSelector(
 		coins,
 		prices,
 		native_currency,
-		display_currency
+		display_currency,
+		usdtToDisplayRate
 	) => {
 		const markets = pairKeys.map((key) => {
 			const {
@@ -314,8 +317,9 @@ export const unsortedMarketsSelector = createSelector(
 				: formatPercentage(tickerPercent);
 
 			const volume_native = calculateOraclePrice(volume, price);
+			const calculatedVolumeNative = volume_native * (usdtToDisplayRate ?? 1);
 			const volume_native_text = `${formatCurrencyByIncrementalUnit(
-				volume_native,
+				calculatedVolumeNative,
 				baseCoin.increment_unit
 			)} ${baseCoin.display_name}`;
 

@@ -73,7 +73,9 @@ class UserBalance extends Component {
 					}
 					const balance = this.state.userBalance[`${key}_balance`];
 					const estimated =
-						(balance || 0) * (Number(this.state.wsPriceData?.[key]) || 0);
+						(balance || 0) *
+						(Number(this.state.wsPriceData?.[key]) || 0) *
+						(this.props.usdtToDisplayRate || 1);
 					return {
 						...value,
 						...addressData,
@@ -352,6 +354,8 @@ class UserBalance extends Component {
 			coins[
 				userInformation?.settings?.interface?.display_currency || BASE_CURRENCY
 			] || DEFAULT_COIN_DATA;
+		const calculatedAvailableAsset =
+			totalAvaliableAsset * (this.props.usdtToDisplayRate || 1);
 
 		if (loading) {
 			return (
@@ -388,7 +392,7 @@ class UserBalance extends Component {
 							<span>
 								Total:{' '}
 								{formatCurrencyByIncrementalUnit(
-									totalAvaliableAsset,
+									calculatedAvailableAsset,
 									increment_unit
 								)}{' '}
 								{display_name && display_name}
@@ -421,5 +425,6 @@ class UserBalance extends Component {
 }
 const mapStateToProps = (state) => ({
 	wsPriceData: state.asset.wsPriceData,
+	usdtToDisplayRate: state.asset.usdtToDisplayRate,
 });
 export default connect(mapStateToProps)(UserBalance);

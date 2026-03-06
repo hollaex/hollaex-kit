@@ -58,7 +58,7 @@ import {
 	requestConstant,
 	setRolesList,
 } from 'actions/appActions';
-import { SESSION_TIME, WS_URL } from 'config/constants';
+import { BASE_CURRENCY, SESSION_TIME, WS_URL } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import MobileSider from './mobileSider';
 import './index.css';
@@ -69,7 +69,9 @@ import {
 	setAllPairs,
 	setCoins,
 	setExchange,
+	setPricesAndAsset,
 	setSocketprices,
+	WS_QUOTE_CURRENCY,
 } from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
@@ -226,6 +228,11 @@ class AppWrapper extends React.Component {
 			Object.keys(this.props?.wsPriceData)?.length === 0
 		) {
 			this.connectPriceWebSocket();
+			this.props.setPricesAndAsset(
+				this.props.balance,
+				this.props.coins,
+				BASE_CURRENCY || WS_QUOTE_CURRENCY
+			);
 		}
 		this.getData();
 		this.onHandleRoleDetails();
@@ -896,6 +903,9 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	rolesList: state.app.rolesList,
 	wsPriceData: state.asset.wsPriceData,
+	usdtToDisplayRate: state.asset.usdtToDisplayRate,
+	balance: state.user.balance,
+	coins: state.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -915,6 +925,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
 	setRolesList: bindActionCreators(setRolesList, dispatch),
 	setSocketprices: bindActionCreators(setSocketprices, dispatch),
+	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

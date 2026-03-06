@@ -17,7 +17,7 @@ export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
 export const SET_DASH_TOKEN = 'SET_DASH_TOKEN';
 
-const WS_QUOTE_CURRENCY = 'usdt';
+export const WS_QUOTE_CURRENCY = 'usdt';
 
 const ENDPOINTS = {
 	GET_PRICE: '/oracle/prices',
