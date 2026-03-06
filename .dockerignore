@@ -12,7 +12,6 @@ server/tools
 Dockerfile
 server/docker-compose*
 server/index.html
-server/package-lock.json
 server/logs
 server/coverage
 server/.nyc_output
