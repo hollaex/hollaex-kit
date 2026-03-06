@@ -229,6 +229,11 @@ const authorizeUser = async (credentials, ws, ip) => {
 		throw new Error(WS_ALREADY_AUTHENTICATED);
 	}
 
+	// validate credentials object
+	if (!credentials || typeof credentials !== 'object') {
+		throw new Error(WS_MISSING_HEADER);
+	}
+
 	// first element in args array should be object with credentials
 	const bearerToken = credentials.authorization;
 	const hmacKey = credentials['api-key'];

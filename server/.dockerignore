@@ -9,7 +9,6 @@ tools
 Dockerfile
 docker-compose*
 index.html
-package-lock.json
 logs
 coverage
 .nyc_output
