@@ -1,5 +1,5 @@
 {
-	"version": "2.17.4",
+	"version": "2.17.5",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -12,6 +12,7 @@
 	],
 	"main": "app.js",
 	"dependencies": {
+		"@simplewebauthn/server": "^11.0.0",
 		"bcryptjs": "2.4.3",
 		"bignumber.js": "9.1.1",
 		"bluebird": "3.5.3",
@@ -20,6 +21,7 @@
 		"chai": "4.2.0",
 		"chai-http": "4.3.0",
 		"cors": "2.8.5",
+		"dotenv": "16.4.7",
 		"elastic-apm-node": "3.15.0",
 		"eval": "0.1.8",
 		"expect-ct": "0.1.0",
@@ -80,8 +82,10 @@
 		"ws-heartbeat": "1.1.0",
 		"yamljs": "0.3.0"
 	},
+	"overrides": {
+		"ip": "2.0.1"
+	},
 	"devDependencies": {
-		"chai": "4.2.0",
 		"eslint": "8.41.0",
 		"husky": "4.3.8",
 		"lint-staged": "12.1.4",

@@ -20,7 +20,7 @@ RUN groupadd -g 999 appuser && \
 
 USER appuser
 
-RUN npm install --loglevel=error && \
+RUN npm install --include=dev --loglevel=error && \
     pm2 update && \
     cd /app/mail && npm install --loglevel=error
 

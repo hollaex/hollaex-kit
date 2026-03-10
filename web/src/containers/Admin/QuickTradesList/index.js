@@ -546,8 +546,9 @@ const QuickTradesList = ({
 						<Form.Item name="dateRange">
 							<RangePicker
 								size="small"
-								format="DD/MM/YYYY"
+								format="DD/MM/YYYY HH:mm"
 								allowClear={false}
+								showTime={{ format: 'HH:mm' }}
 							/>
 						</Form.Item>
 

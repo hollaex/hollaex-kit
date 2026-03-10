@@ -130,11 +130,30 @@ const rateLimitMiddleware = (app) => {
 	limiter({
 		path: '/v2/login',
 		method: 'post',
-		total: 16,
+		total: 10,
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login ip');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+	limiter({
+		path: '/v2/login',
+		method: 'post',
+		total: 8,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			const swaggerEmail = req.swagger && req.swagger.params && req.swagger.params.authentication
+				&& req.swagger.params.authentication.value && req.swagger.params.authentication.value.email;
+			const bodyEmail = req.body && req.body.email;
+			const email = (swaggerEmail || bodyEmail || 'unknown').toLowerCase();
+			req.rateLimitEmail = email;
+			opts.lookup = 'rateLimitEmail';
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login email');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -181,6 +200,45 @@ const rateLimitMiddleware = (app) => {
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
 			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'post reset-password');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// rate limit for password endpoint for email
+	limiter({
+		path: '/v2/password',
+		method: 'post',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			const swaggerEmail = req.swagger && req.swagger.params && req.swagger.params.data
+				&& req.swagger.params.data.value && req.swagger.params.data.value.email;
+			const bodyEmail = req.body && req.body.email;
+			const email = (swaggerEmail || bodyEmail || 'unknown').toLowerCase();
+			req.rateLimitEmail = email;
+			opts.lookup = 'rateLimitEmail';
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'post password email');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// rate limit for password endpoint for ip
+	limiter({
+		path: '/v2/password',
+		method: 'post',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+			req.rateLimitIp = ip;
+			opts.lookup = 'rateLimitIp';
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'post password ip');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});

@@ -308,7 +308,7 @@ const AccountList = ({
 					>
 						{userAccountTitle}
 					</span>
-					<div className="d-flex flex-column align-items-start">
+					<div className="d-flex flex-column align-items-start email-text">
 						<span className="secondary-text">({user?.email}) </span>
 					</div>
 				</div>

@@ -124,73 +124,78 @@ const storeVerificationCode = (user, verification_code) => {
 	client.setexAsync(`verification_code:user${verification_code}`, 5 * 60, JSON.stringify(data));
 };
 
-const signUpUser = (email, password, opts, version) => {
+const generateVerificationCode = (version) => {
+	if (version === 'v4') {
+		return Math.floor(100000 + Math.random() * 900000).toString();
+	} else if (version === 'v3') {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = Math.floor(10000 + Math.random() * 90000);
+		return `${letters}-${numbers}`;
+	}
+	return uuid();
+};
+
+const signUpUser = async (email, password, opts = {}, version) => {
 	if (!getKitConfig().new_user_is_activated) {
-		return reject(new Error(SIGNUP_NOT_AVAILABLE));
+		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
 
 	if (!email || !isEmail(email)) {
-		return reject(new Error(PROVIDE_VALID_EMAIL));
+		throw new Error(PROVIDE_VALID_EMAIL);
 	}
 
-	if (!isValidPassword(password)) {
-		return reject(new Error(INVALID_PASSWORD));
+	const hasPassword = typeof password === 'string' && password.length > 0;
+	let resolvedPassword = null;
+	if (hasPassword) {
+		if (!isValidPassword(password)) {
+			throw new Error(INVALID_PASSWORD);
+		}
+		resolvedPassword = password;
 	}
 
 	email = email.toLowerCase();
+	let existingUser = false;
 
-	return dbQuery.findOne('user', {
-		where: { email },
-		attributes: ['email']
-	})
-		.then((user) => {
-			if (user) {
+	try {
+		let user = await dbQuery.findOne('user', {
+			where: { email },
+			attributes: ['id', 'email', 'email_verified']
+		});
+
+		if (user) {
+			if (user.email_verified) {
 				throw new Error(USER_EXISTS);
 			}
-			return getModel('sequelize').transaction((transaction) => {
-				return getModel('user').create({
+			existingUser = true;
+		} else {
+			user = await getModel('sequelize').transaction(async (transaction) => {
+				const createdUser = await getModel('user').create({
 					email,
-					password,
+					password: resolvedPassword,
 					verification_level: 1,
 					email_verified: opts.email_verified || false,
 					settings: INITIAL_SETTINGS(),
 					// Optional OAuth fields (ignored unless provided)
 					google_id: opts.google_id || null
-				}, { transaction })
-					.then((user) => {
-						return all([
-							createUserOnNetwork(email),
-							user
-						]);
-					})
-					.then(([networkUser, user]) => {
-						return user.update(
-							{ network_id: networkUser.id },
-							{ fields: ['network_id'], returning: true, transaction }
-						);
-					});
+				}, { transaction });
+
+				const [networkUser, updatedUser] = await all([
+					createUserOnNetwork(email),
+					createdUser
+				]);
+
+				return updatedUser.update(
+					{ network_id: networkUser.id },
+					{ fields: ['network_id'], returning: true, transaction }
+				);
 			});
-		})
-		.then((user) => {
-			let verification_code;
+		}
 
-			if (version === 'v3') {
-				const letters = Array.from({ length: 2 }, () =>
-					String.fromCharCode(65 + crypto.randomInt(0, 26))
-				).join('');
-				const numbers = Math.floor(10000 + Math.random() * 90000);
-				verification_code = `${letters}-${numbers}`;
-			} else {
-				verification_code = uuid();
-			}
-
-			storeVerificationCode(user, verification_code);
-			return all([
-				verification_code,
-				user
-			]);
-		})
-		.then(([verificationCode, user]) => {
+		const verificationCode = generateVerificationCode(version);
+		storeVerificationCode(user, verificationCode);
+		if (!existingUser) {
 			publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 				type: 'user',
 				data: {
@@ -198,18 +203,22 @@ const signUpUser = (email, password, opts, version) => {
 					user_id: user.id
 				}
 			}));
+		}
 
-			sendEmail(
-				version === 'v3' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
-				email,
-				verificationCode,
-				{}
-			);
-			if (opts.referral && isString(opts.referral)) {
-				checkAffiliation(opts.referral, user.id);
-			}
-			return user;
-		});
+		sendEmail(
+			version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+			email,
+			verificationCode,
+			{}
+		);
+		if (!existingUser && opts.referral && isString(opts.referral)) {
+			checkAffiliation(opts.referral, user.id);
+		}
+		return user;
+	} catch (err) {
+		loggerUser.error('tools/user/signUpUser catch', err.message);
+		throw err;
+	}
 };
 
 const verifyUser = (email, code, domain) => {
@@ -233,6 +242,10 @@ const verifyUser = (email, code, domain) => {
 
 			if (user.email_verified) {
 				throw new Error(USER_VERIFIED);
+			}
+
+			if (email !== verificationCode.email) {
+				throw new Error(INVALID_VERIFICATION_CODE);
 			}
 
 			if (code !== verificationCode.code) {
@@ -1244,7 +1257,8 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 
 const DEFAULT_SETTINGS = {
 	language: getKitConfig().defaults.language,
-	orderConfirmationPopup: true
+	orderConfirmationPopup: true,
+	watchlist: []
 };
 
 const joinSettings = (userSettings = {}, newSettings = {}) => {
@@ -1315,7 +1329,8 @@ const INITIAL_SETTINGS = () => {
 		},
 		chat: {
 			set_username: false
-		}
+		},
+		watchlist: []
 	};
 };
 
@@ -2596,8 +2611,8 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount must be in increments of 10');
 	}
 
-	if (earning_rate < 1) {
-		throw new Error('earning rate cannot be less than 1');
+	if (earning_rate < 0) {
+		throw new Error('earning rate cannot be negative');
 	}
 
 	if (earning_rate > 100) {
@@ -3814,10 +3829,13 @@ const createUserAutoTrade = async (user_id, {
 		throw new Error('You can\'t have more than 20 auto trades');
 	}
 
-	const { getUserBalanceByKitId } = require('./wallet');
-	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${spend_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+	// Only check balance when auto trade will be active
+	if (active !== false) {
+		const { getUserBalanceByKitId } = require('./wallet');
+		const balance = await getUserBalanceByKitId(user_id);
+		if (balance[`${spend_coin}_available`] < spend_amount) {
+			throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+		}
 	}
 
 	return autoTradeModel.create({
@@ -3910,10 +3928,15 @@ const updateUserAutoTrade = async (user_id, {
 		throw new Error('Auto trade not found');
 	}
 
-	const { getUserBalanceByKitId } = require('./wallet');
-	const balance = await getUserBalanceByKitId(user_id);
-	if (balance[`${spend_coin}_available`] < spend_amount) {
-		throw new Error(`Balance insufficient for auto trade: ${spend_coin} size: ${spend_amount}`);
+	// Only check balance when auto trade will be active (skip when disabling/pausing)
+	if (active !== false) {
+		const amountToCheck = spend_amount ?? trade.spend_amount;
+		const coinToCheck = spend_coin ?? trade.spend_coin;
+		const { getUserBalanceByKitId } = require('./wallet');
+		const balance = await getUserBalanceByKitId(user_id);
+		if (balance[`${coinToCheck}_available`] < amountToCheck) {
+			throw new Error(`Balance insufficient for auto trade: ${coinToCheck} size: ${amountToCheck}`);
+		}
 	}
 
 	return await trade.update({

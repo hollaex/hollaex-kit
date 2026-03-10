@@ -57,6 +57,7 @@ const AssetsBlock = ({
 	coins,
 	pairs,
 	totalAssets,
+	baseCurrency: baseCurrencyProp,
 	navigate,
 	handleSearch,
 	onToggle,
@@ -87,6 +88,7 @@ const AssetsBlock = ({
 	setUserData,
 	setBaseCurrency,
 }) => {
+	const baseCurrency = baseCurrencyProp || BASE_CURRENCY;
 	const emptyDonut = useMemo(() => {
 		return chartData && !!chartData.length;
 	}, [chartData]);
@@ -643,6 +645,7 @@ const AssetsBlock = ({
 											allow_withdrawal,
 											wsPrice,
 											balance,
+											price: assetPrice,
 											fullname,
 											symbol = '',
 											display_name,
@@ -652,12 +655,12 @@ const AssetsBlock = ({
 									index
 								) => {
 									const markets = getAllAvailableMarkets(key, quicktrade);
-									const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+									const baseCoin = coins[baseCurrency] || DEFAULT_COIN_DATA;
 									const balanceText =
-										key === BASE_CURRENCY
+										key === baseCurrency
 											? formatCurrencyByIncrementalUnit(balance, increment_unit)
 											: formatCurrencyByIncrementalUnit(
-													calculateOraclePrice(balance, wsPrice),
+													assetPrice ?? calculateOraclePrice(balance, wsPrice),
 													baseCoin.increment_unit
 											  );
 									return (

@@ -119,7 +119,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/UserAuthentication"
+            $ref: "#/definitions/SignupAuthentication"
       responses:
         201:
           description: Created
@@ -177,10 +177,10 @@ paths:
           type: boolean
         - name: version
           in: query
-          description: API version. If 'v3', a short code email is sent
+          description: API version. If 'v3' or 'v4', a short code email is sent
           required: false
           type: string
-          enum: ['v2', 'v3']
+          enum: ['v2', 'v3', 'v4']
         - name: captcha
           in: query
           description: Cloudflare Turnstile captcha token (required when captcha is enabled and resend=true)
@@ -263,6 +263,61 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /login/passkey-auth-options:
+    x-swagger-router-controller: user
+    get:
+      operationId: passkeyAuthOptions
+      description: Get passkey authentication options for login
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Passkey authentication options
+          schema:
+            type: object
+            properties:
+              challenge:
+                type: string
+              rpId:
+                type: string
+              timeout:
+                type: integer
+              allowCredentials:
+                type: array
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /login/verify-passkey:
+    x-swagger-router-controller: user
+    post:
+      operationId: verifyPasskeyLogin
+      description: Verify passkey credential and login
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PasskeyVerifyLogin"
+      responses:
+        201:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /login/google:
     x-swagger-router-controller: user
     post:
@@ -312,6 +367,28 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /password:
+    x-swagger-router-controller: user
+    post:
+      operationId: setInitialPassword
+      description: Set password for a user without an existing password
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SetInitialPassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /reset-password:
     x-swagger-router-controller: user
     get:
@@ -329,7 +406,7 @@ paths:
           in: query
           required: false
           type: string
-          enum: ['v2', 'v3']
+          enum: ['v2', 'v3', 'v4']
         - name: captcha
           in: query
           description: Cloudflare Turnstile captcha token (required when captcha is enabled)

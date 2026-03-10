@@ -34,6 +34,7 @@ const {
 	INVALID_PASSWORD,
 	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
+	PASSWORD_ALREADY_SET,
 	CODE_NOT_FOUND,
 	INVALID_TOKEN_TYPE,
 	NO_AUTH_TOKEN,
@@ -43,6 +44,7 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
+	DOMAIN,
 	CAPTCHA_ENDPOINT,
 	BASE_SCOPES,
 	ROLES,
@@ -68,6 +70,67 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
+
+/**
+ * Returns passkey config for both generation and verification.
+ * rpName, rpID: used when generating registration/auth options.
+ * allowedOrigins: array for verification - SimpleWebAuthn accepts expectedOrigin as array.
+ * Supports multiple origins (dev ports, mobile webview, allowed_domains).
+ */
+const getPasskeyConfig = (req) => {
+	const normalizeOrigin = (url) => {
+		if (!url || typeof url !== 'string') return null;
+		const trimmed = url.trim().replace(/\/+$/, '');
+		try {
+			new URL(trimmed);
+			return trimmed;
+		} catch {
+			return null;
+		}
+	};
+
+	const origins = new Set();
+	[DOMAIN, req.headers.origin, req.headers['x-real-origin']]
+		.map(normalizeOrigin)
+		.filter(Boolean)
+		.forEach((o) => origins.add(o));
+
+	const allowedDomains = getKitSecrets()?.allowed_domains
+		|| (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []);
+
+	for (const domain of allowedDomains) {
+		if (!domain || typeof domain !== 'string') continue;
+		const d = domain.trim();
+		try {
+			if (/^https?:\/\//i.test(d)) {
+				origins.add(d.replace(/\/+$/, ''));
+			} else {
+				const protocol = d.includes('localhost') ? 'http' : 'https';
+				origins.add(`${protocol}://${d}`);
+			}
+		} catch {
+			// skip invalid entries
+		}
+	}
+
+	if (NODE_ENV !== 'production') {
+		['http://localhost', 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173']
+			.forEach((o) => origins.add(o));
+	}
+
+	const allowedOrigins = Array.from(origins);
+	const primaryOrigin = req.headers.origin || req.headers['x-real-origin'] || DOMAIN;
+	let rpID = 'localhost';
+	try {
+		const originUrl = new URL(primaryOrigin);
+		rpID = originUrl.hostname === 'localhost' ? 'localhost' : originUrl.hostname;
+	} catch (e) {
+		// fallback to localhost if URL parsing fails
+	}
+	const rpName = getKitConfig()?.api_name || 'HollaEx';
+
+	return { rpName, rpID, allowedOrigins };
+};
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -285,6 +348,22 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 		});
 };
 
+const setInitialUserPassword = (email, password) => {
+	if (!isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+	return dbQuery.findOne('user', { where: { email: email } })
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			if (user.password !== 'notset') {
+				throw new Error(PASSWORD_ALREADY_SET);
+			}
+			return user.update({ password: password }, { fields: ['password'] });
+		});
+};
+
 const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
 		.then((data) => {
@@ -338,7 +417,9 @@ const createResetPasswordCode = (userId, version) => {
 
 	let code;
 	//Generate new random code
-	if (version === 'v3') {
+	if (version === 'v4') {
+		code = Math.floor(100000 + Math.random() * 900000).toString();
+	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
@@ -386,7 +467,7 @@ const sendResetPasswordCode = (email, captcha, ip, domain, version, headers = {}
 				})
 			).then(() => {
 				sendEmail(
-					version === 'v3' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
+					version === 'v3' || version === 'v4' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
 					email,
 					{ code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` },
 					user.settings,
@@ -1482,6 +1563,7 @@ module.exports = {
 	validatePassword,
 	sendResetPasswordCode,
 	changeUserPassword,
+	setInitialUserPassword,
 	confirmChangeUserPassword,
 	hasUserOtpEnabled,
 	verifyOtpBeforeAction,
@@ -1514,6 +1596,7 @@ module.exports = {
 	createHmacSignature,
 	isValidScope,
 	verifyBearerTokenExpressMiddleware,
+	getPasskeyConfig,
 	getCountryFromIp,
 	checkIp,
 	sendConfirmationEmail,

@@ -17,6 +17,7 @@ import { unique } from 'utils/data';
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
 const getSocketPrices = (state) => state.asset.wsPriceData;
+const getUsdtToDisplayRate = (state) => state.asset.usdtToDisplayRate ?? 1;
 const getSortMode = (state) => state.app.wallet_sort.mode;
 const getSortDir = (state) => state.app.wallet_sort.is_descending;
 const pairs = (state) => state.app.pairs;
@@ -85,15 +86,16 @@ export const selectAssetOptions = createSelector([getCoins], (coins) => {
 });
 
 const unsortedAssetsSelector = createSelector(
-	[getCoins, getBalances, getSocketPrices],
-	(coins, balances, wsPriceData) => {
+	[getCoins, getBalances, getSocketPrices, getUsdtToDisplayRate],
+	(coins, balances, wsPriceData, usdtToDisplayRate) => {
 		const assets = {};
 
 		Object.entries(coins).forEach(([key, coin]) => {
 			if (balances.hasOwnProperty(`${key}_balance`)) {
 				const wsPrice = wsPriceData[key];
 				const balance = balances[`${key}_balance`];
-				const price = calculateOraclePrice(balance, wsPrice);
+				const priceInUsdt = calculateOraclePrice(balance, wsPrice);
+				const price = priceInUsdt * usdtToDisplayRate;
 
 				assets[key] = {
 					...coin,

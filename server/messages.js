@@ -13,6 +13,7 @@ exports.USER_NOT_VERIFIED = 'User is not verified';
 exports.USER_NOT_ACTIVATED = 'User is not activated';
 exports.USER_EXISTS = 'User already exists';
 exports.USER_REGISTERED = 'User successfully registered';
+exports.USER_REGISTERED_EMAIL_CODE = 'Please confirm the verification code sent to your email';
 exports.INVALID_CREDENTIALS = 'Incorrect credentials.';
 exports.USER_VERIFIED = 'User is now verified';
 // Google OAuth messages
@@ -21,6 +22,8 @@ exports.GOOGLE_TOKEN_INVALID_ISSUER = 'Invalid Google token issuer';
 exports.GOOGLE_ACCOUNT_MISMATCH = 'Google account mismatch';
 exports.INVALID_PASSWORD =
 	'Invalid password. It has to contain at least 8 characters, at least one digit and one character.';
+exports.PASSWORD_ALREADY_SET = 'Password is already set';
+exports.PASSWORD_NOT_SET = 'Password is not set';
 exports.VERIFICATION_EMAIL_MESSAGE = 'A verification code has been sent to your email with the code if your email is in the system';
 exports.PROVIDE_VALID_EMAIL = 'Please provide a valid email';
 exports.PROVIDE_VALID_PHONE = 'Please provide a valid phone number';
@@ -218,6 +221,7 @@ exports.SESSION_NOT_FOUND = 'Session not found';
 exports.SESSION_ALREADY_REVOKED = 'Session already revoked';
 exports.WRONG_USER_SESSION = 'this session does not belong to you';
 exports.LOGIN_NOT_ALLOW = 'You attempted to login too many times, please wait for a while to try again';
+exports.PASSWORD_SET = 'Password is successfully set';
 exports.UNISWAP_PRICE_NOT_FOUND = 'Uniswap could not find price for this pair';
 exports.FORMULA_MARKET_PAIR_ERROR = 'Market pair(s) in the formula is in wrong format';
 exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detected';

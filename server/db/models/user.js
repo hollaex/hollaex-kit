@@ -38,7 +38,8 @@ const SETTINGS_DATA_DEFAULT = {
 	},
 	chat: {
 		set_username: false
-	}
+	},
+	watchlist: []
 };
 
 const BANK_DATA_DEFAULT = [];
@@ -57,7 +58,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			password: {
 				type: DataTypes.STRING,
-				allowNull: ''
+				allowNull: true
 			},
 			full_name: {
 				type: DataTypes.STRING,
@@ -201,12 +202,14 @@ module.exports = function (sequelize, DataTypes) {
 		user.username = user.email.substr(0, user.email.indexOf('@'));
 		user.affiliation_code = generateAffiliationCode();
 		const isVirtualEmail = typeof user.email === 'string' && user.email.endsWith('_virtual');
-		if (!isVirtualEmail && user.password) {
+		if (!user.password) {
+			user.password = isVirtualEmail ? 'virtual' : 'notset';
+			return;
+		}
+		if (user.password && user.password !== 'virtual' && user.password !== 'notset' && user.password !== 'thirdparty') {
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
-		} else {
-			user.password = 'virtual';
 		}
 		return;
 	});
@@ -216,10 +219,14 @@ module.exports = function (sequelize, DataTypes) {
 			user.email = user.email.toLowerCase();
 		}
 		const updatedFields = user.changed();
-		if (Array.isArray(updatedFields) && updatedFields.includes('password'))
+		if (Array.isArray(updatedFields) && updatedFields.includes('password')) {
+			if (user.password === 'virtual' || user.password === 'notset' || user.password === 'thirdparty') {
+				return;
+			}
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
+		}
 	});
 
 	User.associate = (models) => {
@@ -238,6 +245,7 @@ module.exports = function (sequelize, DataTypes) {
 		User.hasMany(models.Affiliation, {
 			foreignKey: 'referer_id'
 		});
+		User.hasMany(models.Passkey);
 	};
 
 	return User;

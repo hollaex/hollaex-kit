@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY/MM/DD HH:mm';
 let d = new Date();
 
 class Filter extends Component {
@@ -75,6 +75,7 @@ class Filter extends Component {
 						}
 						format={dateFormat}
 						onChange={this.onChangeDateValues}
+						showTime={{ format: 'HH:mm' }}
 					/>
 				</div>
 			);
