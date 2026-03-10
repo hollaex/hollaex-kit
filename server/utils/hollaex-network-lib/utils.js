@@ -3,45 +3,28 @@ const crypto = require('crypto');
 const moment = require('moment');
 const { isDate } = require('lodash');
 const requestCache = new Map();
-const cachePeriods = {
-	// 'chart': 40,
-	'charts': 30,
-	'oracle': 30,
-	'minichart': 60 // 5 minute
-};
+const cachePeriods = { 'charts': 10, 'oracle': 30, 'minichart': 60 };
 
 const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
-	const requestObj = {
-		headers,
-		url,
-		json: true
-	};
+	const requestObj = { headers, url, json: true };
+	if (opts.data) requestObj.body = opts.data;
+	if (opts.formData) requestObj.formData = opts.formData;
 
-	if (opts.data) {
-		requestObj.body = opts.data;
-	}
-
-	if (opts.formData) {
-		requestObj.formData = opts.formData;
-	}
 	const urlKey = `${verb}-${url}`;
+	const isCacheable = verb === 'GET' && !url.includes('user_id')
+		&& !url.includes('network_id')
+		&& !url.includes('/withdrawals') && !url.includes('/deposits');
 
-	let fetchRequest = null;
-	if (requestCache.has(urlKey) 
-		&& new Date().getTime() - new Date(requestCache.get(urlKey).timestamp).getTime() < requestCache.get(urlKey).period * 1000) {
-		fetchRequest = requestCache.get(urlKey).request;
-	}
-	else {
-		fetchRequest = rp[verb.toLowerCase()](requestObj);
-		if(verb === 'GET' && !url.includes('user_id')){
-			requestCache.set(urlKey, {
-				timestamp: new Date(),
-				request: fetchRequest,
-				period: cachePeriods[baseUrl] || 5
-			});
-		}
+	if (isCacheable && requestCache.has(urlKey)) {
+		const entry = requestCache.get(urlKey);
+		const period = (cachePeriods[baseUrl] || 5) * 1000;
+		if (Date.now() - entry.timestamp < period) return entry.request;
 	}
 
+	const fetchRequest = rp[verb.toLowerCase()](requestObj);
+	if (isCacheable) {
+		requestCache.set(urlKey, { timestamp: Date.now(), request: fetchRequest });
+	}
 	return fetchRequest;
 };
 
