@@ -950,7 +950,10 @@ export const generateWithdrawalsHeaders = (
 						<td key={index}>
 							<div
 								className="withdrawal-cancel"
-								onClick={() => withdrawalPopup(id, amount, currency)}
+								onClick={(e) => {
+									e.stopPropagation();
+									withdrawalPopup(id, amount, currency);
+								}}
 								key={id}
 							>
 								{STRINGS['CANCEL']}

@@ -615,6 +615,90 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/request-passkey-options:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestPasskeyOptions
+      description: Generate passkey registration options for creating a new passkey
+      tags:
+        - User
+      responses:
+        200:
+          description: Passkey registration options for the client to use with navigator.credentials.create()
+          schema:
+            type: object
+            properties:
+              challenge:
+                type: string
+                description: Base64URL-encoded challenge
+              rp:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  displayName:
+                    type: string
+              pubKeyCredParams:
+                type: array
+              timeout:
+                type: integer
+              excludeCredentials:
+                type: array
+        401:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+  /user/activate-passkey:
+    x-swagger-router-controller: user
+    post:
+      operationId: activatePasskey
+      description: Create and store a passkey for the user for future authentication
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PasskeyActivate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        401:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
   /user/deactivate:
     x-swagger-router-controller: user
     get:

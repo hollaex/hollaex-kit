@@ -171,7 +171,9 @@ const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 	let stringData = JSON.stringify(data);
 	let token;
 
-	if (version === 'v3') {
+	if (version === 'v4') {
+		token = Math.floor(100000 + Math.random() * 900000).toString();
+	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
@@ -198,7 +200,7 @@ const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 
 	const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
 	sendEmail(
-		version === 'v3' ? MAILTYPE.WITHDRAWAL_REQUEST_CODE : MAILTYPE.WITHDRAWAL_REQUEST,
+		version === 'v3' || version === 'v4' ? MAILTYPE.WITHDRAWAL_REQUEST_CODE : MAILTYPE.WITHDRAWAL_REQUEST,
 		email,
 		{
 			amount,

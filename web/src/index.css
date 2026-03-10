@@ -3222,6 +3222,25 @@ table th {
       height: 80px; }
     .withdrawal-container .withdraw-form-wrapper .withdraw-form .destination-field-mobile {
       height: 6rem; }
+    .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdrawal-block {
+      padding: 5%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px; }
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdrawal-block .withdrawal-block-icon {
+        width: 7rem;
+        height: 7rem; }
+        .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdrawal-block .withdrawal-block-icon svg {
+          width: 100%;
+          height: 100%; }
+      .withdrawal-container .withdraw-form-wrapper .withdraw-form .withdrawal-block .withdrawal-block-btn {
+        background-color: var(--specials_buttons-links-and-highlights);
+        border: none;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 5px; }
   .withdrawal-container .withdraw-form-wrapper .bottom-content {
     margin-top: 3%; }
     .withdrawal-container .withdraw-form-wrapper .bottom-content .fee-fields {
@@ -18691,6 +18710,9 @@ table th {
       font-size: 12px;
       align-items: flex-start;
       background-color: var(--base_wallet-sidebar-and-popup); }
+      .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper .email-text {
+        word-break: break-word;
+        max-width: 100%; }
       .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper .blue-link:hover {
         cursor: pointer; }
       .navigation-bar-wrapper .navigation-dropdown-container .tier-wrapper .trader-wrapper-icon {

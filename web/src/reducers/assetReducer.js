@@ -13,6 +13,7 @@ const INITIAL_STATE = {
 	oraclePrices: {},
 	wsPriceData: {},
 	totalAsset: 0,
+	usdtToDisplayRate: 1,
 	chartData: [],
 	allCoins: [],
 	allPairs: [],

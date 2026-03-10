@@ -8,7 +8,8 @@ const {
 	WS_WRONG_INPUT,
 	WS_WELCOME,
 	WS_UNSUPPORTED_OPERATION,
-	WS_USER_AUTHENTICATED
+	WS_USER_AUTHENTICATED,
+	WS_MISSING_HEADER
 } = require('../messages');
 const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData, handleP2pData } = require('./sub');
 const { connect, hubConnected } = require('./hub');
@@ -16,7 +17,8 @@ const { setWsHeartbeat } = require('ws-heartbeat/server');
 const WebSocket = require('ws');
 
 const clientMessageCounts = new Map();
-const MAX_MESSAGES_PER_SECOND = 10;
+const RATE_LIMIT_WINDOW_MS = 3000;
+const MAX_MESSAGES_PER_WINDOW = parseInt(process.env.WEBSOCKET_MAX_MESSAGES_PER_SECOND, 10) || 20;
 
 wss.on('connection', (ws, req) => {
 	// attaching unique id and authorization to the socket
@@ -46,32 +48,40 @@ wss.on('connection', (ws, req) => {
 				throw new Error(WS_WRONG_INPUT);
 			}
 
-			const now = Date.now();
-			let clientData = clientMessageCounts.get(ws.id) || { count: 0, timestamp: now };
-
-			if (now - clientData.timestamp >= 1000) {
-				clientData = { count: 0, timestamp: now };
-			}
-			// Increment message count
-			clientData.count += 1;
-
-			if (clientData.count > MAX_MESSAGES_PER_SECOND) {
-				// Rate limit exceeded
-				throw new Error(`Error: Rate limit exceeded for ${ws.id}. Please slow down. Maximum message per second: ${MAX_MESSAGES_PER_SECOND}. Your current rate: ${clientData.count}`);
-			}
-
-			clientMessageCounts.set(ws.id, clientData);
-
 			const { op, args } = message;
+
+			// Rate limit: exclude ping (keepalive) from counting
+			if (op !== 'ping') {
+				const now = Date.now();
+				let clientData = clientMessageCounts.get(ws.id) || { count: 0, timestamp: now };
+
+				if (now - clientData.timestamp >= RATE_LIMIT_WINDOW_MS) {
+					clientData = { count: 0, timestamp: now };
+				}
+				clientData.count += 1;
+
+				if (clientData.count > MAX_MESSAGES_PER_WINDOW) {
+					throw new Error(`Error: Rate limit exceeded for ${ws.id}. Please slow down. Maximum ${MAX_MESSAGES_PER_WINDOW} messages per ${RATE_LIMIT_WINDOW_MS / 1000} seconds. Your current rate: ${clientData.count}`);
+				}
+
+				clientMessageCounts.set(ws.id, clientData);
+			}
+
 			if (op === 'ping') {
 				ws.send(JSON.stringify({ message: 'pong' }));
 			} else if (op === 'subscribe') {
+				if (!Array.isArray(args)) {
+					throw new Error(WS_WRONG_INPUT);
+				}
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
 				args.forEach((arg) => {
 					let [topic, symbol] = arg.split(':');
 					initializeTopic(topic, ws, symbol);
 				});
 			} else if (op === 'unsubscribe') {
+				if (!Array.isArray(args)) {
+					throw new Error(WS_WRONG_INPUT);
+				}
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
 				args.forEach((arg) => {
 					let [topic, symbol] = arg.split(':');
@@ -79,10 +89,21 @@ wss.on('connection', (ws, req) => {
 				});
 			} else if (op === 'auth') {
 				loggerWebsocket.info(ws.id, 'ws/index/message auth');
-				const credentials = args[0];
+				const credentials = args && Array.isArray(args) ? args[0] : undefined;
+				if (!credentials || typeof credentials !== 'object') {
+					throw new Error(WS_MISSING_HEADER);
+				}
 				const ip = req.headers['x-real-ip'];
-				authorizeUser(credentials, ws, ip);
+				authorizeUser(credentials, ws, ip).catch((err) => {
+					loggerWebsocket.error(ws.id, 'ws/index/auth catch', err.message);
+					if (ws.readyState === WebSocket.OPEN) {
+						ws.send(JSON.stringify({ error: err.message || WS_WRONG_INPUT }));
+					}
+				});
 			} else if (op === 'chat') {
+				if (!Array.isArray(args)) {
+					throw new Error(WS_WRONG_INPUT);
+				}
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
 				args.forEach((arg) => {
 					const { action, data } = arg;
@@ -90,6 +111,9 @@ wss.on('connection', (ws, req) => {
 				});
 			} 
 			else if (op === 'p2pChat') {
+				if (!Array.isArray(args)) {
+					throw new Error(WS_WRONG_INPUT);
+				}
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
 				args.forEach((arg) => {
 					const { action, data } = arg;

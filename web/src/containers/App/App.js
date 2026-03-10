@@ -143,10 +143,15 @@ class App extends Component {
 
 		this.setActiveMenu();
 
-		this.assetsPrice = setTimeout(
-			() => this.props.setPricesAndAsset(this.props.balance, this.props.coins),
-			5000
-		);
+		// Skip scheduled oracle refresh when on wallet - MainWallet handles it
+		const pathname = this.props.location?.pathname || '';
+		if (!pathname.includes('/wallet')) {
+			this.assetsPrice = setTimeout(
+				() =>
+					this.props.setPricesAndAsset(this.props.balance, this.props.coins),
+				5000
+			);
+		}
 
 		initializeTools();
 		addElements(injected_values, 'body');
@@ -244,6 +249,14 @@ class App extends Component {
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
 			this.setActiveMenu();
+			// Cancel scheduled oracle refresh when navigating to wallet - MainWallet handles it
+			if (
+				this.props.location?.pathname?.includes?.('/wallet') &&
+				this.assetsPrice
+			) {
+				clearTimeout(this.assetsPrice);
+				this.assetsPrice = null;
+			}
 		}
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);

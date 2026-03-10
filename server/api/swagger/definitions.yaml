@@ -36,8 +36,30 @@ definitions:
         enum:
           - v2
           - v3
+          - v4
       long_term:
         type: boolean
+  SignupAuthentication:
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
+        maxLength: 256
+      password:
+        type: string
+        format: password
+        maxLength: 128
+      referral:
+        type: string
+        maxLength: 256
+      version:
+        type: string
+        enum:
+          - v2
+          - v3
+          - v4
   GoogleAuthentication:
     type: object
     required:
@@ -262,6 +284,11 @@ definitions:
             type: boolean
           popup_order_canceled:
             type: boolean
+      watchlist:
+        type: array
+        items:
+          type: string
+        description: List of trading pair symbols for the user's watchlist
   ChangePassword:
     type: object
     required:
@@ -281,6 +308,18 @@ definitions:
         maxLength: 6
       version:
         type: string
+  SetInitialPassword:
+    type: object
+    required:
+      - password
+      - email
+    properties:
+      password:
+        type: string
+        maxLength: 128
+      email:
+        type: string
+        maxLength: 256
   LoginsResponse:
     type: object
     properties:
@@ -347,6 +386,7 @@ definitions:
         enum:
           - v2
           - v3
+          - v4
   OtpRequest:
     type: object
     required:
@@ -355,6 +395,94 @@ definitions:
       code:
         type: string
         maxLength: 256
+  PasskeyActivate:
+    type: object
+    required:
+      - challenge
+      - credential
+      - webauthn_user_id
+    properties:
+      challenge:
+        type: string
+        description: Base64URL-encoded challenge from request-passkey-options
+        maxLength: 512
+      webauthn_user_id:
+        type: string
+        description: WebAuthn user ID from request-passkey-options user.id
+        maxLength: 512
+      credential:
+        type: object
+        description: The credential response from navigator.credentials.create()
+        required:
+          - id
+          - rawId
+          - response
+          - type
+        properties:
+          id:
+            type: string
+          rawId:
+            type: string
+          response:
+            type: object
+            required:
+              - clientDataJSON
+              - attestationObject
+            properties:
+              clientDataJSON:
+                type: string
+              attestationObject:
+                type: string
+              transports:
+                type: array
+                items:
+                  type: string
+          type:
+            type: string
+            enum:
+              - public-key
+  PasskeyVerifyLogin:
+    type: object
+    required:
+      - challenge
+      - credential
+    properties:
+      challenge:
+        type: string
+        description: Base64URL challenge from passkey-auth-options
+        maxLength: 512
+      credential:
+        type: object
+        description: Credential from navigator.credentials.get()
+        required:
+          - id
+          - rawId
+          - response
+          - type
+        properties:
+          id:
+            type: string
+          rawId:
+            type: string
+          response:
+            type: object
+            required:
+              - clientDataJSON
+              - authenticatorData
+              - signature
+            properties:
+              clientDataJSON:
+                type: string
+              authenticatorData:
+                type: string
+              signature:
+                type: string
+              userHandle:
+                type: string
+          type:
+            type: string
+            enum:
+              - public-key
   BankArray:
     type: array
     items:
@@ -1240,6 +1368,9 @@ definitions:
       fee:
         type: number
         format: double
+      network:
+        type: string
+        description: Blockchain network of transaction
   MintBurnUpdate:
     type: object
     required:

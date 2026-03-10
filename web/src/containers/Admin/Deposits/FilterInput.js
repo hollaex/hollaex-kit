@@ -4,7 +4,7 @@ import classname from 'classnames';
 
 import { Input, DatePicker } from 'antd';
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY/MM/DD HH:mm';
 
 const onInputChange = (onChange) => (event) => {
 	const value = event.target.value;
@@ -58,6 +58,7 @@ export const FilterDate = ({
 					onChange={onDateChange(onChange)}
 					format={dateFormat}
 					placeholder={placeholder}
+					showTime={{ format: 'HH:mm' }}
 				/>
 				{description && <div className="input-description">{description}</div>}
 			</div>

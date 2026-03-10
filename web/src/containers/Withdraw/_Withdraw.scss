@@ -442,6 +442,29 @@ $content--margin: 2rem;
 			.destination-field-mobile {
 				height: 6rem;
 			}
+			.withdrawal-block {
+				padding: 5%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				.withdrawal-block-icon {
+					width: 7rem;
+					height: 7rem;
+					svg {
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.withdrawal-block-btn {
+					background-color: $colors-notifications-blue;
+					border: none;
+					color: #ffffff;
+					display: flex;
+					align-items: center;
+					gap: 5px;
+				}
+			}
 		}
 
 		.bottom-content {

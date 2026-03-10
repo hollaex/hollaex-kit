@@ -73,7 +73,18 @@ class Wallet extends Component {
 			this.props.isFetching,
 			this.props.assets
 		);
-		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+		const displayCurrency =
+			this.props.user?.settings?.interface?.display_currency ||
+			this.state.baseCurrency;
+		this.props.setPricesAndAsset(
+			this.props.balance,
+			this.props.coins,
+			displayCurrency
+		);
+		// Sync baseCurrency when user is already loaded to avoid duplicate call in componentDidUpdate
+		if (displayCurrency && displayCurrency !== this.state.baseCurrency) {
+			this.setState({ baseCurrency: displayCurrency });
+		}
 
 		if (this.props.location.pathname.includes('/wallet/history')) {
 			this.setState({ activeBalanceHistory: true });
@@ -97,6 +108,20 @@ class Wallet extends Component {
 			nextProps.isFetching,
 			nextProps.assets
 		);
+		// Refresh when wsPriceData first arrives (after initial mount) - avoids "Zero assets"
+		// when WebSocket prices arrive after the first setPricesAndAsset call
+		const prevHasPrices =
+			this.props.wsPriceData && Object.keys(this.props.wsPriceData).length > 0;
+		const nextHasPrices =
+			nextProps.wsPriceData && Object.keys(nextProps.wsPriceData).length > 0;
+		if (!prevHasPrices && nextHasPrices) {
+			this.props.setPricesAndAsset(
+				nextProps.balance,
+				nextProps.coins,
+				nextProps.user?.settings?.interface?.display_currency ||
+					this.state.baseCurrency
+			);
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -143,8 +168,12 @@ class Wallet extends Component {
 			});
 
 			this.priceAssetsTimeout = setTimeout(() => {
-				this.props.setPricesAndAsset(this.props.balance, this.props.coins);
-			}, [1000]);
+				this.props.setPricesAndAsset(
+					this.props.balance,
+					this.props.coins,
+					this.state.baseCurrency
+				);
+			}, 1000);
 		}
 
 		if (pathname === '/wallet' && search && search !== prevSearch) {
@@ -187,7 +216,13 @@ class Wallet extends Component {
 	};
 
 	setBaseCurrency = (baseCurrency) => {
-		this.setState({ baseCurrency });
+		this.setState({ baseCurrency }, () => {
+			this.props.setPricesAndAsset(
+				this.props.balance,
+				this.props.coins,
+				baseCurrency
+			);
+		});
 	};
 
 	generateSections = (
@@ -229,6 +264,7 @@ class Wallet extends Component {
 						coins={coins}
 						pairs={pairs}
 						totalAssets={totalAssets}
+						baseCurrency={baseCurrency}
 						changeSymbol={changeSymbol}
 						navigate={this.goToPage}
 						assets={searchAssets(assets, searchValue, isZeroBalanceHidden)}
@@ -281,6 +317,7 @@ class Wallet extends Component {
 						searchResult={this.getMobileSlider(coins, wsPriceData)}
 						router={this.props.router}
 						totalAssets={totalAssets}
+						baseCurrency={baseCurrency}
 						loading={isFetching}
 						BASE_CURRENCY={BASE_CURRENCY}
 					/>
@@ -323,7 +360,11 @@ class Wallet extends Component {
 	};
 
 	onHandleRefresh = () => {
-		this.props.setPricesAndAsset(this.props.balance, this.props.coins);
+		this.props.setPricesAndAsset(
+			this.props.balance,
+			this.props.coins,
+			this.state.baseCurrency
+		);
 	};
 
 	render() {

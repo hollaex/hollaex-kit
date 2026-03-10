@@ -60,7 +60,9 @@ class AppBar extends Component {
 			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		this.props.getTickers();
-		this.props.setPairsTradesFetched(true);
+		if (Object.keys(this.props?.pairs || {})?.length === 0) {
+			this.props.setPairsTradesFetched(true);
+		}
 		if (this.props.theme) {
 			this.setSelectedTheme(this.props.theme);
 		}
@@ -772,6 +774,7 @@ const mapStateToProps = (state) => {
 		selectable_native_currencies:
 			state.app.constants.selectable_native_currencies,
 		getAnnouncementDetails: state.app.announcements,
+		pairs: state.app.pairs,
 	};
 };
 

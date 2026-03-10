@@ -315,15 +315,17 @@ class UserContent extends Component {
 	};
 
 	handleRecoverUser = () => {
-		const { userInformation = {}, refreshData } = this.props;
+		const { userInformation = {} } = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 		};
 
 		recoverUser(postValues)
 			.then((res) => {
-				refreshData({ ...postValues, activated: true });
 				this.setState({ showRecoverModal: false });
+				if (this.props?.requestUserData) {
+					this.props.requestUserData({ id: userInformation?.id });
+				}
 			})
 			.catch((err) => {
 				const _error =
@@ -333,14 +335,16 @@ class UserContent extends Component {
 	};
 
 	handleDeleteUser = () => {
-		const { userInformation = {}, refreshData } = this.props;
+		const { userInformation = {} } = this.props;
 		const postValues = {
 			user_id: parseInt(userInformation.id, 10),
 		};
 
 		deleteUser(postValues)
 			.then((res) => {
-				refreshData({ ...postValues, activated: false });
+				if (this.props?.requestUserData) {
+					this.props.requestUserData({ id: userInformation?.id });
+				}
 			})
 			.catch((err) => {
 				const _error =
