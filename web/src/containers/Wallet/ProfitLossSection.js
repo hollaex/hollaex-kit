@@ -41,7 +41,7 @@ const ProfitLossSection = ({
 	loading = false,
 	onHandleRefresh = () => {},
 	router,
-	usdtToDisplayRate,
+	oraclePrices,
 }) => {
 	const month = Array.apply(0, Array(12)).map(function (_, i) {
 		return moment().month(i).format('MMM');
@@ -461,8 +461,10 @@ const ProfitLossSection = ({
 					const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					const selectedCoin = assets.find((coin) => coin[0] === symbol);
 					const { increment_unit } = selectedCoin;
-					const wsPrice =
-						pricesInNative[coin?.symbol] * (usdtToDisplayRate ?? 1);
+					const oraclePrice = oraclePrices[coin?.symbol];
+					const wsPrice = pricesInNative[BASE_CURRENCY]
+						? pricesInNative[coin?.symbol] / pricesInNative[BASE_CURRENCY]
+						: oraclePrice;
 					const balance = balances[`${coin?.symbol}_balance`];
 					const incrementUnit = coins[coin.symbol].increment_unit;
 					const decimalPoint = new BigNumber(incrementUnit).dp();
@@ -1153,7 +1155,10 @@ const ProfitLossSection = ({
 													);
 													const baseCoin =
 														coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-													const price = wsPrice * (usdtToDisplayRate ?? 1);
+													const oraclePrice = oraclePrices[key];
+													const price = pricesInNative[BASE_CURRENCY]
+														? wsPrice / pricesInNative[BASE_CURRENCY]
+														: calculateOraclePrice(balance, oraclePrice);
 													const balanceText =
 														key === BASE_CURRENCY
 															? formatCurrencyByIncrementalUnit(
@@ -1474,7 +1479,7 @@ const mapStateToProps = (state) => ({
 	chartData: state.asset.chartData,
 	assets: sortedAssetsSelector(state),
 	quickTrade: state.app.quickTrade,
-	usdtToDisplayRate: state.asset.usdtToDisplayRate,
+	oraclePrices: state.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -97,7 +97,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error, wsPriceData } = this.state;
-		const { coins, usdtToDisplayRate } = this.props;
+		const { coins, oraclePrices } = this.props;
 		const sortedCoins = Object.keys(coins).sort();
 
 		const data = [];
@@ -141,8 +141,15 @@ class Wallets extends Component {
 				const inc_unit = coins[coin]?.increment_unit;
 				const baseCoin =
 					coins[localStorage.getItem('base_currnecy')] || WS_QUOTE_CURRENCY;
-				const price = wsPriceData?.[coin] * (usdtToDisplayRate || 1);
-				const est = calculateOraclePrice(balance[`${coin}_balance`], price);
+				const price = wsPriceData?.[coin];
+				const oraclePrice = oraclePrices?.[coin];
+				const base_currency =
+					localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
+				const est = wsPriceData[base_currency]
+					? calculateOraclePrice(balance[`${coin}_balance`], price) /
+					  wsPriceData[base_currency]
+					: calculateOraclePrice(balance[`${coin}_balance`], oraclePrice);
+
 				let asset = {
 					symbol: coin,
 					assets: coin.toUpperCase(),
@@ -214,7 +221,7 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	coins: state.app.coins,
 	wsPriceData: state.asset.wsPriceData,
-	usdtToDisplayRate: state.asset.usdtToDisplayRate,
+	oraclePrices: state.asset.oraclePrices,
 });
 
 export default connect(mapStateToProps)(Wallets);

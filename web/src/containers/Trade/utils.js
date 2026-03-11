@@ -9,6 +9,7 @@ import {
 } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { SORT } from 'actions/appActions';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -93,7 +94,7 @@ const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
 export const getFavourites = (state) => state.app.favourites;
 const getPrices = (state) => state.asset.wsPriceData;
-const getUsdtToDisplayRate = (state) => state.asset.usdtToDisplayRate ?? 1;
+const getOraclePrices = (state) => state.asset.oraclePrices;
 const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
@@ -275,7 +276,7 @@ export const unsortedMarketsSelector = createSelector(
 		getPrices,
 		getNativeCurrency,
 		getDisplayCurrency,
-		getUsdtToDisplayRate,
+		getOraclePrices,
 	],
 	(
 		pairKeys,
@@ -285,7 +286,7 @@ export const unsortedMarketsSelector = createSelector(
 		prices,
 		native_currency,
 		display_currency,
-		usdtToDisplayRate
+		oraclePrices
 	) => {
 		const markets = pairKeys.map((key) => {
 			const {
@@ -299,6 +300,8 @@ export const unsortedMarketsSelector = createSelector(
 			} = pairs[key] || {};
 			const { fullname, symbol = '' } =
 				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const baseCurrency =
+				localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 			const { volume = 0, open, close } = tickers[key] || {};
 			const { [pair_base]: price = 0 } = prices;
@@ -317,7 +320,12 @@ export const unsortedMarketsSelector = createSelector(
 				: formatPercentage(tickerPercent);
 
 			const volume_native = calculateOraclePrice(volume, price);
-			const calculatedVolumeNative = volume_native * (usdtToDisplayRate ?? 1);
+			const calculatedVolumeNative = prices[baseCurrency]
+				? volume_native / prices[baseCurrency]
+				: calculateOraclePrice(
+						volume,
+						oraclePrices[pair_base || BASE_CURRENCY]
+				  );
 			const volume_native_text = `${formatCurrencyByIncrementalUnit(
 				calculatedVolumeNative,
 				baseCoin.increment_unit

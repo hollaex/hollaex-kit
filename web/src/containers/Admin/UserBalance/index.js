@@ -7,7 +7,10 @@ import { connect } from 'react-redux';
 import { DonutChart, Coin } from '../../../components';
 import { generateCryptoAddress, requestUserBalance } from './actions';
 import { requestUserData } from '../User/actions';
-import { generateChartData } from '../../../actions/assetActions';
+import {
+	generateChartData,
+	WS_QUOTE_CURRENCY,
+} from '../../../actions/assetActions';
 import { isSupport } from '../../../utils/token';
 import {
 	calculateBalancePrice,
@@ -15,7 +18,7 @@ import {
 	formatToCurrency,
 } from '../../../utils/currency';
 import { STATIC_ICONS } from 'config/icons';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const INITIAL_STATE = {
 	userBalance: {},
@@ -32,6 +35,7 @@ const INITIAL_STATE = {
 
 class UserBalance extends Component {
 	state = INITIAL_STATE;
+	baseCurrency = localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 
 	UNSAFE_componentWillMount = () => {
 		const isSupportUser = isSupport();
@@ -72,10 +76,12 @@ class UserBalance extends Component {
 						addressData.address = temp.address;
 					}
 					const balance = this.state.userBalance[`${key}_balance`];
-					const estimated =
-						(balance || 0) *
-						(Number(this.state.wsPriceData?.[key]) || 0) *
-						(this.props.usdtToDisplayRate || 1);
+					const calculatedSocketPrice =
+						((balance || 0) * Number(this.state.wsPriceData?.[key] || 0)) /
+						this.state?.wsPriceData[this.baseCurrency];
+					const estimated = this.state?.wsPriceData[this.baseCurrency]
+						? calculatedSocketPrice
+						: (balance || 0) * this.props?.oraclePrices[key];
 					return {
 						...value,
 						...addressData,
@@ -146,9 +152,11 @@ class UserBalance extends Component {
 		}
 	};
 	getBalanceColumn = () => {
+		const { userInformation } = this.state;
 		const displayCurrency =
-			this.state?.userInformation?.settings?.interface?.display_currency ||
-			BASE_CURRENCY;
+			userInformation?.settings?.interface?.display_currency ||
+			this.baseCurrency ||
+			WS_QUOTE_CURRENCY;
 		const { increment_unit, display_name } =
 			this.props?.coins?.[displayCurrency] || DEFAULT_COIN_DATA;
 		return [
@@ -194,20 +202,28 @@ class UserBalance extends Component {
 	};
 
 	handleChartData = () => {
-		const { coins, wsPriceData } = this.props;
+		const { coins, wsPriceData, oraclePrices } = this.props;
 		const { userBalance } = this.state;
 
 		if (wsPriceData && Object.keys(wsPriceData)?.length > 0) {
-			const totalAsset = calculateBalancePrice(userBalance, wsPriceData, coins);
+			const totalAssetInUsdt = calculateBalancePrice(
+				userBalance,
+				wsPriceData,
+				coins
+			);
+			const totalAsset = wsPriceData[this.baseCurrency]
+				? totalAssetInUsdt / wsPriceData[this.baseCurrency]
+				: calculateBalancePrice(userBalance, oraclePrices, coins);
 			const chartData = generateChartData(
 				userBalance,
 				wsPriceData,
 				coins,
-				totalAsset
+				totalAsset,
+				oraclePrices
 			);
 			this.setState({
 				chartData,
-				totalAvaliableAsset: totalAsset,
+				totalAvaliableAsset: totalAssetInUsdt,
 				wsPriceData,
 			});
 		}
@@ -347,16 +363,20 @@ class UserBalance extends Component {
 			showGenerateWalletAddress,
 			userInformation,
 			totalAvaliableAsset,
+			wsPriceData,
+			userBalance,
 		} = this.state;
-		const { coins } = this.props;
+		const { coins, oraclePrices } = this.props;
 		const BALANCE_COLUMN = this.getBalanceColumn();
 		const { increment_unit, display_name } =
 			coins[
-				userInformation?.settings?.interface?.display_currency || BASE_CURRENCY
+				userInformation?.settings?.interface?.display_currency ||
+					this.baseCurrency ||
+					WS_QUOTE_CURRENCY
 			] || DEFAULT_COIN_DATA;
-		const calculatedAvailableAsset =
-			totalAvaliableAsset * (this.props.usdtToDisplayRate || 1);
-
+		const calculatedAvailableAsset = wsPriceData[this.baseCurrency]
+			? totalAvaliableAsset / wsPriceData[this.baseCurrency]
+			: calculateBalancePrice(userBalance, oraclePrices, coins);
 		if (loading) {
 			return (
 				<div className="app_container-content">
@@ -425,6 +445,6 @@ class UserBalance extends Component {
 }
 const mapStateToProps = (state) => ({
 	wsPriceData: state.asset.wsPriceData,
-	usdtToDisplayRate: state.asset.usdtToDisplayRate,
+	oraclePrices: state.asset.oraclePrices,
 });
 export default connect(mapStateToProps)(UserBalance);

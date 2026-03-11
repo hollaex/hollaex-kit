@@ -122,10 +122,12 @@ const RenderWithdraw = ({
 		setWithdrawOptionaltag,
 		scannedAddress,
 		setScannedAddress,
-		usdtToDisplayRate,
+		oraclePrices,
 	} = rest;
 
 	const defaultCurrency = currency !== '' && currency;
+	const baseCurrency =
+		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
 		coins[getWithdrawCurrency]?.network &&
@@ -139,11 +141,15 @@ const RenderWithdraw = ({
 	const curretPrice = getWithdrawCurrency
 		? wsPriceData?.[getWithdrawCurrency]
 		: wsPriceData?.[defaultCurrency];
+
+	const oraclePrice = getWithdrawCurrency
+		? oraclePrices?.[getWithdrawCurrency]
+		: oraclePrices?.[defaultCurrency];
+
 	const estimatedWithdrawValueInUsdt = curretPrice * getWithdrawAmount || 0;
-	const estimatedWithdrawValue =
-		estimatedWithdrawValueInUsdt * (usdtToDisplayRate ?? 1);
-	const baseCurrency =
-		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
+	const estimatedWithdrawValue = wsPriceData[baseCurrency]
+		? estimatedWithdrawValueInUsdt / wsPriceData[baseCurrency]
+		: oraclePrice * getWithdrawAmount || 0;
 
 	let fee =
 		selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
@@ -1765,7 +1771,7 @@ const mapStateToForm = (state) => ({
 	scannedAddress: state.wallet.scannedAddress,
 	wsPriceData: state.asset.wsPriceData,
 	user: state.user,
-	usdtToDisplayRate: state.asset.usdtToDisplayRate,
+	oraclePrices: state.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({

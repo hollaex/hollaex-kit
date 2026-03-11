@@ -903,7 +903,6 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	rolesList: state.app.rolesList,
 	wsPriceData: state.asset.wsPriceData,
-	usdtToDisplayRate: state.asset.usdtToDisplayRate,
 	balance: state.user.balance,
 	coins: state.app.coins,
 });

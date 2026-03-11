@@ -6,11 +6,11 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import {
-	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const AmountPreview = ({
 	amount = 0,
@@ -19,9 +19,13 @@ const AmountPreview = ({
 	coins,
 	icons: ICONS,
 	price,
+	wsPriceData = {},
+	oraclePrices = {},
 }) => {
+	const displayCurrency =
+		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 	const { min: baseMin, display_name: base_display = '' } =
-		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		coins[displayCurrency] || DEFAULT_COIN_DATA;
 	const { min: tokenMin, display_name: token_display = '', icon_id } =
 		coins[token] || DEFAULT_COIN_DATA;
 
@@ -37,7 +41,9 @@ const AmountPreview = ({
 			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
 		);
 
-	const amountValue = mathjs.multiply(amount, price);
+	const amountValue = wsPriceData[displayCurrency]
+		? mathjs.multiply(amount, price) / wsPriceData[displayCurrency]
+		: mathjs.multiply(amount, oraclePrices[token]);
 
 	return (
 		<div className="pt-4">
@@ -63,6 +69,8 @@ const mapStateToProps = (store, { symbol }) => {
 	return {
 		coins: store.app.coins,
 		price,
+		wsPriceData: store.asset.wsPriceData,
+		oraclePrices: store.asset.oraclePrices,
 	};
 };
 

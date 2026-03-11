@@ -22,6 +22,7 @@ import { requestUsers } from '../ListUsers/actions';
 import { getTickers, setBroker } from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { requestUserData } from '../User/actions';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
@@ -52,7 +53,7 @@ const OtcDeskContainer = ({
 	constants,
 	markets,
 	getTickers,
-	usdtToDisplayRate,
+	oraclePrices,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [type, setType] = useState('step1');
@@ -78,7 +79,7 @@ const OtcDeskContainer = ({
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
-	const [localUsdtToDisplayRate, setLocalUsdtToDisplayRate] = useState(1);
+	const [displayCurrencyPrice, setDisplayCurrecyPrice] = useState(1);
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
@@ -226,7 +227,9 @@ const OtcDeskContainer = ({
 	const handleSearch = _debounce(searchUser, 1000);
 
 	useEffect(() => {
-		setLocalUsdtToDisplayRate(usdtToDisplayRate);
+		setDisplayCurrecyPrice(
+			wsPriceData[localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY]
+		);
 		return () => {
 			handleSearch.cancel();
 		};
@@ -852,7 +855,10 @@ const OtcDeskContainer = ({
 				!isCoinHidden &&
 				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
 			) {
-				const wsPrice = (wsPriceData[key] || 1) * (localUsdtToDisplayRate ?? 1);
+				const wsPrice =
+					wsPriceData[key] && displayCurrencyPrice
+						? wsPriceData[key] / displayCurrencyPrice
+						: oraclePrices[key];
 				result[key] = { ...temp, wsPrice };
 			}
 			return key;
@@ -863,7 +869,7 @@ const OtcDeskContainer = ({
 	const searchResult = useMemo(() => {
 		return getSearchResult(coinData, balanceData, wsPriceData);
 		// eslint-disable-next-line
-	}, [coinData, balanceData, wsPriceData, localUsdtToDisplayRate]);
+	}, [coinData, balanceData, wsPriceData, displayCurrencyPrice]);
 
 	const sortedSearchResults = useMemo(() => {
 		return Object.entries(searchResult)
@@ -1049,7 +1055,7 @@ const mapStateToProps = (store) => ({
 	wsPriceData: store.asset.wsPriceData,
 	constants: store.app.constants,
 	markets: MarketsSelector(store),
-	usdtToDisplayRate: store.asset.usdtToDisplayRate,
+	oraclePrices: store.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({
