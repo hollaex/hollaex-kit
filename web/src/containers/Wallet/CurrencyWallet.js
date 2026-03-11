@@ -11,11 +11,8 @@ import {
 	Help,
 	ActionNotification,
 } from 'components';
-import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
-import {
-	formatCurrencyByIncrementalUnit,
-	calculateOraclePrice,
-} from 'utils/currency';
+import { DEFAULT_COIN_DATA } from 'config/constants';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import { assetsSelector } from './utils';
 import { formatToCurrency, getCurrencyFromName } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -29,6 +26,7 @@ import {
 	flipPair,
 	quicktradePairSelector,
 } from 'containers/QuickTrade/components/utils';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const TYPES = {
 	PRO: 'pro',
@@ -147,14 +145,17 @@ class Wallet extends Component {
 			coins[currency] || DEFAULT_COIN_DATA;
 		const balanceValue = balance[`${currency}_balance`] || 0;
 		const availableBalanceValue = balance[`${currency}_available`] || 0;
-		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const baseCurrency =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
+		const baseCoin = coins[baseCurrency] || DEFAULT_COIN_DATA;
 		const filteredAssets = this.props.assets.filter(
 			(val) => val[1].symbol === currency
 		);
 		const [assetsValue] = filteredAssets.map(
-			([_, { increment_unit, wsPrice }]) => ({
+			([_, { increment_unit, wsPrice, price }]) => ({
 				increment_unit,
 				wsPrice,
+				price,
 			})
 		);
 		const balanceText =
@@ -162,13 +163,13 @@ class Wallet extends Component {
 			assetsValue.increment_unit &&
 			assetsValue &&
 			assetsValue.wsPrice
-				? currency === BASE_CURRENCY
+				? currency === baseCurrency
 					? formatCurrencyByIncrementalUnit(
 							balanceValue,
 							assetsValue.increment_unit
 					  )
 					: formatCurrencyByIncrementalUnit(
-							calculateOraclePrice(balanceValue, assetsValue.wsPrice),
+							assetsValue?.price,
 							baseCoin.increment_unit
 					  )
 				: null;
@@ -281,7 +282,7 @@ class Wallet extends Component {
 								</EditWrapper>
 							</span>
 							{!isMobile &&
-								(currency !== BASE_CURRENCY ? (
+								(currency !== baseCurrency ? (
 									parseFloat(balanceText || 0) > 0 ? (
 										<p className="estimated-balance">
 											{`(≈ ${baseCoin.display_name} ${balanceText})`}

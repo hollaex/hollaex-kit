@@ -11,7 +11,6 @@ import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
 import { publicInfoSelector } from 'containers/Stake/selector';
 import { formatToCurrency } from 'utils/currency';
 import {
-	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
@@ -39,6 +38,7 @@ const PublicInfo = ({
 	othersStake,
 	othersStakePercent,
 	goToPOT,
+	displayCurrency,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -78,7 +78,7 @@ const PublicInfo = ({
 		},
 	];
 	const { min: baseMin, display_name: baseDisplay = '' } =
-		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		coins[displayCurrency] || DEFAULT_COIN_DATA;
 	const { min: tokenMin, display_name: tokenDisplay = '' } =
 		coins[token] || DEFAULT_COIN_DATA;
 

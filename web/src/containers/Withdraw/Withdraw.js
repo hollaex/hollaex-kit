@@ -44,11 +44,12 @@ import { email, validAddress } from 'components/Form/validations';
 import { getAddressBookDetails } from 'containers/Wallet/actions';
 import { getDecimals, handlePopupContainer } from 'utils/utils';
 import { roundNumber, toFixed } from 'utils/currency';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import { setScannedAddress } from 'actions/walletActions';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { checkAccountStatus, getMainAccountToken, setToken } from 'utils/token';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const RenderWithdraw = ({
 	coins,
@@ -80,7 +81,6 @@ const RenderWithdraw = ({
 	const [maxAmount, setMaxAmount] = useState(0);
 	const [topAssets, setTopAssets] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState([]);
-	const [prices, setPrices] = useState({});
 	const [withdrawalLimitError, setWithdrawalLimitError] = useState(null);
 	const [selectedAsset, setSelectedAsset] = useState({
 		selectedCurrency: null,
@@ -122,9 +122,12 @@ const RenderWithdraw = ({
 		setWithdrawOptionaltag,
 		scannedAddress,
 		setScannedAddress,
+		oraclePrices,
 	} = rest;
 
 	const defaultCurrency = currency !== '' && currency;
+	const baseCurrency =
+		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 	const iconId = coins[getWithdrawCurrency]?.icon_id;
 	const coinLength =
 		coins[getWithdrawCurrency]?.network &&
@@ -136,9 +139,18 @@ const RenderWithdraw = ({
 			: coins[getWithdrawCurrency]?.symbol;
 
 	const curretPrice = getWithdrawCurrency
-		? prices[getWithdrawCurrency]
-		: prices[defaultCurrency];
-	const estimatedWithdrawValue = curretPrice * getWithdrawAmount || 0;
+		? wsPriceData?.[getWithdrawCurrency]
+		: wsPriceData?.[defaultCurrency];
+
+	const oraclePrice = getWithdrawCurrency
+		? oraclePrices?.[getWithdrawCurrency]
+		: oraclePrices?.[defaultCurrency];
+
+	const estimatedWithdrawValueInUsdt = curretPrice * getWithdrawAmount || 0;
+	const estimatedWithdrawValue = wsPriceData[baseCurrency]
+		? estimatedWithdrawValueInUsdt / wsPriceData[baseCurrency]
+		: oraclePrice * getWithdrawAmount || 0;
+
 	let fee =
 		selectedMethod === STRINGS['FORM_FIELDS.EMAIL_LABEL']
 			? 0
@@ -245,7 +257,6 @@ const RenderWithdraw = ({
 		// ) {
 		// 	setIsWarning(true);
 		// }
-		getSocketPrices();
 		setCurrStep({ ...currStep, stepTwo: true });
 
 		return () => {
@@ -326,14 +337,6 @@ const RenderWithdraw = ({
 		isValidAddress,
 		isValidUserEmail,
 	]);
-
-	const getSocketPrices = async () => {
-		try {
-			setPrices(wsPriceData);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	const getWithdrawMAx = async (getWithdrawCurrency, isMaxAmount = false) => {
 		try {
@@ -712,11 +715,11 @@ const RenderWithdraw = ({
 					(getWithdrawCurrency || currency) && feeCoin?.toUpperCase()
 			  }`;
 
-	const incrementUnit = coins[BASE_CURRENCY]?.increment_unit || 0.0001;
+	const incrementUnit = coins[baseCurrency]?.increment_unit || 0.0001;
 	const decimalPoint = new BigNumber(incrementUnit).dp();
 	const estimatedFormat = `≈ ${new BigNumber(estimatedWithdrawValue)
 		.decimalPlaces(decimalPoint)
-		.toNumber()} ${BASE_CURRENCY?.toUpperCase()}`;
+		.toNumber()} ${baseCurrency?.toUpperCase()}`;
 
 	const isCondition =
 		(['xrp', 'xlm'].includes(selectedAsset?.selectedCurrency) ||
@@ -1768,6 +1771,7 @@ const mapStateToForm = (state) => ({
 	scannedAddress: state.wallet.scannedAddress,
 	wsPriceData: state.asset.wsPriceData,
 	user: state.user,
+	oraclePrices: state.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({
