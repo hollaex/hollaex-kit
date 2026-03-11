@@ -51,7 +51,7 @@ const generateFormValues = (
 	const MIN = math.max(fee, min);
 	const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
 
-	fee = customFee || fee;
+	fee = customFee !== null || customFee !== undefined ? customFee : fee;
 
 	const amountValidate = [required];
 	if (MIN) {
@@ -190,7 +190,11 @@ export const generateInitialValues = (
 ) => {
 	const initialValues = {};
 	let { rate } = getFiatDepositFee(currency, 0, '', getDepositCurrency);
-	rate = fiat_fees?.[currency]?.deposit_fee || rate;
+	rate =
+		fiat_fees?.[currency]?.deposit_fee !== null ||
+		fiat_fees?.[currency]?.deposit_fee !== undefined
+			? fiat_fees?.[currency]?.deposit_fee
+			: fiat_fees?.[currency]?.deposit_fee || rate;
 	initialValues.fee = rate;
 	return initialValues;
 };
@@ -215,6 +219,7 @@ const Deposit = ({
 	onramp,
 	account,
 	method,
+	fiat_fees,
 }) => {
 	const [fields, setFields] = useState({});
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -223,10 +228,18 @@ const Deposit = ({
 
 	useEffect(() => {
 		setFields(
-			generateFormValues(currency, coins, step, method, onramp, account)
+			generateFormValues(
+				currency,
+				coins,
+				step,
+				method,
+				onramp,
+				account,
+				fiat_fees
+			)
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [step, method, account]);
+	}, [step, method, account, fiat_fees]);
 
 	const onSubmitPaymentReq = (data) => {
 		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
