@@ -6627,7 +6627,10 @@ table th {
     stroke: var(--trading_selling-related-elements);
     fill: var(--trading_selling-related-elements); }
 
-.highcharts-background, .highcharts-plot-background, .highcharts-plot-border, .highcharts-series-group {
+.highcharts-background,
+.highcharts-plot-background,
+.highcharts-plot-border,
+.highcharts-series-group {
   fill: transparent; }
 
 .highcharts-credits {
