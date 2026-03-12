@@ -13,6 +13,7 @@ import {
 import { withdrawalOptionsSelector } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getWithdrawalMax } from 'actions/appActions';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 class Form extends Component {
 	state = {
@@ -198,10 +199,16 @@ class Form extends Component {
 			user: { balance },
 			prices = {},
 			withdrawInformation,
+			oraclePrices = {},
 		} = this.props;
 		const { setActiveTab } = this;
 
 		const balanceAvailable = balance[`${currency}_available`];
+		const baseCurrency =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
+		const calculatedCurrentPrice = prices[baseCurrency]
+			? prices[currency] / prices[baseCurrency]
+			: oraclePrices[currency];
 
 		const formProps = {
 			balanceAvailable,
@@ -210,7 +217,7 @@ class Form extends Component {
 			formValues,
 			setActiveTab,
 			activeTab,
-			currentPrice: prices[currency],
+			currentPrice: calculatedCurrentPrice,
 			withdrawInformation,
 		};
 
@@ -233,6 +240,7 @@ const mapStateToProps = (state, ownProps) => ({
 	ultimate_fiat: state.app.features.ultimate_fiat,
 	banks: withdrawalOptionsSelector(state, ownProps),
 	prices: state.asset.wsPriceData,
+	oraclePrices: state.asset.oraclePrices,
 	getWithdrawCurrency: state.app.withdrawFields.withdrawCurrency,
 });
 

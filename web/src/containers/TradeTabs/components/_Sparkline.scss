@@ -25,7 +25,10 @@
 	}
 }
 
-.highcharts-background {
+.highcharts-background,
+.highcharts-plot-background,
+.highcharts-plot-border,
+.highcharts-series-group {
 	fill: transparent;
 }
 
