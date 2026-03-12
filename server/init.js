@@ -103,7 +103,8 @@ const checkStatus = () => {
 		captcha: {},
 		cloudflare_turnstile: {},
 		emails: {},
-		smtp: {}
+		smtp: {},
+		passkey: {}
 	};
 
 	let frozenUsers = {};

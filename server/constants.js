@@ -47,7 +47,8 @@ let secrets = {
 	captcha: {},
 	cloudflare_turnstile: {},
 	emails: {},
-	smtp: {}
+	smtp: {},
+	passkey: {}
 };
 
 let frozenUsers = {};
@@ -99,7 +100,8 @@ const resetAllConfig = () => {
 		captcha: {},
 		cloudflare_turnstile: {},
 		emails: {},
-		smtp: {}
+		smtp: {},
+		passkey: {}
 	};
 	configuration = {
 		coins: {},
