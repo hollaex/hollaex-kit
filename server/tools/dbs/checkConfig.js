@@ -84,9 +84,12 @@ Status.findOne()
 			force_two_factor_authentication_withdrawal: existingKitConfigurations.force_two_factor_authentication_withdrawal || { active: false }
 		};
 
+		const existingPasskey = existingSecrets.passkey || {};
+		const passkeyAndroid = Array.isArray(existingPasskey.android) ? existingPasskey.android : [];
 		const secrets = {
 			allowed_domains: existingSecrets.allowed_domains || (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []),
 			admin_whitelist: existingSecrets.admin_whitelist || (process.env.ADMIN_WHITELIST_IP ? process.env.ADMIN_WHITELIST_IP.split(',') : []),
+			passkey: { ...existingPasskey, android: passkeyAndroid },
 			security: {
 				token_time: existingSecrets.security ? (existingSecrets.security.token_time || '24h') : '24h',
 				withdrawal_token_expiry: existingSecrets.security ? (existingSecrets.security.withdrawal_token_expiry || 300000) : 300000

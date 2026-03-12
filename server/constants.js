@@ -256,6 +256,7 @@ exports.KIT_SECRETS_KEYS = [
 	'cloudflare_turnstile',
 	'smtp',
 	'test_key',
+	'passkey',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
