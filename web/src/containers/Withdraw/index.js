@@ -28,6 +28,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { renderBackToWallet } from 'containers/Deposit/utils';
 import { IconTitle } from 'hollaex-web-lib';
 import STRINGS from 'config/localizedStrings';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 class Withdraw extends Component {
 	state = {
@@ -318,6 +319,7 @@ class Withdraw extends Component {
 			coins,
 			getWithdrawCurrency,
 			isDepositAndWithdraw,
+			oraclePrices,
 		} = this.props;
 		const { links = {} } = this.props.constants;
 		const {
@@ -346,7 +348,12 @@ class Withdraw extends Component {
 			return <Loader />;
 		}
 
+		const baseCurrency =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 		const isFiat = coins[getWithdrawCurrency]?.type === 'fiat';
+		const calculatedCurrentPrice = prices[baseCurrency]
+			? prices[currency] / prices[baseCurrency]
+			: oraclePrices[currency];
 
 		const formProps = {
 			currency,
@@ -358,7 +365,7 @@ class Withdraw extends Component {
 			initialValues,
 			activeLanguage,
 			balanceAvailable,
-			currentPrice: prices[currency],
+			currentPrice: calculatedCurrentPrice,
 			router,
 			icons: ICONS,
 			selectedNetwork,
@@ -452,6 +459,7 @@ const mapStateToProps = (store) => ({
 	getWithdrawNetwork: store.app.withdrawFields.withdrawNetwork,
 	isDepositAndWithdraw: store.app.depositAndWithdraw,
 	selectedWithdrawMethod: store.app.selectedWithdrawMethod,
+	oraclePrices: store.asset.oraclePrices,
 });
 
 const mapDispatchToProps = (dispatch) => ({

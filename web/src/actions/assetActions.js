@@ -16,8 +16,9 @@ export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
 export const SET_DASH_TOKEN = 'SET_DASH_TOKEN';
+export const SET_ORACLE_PRICES = 'SET_ORACLE_PRICES';
 
-const WS_QUOTE_CURRENCY = 'usdt';
+export const WS_QUOTE_CURRENCY = 'usdt';
 
 const ENDPOINTS = {
 	GET_PRICE: '/oracle/prices',
@@ -80,12 +81,23 @@ export const setPricesAndAsset = (balance, coins, displayCurrencyOverride) => {
 				prices,
 				displayCurrency
 			);
-			const totalAsset = totalAssetInUsdt * usdtToDisplayRate;
+
+			if (prices && Object.keys(prices || {})?.length > 0) {
+				dispatch({
+					type: SET_ORACLE_PRICES,
+					payload: {
+						oraclePrices: prices,
+					},
+				});
+			}
+
+			const totalAsset = wsPriceData[displayCurrency]
+				? totalAssetInUsdt / wsPriceData[displayCurrency]
+				: calculateBalancePrice(balance, prices, coins);
 
 			dispatch({
 				type: SET_PRICES_AND_ASSET_SUCCESS,
 				payload: {
-					oraclePrices: prices,
 					totalAsset,
 					usdtToDisplayRate,
 					chartData: generateChartData(
@@ -93,7 +105,7 @@ export const setPricesAndAsset = (balance, coins, displayCurrencyOverride) => {
 						wsPriceData,
 						coins,
 						totalAsset,
-						usdtToDisplayRate
+						prices
 					),
 				},
 			});
@@ -163,17 +175,25 @@ export const generateChartData = (
 	prices,
 	coins,
 	totalAsset,
-	usdtToDisplayRate = 1
+	oraclePrices = {}
 ) => {
 	const data = [];
 
 	Object.keys(coins).forEach((currency) => {
 		const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
+		const base_currency =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 		const currencyBalanceInUsdt = calculateOraclePrice(
 			balance[`${symbol}_balance`],
 			prices[symbol]
 		);
-		const currencyBalance = currencyBalanceInUsdt * usdtToDisplayRate;
+		const oracleCurrencyBalance = calculateOraclePrice(
+			balance[`${symbol}_balance`],
+			oraclePrices[symbol]
+		);
+		const currencyBalance = prices[base_currency]
+			? currencyBalanceInUsdt / prices[base_currency]
+			: oracleCurrencyBalance;
 		const balancePercent = calculatePricePercentage(
 			currencyBalance,
 			totalAsset
