@@ -41,18 +41,13 @@ const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
 const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
-const { isMainThread, workerData, parentPort } = require('worker_threads');
+const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
+const { checkStatus } = require('../init');
+const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
 const rateLimit = require('express-limiter');
-const { setNodeLib } = require('../init');
-const Network = require('hollaex-network-lib');
 
-const initPluginProcess = async ({ PORT, nodeLibConfig }) => {
-
-	if (nodeLibConfig) {
-		const networkNodeLib = new Network(nodeLibConfig);
-		setNodeLib(networkNodeLib);
-	}
+const initPluginProcess = async ({ PORT }) => {
 
 	const app = express();
 
@@ -76,6 +71,10 @@ const initPluginProcess = async ({ PORT, nodeLibConfig }) => {
 	});
 
 	for (const plugin of plugins) {
+		loggerPlugin.verbose(
+			'plugins/plugin-process',
+			`Processing plugin: ${plugin.name}`
+		);
 		try {
 			const context = {
 				configValues: {
@@ -180,20 +179,33 @@ if (!isMainThread) {
 		'plugins/plugin-process',
 		'Plugin thread initializing'
 	);
-	let started = false;
-	parentPort.on('message', (message) => {
-		if (started || message !== 'start') {
-			return;
-		}
-		started = true;
-		try {
-			initPluginProcess(JSON.parse(workerData));
-		} catch (err) {
+	checkStatus()
+		.then(async () => {
+			await sleep(2 * 1000);
+
+			loggerPlugin.verbose(
+				'plugins/plugin-process',
+				'Plugin thread checkStatus complete'
+			);
+			try {
+				console.log('workerData', workerData);
+				initPluginProcess(JSON.parse(workerData));
+			} catch (err) {
+				loggerPlugin.error(
+					'plugins/plugin-process',
+					'error while starting plugin',
+					err.message
+				);
+			}
+		})
+		.catch(() => {
 			loggerPlugin.error(
 				'plugins/plugin-process',
-				'error while starting plugin',
+				'API Initialization failed',
 				err.message
 			);
-		}
-	});
+			setTimeout(() => { process.exit(1); }, 1000 * 5);
+		});
+
+
 }

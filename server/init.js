@@ -32,8 +32,6 @@ let nodeLib;
 let nodeLibConfig;
 
 const getNodeLib = () => nodeLib;
-const setNodeLib = (lib) => { nodeLib = lib; };
-const getNodeLibConfig = () => nodeLibConfig;
 
 subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
@@ -600,7 +598,5 @@ function mergeStatusEmailsWithStatic(existingEmails = {}, staticTemplates = {}) 
 module.exports = {
 	checkStatus,
 	checkActivation,
-	getNodeLib,
-	setNodeLib,
-	getNodeLibConfig
+	getNodeLib
 };
