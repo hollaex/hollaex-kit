@@ -861,31 +861,83 @@ test.describe('Page Navigation Tests', () => {
     test('should test dark/light mode toggle', async ({ page }) => {
       await page.goto(`${testData.baseUrl}/summary`);
       await page.waitForTimeout(10000);
-      
-      // Initial URL doesn't have theme parameter (uses account default)
+
       const initialUrl = page.url();
       expect(initialUrl).not.toContain('theme=');
-      
-      // Click the theme toggle - this will add the theme parameter to URL
-      await page.locator('.toggle-action_button').click();
-      await page.waitForTimeout(1000);
-      
-      // Verify URL now includes a theme parameter
-      const firstClickUrl = page.url();
-      expect(firstClickUrl).toContain('theme=');
-      const firstTheme = firstClickUrl.includes('theme=white') ? 'light' : 'dark';
-      
-      // Click again to toggle theme
-      await page.locator('.toggle-action_button').click();
-      await page.waitForTimeout(1000);
-      
-      // Verify theme changed to the opposite
-      const secondClickUrl = page.url();
-      expect(secondClickUrl).toContain('theme=');
-      const secondTheme = secondClickUrl.includes('theme=white') ? 'light' : 'dark';
-      
-      // Theme should have changed
-      expect(secondTheme).not.toBe(firstTheme);
+
+      const isToggle = await page.locator('.toggle-action_button').isVisible().catch(() => false);
+      const isDropdown = await page.locator('.custom-select-input-style.appbar').isVisible().catch(() => false);
+
+      expect(isToggle || isDropdown).toBeTruthy();
+
+      if (isToggle) {
+        await page.locator('.toggle-action_button').click();
+        await page.waitForTimeout(2000);
+
+        const firstClickUrl = page.url();
+        expect(firstClickUrl).toContain('theme=');
+        const firstTheme = firstClickUrl.includes('theme=white') ? 'light' : 'dark';
+
+        await page.locator('.toggle-action_button').click();
+        await page.waitForTimeout(2000);
+
+        const secondClickUrl = page.url();
+        expect(secondClickUrl).toContain('theme=');
+        const secondTheme = secondClickUrl.includes('theme=white') ? 'light' : 'dark';
+
+        expect(secondTheme).not.toBe(firstTheme);
+      } else {
+        // Dropdown mode (>= 3 themes): open the Ant Design Select dropdown
+        await page.locator('.custom-select-input-style.appbar .ant-select-selector').click();
+        await page.waitForTimeout(1000);
+
+        // Collect all available options from the opened dropdown
+        const options = page.locator('.custom-select-style .ant-select-item-option');
+        const optionCount = await options.count();
+        expect(optionCount).toBeGreaterThanOrEqual(2);
+
+        // Read the currently selected theme from the URL or selector text
+        const selectedText = await page.locator('.custom-select-input-style.appbar .ant-select-selection-item').textContent();
+
+        // Pick the first option that differs from the current selection
+        let clickedOption = null;
+        for (let i = 0; i < optionCount; i++) {
+          const optText = await options.nth(i).textContent();
+          if (optText.trim().toLowerCase() !== selectedText.trim().toLowerCase()) {
+            await options.nth(i).click();
+            clickedOption = optText.trim();
+            break;
+          }
+        }
+        expect(clickedOption).not.toBeNull();
+        await page.waitForTimeout(2000);
+
+        const firstChangeUrl = page.url();
+        expect(firstChangeUrl).toContain('theme=');
+
+        // Open dropdown again and select yet another option
+        await page.locator('.custom-select-input-style.appbar .ant-select-selector').click();
+        await page.waitForTimeout(1000);
+
+        const options2 = page.locator('.custom-select-style .ant-select-item-option');
+        const updatedSelectedText = await page.locator('.custom-select-input-style.appbar .ant-select-selection-item').textContent();
+        let secondClickedOption = null;
+        const optionCount2 = await options2.count();
+        for (let i = 0; i < optionCount2; i++) {
+          const optText = await options2.nth(i).textContent();
+          if (optText.trim().toLowerCase() !== updatedSelectedText.trim().toLowerCase()) {
+            await options2.nth(i).click();
+            secondClickedOption = optText.trim();
+            break;
+          }
+        }
+        expect(secondClickedOption).not.toBeNull();
+        await page.waitForTimeout(2000);
+
+        const secondChangeUrl = page.url();
+        expect(secondChangeUrl).toContain('theme=');
+        expect(secondChangeUrl).not.toBe(firstChangeUrl);
+      }
     });
   });
 });
