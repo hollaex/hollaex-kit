@@ -5150,6 +5150,7 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
+	getUserByAffiliationCode,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
