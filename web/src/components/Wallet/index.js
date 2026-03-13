@@ -12,15 +12,15 @@ import {
 	Coin,
 	EditWrapper,
 } from 'components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
-	calculateOraclePrice,
 	formatCurrencyByIncrementalUnit,
 	formatToCurrency,
 } from 'utils/currency';
 import { assetsSelector } from 'containers/Wallet/utils';
 import WalletSection from './Section';
 import STRINGS from 'config/localizedStrings';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 class Wallet extends Component {
 	state = {
@@ -104,7 +104,8 @@ class Wallet extends Component {
 		if (Object.keys(balance).length === 0) {
 			return <div />;
 		}
-
+		const BASE_CURRENCY =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const currency = this.props.symbol.split('-');
 		// const { display_name = '' } = coins[BASE_CURRENCY] || {};
@@ -196,9 +197,10 @@ class Wallet extends Component {
 						(val) => val[1].symbol === data
 					);
 					const [assetsValue] = filteredAssets.map(
-						([_, { increment_unit, wsPrice }]) => ({
+						([_, { increment_unit, wsPrice, price }]) => ({
 							increment_unit,
 							wsPrice,
+							price,
 						})
 					);
 					const balanceText =
@@ -212,7 +214,7 @@ class Wallet extends Component {
 										assetsValue.increment_unit
 								  )
 								: formatCurrencyByIncrementalUnit(
-										calculateOraclePrice(balanceValue, assetsValue?.wsPrice),
+										assetsValue?.price,
 										baseCoin.increment_unit
 								  )
 							: null;

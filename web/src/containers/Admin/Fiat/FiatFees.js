@@ -5,11 +5,11 @@ import { CloseOutlined } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { connect } from 'react-redux';
 import { updateConstants } from '../General/action';
-import { requestAdminData } from 'actions/appActions';
+import { requestAdminData, setConfig } from 'actions/appActions';
 import { Coin } from 'components';
 import { renderAsset } from '../Deposits/utils';
 
-const FiatFees = ({ coins }) => {
+const FiatFees = ({ coins, dispatch, constants }) => {
 	const [coinData, setCoinData] = useState([]);
 	const [coinCustomizations, setCoinCustomizations] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,13 @@ const FiatFees = ({ coins }) => {
 			dataIndex: 'withdrawal_fee',
 			key: 'withdrawal_fee',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.withdrawal_fee || '-'}</div>;
+				return (
+					<div className="d-flex">
+						{data?.withdrawal_fee !== null && data?.withdrawal_fee !== undefined
+							? data?.withdrawal_fee
+							: '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -60,7 +66,13 @@ const FiatFees = ({ coins }) => {
 			dataIndex: 'deposit_fee',
 			key: 'deposit_fee',
 			render: (user_id, data) => {
-				return <div className="d-flex">{data?.deposit_fee || '-'}</div>;
+				return (
+					<div className="d-flex">
+						{data?.deposit_fee !== null && data?.deposit_fee !== undefined
+							? data?.deposit_fee
+							: '-'}
+					</div>
+				);
 			},
 		},
 		{
@@ -406,21 +418,29 @@ const FiatFees = ({ coins }) => {
 											);
 										}
 
+										const updatedFiatFees = {
+											...coinData,
+											[selectedCoin.symbol]: {
+												symbol: selectedCoin.symbol,
+												withdrawal_fee: selectedCoin.withdrawal_fee,
+												deposit_fee: selectedCoin.deposit_fee,
+												min: selectedCoin.min,
+												max: selectedCoin.max,
+												increment_unit: selectedCoin.increment_unit,
+											},
+										};
+
 										await updateConstants({
 											kit: {
-												fiat_fees: {
-													...coinData,
-													[selectedCoin.symbol]: {
-														symbol: selectedCoin.symbol,
-														withdrawal_fee: selectedCoin.withdrawal_fee,
-														deposit_fee: selectedCoin.deposit_fee,
-														min: selectedCoin.min,
-														max: selectedCoin.max,
-														increment_unit: selectedCoin.increment_unit,
-													},
-												},
+												fiat_fees: updatedFiatFees,
 											},
 										});
+										dispatch(
+											setConfig({
+												...constants,
+												fiat_fees: updatedFiatFees,
+											})
+										);
 
 										requesCoinConfiguration();
 										message.success('Changes saved.');
@@ -449,6 +469,7 @@ const FiatFees = ({ coins }) => {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	constants: state.app.constants,
 });
 
 export default connect(mapStateToProps)(withConfig(FiatFees));

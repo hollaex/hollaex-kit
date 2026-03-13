@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import mathjs from 'mathjs';
 import { web3 } from 'config/contracts';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const PERCENT_DECIMALS = 2;
 
@@ -17,6 +18,11 @@ const getPendingTransactions = (state) => state.stake.pendingTransactions;
 const getDistributions = (state) => state.stake.distributions;
 
 const getMetamaskNetwork = (state) => state.stake.network;
+
+const getDisplayCurrency = (state) =>
+	state.user?.settings?.interface?.display_currency ||
+	localStorage.getItem('base_currnecy') ||
+	WS_QUOTE_CURRENCY;
 
 const getContractNetwork = (state) => state?.app?.contracts?.['xht']?.network;
 
@@ -59,7 +65,7 @@ export const userActiveStakesSelector = createSelector(
 	}
 );
 
-const getValue = (balances, prices) => {
+const getValue = (balances, prices, baseCurrency) => {
 	let value = 0;
 	Object.entries(balances).forEach(([symbol, balance]) => {
 		value = mathjs.sum(
@@ -70,15 +76,18 @@ const getValue = (balances, prices) => {
 			value
 		);
 	});
-
-	return value;
+	return value / prices[baseCurrency];
 };
 
 export const userStakesValueSelector = createSelector(
-	[getSocketPrices, userActiveStakesSelector],
-	(prices = {}, { totalUserStakes, totalUserEarnings }) => {
-		const totalStakesValue = getValue(totalUserStakes, prices);
-		const totalEarningsValue = getValue(totalUserEarnings, prices);
+	[getSocketPrices, userActiveStakesSelector, getDisplayCurrency],
+	(prices = {}, { totalUserStakes, totalUserEarnings }, displayCurrency) => {
+		const totalStakesValue = getValue(totalUserStakes, prices, displayCurrency);
+		const totalEarningsValue = getValue(
+			totalUserEarnings,
+			prices,
+			displayCurrency
+		);
 
 		return { totalStakesValue, totalEarningsValue };
 	}
@@ -92,6 +101,7 @@ export const publicInfoSelector = createSelector(
 		userActiveStakesSelector,
 		getPots,
 		getDistributions,
+		getDisplayCurrency,
 	],
 	(
 		account,
@@ -99,7 +109,8 @@ export const publicInfoSelector = createSelector(
 		prices = {},
 		{ totalUserStakes: { xht: myStake = 0 } = { xht: 0 } },
 		{ xht: { balance: potBalance = '' } = { balance: 0 } },
-		distributions
+		distributions,
+		displayCurrency
 	) => {
 		// public info calculation
 
@@ -115,10 +126,15 @@ export const publicInfoSelector = createSelector(
 
 		const totalDistributedRewardsValue = getValue(
 			{ xht: totalDistributedRewards },
-			prices
+			prices,
+			displayCurrency
 		);
 
-		const totalStakedValue = getValue({ xht: totalStaked }, prices);
+		const totalStakedValue = getValue(
+			{ xht: totalStaked },
+			prices,
+			displayCurrency
+		);
 		const othersStake = mathjs.subtract(totalStaked, myStake);
 		const myStakePercent = mathjs.round(
 			totalStaked
@@ -144,6 +160,7 @@ export const publicInfoSelector = createSelector(
 			othersStake,
 			myStakePercent,
 			othersStakePercent,
+			displayCurrency,
 		};
 	}
 );

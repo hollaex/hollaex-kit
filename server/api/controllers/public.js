@@ -1,6 +1,7 @@
 'use strict';
 
 const packageJson = require('../../package.json');
+const { REFERRAL_CODE_REQUIRED } = require('../../messages');
 const { API_HOST, HOLLAEX_NETWORK_ENDPOINT, DOMAIN } = require('../../constants');
 const { loggerPublic } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
@@ -391,6 +392,40 @@ const getSymbols = (req, res) => {
 		});
 };
 
+const checkReferralCode = (req, res) => {
+	const { code } = req.swagger.params;
+
+	if (!code.value || typeof code.value !== 'string') {
+		const messageObj = errorMessageConverter({ message: REFERRAL_CODE_REQUIRED }, req?.auth?.sub?.lang);
+		const message = typeof messageObj === 'string' ? messageObj : (messageObj?.message || REFERRAL_CODE_REQUIRED);
+		return res.status(400).json({ message, valid: false });
+	}
+
+	const trimmedCode = code.value.trim();
+	if (!trimmedCode) {
+		const messageObj = errorMessageConverter({ message: REFERRAL_CODE_REQUIRED }, req?.auth?.sub?.lang);
+		const message = typeof messageObj === 'string' ? messageObj : (messageObj?.message || REFERRAL_CODE_REQUIRED);
+		return res.status(400).json({ message, valid: false });
+	}
+
+	toolsLib.user.getUserByAffiliationCode(trimmedCode)
+		.then((referralCode) => {
+			if (referralCode) {
+				return res.json({
+					valid: true,
+					discount: referralCode.discount,
+					earning_rate: referralCode.earning_rate
+				});
+			}
+			return res.json({ valid: false });
+		})
+		.catch((err) => {
+			loggerPublic.verbose('controller/public/checkReferralCode', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
@@ -429,6 +464,7 @@ module.exports = {
 	getConstants,
 	getKitConfigurations,
 	sendSupportEmail,
+	checkReferralCode,
 	getTopOrderbook,
 	getTopOrderbooks,
 	getTrades,

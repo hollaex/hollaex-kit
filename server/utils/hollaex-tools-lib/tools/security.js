@@ -75,7 +75,7 @@ const geoip = require('geoip-lite');
  * Returns passkey config for both generation and verification.
  * rpName, rpID: used when generating registration/auth options.
  * allowedOrigins: array for verification - SimpleWebAuthn accepts expectedOrigin as array.
- * Supports multiple origins (dev ports, mobile webview, allowed_domains).
+ * Supports multiple origins (dev ports, mobile webview, allowed_domains, Android app).
  */
 const getPasskeyConfig = (req) => {
 	const normalizeOrigin = (url) => {
@@ -118,11 +118,18 @@ const getPasskeyConfig = (req) => {
 			.forEach((o) => origins.add(o));
 	}
 
+	// Android app origins (apk-key-hash format) - from admin config; bypass normalizeOrigin
+	const androidOrigins = getKitSecrets()?.passkey?.android;
+	const passkeyAndroidOrigins = Array.isArray(androidOrigins) ? androidOrigins : [];
+	passkeyAndroidOrigins.forEach((o) => origins.add(o));
+
 	const allowedOrigins = Array.from(origins);
 	const primaryOrigin = req.headers.origin || req.headers['x-real-origin'] || DOMAIN;
 	let rpID = 'localhost';
+	// Android app sends android:apk-key-hash:xxx as origin; use DOMAIN for rpID in that case
+	const originForRpId = /^android:/.test(primaryOrigin) ? DOMAIN : primaryOrigin;
 	try {
-		const originUrl = new URL(primaryOrigin);
+		const originUrl = new URL(originForRpId);
 		rpID = originUrl.hostname === 'localhost' ? 'localhost' : originUrl.hostname;
 	} catch (e) {
 		// fallback to localhost if URL parsing fails

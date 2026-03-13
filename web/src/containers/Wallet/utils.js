@@ -13,11 +13,12 @@ import { WALLET_SORT } from 'actions/appActions';
 import { Image } from 'hollaex-web-lib';
 import { networkList, renderNetworkWithLabel } from 'containers/Withdraw/utils';
 import { unique } from 'utils/data';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
 const getSocketPrices = (state) => state.asset.wsPriceData;
-const getUsdtToDisplayRate = (state) => state.asset.usdtToDisplayRate ?? 1;
+const oraclePrices = (state) => state.asset.oraclePrices;
 const getSortMode = (state) => state.app.wallet_sort.mode;
 const getSortDir = (state) => state.app.wallet_sort.is_descending;
 const pairs = (state) => state.app.pairs;
@@ -86,17 +87,21 @@ export const selectAssetOptions = createSelector([getCoins], (coins) => {
 });
 
 const unsortedAssetsSelector = createSelector(
-	[getCoins, getBalances, getSocketPrices, getUsdtToDisplayRate],
-	(coins, balances, wsPriceData, usdtToDisplayRate) => {
+	[getCoins, getBalances, getSocketPrices, oraclePrices],
+	(coins, balances, wsPriceData, oraclePrices) => {
 		const assets = {};
+		const baseCurrency =
+			localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 
 		Object.entries(coins).forEach(([key, coin]) => {
 			if (balances.hasOwnProperty(`${key}_balance`)) {
 				const wsPrice = wsPriceData[key];
+				const oraclePrice = oraclePrices[key];
 				const balance = balances[`${key}_balance`];
 				const priceInUsdt = calculateOraclePrice(balance, wsPrice);
-				const price = priceInUsdt * usdtToDisplayRate;
-
+				const price = wsPriceData[baseCurrency]
+					? priceInUsdt / wsPriceData[baseCurrency]
+					: calculateOraclePrice(balance, oraclePrice);
 				assets[key] = {
 					...coin,
 					wsPrice,
