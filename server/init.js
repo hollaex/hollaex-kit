@@ -29,8 +29,11 @@ const fs = require('fs');
 const path = require('path');
 
 let nodeLib;
+let nodeLibConfig;
 
 const getNodeLib = () => nodeLib;
+const setNodeLib = (lib) => { nodeLib = lib; };
+const getNodeLibConfig = () => nodeLibConfig;
 
 subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
@@ -414,7 +417,7 @@ const checkStatus = () => {
 				initialized: status.initialized
 			};
 
-			const networkNodeLib = new Network({
+			nodeLibConfig = {
 				apiUrl: HOLLAEX_NETWORK_ENDPOINT,
 				baseUrl: HOLLAEX_NETWORK_BASE_URL,
 				apiKey: status.api_key,
@@ -422,7 +425,9 @@ const checkStatus = () => {
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code,
 				kit_version: status.kit_version
-			});
+			};
+
+			const networkNodeLib = new Network(nodeLibConfig);
 
 			if (!networkNodeLib) {
 				throw new Error('Node library failed to initialize');
@@ -595,5 +600,7 @@ function mergeStatusEmailsWithStatic(existingEmails = {}, staticTemplates = {}) 
 module.exports = {
 	checkStatus,
 	checkActivation,
-	getNodeLib
+	getNodeLib,
+	setNodeLib,
+	getNodeLibConfig
 };

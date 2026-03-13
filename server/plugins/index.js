@@ -1,6 +1,6 @@
 'use strict';
 
-const { checkStatus } = require('../init');
+const { checkStatus, getNodeLibConfig } = require('../init');
 const express = require('express');
 const PORT = process.env.PLUGIN_PORT || 10011;
 const morgan = require('morgan');
@@ -113,7 +113,11 @@ const startPluginProcess = async () => {
 		await installPlugin(plugin);
 
 	}
-	const pluginData = { PORT: 10012 };
+	const nodeLibConfig = getNodeLibConfig();
+	const pluginData = {
+		PORT: 10012,
+		nodeLibConfig: nodeLibConfig || undefined
+	};
 	const childProcess = new Worker(pluginProcess, {
 		workerData: JSON.stringify(pluginData)
 	});
