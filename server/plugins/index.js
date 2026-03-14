@@ -119,7 +119,6 @@ const startPluginProcess = async () => {
 	});
 
 	pluginWorkerThread = childProcess;
-	pluginWorkerThread.postMessage('start');
 
 	pluginWorkerThread.on('exit', (code) => {
 		if (code === 0) {

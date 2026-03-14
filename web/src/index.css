@@ -6627,7 +6627,10 @@ table th {
     stroke: var(--trading_selling-related-elements);
     fill: var(--trading_selling-related-elements); }
 
-.highcharts-background {
+.highcharts-background,
+.highcharts-plot-background,
+.highcharts-plot-border,
+.highcharts-series-group {
   fill: transparent; }
 
 .highcharts-credits {
@@ -22011,7 +22014,8 @@ table th {
       width: 4rem;
       height: 4rem; }
     .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-title .title-text {
-      font-size: 1.8rem; }
+      font-size: 1.8rem;
+      color: var(--labels_important-active-labels-text-graphics) !important; }
   .high-slippage-popup-wrapper .ReactModal__Content .high-slippage-popup-container .high-slippage-popup-content {
     padding: 2% 4%;
     display: flex;
@@ -22041,7 +22045,8 @@ table th {
           width: 2.5rem;
           height: 2.5rem; }
       .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-title .title-text {
-        font-size: 1.8rem; }
+        font-size: 1.8rem;
+        color: var(--labels_important-active-labels-text-graphics) !important; }
     .limit-order-success-popup-wrapper .ReactModal__Content .limit-order-success-popup-container .limit-order-success-popup-content {
       display: flex;
       flex-direction: column;

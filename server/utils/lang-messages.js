@@ -4199,6 +4199,44 @@ const messages = {
 		'ur': 'براہ کرم اپنے ای میل پر بھیجا گیا تصدیقی کوڈ تصدیق کریں',
 		'vi': 'Vui lòng xác nhận mã xác minh được gửi đến email của bạn',
 		'zh': '请确认发送到您邮箱的验证码'
+	},
+	'Referral code is required': {
+		'en': 'Referral code is required',
+		'de': 'Referralcode ist erforderlich',
+		'es': 'Se requiere código de referido',
+		'fa': 'کد معرف الزامی است',
+		'fr': 'Le code de parrainage est requis',
+		'id': 'Kode referral wajib diisi',
+		'it': 'Il codice referral è obbligatorio',
+		'ja': '紹介コードが必要です',
+		'ko': '추천 코드가 필요합니다',
+		'mn': 'Ийлүүлэх кодыг оруулах шаардлагатай',
+		'nl': 'Referentiecode is vereist',
+		'pt': 'Código de indicação é obrigatório',
+		'ru': 'Требуется реферальный код',
+		'tr': 'Referans kodu gereklidir',
+		'ur': 'رفرنس کوڈ درکار ہے',
+		'vi': 'Mã giới thiệu là bắt buộc',
+		'zh': '推荐码为必填项'
+	},
+	'You have reached your withdrawal limit for your tier': {
+		'en': 'You have reached your withdrawal limit for your tier',
+		'de': 'Sie haben das Auszahlungslimit für Ihre Stufe erreicht',
+		'es': 'Has alcanzado el límite de retiro de tu nivel',
+		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
+		'fr': 'Vous avez atteint la limite de retrait de votre niveau',
+		'id': 'Anda telah mencapai batas penarikan untuk tingkat Anda',
+		'it': 'Hai raggiunto il limite di prelievo per il tuo livello',
+		'ja': 'あなたのティアの出金上限に達しました',
+		'ko': '현재 등급의 출금 한도에 도달했습니다',
+		'mn': 'Та өөрийн түвшний мөнгө татах хязгаарт хүрсэн байна',
+		'nl': 'Je hebt de opnamelimiet voor jouw niveau bereikt',
+		'pt': 'Você atingiu o limite de saque do seu nível',
+		'ru': 'Вы достигли лимита вывода средств для вашего уровня',
+		'tr': 'Seviyeniz için belirlenen çekim limitine ulaştınız',
+		'ur': 'آپ اپنے درجے کے لیے مقرر کردہ نکاسی کی حد تک پہنچ چکے ہیں',
+		'vi': 'Bạn đã đạt đến giới hạn rút tiền cho cấp của mình',
+		'zh': '您已达到当前等级的提现限额'
 	}
 }
 
@@ -4414,25 +4452,6 @@ const functionMessages = {
 			'vi': `Các toán tử truyền thông không thể cập nhật giá trị: ${value}`,
 			'zh': `通讯运算符无法更新值：${value}`,
 		};
-	},
-	'You have reached your withdrawal limit for your tier': {
-		'en': 'You have reached your withdrawal limit for your tier',
-		'de': 'Sie haben das Auszahlungslimit für Ihre Stufe erreicht',
-		'es': 'Has alcanzado el límite de retiro de tu nivel',
-		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
-		'fr': 'Vous avez atteint la limite de retrait de votre niveau',
-		'id': 'Anda telah mencapai batas penarikan untuk tingkat Anda',
-		'it': 'Hai raggiunto il limite di prelievo per il tuo livello',
-		'ja': 'あなたのティアの出金上限に達しました',
-		'ko': '현재 등급의 출금 한도에 도달했습니다',
-		'mn': 'Та өөрийн түвшний мөнгө татах хязгаарт хүрсэн байна',
-		'nl': 'Je hebt de opnamelimiet voor jouw niveau bereikt',
-		'pt': 'Você atingiu o limite de saque do seu nível',
-		'ru': 'Вы достигли лимита вывода средств для вашего уровня',
-		'tr': 'Seviyeniz için belirlenen çekim limitine ulaştınız',
-		'ur': 'آپ اپنے درجے کے لیے مقرر کردہ نکاسی کی حد تک پہنچ چکے ہیں',
-		'vi': 'Bạn đã đạt đến giới hạn rút tiền cho cấp của mình',
-		'zh': '您已达到当前等级的提现限额'
 	}
 };
 

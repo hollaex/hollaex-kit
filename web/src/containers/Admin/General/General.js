@@ -128,6 +128,8 @@ class GeneralContent extends Component {
 			},
 		};
 		this.priceAssetTimeout = null;
+		this.passkeyAndroidRef = React.createRef();
+		this.passkeyAndroidValueRef = { current: '' };
 	}
 
 	componentDidMount() {
@@ -191,8 +193,13 @@ class GeneralContent extends Component {
 		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
+				const data = res.data;
+				const androidOrigins = Array.isArray(data?.secrets?.passkey?.android)
+					? data.secrets.passkey.android
+					: [];
+				this.passkeyAndroidValueRef.current = androidOrigins.join(', ');
 				this.setState({
-					constants: res.data,
+					constants: data,
 					testKeyDetails: {
 						test_key: res.data?.secrets?.test_key?.value || '',
 						isActive: res.data?.secrets?.test_key?.active || false,
@@ -476,6 +483,10 @@ class GeneralContent extends Component {
 		this.setState({ buttonSubmitting: true });
 		updateConstants(formProps)
 			.then((res) => {
+				const androidOrigins = Array.isArray(res?.secrets?.passkey?.android)
+					? res.secrets.passkey.android
+					: [];
+				this.passkeyAndroidValueRef.current = androidOrigins.join(', ');
 				this.setState({ constants: res });
 				this.props.setConfig(res.kit);
 				this.props.setHomePageSetting(res.kit.features.home_page);
@@ -862,17 +873,65 @@ class GeneralContent extends Component {
 		}));
 	};
 
-	handleSave = async () => {
+	handleSaveApps = async () => {
 		try {
-			this.handleSubmitGeneral({
+			const { constants } = this.state;
+			const apps = {
+				...(constants?.kit?.apps || {}),
+			};
+			const payload = {
 				kit: {
-					apps: this.state.constants.kit.apps,
+					apps,
 				},
-			});
+			};
+			// Include passkey secrets when user has passkey permission - read from ref for guaranteed latest value
+			if (
+				this.props.user?.configs?.includes('passkey') ||
+				this.props.user?.configs?.includes('apps')
+			) {
+				const passkeyInput =
+					this.passkeyAndroidValueRef.current ||
+					this.passkeyAndroidRef?.current?.resizableTextArea?.textArea?.value ||
+					this.passkeyAndroidRef?.current?.input?.value ||
+					(Array.isArray(constants?.secrets?.passkey?.android)
+						? constants.secrets.passkey.android.join(', ')
+						: '');
+				const androidOrigins = passkeyInput
+					.split(',')
+					.map((s) => s.trim())
+					.filter(Boolean);
+				payload.secrets = {
+					passkey: {
+						android: androidOrigins,
+					},
+				};
+			}
+			this.handleSubmitGeneral(payload);
 		} catch (error) {
-			message.error(error.message);
+			message.error(error?.message || 'Failed to save');
 		}
 	};
+
+	handlePasskeyAndroidChange = (value) => {
+		this.passkeyAndroidValueRef.current = value;
+		const androidArray = value
+			.split(',')
+			.map((s) => s.trim())
+			.filter(Boolean);
+		this.setState((prevState) => ({
+			constants: {
+				...prevState.constants,
+				secrets: {
+					...(prevState.constants?.secrets || {}),
+					passkey: {
+						...(prevState.constants?.secrets?.passkey || {}),
+						android: androidArray,
+					},
+				},
+			},
+		}));
+	};
+
 	handleSaveTimezone = async () => {
 		try {
 			this.handleSubmitGeneral({
@@ -1779,7 +1838,51 @@ class GeneralContent extends Component {
 								/>
 							</div>
 
-							<Button type="primary" onClick={this.handleSave}>
+							{this.props.user?.configs?.includes('passkey') ||
+							this.props.user?.configs?.includes('apps') ? (
+								<>
+									<div
+										className="divider"
+										style={{ marginTop: 24, marginBottom: 24 }}
+									/>
+									<div style={{ marginBottom: 16 }}>
+										<label
+											htmlFor="passkey_android_origins"
+											style={{ display: 'block', marginBottom: -4 }}
+										>
+											Android Passkey Origins (APK key hashes)
+										</label>
+										<Input.TextArea
+											ref={this.passkeyAndroidRef}
+											id="passkey_android_origins"
+											value={
+												Array.isArray(constants?.secrets?.passkey?.android)
+													? constants.secrets.passkey.android.join(', ')
+													: ''
+											}
+											onChange={(e) =>
+												this.handlePasskeyAndroidChange(e.target.value)
+											}
+											placeholder="android:apk-key-hash:xxx, android:apk-key-hash:yyy"
+											rows={3}
+											style={{ fontFamily: 'monospace' }}
+										/>
+										<span
+											className="description"
+											style={{ display: 'block', marginTop: 4, fontSize: 12 }}
+										>
+											Comma-separated APK key-hash origins for WebAuthn passkeys
+											on Android.
+										</span>
+									</div>
+								</>
+							) : null}
+
+							<Button
+								type="primary"
+								onClick={this.handleSaveApps}
+								loading={this.state.buttonSubmitting}
+							>
 								Save
 							</Button>
 						</div>

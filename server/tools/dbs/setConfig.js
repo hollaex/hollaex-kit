@@ -87,6 +87,7 @@ const kit = {
 const secrets = {
 	allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 	admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
+	passkey: {},
 	security: {
 		token_time: '24h',
 		withdrawal_token_expiry: 300000

@@ -831,6 +831,14 @@ definitions:
               password:
                 type: string
                 maxLength: 256
+          passkey:
+            type: object
+            properties:
+              android:
+                type: array
+                items:
+                  type: string
+                  maxLength: 256
   UserMetaObjects:
     type: object
     minProperties: 1

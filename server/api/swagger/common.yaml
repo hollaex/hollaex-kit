@@ -63,6 +63,39 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /referral/check:
+    x-swagger-router-controller: public
+    get:
+      operationId: checkReferralCode
+      description: Check if a referral code is valid
+      tags:
+        - Public
+      parameters:
+        - name: code
+          in: query
+          description: The referral code to validate
+          required: true
+          type: string
+          maxLength: 64
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              valid:
+                type: boolean
+                description: Whether the referral code is valid
+              discount:
+                type: number
+                description: Discount percentage (only when valid)
+              earning_rate:
+                type: number
+                description: Earning rate percentage (only when valid)
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /support:
     x-swagger-router-controller: public
     post:

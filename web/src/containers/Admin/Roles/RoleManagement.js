@@ -75,7 +75,11 @@ const KIT_SECRETS_KEYS = [
 	'admin_whitelist',
 	'emails',
 	'security',
+	'captcha',
+	'cloudflare_turnstile',
 	'smtp',
+	'test_key',
+	'passkey',
 ];
 
 function transformPermissions(role, configKeys = [], secretKeys = []) {

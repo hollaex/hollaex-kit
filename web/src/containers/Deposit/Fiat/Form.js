@@ -64,7 +64,7 @@ const Form = ({
 			)
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [fiat_fees, currentCurrency]);
 
 	const getTabs = () => {
 		const tabs = {};
@@ -212,7 +212,9 @@ const Form = ({
 								<div className="pl-4">
 									{STRINGS.formatString(
 										STRINGS['AMOUNT_FORMAT'],
-										customFee || fee,
+										customFee !== null || customFee !== undefined
+											? customFee
+											: fee,
 										display_name
 									)}
 								</div>
