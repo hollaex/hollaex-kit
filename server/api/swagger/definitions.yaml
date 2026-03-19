@@ -1171,6 +1171,9 @@ definitions:
       created_at:
         type: string
         format: date-time
+      updated_at:
+        type: string
+        format: date-time
       network:
         type: string
         maxLength: 256
