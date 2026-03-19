@@ -43,6 +43,7 @@ const handleCurrencyDeposit = (req, res) => {
 		onhold,
 		rejected,
 		created_at,
+		updated_at,
 		network,
 		fee,
 		description,
@@ -106,17 +107,19 @@ const handleCurrencyDeposit = (req, res) => {
 				);
 			} else {
 				const shouldHold = !!onhold;
-				const depositData = {
-					amount,
-					currency: coinName,
-					status: (is_confirmed && !shouldHold) ? 'COMPLETED' : 'PENDING',
-					address,
-					transaction_id: txid,
-					network,
-					fee,
-					fee_coin,
-					description
-				};
+			const depositData = {
+				amount,
+				currency: coinName,
+				status: (is_confirmed && !shouldHold) ? 'COMPLETED' : 'PENDING',
+				address,
+				transaction_id: txid,
+				network,
+				fee,
+				fee_coin,
+				description,
+				created_at,
+				updated_at
+			};
 
 				publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({
 					topic: 'deposit',
