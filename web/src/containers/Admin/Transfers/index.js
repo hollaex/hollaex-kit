@@ -30,10 +30,15 @@ import {
 	formatCurrencyByIncrementalUnit,
 } from 'utils/currency';
 import { assetsSelector } from 'containers/Wallet/utils';
-import { BASE_CURRENCY } from 'config/constants';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 import './Transfers.scss';
 
-const Transfer = ({ coins = {}, assets }) => {
+const Transfer = ({
+	coins = {},
+	assets,
+	wsPriceData = {},
+	oraclePrices = {},
+}) => {
 	const [senderData, setSenderData] = useState([]);
 	const [receiverData, setReceiverData] = useState([]);
 	const [isConfirm, setConfirm] = useState(false);
@@ -53,6 +58,8 @@ const Transfer = ({ coins = {}, assets }) => {
 
 	const senderRef = useRef(null);
 	const receiverRef = useRef(null);
+	const baseCurrency =
+		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 
 	const toggleMode = (mode) => {
 		setEmailMode(mode === 'email');
@@ -342,14 +349,14 @@ const Transfer = ({ coins = {}, assets }) => {
 
 		if (!amount || isNaN(amount)) return null;
 
-		if (symbol === BASE_CURRENCY?.toLowerCase()) {
+		if (symbol === baseCurrency?.toLowerCase()) {
 			return formatCurrencyByIncrementalUnit(amount, incrementUnit);
 		}
 		if (wsPrice && !isNaN(wsPrice)) {
-			return formatCurrencyByIncrementalUnit(
-				calculateOraclePrice(amount, wsPrice),
-				incrementUnit
-			);
+			const calculatedBalance = wsPriceData[baseCurrency]
+				? calculateOraclePrice(amount, wsPrice) / wsPriceData[baseCurrency]
+				: calculateOraclePrice(amount, oraclePrices[symbol]);
+			return formatCurrencyByIncrementalUnit(calculatedBalance, incrementUnit);
 		}
 		return null;
 	};
@@ -573,7 +580,7 @@ const Transfer = ({ coins = {}, assets }) => {
 									<div className="d-flex align-items-end mt-2">
 										<span>Estimated Value:</span>
 										<span className="ml-2 description-secondary-text">
-											{balanceText()} {BASE_CURRENCY?.toUpperCase()}
+											{balanceText()} {baseCurrency?.toUpperCase()}
 										</span>
 									</div>
 								)}
@@ -664,7 +671,7 @@ const Transfer = ({ coins = {}, assets }) => {
 								<div className="d-flex mb-4">
 									<span className="font-weight-bold">Estimated Value: </span>
 									<span className="ml-2">
-										{balanceText()} {BASE_CURRENCY?.toUpperCase()}
+										{balanceText()} {baseCurrency?.toUpperCase()}
 									</span>
 								</div>
 							)}
@@ -786,6 +793,8 @@ const Transfer = ({ coins = {}, assets }) => {
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	assets: assetsSelector(state),
+	wsPriceData: state.asset.wsPriceData,
+	oraclePrices: state.asset.oraclePrices,
 });
 
 export default connect(mapStateToProps)(Transfer);

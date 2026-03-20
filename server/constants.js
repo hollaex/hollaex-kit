@@ -47,7 +47,8 @@ let secrets = {
 	captcha: {},
 	cloudflare_turnstile: {},
 	emails: {},
-	smtp: {}
+	smtp: {},
+	passkey: {}
 };
 
 let frozenUsers = {};
@@ -99,7 +100,8 @@ const resetAllConfig = () => {
 		captcha: {},
 		cloudflare_turnstile: {},
 		emails: {},
-		smtp: {}
+		smtp: {},
+		passkey: {}
 	};
 	configuration = {
 		coins: {},
@@ -256,6 +258,7 @@ exports.KIT_SECRETS_KEYS = [
 	'cloudflare_turnstile',
 	'smtp',
 	'test_key',
+	'passkey',
 ];
 
 exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
@@ -370,7 +373,8 @@ exports.SETTING_KEYS = [
 	'audio',
 	'risk',
 	'chat',
-	'app'
+	'app',
+	'watchlist'
 ];
 
 exports.OMITTED_USER_FIELDS = [

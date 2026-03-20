@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.18.0",
+	"version": "2.17.7",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -106,6 +106,12 @@
 		"react-scripts": "3.4.3",
 		"rimraf": "3.0.2",
 		"surge": "0.21.6"
+	},
+	"overrides": {
+		"ua-parser-js": "0.7.40"
+	},
+	"resolutions": {
+		"ua-parser-js": "0.7.40"
 	},
 	"scripts": {
 		"prettify-project": "prettier --write .",

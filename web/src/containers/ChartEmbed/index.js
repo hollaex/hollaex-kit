@@ -23,6 +23,13 @@ class ChartEmbed extends PureComponent {
 	symbolTimeout = null;
 
 	UNSAFE_componentWillMount() {
+		const {
+			router,
+			constants: { features: { pro_trade = false } = {} } = {},
+		} = this.props;
+		if (!pro_trade || Object.keys(this.props?.pairs || {})?.length === 0) {
+			router.push('/summary');
+		}
 		this.setSymbol(this.props.routeParams.pair);
 	}
 
@@ -118,6 +125,7 @@ const mapStateToProps = (state) => {
 		pairData,
 		isReady: state.app.isReady,
 		constants: state.app.constants,
+		pairs: state.app.pairs,
 	};
 };
 

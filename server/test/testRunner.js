@@ -99,6 +99,7 @@ const execute = async () => {
         await mochaRunWithSleep(__dirname + "/user/user-logins-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-request-email-confirmation-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-request-otp-test.js");
+        await mochaRunWithSleep(__dirname + "/user/user-passkey-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-request-withdrawal-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-settings-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-test.js");

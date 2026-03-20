@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 
 let nodeLib;
+let nodeLibConfig;
 
 const getNodeLib = () => nodeLib;
 
@@ -103,7 +104,8 @@ const checkStatus = () => {
 		captcha: {},
 		cloudflare_turnstile: {},
 		emails: {},
-		smtp: {}
+		smtp: {},
+		passkey: {}
 	};
 
 	let frozenUsers = {};
@@ -413,7 +415,7 @@ const checkStatus = () => {
 				initialized: status.initialized
 			};
 
-			const networkNodeLib = new Network({
+			nodeLibConfig = {
 				apiUrl: HOLLAEX_NETWORK_ENDPOINT,
 				baseUrl: HOLLAEX_NETWORK_BASE_URL,
 				apiKey: status.api_key,
@@ -421,7 +423,9 @@ const checkStatus = () => {
 				exchange_id: exchange.id,
 				activation_code: exchange.activation_code,
 				kit_version: status.kit_version
-			});
+			};
+
+			const networkNodeLib = new Network(nodeLibConfig);
 
 			if (!networkNodeLib) {
 				throw new Error('Node library failed to initialize');

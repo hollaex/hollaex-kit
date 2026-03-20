@@ -1217,6 +1217,11 @@
 		"ZERO_BALANCE": "You do not have enough available balance.",
 		"NEW_ADDRESS": "New Address"
 	},
+	"WITHDRAWAL_BLOCK": {
+		"TITLE": "Withdrawal is not allowed",
+		"DESCRIPTION_1": "Sub Accounts are not allowed to make withdrawals",
+		"DESCRIPTION_2": "To make withdrawals please switch to your main account"
+	},
 	"LOGIN_CONFIRMATION": {
 		"LOGIN_CONFIRM_FINAL": "Login Confirmation",
 		"FREEZE_CONFIRM_FINAL": "Freeze your account",

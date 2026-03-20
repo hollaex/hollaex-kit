@@ -4,16 +4,13 @@ import math from 'mathjs';
 import Image from 'components/Image';
 import { Button } from 'components';
 import { formatToCurrency } from 'utils/currency';
-import {
-	BASE_CURRENCY,
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from 'config/constants';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { getNetworkNameByKey } from 'utils/wallet';
 import { limitNumberWithinRange } from 'utils/math';
 import STRINGS from 'config/localizedStrings';
+import { WS_QUOTE_CURRENCY } from 'actions/assetActions';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
@@ -44,9 +41,11 @@ const ReviewModalContent = ({
 	hasDestinationTag,
 	getWithdrawCurrency,
 }) => {
+	const baseCurrency =
+		localStorage.getItem('base_currnecy') || WS_QUOTE_CURRENCY;
 	const { min, fullname, withdrawal_fees, network } =
-		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		coins[currency || baseCurrency] || DEFAULT_COIN_DATA;
+	const baseCoin = coins[baseCurrency] || DEFAULT_COIN_DATA;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
 	const fee_type = data.fee_type ? data.fee_type : '';
 	const isPercentage = fee_type === 'percentage';

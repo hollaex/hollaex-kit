@@ -38,7 +38,8 @@ const SETTINGS_DATA_DEFAULT = {
 	},
 	chat: {
 		set_username: false
-	}
+	},
+	watchlist: []
 };
 
 const BANK_DATA_DEFAULT = [];
@@ -244,6 +245,7 @@ module.exports = function (sequelize, DataTypes) {
 		User.hasMany(models.Affiliation, {
 			foreignKey: 'referer_id'
 		});
+		User.hasMany(models.Passkey);
 	};
 
 	return User;

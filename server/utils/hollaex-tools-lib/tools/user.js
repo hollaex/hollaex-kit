@@ -1257,7 +1257,8 @@ const updateUserRole = async (user_id, role_name, admin_id, otp_code) => {
 
 const DEFAULT_SETTINGS = {
 	language: getKitConfig().defaults.language,
-	orderConfirmationPopup: true
+	orderConfirmationPopup: true,
+	watchlist: []
 };
 
 const joinSettings = (userSettings = {}, newSettings = {}) => {
@@ -1328,7 +1329,8 @@ const INITIAL_SETTINGS = () => {
 		},
 		chat: {
 			set_username: false
-		}
+		},
+		watchlist: []
 	};
 };
 
@@ -2609,8 +2611,8 @@ const createUserReferralCode = async (data) => {
 		throw new Error('discount must be in increments of 10');
 	}
 
-	if (earning_rate < 1) {
-		throw new Error('earning rate cannot be less than 1');
+	if (earning_rate < 0) {
+		throw new Error('earning rate cannot be negative');
 	}
 
 	if (earning_rate > 100) {
@@ -5148,6 +5150,7 @@ module.exports = {
 	getUsersNetwork,
 	createUserCryptoAddressByNetworkId,
 	getUserStatsByNetworkId,
+	getUserByAffiliationCode,
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,

@@ -212,6 +212,7 @@ exports.DYNAMIC_BROKER_CREATE_ERROR = 'Cannot create a dynamic broker without re
 exports.DYNAMIC_BROKER_UNSUPPORTED = 'Selected exchange is not supported by your exchange plan';
 exports.DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR = 'Cannot create a dynamic broker with Basic plan';
 exports.REFERRAL_HISTORY_NOT_ACTIVE = 'Referral feature is not active on the exchange';
+exports.REFERRAL_CODE_REQUIRED = 'Referral code is required';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
 exports.INVALID_TOKEN_TYPE = 'invalid token type';
 exports.NO_AUTH_TOKEN = 'no auth token sent';

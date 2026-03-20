@@ -44,6 +44,7 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
+	DOMAIN,
 	CAPTCHA_ENDPOINT,
 	BASE_SCOPES,
 	ROLES,
@@ -69,6 +70,74 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
+
+/**
+ * Returns passkey config for both generation and verification.
+ * rpName, rpID: used when generating registration/auth options.
+ * allowedOrigins: array for verification - SimpleWebAuthn accepts expectedOrigin as array.
+ * Supports multiple origins (dev ports, mobile webview, allowed_domains, Android app).
+ */
+const getPasskeyConfig = (req) => {
+	const normalizeOrigin = (url) => {
+		if (!url || typeof url !== 'string') return null;
+		const trimmed = url.trim().replace(/\/+$/, '');
+		try {
+			new URL(trimmed);
+			return trimmed;
+		} catch {
+			return null;
+		}
+	};
+
+	const origins = new Set();
+	[DOMAIN, req.headers.origin, req.headers['x-real-origin']]
+		.map(normalizeOrigin)
+		.filter(Boolean)
+		.forEach((o) => origins.add(o));
+
+	const allowedDomains = getKitSecrets()?.allowed_domains
+		|| (process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : []);
+
+	for (const domain of allowedDomains) {
+		if (!domain || typeof domain !== 'string') continue;
+		const d = domain.trim();
+		try {
+			if (/^https?:\/\//i.test(d)) {
+				origins.add(d.replace(/\/+$/, ''));
+			} else {
+				const protocol = d.includes('localhost') ? 'http' : 'https';
+				origins.add(`${protocol}://${d}`);
+			}
+		} catch {
+			// skip invalid entries
+		}
+	}
+
+	if (NODE_ENV !== 'production') {
+		['http://localhost', 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173']
+			.forEach((o) => origins.add(o));
+	}
+
+	// Android app origins (apk-key-hash format) - from admin config; bypass normalizeOrigin
+	const androidOrigins = getKitSecrets()?.passkey?.android;
+	const passkeyAndroidOrigins = Array.isArray(androidOrigins) ? androidOrigins : [];
+	passkeyAndroidOrigins.forEach((o) => origins.add(o));
+
+	const allowedOrigins = Array.from(origins);
+	const primaryOrigin = req.headers.origin || req.headers['x-real-origin'] || DOMAIN;
+	let rpID = 'localhost';
+	// Android app sends android:apk-key-hash:xxx as origin; use DOMAIN for rpID in that case
+	const originForRpId = /^android:/.test(primaryOrigin) ? DOMAIN : primaryOrigin;
+	try {
+		const originUrl = new URL(originForRpId);
+		rpID = originUrl.hostname === 'localhost' ? 'localhost' : originUrl.hostname;
+	} catch (e) {
+		// fallback to localhost if URL parsing fails
+	}
+	const rpName = getKitConfig()?.api_name || 'HollaEx';
+
+	return { rpName, rpID, allowedOrigins };
+};
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -1534,6 +1603,7 @@ module.exports = {
 	createHmacSignature,
 	isValidScope,
 	verifyBearerTokenExpressMiddleware,
+	getPasskeyConfig,
 	getCountryFromIp,
 	checkIp,
 	sendConfirmationEmail,
