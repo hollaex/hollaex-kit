@@ -1510,6 +1510,13 @@ definitions:
         type: ['string', 'null']
       standard:
         type: ['string', 'null']
+      category:
+        type: ['string', 'null']
+      is_risky:
+        type: boolean
+      market_cap:
+        type: ['number', 'null']
+        format: double
   PairPostRequest:
     type: object
     required:
@@ -1553,6 +1560,19 @@ definitions:
         type: number
       is_public:
         type: boolean
+      status:
+        type: string
+        enum:
+          - full
+          - cancel-only
+          - delisted
+          - pre-launch
+          - paused
+          - maintenance
+          - post-only
+          - migration
+          - inactive
+          - auction
   PairPutRequest:
     type: object
     required:
@@ -1586,6 +1606,19 @@ definitions:
         format: double
       circuit_breaker:
         type: boolean
+      status:
+        type: string
+        enum:
+          - full
+          - cancel-only
+          - delisted
+          - pre-launch
+          - paused
+          - maintenance
+          - post-only
+          - migration
+          - inactive
+          - auction
   CoinResponse:
     type: object
     required:

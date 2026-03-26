@@ -37,6 +37,7 @@ const createPair = async (
 		incrementPrice: null,
 		estimatedPrice: null,
 		isPublic: null,
+		status: null,
 		additionalHeaders: null
 	}
 ) => {
@@ -63,7 +64,8 @@ const updatePair = async (
 		incrementPrice: null,
 		estimatedPrice: null,
 		isPublic: null,
-		circuitBreaker: null
+		circuitBreaker: null,
+		status: null
 	},
 	opts = {
 		additionalHeaders: null

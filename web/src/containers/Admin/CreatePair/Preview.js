@@ -1,12 +1,26 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router';
-import { Button, message, Modal } from 'antd';
+import { Button, message, Modal, Select } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import RemoveConfirmation from '../Confirmation';
 import { renderStatus } from '../Trades/Pairs';
 import { updateExchange } from '../AdminFinancials/action';
+import { updateAssetPairs } from '../Trades/actions';
+
+const STATUS_OPTIONS = [
+	'full',
+	'cancel-only',
+	'delisted',
+	'pre-launch',
+	'paused',
+	'maintenance',
+	'post-only',
+	'migration',
+	'inactive',
+	'auction',
+];
 
 const Preview = ({
 	isExchangeWizard,
@@ -29,6 +43,42 @@ const Preview = ({
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isEditingStatus, setIsEditingStatus] = useState(false);
+	const [editedStatus, setEditedStatus] = useState(null);
+	const [isSavingStatus, setIsSavingStatus] = useState(false);
+
+	const currentStatus =
+		formData.status || (formData.active ? 'active' : 'inactive');
+
+	const handleStatusConfigure = () => {
+		setEditedStatus(currentStatus);
+		setIsEditingStatus(true);
+	};
+
+	const handleStatusCancel = () => {
+		setEditedStatus(null);
+		setIsEditingStatus(false);
+	};
+
+	const handleStatusSave = async () => {
+		try {
+			setIsSavingStatus(true);
+			await updateAssetPairs({
+				code: formData.name,
+				status: editedStatus,
+			});
+			formData.status = editedStatus;
+			setIsEditingStatus(false);
+			setEditedStatus(null);
+			message.success('Status updated successfully');
+		} catch (error) {
+			const errMsg =
+				error.data && error.data.message ? error.data.message : error.message;
+			message.error(errMsg);
+		} finally {
+			setIsSavingStatus(false);
+		}
+	};
 
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
@@ -169,7 +219,24 @@ const Preview = ({
 					<div className="right-content">
 						<div className="title">Parameters</div>
 						{isConfigure ? <div>Name: {formData.name}</div> : null}
-						<div>Status: {formData.active ? 'active' : 'Inactive'}</div>
+						<div>
+							Status:{' '}
+							{isEditingStatus ? (
+								<Select
+									value={editedStatus}
+									onChange={(val) => setEditedStatus(val)}
+									style={{ width: 160 }}
+								>
+									{STATUS_OPTIONS.map((s) => (
+										<Select.Option key={s} value={s}>
+											{s}
+										</Select.Option>
+									))}
+								</Select>
+							) : (
+								currentStatus
+							)}
+						</div>
 						<div>Estimated price: {formData.estimated_price}</div>
 						<div>Increment price: {formData.increment_price}</div>
 						<div>Increment size: {formData.increment_size}</div>
@@ -189,6 +256,41 @@ const Preview = ({
 						<div className="right-content">
 							<div className="title">Manage</div>
 							<div className="d-flex">
+								<div className="btn-wrapper">
+									{isEditingStatus ? (
+										<div className="d-flex">
+											<Button
+												type="primary"
+												className="green-btn"
+												onClick={handleStatusSave}
+												loading={isSavingStatus}
+											>
+												Save
+											</Button>
+											<div className="separator"></div>
+											<Button
+												onClick={handleStatusCancel}
+												disabled={isSavingStatus}
+											>
+												Cancel
+											</Button>
+										</div>
+									) : (
+										<Button
+											type="primary"
+											className="green-btn"
+											onClick={handleStatusConfigure}
+										>
+											Configure
+										</Button>
+									)}
+									<div className="separator"></div>
+									<div className="description-small">
+										Configure the trading status for this market pair.
+									</div>
+								</div>
+							</div>
+							<div className="d-flex" style={{ marginTop: 16 }}>
 								<div className="btn-wrapper">
 									<Button
 										type="danger"
