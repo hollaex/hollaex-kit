@@ -3292,7 +3292,10 @@ class HollaExNetwork {
 			network: null,
 			standard: null,
 			allowDeposit: null,
-			allowWithdrawal: null
+			allowWithdrawal: null,
+			category: null,
+			isRisky: null,
+			marketCap: null
 		},
 		opts = {
 			additionalHeaders: null
@@ -3327,6 +3330,7 @@ class HollaExNetwork {
 				case 'description':
 				case 'network':
 				case 'standard':
+				case 'category':
 					if (isString(value)) {
 						data[formattedField] = value;
 					}
@@ -3336,6 +3340,7 @@ class HollaExNetwork {
 				case 'max':
 				case 'incrementUnit':
 				case 'estimatedPrice':
+				case 'marketCap':
 					if (isNumber(value)) {
 						data[formattedField] = value;
 					}
@@ -3343,6 +3348,7 @@ class HollaExNetwork {
 				case 'isPublic':
 				case 'allowDeposit':
 				case 'allowWithdrawal':
+				case 'isRisky':
 					if (isBoolean(value)) {
 						data[formattedField] = value;
 					}
@@ -3423,6 +3429,7 @@ class HollaExNetwork {
 			incrementPrice: null,
 			estimatedPrice: null,
 			isPublic: null,
+			status: null,
 			additionalHeaders: null
 		}
 	) {
@@ -3451,6 +3458,10 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.active)) {
 			data.active = opts.active;
+		}
+
+		if (isString(opts.status)) {
+			data.status = opts.status;
 		}
 
 		if (isNumber(opts.minSize)) {
@@ -3539,7 +3550,8 @@ class HollaExNetwork {
 			incrementPrice: null,
 			estimatedPrice: null,
 			isPublic: null,
-			circuitBreaker: null
+			circuitBreaker: null,
+			status: null
 		},
 		opts = {
 			additionalHeaders: null
@@ -3579,6 +3591,11 @@ class HollaExNetwork {
 				case 'isPublic':
 				case 'circuitBreaker':
 					if (isBoolean(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'status':
+					if (isString(value)) {
 						data[formattedField] = value;
 					}
 					break;

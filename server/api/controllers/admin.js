@@ -1545,7 +1545,8 @@ const createPair = (req, res) => {
 		increment_size: incrementSize,
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
-		is_public: isPublic
+		is_public: isPublic,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1576,7 +1577,9 @@ const createPair = (req, res) => {
 		'estimated_price:',
 		estimatedPrice,
 		'is_public:',
-		isPublic
+		isPublic,
+		'status:',
+		status
 	);
 
 	toolsLib.pair.createPair(
@@ -1594,6 +1597,7 @@ const createPair = (req, res) => {
 			incrementPrice,
 			estimatedPrice,
 			isPublic,
+			status,
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
@@ -1631,7 +1635,8 @@ const updatePair = (req, res) => {
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
 		is_public: isPublic,
-		circuit_breaker: circuitBreaker
+		circuit_breaker: circuitBreaker,
+		status
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1657,6 +1662,8 @@ const updatePair = (req, res) => {
 		isPublic,
 		'circuit_breaker:',
 		circuitBreaker,
+		'status:',
+		status,
 		typeof estimatedPrice
 	);
 
@@ -1671,7 +1678,8 @@ const updatePair = (req, res) => {
 			incrementPrice,
 			estimatedPrice,
 			isPublic,
-			circuitBreaker
+			circuitBreaker,
+			status
 		},
 		{
 			additionalHeaders: {
@@ -1814,7 +1822,10 @@ const updateCoin = (req, res) => {
 		withdrawal_fees: withdrawalFees,
 		deposit_fees: depositFees,
 		is_public: isPublic,
-		description
+		description,
+		category,
+		is_risky: isRisky,
+		market_cap: marketCap
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -1855,7 +1866,13 @@ const updateCoin = (req, res) => {
 		'is_public:',
 		isPublic,
 		'description:',
-		description
+		description,
+		'category:',
+		category,
+		'is_risky:',
+		isRisky,
+		'market_cap:',
+		marketCap
 	);
 
 	toolsLib.coin.updateCoin(
@@ -1877,7 +1894,10 @@ const updateCoin = (req, res) => {
 			allowWithdrawal,
 			withdrawalFees,
 			depositFees,
-			isPublic
+			isPublic,
+			category,
+			isRisky,
+			marketCap
 		},
 		{
 			additionalHeaders: {
