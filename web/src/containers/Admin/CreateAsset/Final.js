@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table } from 'antd';
+import { Button, Modal, Tabs, message, Table, Checkbox } from 'antd';
 import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -53,6 +53,9 @@ const Final = ({
 	selectedMarkupAsset = {},
 	exchangeCoins,
 	setSelectedMarkupAsset = () => {},
+	onSave,
+	saveLoading,
+	onConfigure,
 }) => {
 	let isUpdateRequired = false;
 	if (
@@ -101,6 +104,58 @@ const Final = ({
 	const [isEditNetworkVisible, setIsEditNetworkVisible] = useState(false);
 	const [editableNetwork, setEditableNetwork] = useState('');
 	const [isSavingNetwork, setIsSavingNetwork] = useState(false);
+	const [isEditingDetails, setIsEditingDetails] = useState(false);
+	const [editDetails, setEditDetails] = useState({});
+	const [isSavingDetails, setIsSavingDetails] = useState(false);
+
+	const handleDetailsConfigure = () => {
+		setEditDetails({
+			description: coinFormData.description || '',
+			category: coinFormData.category || '',
+			is_risky: coinFormData.is_risky || false,
+			market_cap: coinFormData.market_cap || '',
+		});
+		setIsEditingDetails(true);
+	};
+
+	const handleDetailsCancel = () => {
+		setEditDetails({});
+		setIsEditingDetails(false);
+	};
+
+	const handleDetailsSave = async () => {
+		try {
+			setIsSavingDetails(true);
+			const payload = {
+				code: coinFormData.code || (coinFormData.symbol || '').toLowerCase(),
+				description: editDetails.description || null,
+				category: editDetails.category || null,
+				is_risky: editDetails.is_risky,
+				market_cap: editDetails.market_cap
+					? Number(editDetails.market_cap)
+					: null,
+			};
+			await updateAssetCoins(payload);
+			if (handleEdit) {
+				handleEdit({
+					...coinFormData,
+					description: editDetails.description,
+					category: editDetails.category,
+					is_risky: editDetails.is_risky,
+					market_cap: editDetails.market_cap
+						? Number(editDetails.market_cap)
+						: null,
+				});
+			}
+			setIsEditingDetails(false);
+			setEditDetails({});
+			message.success('Asset details updated successfully');
+		} catch (error) {
+			message.error(error?.data?.message || 'Failed to update asset details');
+		} finally {
+			setIsSavingDetails(false);
+		}
+	};
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
@@ -658,6 +713,110 @@ const Final = ({
 						)}
 					</div>
 					<div className="preview-detail-container">
+						<div className="title">Details</div>
+						{isEditingDetails ? (
+							<div>
+								<div className="mb-3">
+									<b>Description:</b>
+									<Input.TextArea
+										rows={3}
+										value={editDetails.description}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												description: e.target.value,
+											})
+										}
+										placeholder="Enter asset description"
+									/>
+								</div>
+								<div className="mb-3">
+									<b>Category:</b>
+									<Input
+										value={editDetails.category}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												category: e.target.value,
+											})
+										}
+										placeholder="e.g. defi, layer1, stablecoin"
+									/>
+								</div>
+								<div className="mb-3">
+									<Checkbox
+										checked={editDetails.is_risky}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												is_risky: e.target.checked,
+											})
+										}
+									>
+										<b>Is Risky</b>
+									</Checkbox>
+								</div>
+								<div className="mb-3">
+									<b>Market Cap:</b>
+									<Input
+										type="number"
+										value={editDetails.market_cap}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												market_cap: e.target.value,
+											})
+										}
+										placeholder="Enter market cap value"
+									/>
+								</div>
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										onClick={handleDetailsSave}
+										loading={isSavingDetails}
+									>
+										Save
+									</Button>
+									<div className="separator"></div>
+									<Button
+										onClick={handleDetailsCancel}
+										disabled={isSavingDetails}
+									>
+										Cancel
+									</Button>
+								</div>
+							</div>
+						) : (
+							<div>
+								<div>
+									<b>Description:</b> {coinFormData.description || '-'}
+								</div>
+								<div>
+									<b>Category:</b> {coinFormData.category || '-'}
+								</div>
+								<div>
+									<b>Is Risky:</b> {coinFormData.is_risky ? 'Yes' : 'No'}
+								</div>
+								<div>
+									<b>Market Cap:</b> {coinFormData.market_cap || '-'}
+								</div>
+								{isConfigure ? (
+									<div className="btn-wrapper">
+										<Button
+											className="green-btn"
+											type="primary"
+											onClick={handleDetailsConfigure}
+										>
+											Edit
+										</Button>
+									</div>
+								) : null}
+							</div>
+						)}
+					</div>
+					<div className="preview-detail-container">
 						<div className="title d-flex align-items-center">
 							<span>Parameters</span>
 							<span
@@ -900,6 +1059,31 @@ const Final = ({
 					{isPreview || isConfigure ? (
 						<div className="preview-detail-container">
 							<div className="title">Manage</div>
+							{isConfigure && onSave ? (
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										style={{ minWidth: 120 }}
+										onClick={onSave}
+										loading={saveLoading}
+									>
+										Save
+									</Button>
+								</div>
+							) : null}
+							{isPreview && onConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										style={{ minWidth: 120 }}
+										onClick={onConfigure}
+									>
+										Configure
+									</Button>
+								</div>
+							) : null}
 							<div className="btn-wrapper">
 								<Button
 									type="danger"

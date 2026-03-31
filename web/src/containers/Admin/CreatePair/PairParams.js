@@ -1,16 +1,29 @@
 import React, { Component } from 'react';
-import { InputNumber, Button, Checkbox } from 'antd';
+import { InputNumber, Button, Checkbox, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import { getTabParams } from '../AdminFinancials/Assets';
+
+const PAIR_STATUS_OPTIONS = [
+	'full',
+	'cancel-only',
+	'delisted',
+	'pre-launch',
+	'paused',
+	'maintenance',
+	'post-only',
+	'migration',
+	'inactive',
+	'auction',
+];
 
 class PairParams extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
-			tabParams: getTabParams()
+			tabParams: getTabParams(),
 		};
 	}
 
@@ -31,7 +44,7 @@ class PairParams extends Component {
 			onClose();
 		} else if (this.state.tabParams.isOpenPairModal) {
 			onClose();
-			router.replace("/admin/trade?tab=0");
+			router.replace('/admin/trade?tab=0');
 		} else {
 			moveToStep('pair-init-selection');
 		}
@@ -59,12 +72,16 @@ class PairParams extends Component {
 				<div>Click edit to change these trade values.</div>
 				<div className="d-flex align-items-center coin-container">
 					<div className="d-flex align-items-center">
-						<Coins type={pairBase.symbol} small={true} color={pairBase.meta.color}/>
+						<Coins
+							type={pairBase.symbol}
+							small={true}
+							color={pairBase.meta.color}
+						/>
 						<span className="coin-full-name">{pairBase.fullname}</span>
 					</div>
 					<CloseOutlined style={{ fontSize: '24px' }} />
 					<div className="d-flex align-items-center">
-						<Coins type={pair2.symbol} small={true} color={pair2.meta.color}/>
+						<Coins type={pair2.symbol} small={true} color={pair2.meta.color} />
 						<span className="coin-full-name">{pair2.fullname}</span>
 					</div>
 				</div>
@@ -162,6 +179,25 @@ class PairParams extends Component {
 					<div className="full-width">{formData.increment_price}</div>
 				</div>
 				<div className="edit-wrapper"></div>
+				<div className="field-wrap">
+					<div className="sub-title">Pair Status</div>
+					<div className="description">
+						<div>Set the trading status for this market pair.</div>
+					</div>
+					<div className="full-width">
+						<Select
+							value={formData.status || 'full'}
+							onChange={(val) => handleChange(val, 'status')}
+							style={{ width: 200 }}
+						>
+							{PAIR_STATUS_OPTIONS.map((status) => (
+								<Select.Option key={status} value={status}>
+									{status}
+								</Select.Option>
+							))}
+						</Select>
+					</div>
+				</div>
 				<div className="field-wrap last">
 					<div className="sub-title">Make public</div>
 					<div className="description">

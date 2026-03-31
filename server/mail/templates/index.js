@@ -97,7 +97,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.SIGNUP) { // ok
 		html = html.replace(/\$\{name\}/g, email);
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
-		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}?email=${email}`);
+		html = html.replace(/\$\{link\}/g, `${domain}/verify/${data}?email=${encodeURIComponent(email)}`);
 	}
 	else if (type === MAILTYPE.WELCOME) { //ok
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -185,6 +185,8 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 				'' // skip
 			);
 		}
+		html = html.replace(/\$\{created_at\}/g, data.created_at || '');
+		html = html.replace(/\$\{updated_at\}/g, data.updated_at || '');
 
 	}
 	else if (type === MAILTYPE.DEPOSIT_COMPLETED) {
@@ -243,6 +245,8 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 				'' // skip
 			);
 		}
+		html = html.replace(/\$\{created_at\}/g, data.created_at || '');
+		html = html.replace(/\$\{updated_at\}/g, data.updated_at || '');
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_PENDING) {
 

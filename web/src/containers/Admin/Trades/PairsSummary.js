@@ -616,6 +616,12 @@ class PairsSummary extends Component {
 							onDelete={this.handleDelete}
 							user_id={_get(constants, 'info.user_id')}
 							buttonSubmitting={this.state.buttonSubmitting}
+							onConfigure={
+								this.state.previewData.created_by ===
+								_get(constants, 'info.user_id')
+									? this.handleConfigure
+									: null
+							}
 						/>
 						<div>
 							{this.state.previewData.created_by ===
@@ -646,6 +652,8 @@ class PairsSummary extends Component {
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
 							buttonSubmitting={this.state.buttonSubmitting}
+							onSave={this.handleApplyConfirmation}
+							saveLoading={this.state.saveLoading}
 						/>
 						<div>
 							<Button
