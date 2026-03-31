@@ -111,7 +111,6 @@ const Final = ({
 	const [isSavingNetworkOverrides, setIsSavingNetworkOverrides] = useState(
 		false
 	);
-
 	const handleDetailsConfigure = () => {
 		setEditDetails({
 			description: coinFormData.description || '',
@@ -983,122 +982,81 @@ const Final = ({
 						) : (
 							<div>-</div>
 						)}
-						{isConfigure && coinFormData.network && (
-							<div className="mt-3">
-								<b>Per-network deposit & withdrawal:</b>
-								<div
-									className="mt-2"
-									style={{
-										border: '1px solid #ccc',
-										borderRadius: 4,
-										overflow: 'hidden',
-									}}
-								>
-									<table style={{ width: '100%', borderCollapse: 'collapse' }}>
-										<thead>
-											<tr style={{ background: '#f5f5f5' }}>
-												<th
-													style={{
-														padding: '8px 12px',
-														textAlign: 'left',
-														borderBottom: '1px solid #ccc',
-													}}
-												>
-													Network
-												</th>
-												<th
-													style={{
-														padding: '8px 12px',
-														textAlign: 'center',
-														borderBottom: '1px solid #ccc',
-													}}
-												>
-													Allow Deposit
-												</th>
-												<th
-													style={{
-														padding: '8px 12px',
-														textAlign: 'center',
-														borderBottom: '1px solid #ccc',
-													}}
-												>
-													Allow Withdrawal
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											{coinFormData.network
-												.split(',')
-												.map((net) => net.trim())
-												.filter(Boolean)
-												.map((net) => (
-													<tr
-														key={net}
-														style={{ borderBottom: '1px solid #eee' }}
-													>
-														<td style={{ padding: '8px 12px' }}>
-															{networkMap[net.toLowerCase()] ||
-																net.toUpperCase()}
-														</td>
-														<td
-															style={{
-																padding: '8px 12px',
-																textAlign: 'center',
-															}}
-														>
-															<Switch
-																size="small"
-																checked={
-																	networkOverrides[net]?.allow_deposit !== false
-																}
-																onChange={(checked) =>
-																	handleNetworkOverrideChange(
-																		net,
-																		'allow_deposit',
-																		checked
-																	)
-																}
-															/>
-														</td>
-														<td
-															style={{
-																padding: '8px 12px',
-																textAlign: 'center',
-															}}
-														>
-															<Switch
-																size="small"
-																checked={
-																	networkOverrides[net]?.allow_withdrawal !==
-																	false
-																}
-																onChange={(checked) =>
-																	handleNetworkOverrideChange(
-																		net,
-																		'allow_withdrawal',
-																		checked
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-										</tbody>
-									</table>
-								</div>
-								<div className="btn-wrapper mt-2">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={handleSaveNetworkOverrides}
-										loading={isSavingNetworkOverrides}
-									>
-										Save
-									</Button>
-								</div>
-							</div>
-						)}
 					</div>
+					{isConfigure && coinFormData.network && (
+						<div className="preview-detail-container">
+							<div className="title">Deposit & Withdrawal</div>
+							<div className="description-small mb-2">
+								Control deposit and withdrawal access per network for{' '}
+								{coinFormData.symbol?.toUpperCase()}.
+							</div>
+							{coinFormData.network
+								?.split(',')
+								.map((net) => net.trim())
+								.filter(Boolean)
+								.map((net) => (
+									<div
+										key={net}
+										className="d-flex align-items-center justify-content-between mb-2"
+										style={{ maxWidth: 420 }}
+									>
+										<span style={{ opacity: 0.7, minWidth: 140 }}>
+											{networkMap[net.toLowerCase()] || net.toUpperCase()}
+										</span>
+										<div className="d-flex align-items-center">
+											<span
+												className="mr-2"
+												style={{ fontSize: 12, opacity: 0.6 }}
+											>
+												Deposit
+											</span>
+											<Switch
+												size="small"
+												checked={networkOverrides[net]?.allow_deposit !== false}
+												onChange={(checked) =>
+													handleNetworkOverrideChange(
+														net,
+														'allow_deposit',
+														checked
+													)
+												}
+											/>
+										</div>
+										<div className="d-flex align-items-center">
+											<span
+												className="mr-2"
+												style={{ fontSize: 12, opacity: 0.6 }}
+											>
+												Withdrawal
+											</span>
+											<Switch
+												size="small"
+												checked={
+													networkOverrides[net]?.allow_withdrawal !== false
+												}
+												onChange={(checked) =>
+													handleNetworkOverrideChange(
+														net,
+														'allow_withdrawal',
+														checked
+													)
+												}
+											/>
+										</div>
+									</div>
+								))}
+							<div className="btn-wrapper mt-2">
+								<Button
+									className="green-btn"
+									type="primary"
+									onClick={handleSaveNetworkOverrides}
+									loading={isSavingNetworkOverrides}
+								>
+									Save
+								</Button>
+							</div>
+						</div>
+					)}
 					<div className="preview-detail-container">
 						<div className="title">Withdrawal Fee</div>
 						<div>
@@ -1243,6 +1201,10 @@ const Final = ({
 							<div className="title">Manage</div>
 							{isConfigure && onSave ? (
 								<div className="btn-wrapper">
+									<Button style={{ minWidth: 120 }} onClick={onClose}>
+										Cancel
+									</Button>
+									<div className="separator"></div>
 									<Button
 										type="primary"
 										className="green-btn"
@@ -1266,21 +1228,6 @@ const Final = ({
 									</Button>
 								</div>
 							) : null}
-							<div className="btn-wrapper">
-								<Button
-									type="danger"
-									onClick={() => setIsVisible(true)}
-									disabled={submitting}
-								>
-									Remove
-								</Button>
-								<div className="separator"></div>
-								<div className="description-small remove">
-									Removing this coin will delist this coin from your exchange.
-									Make sure you remove any associated pairs first. Use with
-									caution!
-								</div>
-							</div>
 						</div>
 					) : null}
 					{!isPreview && !isConfigure ? (

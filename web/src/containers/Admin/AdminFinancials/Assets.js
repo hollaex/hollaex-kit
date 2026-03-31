@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Button, Modal, Breadcrumb, message, Input, Spin } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -514,9 +515,7 @@ class Assets extends Component {
 
 	handleFilterValues = (filterValues) => {
 		this.setState({ filterValues }, () => {
-			if (filterValues === '') {
-				this.onClickFilter(false);
-			}
+			this.onClickFilter(filterValues !== '');
 		});
 	};
 
@@ -529,7 +528,6 @@ class Assets extends Component {
 	onClickFilter = (isClearField = true) => {
 		const { filterValues } = this.state;
 		const { allCoins, exchange } = this.props;
-		this.setState({ isLoading: true });
 		const coinData = allCoins.filter((val) =>
 			exchange.coins.includes(val.symbol)
 		);
@@ -545,7 +543,6 @@ class Assets extends Component {
 		} else {
 			this.setState({ coins: coinData });
 		}
-		this.debounceLoading();
 	};
 
 	handleEditData = (data) => {
@@ -877,15 +874,9 @@ class Assets extends Component {
 									className="w-75 asset-filter-input"
 									size="small"
 									allowClear
-									placeholder="Input name or symbol"
+									prefix={<SearchOutlined style={{ opacity: 0.45 }} />}
+									placeholder="Search name or symbol"
 								/>
-								<Button
-									onClick={this.onClickFilter}
-									className="green-btn no-border asset-filter-button"
-									size="small"
-								>
-									Filter
-								</Button>
 							</div>
 							<Button
 								type="primary"

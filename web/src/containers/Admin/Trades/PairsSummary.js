@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Button, Modal, Breadcrumb, message, Spin, Input } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
 import debounce from 'lodash.debounce';
@@ -212,9 +212,7 @@ class PairsSummary extends Component {
 
 	handleFilterValues = (filterValues) => {
 		this.setState({ filterValues }, () => {
-			if (filterValues === '') {
-				this.onClickFilter(false);
-			}
+			this.onClickFilter(filterValues !== '');
 		});
 	};
 
@@ -649,15 +647,9 @@ class PairsSummary extends Component {
 									className="w-75 pairs-filter-input"
 									size="small"
 									allowClear
-									placeholder="Input name or symbol"
+									prefix={<SearchOutlined style={{ opacity: 0.45 }} />}
+									placeholder="Search name or symbol"
 								/>
-								<Button
-									onClick={this.onClickFilter}
-									className="green-btn no-border pairs-filter-button"
-									size="small"
-								>
-									Filter
-								</Button>
 							</div>
 							<Button
 								type="primary"
