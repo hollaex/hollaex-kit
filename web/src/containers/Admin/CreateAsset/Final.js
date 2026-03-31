@@ -56,7 +56,13 @@ const Final = ({
 	onSave,
 	saveLoading,
 	onConfigure,
+	isOwner: isOwnerProp,
 }) => {
+	const isOwner =
+		isOwnerProp !== undefined
+			? isOwnerProp
+			: coinFormData.owner_id === user_id ||
+			  coinFormData.created_by === user_id;
 	let isUpdateRequired = false;
 	if (
 		(exchange &&
@@ -355,7 +361,6 @@ const Final = ({
 		}
 	};
 
-	const isOwner = coinFormData.owner_id === user_id;
 	const networkMap = {
 		eth: 'Ethereum (ETH)',
 		trx: 'Tron (TRX)',
@@ -602,7 +607,7 @@ const Final = ({
 								type={(coinFormData.symbol || '').toLowerCase()}
 								color={meta.color}
 							/>
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									<div className="edit-content">
 										<b>Color: </b>
@@ -635,7 +640,7 @@ const Final = ({
 							) : null}
 						</div>
 						<div className="preview-content">
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									{coinFormData.logo ? (
 										<img
@@ -677,7 +682,7 @@ const Final = ({
 									className="icon-preview"
 								/>
 							)}
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									<div className="edit-content">
 										<b>Icon: </b>
@@ -762,7 +767,7 @@ const Final = ({
 								<b>Contract:</b> {coinFormData.contract}
 							</div>
 						) : null}
-						{!isConfigure ? (
+						{!(isConfigure && isOwner) ? (
 							<div>
 								<b>Color:</b> {meta.color}
 							</div>
@@ -868,7 +873,7 @@ const Final = ({
 								<div>
 									<b>Market Cap:</b> {coinFormData.market_cap || '-'}
 								</div>
-								{isConfigure ? (
+								{isConfigure && isOwner ? (
 									<div className="btn-wrapper">
 										<Button
 											className="green-btn"
@@ -939,7 +944,7 @@ const Final = ({
 						{/* <div>
 					<b>Decimal points:</b> {meta.decimal_points}
 				</div> */}
-						{isConfigure ? (
+						{isConfigure && isOwner ? (
 							<div className="btn-wrapper">
 								<Button
 									className="green-btn"
@@ -964,7 +969,7 @@ const Final = ({
 										(net) => networkMap[net.toLowerCase()] || net.toUpperCase()
 									)
 									.join(', ')}
-								{isConfigure ? (
+								{isConfigure && isOwner ? (
 									<div className="btn-wrapper">
 										<Button
 											className="green-btn"
@@ -1077,13 +1082,12 @@ const Final = ({
 									Go to markup fees
 								</span>
 							</div>
-							{isConfigure && (
+							{isConfigure && isOwner && (
 								<div className="btn-wrapper">
 									<Button
 										className="green-btn mb-3"
 										type="primary"
 										onClick={() => handleWithdrawalEdit('withdraw')}
-										disabled={!isOwner}
 									>
 										Edit
 									</Button>
@@ -1104,13 +1108,12 @@ const Final = ({
 										Go to markup fees
 									</span>
 								</div>
-								{isConfigure && (
+								{isConfigure && isOwner && (
 									<div className="btn-wrapper">
 										<Button
 											className="green-btn"
 											type="primary"
 											onClick={() => handleWithdrawalEdit('deposit')}
-											disabled={!isOwner}
 										>
 											Edit
 										</Button>
@@ -1199,21 +1202,25 @@ const Final = ({
 					{isPreview || isConfigure ? (
 						<div className="preview-detail-container">
 							<div className="title">Manage</div>
-							{isConfigure && onSave ? (
+							{isConfigure ? (
 								<div className="btn-wrapper">
 									<Button style={{ minWidth: 120 }} onClick={onClose}>
 										Cancel
 									</Button>
-									<div className="separator"></div>
-									<Button
-										type="primary"
-										className="green-btn"
-										style={{ minWidth: 120 }}
-										onClick={onSave}
-										loading={saveLoading}
-									>
-										Save
-									</Button>
+									{isOwner && onSave && (
+										<>
+											<div className="separator"></div>
+											<Button
+												type="primary"
+												className="green-btn"
+												style={{ minWidth: 120 }}
+												onClick={onSave}
+												loading={saveLoading}
+											>
+												Save
+											</Button>
+										</>
+									)}
 								</div>
 							) : null}
 							{isPreview && onConfigure ? (

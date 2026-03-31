@@ -649,6 +649,7 @@ class Assets extends Component {
 							isConfigure
 							coinFormData={selectedAsset}
 							user_id={user_id}
+							isOwner={showConfigureButton}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleEdit={this.handleEditData}
@@ -658,18 +659,23 @@ class Assets extends Component {
 							isLoading={isLoading}
 							onSave={this.applyConfirmation}
 							saveLoading={saveLoading}
+							onClose={() =>
+								this.setState({ isConfigure: false, isPreview: true })
+							}
 						/>
 					</div>
-					<div>
-						<Button
-							type="primary"
-							className="configure-btn green-btn"
-							onClick={this.applyConfirmation}
-							loading={saveLoading}
-						>
-							Save
-						</Button>
-					</div>
+					{showConfigureButton && (
+						<div>
+							<Button
+								type="primary"
+								className="configure-btn green-btn"
+								onClick={this.applyConfirmation}
+								loading={saveLoading}
+							>
+								Save
+							</Button>
+						</div>
+					)}
 				</div>
 			);
 		} else if (isPreview) {
@@ -692,20 +698,18 @@ class Assets extends Component {
 							isLoading={isLoading}
 							selectedMarkupAsset={this.props.selectedMarkupAsset}
 							setSelectedMarkupAsset={this.props.setSelectedMarkupAsset}
-							onConfigure={showConfigureButton ? this.handleConfigure : null}
+							onConfigure={this.handleConfigure}
 						/>
 					</div>
 					<div>
 						<div className="d-flex">
-							{showConfigureButton && (
-								<Button
-									type="primary"
-									className="green-btn"
-									onClick={this.handleConfigure}
-								>
-									Configure
-								</Button>
-							)}
+							<Button
+								type="primary"
+								className="green-btn"
+								onClick={this.handleConfigure}
+							>
+								Configure
+							</Button>
 							<div className="separator" />
 							{/* {showMintAndBurnButtons && (
 								<Fragment>
