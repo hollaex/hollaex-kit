@@ -414,6 +414,11 @@ const validateWithdrawal = async (user, address, amount, currency, network = nul
 		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	}
 
+	const withdrawalNetworkOverrides = getKitConfig()?.coin_customizations?.[currency]?.network_overrides;
+	if (network && withdrawalNetworkOverrides?.[network]?.allow_withdrawal === false) {
+		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
+	}
+
 	if (network === 'email') {
 		// internal email transfer
 		if (!isEmail(address)) {
@@ -1253,6 +1258,11 @@ async function validateDeposit(user, amount, currency, network = null) {
 	}
 
 	if (!coinConfiguration.allow_deposit) {
+		throw new Error(DEPOSIT_DISABLED_FOR_COIN(currency));
+	}
+
+	const depositNetworkOverrides = getKitConfig()?.coin_customizations?.[currency]?.network_overrides;
+	if (network && depositNetworkOverrides?.[network]?.allow_deposit === false) {
 		throw new Error(DEPOSIT_DISABLED_FOR_COIN(currency));
 	}
 

@@ -184,13 +184,18 @@ const checkStatus = () => {
 			const exchangePairs = [];
 
 			for (let coin of exchange.coins) {
+				const networkOverrides = configuration?.kit?.coin_customizations?.[coin.symbol]?.network_overrides;
 				if (coin.type === 'fiat') {
 					configuration.coins[coin.symbol] = {
 						...coin,
-						...configuration?.kit?.fiat_fees?.[coin.symbol]
+						...configuration?.kit?.fiat_fees?.[coin.symbol],
+						...(networkOverrides ? { network_overrides: networkOverrides } : {})
 					};
 				} else {
-					configuration.coins[coin.symbol] = coin;
+					configuration.coins[coin.symbol] = {
+						...coin,
+						...(networkOverrides ? { network_overrides: networkOverrides } : {})
+					};
 				}
 			}
 

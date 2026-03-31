@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table, Checkbox } from 'antd';
+import { Button, Modal, Tabs, message, Table, Checkbox, Switch } from 'antd';
 import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -107,6 +107,10 @@ const Final = ({
 	const [isEditingDetails, setIsEditingDetails] = useState(false);
 	const [editDetails, setEditDetails] = useState({});
 	const [isSavingDetails, setIsSavingDetails] = useState(false);
+	const [networkOverrides, setNetworkOverrides] = useState({});
+	const [isSavingNetworkOverrides, setIsSavingNetworkOverrides] = useState(
+		false
+	);
 
 	const handleDetailsConfigure = () => {
 		setEditDetails({
@@ -154,6 +158,69 @@ const Final = ({
 			message.error(error?.data?.message || 'Failed to update asset details');
 		} finally {
 			setIsSavingDetails(false);
+		}
+	};
+
+	const coinSymbol = coinFormData?.symbol;
+	const coinNetwork = coinFormData?.network;
+	const coinCustomizationsConfig = constants?.coin_customizations;
+
+	useEffect(() => {
+		if (coinSymbol && coinNetwork) {
+			const existing =
+				coinCustomizationsConfig?.[coinSymbol]?.network_overrides || {};
+			const networks = coinNetwork
+				.split(',')
+				.map((n) => n.trim())
+				.filter(Boolean);
+			const merged = {};
+			networks.forEach((net) => {
+				merged[net] = {
+					allow_deposit:
+						existing[net]?.allow_deposit !== undefined
+							? existing[net].allow_deposit
+							: true,
+					allow_withdrawal:
+						existing[net]?.allow_withdrawal !== undefined
+							? existing[net].allow_withdrawal
+							: true,
+				};
+			});
+			setNetworkOverrides(merged);
+		}
+	}, [coinSymbol, coinNetwork, coinCustomizationsConfig]);
+
+	const handleNetworkOverrideChange = (network, field, value) => {
+		setNetworkOverrides((prev) => ({
+			...prev,
+			[network]: {
+				...prev[network],
+				[field]: value,
+			},
+		}));
+	};
+
+	const handleSaveNetworkOverrides = async () => {
+		try {
+			setIsSavingNetworkOverrides(true);
+			const existingCustomizations = constants?.coin_customizations || {};
+			await updateConstants({
+				kit: {
+					coin_customizations: {
+						...existingCustomizations,
+						[coinFormData.symbol]: {
+							...existingCustomizations[coinFormData.symbol],
+							network_overrides: networkOverrides,
+						},
+					},
+				},
+			});
+			message.success('Network deposit/withdrawal settings saved.');
+			requesCoinConfiguration();
+		} catch (error) {
+			message.error(error?.data?.message || 'Failed to save network settings');
+		} finally {
+			setIsSavingNetworkOverrides(false);
 		}
 	};
 
@@ -915,6 +982,121 @@ const Final = ({
 							</div>
 						) : (
 							<div>-</div>
+						)}
+						{isConfigure && coinFormData.network && (
+							<div className="mt-3">
+								<b>Per-network deposit & withdrawal:</b>
+								<div
+									className="mt-2"
+									style={{
+										border: '1px solid #ccc',
+										borderRadius: 4,
+										overflow: 'hidden',
+									}}
+								>
+									<table style={{ width: '100%', borderCollapse: 'collapse' }}>
+										<thead>
+											<tr style={{ background: '#f5f5f5' }}>
+												<th
+													style={{
+														padding: '8px 12px',
+														textAlign: 'left',
+														borderBottom: '1px solid #ccc',
+													}}
+												>
+													Network
+												</th>
+												<th
+													style={{
+														padding: '8px 12px',
+														textAlign: 'center',
+														borderBottom: '1px solid #ccc',
+													}}
+												>
+													Allow Deposit
+												</th>
+												<th
+													style={{
+														padding: '8px 12px',
+														textAlign: 'center',
+														borderBottom: '1px solid #ccc',
+													}}
+												>
+													Allow Withdrawal
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{coinFormData.network
+												.split(',')
+												.map((net) => net.trim())
+												.filter(Boolean)
+												.map((net) => (
+													<tr
+														key={net}
+														style={{ borderBottom: '1px solid #eee' }}
+													>
+														<td style={{ padding: '8px 12px' }}>
+															{networkMap[net.toLowerCase()] ||
+																net.toUpperCase()}
+														</td>
+														<td
+															style={{
+																padding: '8px 12px',
+																textAlign: 'center',
+															}}
+														>
+															<Switch
+																size="small"
+																checked={
+																	networkOverrides[net]?.allow_deposit !== false
+																}
+																onChange={(checked) =>
+																	handleNetworkOverrideChange(
+																		net,
+																		'allow_deposit',
+																		checked
+																	)
+																}
+															/>
+														</td>
+														<td
+															style={{
+																padding: '8px 12px',
+																textAlign: 'center',
+															}}
+														>
+															<Switch
+																size="small"
+																checked={
+																	networkOverrides[net]?.allow_withdrawal !==
+																	false
+																}
+																onChange={(checked) =>
+																	handleNetworkOverrideChange(
+																		net,
+																		'allow_withdrawal',
+																		checked
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+										</tbody>
+									</table>
+								</div>
+								<div className="btn-wrapper mt-2">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={handleSaveNetworkOverrides}
+										loading={isSavingNetworkOverrides}
+									>
+										Save
+									</Button>
+								</div>
+							</div>
 						)}
 					</div>
 					<div className="preview-detail-container">

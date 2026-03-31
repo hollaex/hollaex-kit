@@ -266,8 +266,27 @@ const RenderWithdraw = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const singleNetworkWithdrawalDisabled = (() => {
+		if (!getWithdrawCurrency || !coins[getWithdrawCurrency]?.network)
+			return false;
+		const networks = coins[getWithdrawCurrency].network
+			.split(',')
+			.filter(Boolean);
+		if (networks.length === 1) {
+			return (
+				coin_customizations?.[getWithdrawCurrency]?.network_overrides?.[
+					networks[0].trim()
+				]?.allow_withdrawal === false
+			);
+		}
+		return false;
+	})();
+
 	useEffect(() => {
-		if (getWithdrawCurrency && !isWithdrawal) {
+		if (
+			getWithdrawCurrency &&
+			(!isWithdrawal || singleNetworkWithdrawalDisabled)
+		) {
 			setSelectedAsset((prev) => ({ ...prev, selectedCurrency: '' }));
 			setIsValidField((prev) => ({ ...prev, isDisbaleWithdraw: true }));
 			setCurrStep({
@@ -280,7 +299,7 @@ const RenderWithdraw = ({
 		} else {
 			setIsValidField((prev) => ({ ...prev, isDisbaleWithdraw: false }));
 		}
-	}, [getWithdrawCurrency, isWithdrawal]);
+	}, [getWithdrawCurrency, isWithdrawal, singleNetworkWithdrawalDisabled]);
 
 	useEffect(() => {
 		const networkOption = defaultNetwork?.split(',')?.length;
@@ -451,7 +470,14 @@ const RenderWithdraw = ({
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
-			setCurrStep((prev) => ({ ...prev, stepFour: true }));
+			const isNetworkWithdrawalDisabled =
+				coin_customizations?.[getWithdrawCurrency]?.network_overrides?.[val]
+					?.allow_withdrawal === false;
+			if (isNetworkWithdrawalDisabled) {
+				setCurrStep((prev) => ({ ...prev, stepFour: false, stepFive: false }));
+			} else {
+				setCurrStep((prev) => ({ ...prev, stepFour: true }));
+			}
 			setWithdrawNetworkOptions(val);
 			setSelectedAsset((prev) => ({ ...prev, networkData: val }));
 		} else if (!val) {
@@ -1229,11 +1255,18 @@ const RenderWithdraw = ({
 														const isActiveNetwork =
 															currencyNetwork(getSelectedSymbol)?.active !==
 															false;
+														const isNetworkWithdrawalEnabled =
+															coin_customizations?.[
+																selectedAsset?.selectedCurrency
+															]?.network_overrides?.[data]?.allow_withdrawal !==
+															false;
+														const isEnabled =
+															isActiveNetwork && isNetworkWithdrawalEnabled;
 														return (
 															<Option
 																key={inx}
 																value={data}
-																disabled={!isActiveNetwork}
+																disabled={!isEnabled}
 															>
 																<div className="d-flex withdraw-network-options">
 																	<div>
@@ -1242,7 +1275,7 @@ const RenderWithdraw = ({
 																			data
 																		)}
 																	</div>
-																	{isActiveNetwork ? (
+																	{isEnabled ? (
 																		<span className="secondary-text">
 																			{calculateFeeMarkup(
 																				selectedAsset?.selectedCurrency,
@@ -1285,6 +1318,25 @@ const RenderWithdraw = ({
 													{renderLabel('DEPOSIT_FORM_NETWORK_WARNING')}
 												</div>
 											</div>
+											{getWithdrawNetworkOptions &&
+												coin_customizations?.[getWithdrawCurrency]
+													?.network_overrides?.[getWithdrawNetworkOptions]
+													?.allow_withdrawal === false && (
+													<div className="d-flex mt-2">
+														<div className="withdraw-deposit-icon-wrapper">
+															<img
+																src={STATIC_ICONS['CLOCK']}
+																className="withdraw-deposit-icon"
+																alt="disabled"
+															/>
+														</div>
+														<span className="withdraw-deposit-content">
+															{renderLabel(
+																'ACCORDIAN.DISABLED_WITHDRAW_CONTENT'
+															)}
+														</span>
+													</div>
+												)}
 										</div>
 									)}
 								</div>

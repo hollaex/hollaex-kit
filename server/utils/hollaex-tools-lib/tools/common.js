@@ -37,7 +37,7 @@ const {
 	SUPPORT_DISABLED,
 	NO_NEW_DATA
 } = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isInteger, isDate } = require('lodash');
+const { each, difference, isPlainObject, isString, pick, isNil, omit, isNumber, isInteger, isDate, isBoolean } = require('lodash');
 const { publisher } = require('./database/redis');
 const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
 const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
@@ -301,6 +301,23 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}, scopes, permis
 
 			if (coin.fee_markup && !isNumber(coin.fee_markup)) {
 				throw new Error('Fee markup is not a number');
+			}
+
+			if (coin.network_overrides) {
+				if (!isPlainObject(coin.network_overrides)) {
+					throw new Error('network_overrides must be an object');
+				}
+				for (const [network, overrides] of Object.entries(coin.network_overrides)) {
+					if (!isPlainObject(overrides)) {
+						throw new Error(`network_overrides.${network} must be an object`);
+					}
+					if (overrides.hasOwnProperty('allow_deposit') && !isBoolean(overrides.allow_deposit)) {
+						throw new Error(`network_overrides.${network}.allow_deposit must be a boolean`);
+					}
+					if (overrides.hasOwnProperty('allow_withdrawal') && !isBoolean(overrides.allow_withdrawal)) {
+						throw new Error(`network_overrides.${network}.allow_withdrawal must be a boolean`);
+					}
+				}
 			}
 		}
 	}
