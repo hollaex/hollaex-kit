@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Table, Modal, Breadcrumb, message, Input } from 'antd';
+import { Button, Modal, Breadcrumb, message, Input, Spin } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -10,7 +11,6 @@ import debounce from 'lodash.debounce';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
-import IconToolTip from '../IconToolTip';
 import { Coin } from 'components';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 import {
@@ -22,8 +22,8 @@ import {
 } from './action';
 import { setCoins, setExchange } from 'actions/assetActions';
 import { requestTotalBalance } from '../Wallets/actions';
-import { CheckOutlined } from '@ant-design/icons';
-import { STATIC_ICONS } from 'config/icons';
+import { CloseOutlined } from '@ant-design/icons';
+import RemoveConfirmation from '../Confirmation';
 import { setIsDisplayCreateAsset } from 'actions/appActions';
 
 const { Item } = Breadcrumb;
@@ -40,144 +40,6 @@ export const getTabParams = () => {
 	}
 	return activeTab;
 };
-
-const getColumns = (
-	allCoins = [],
-	constants = {},
-	balance = {},
-	handleEdit,
-	handlePreview,
-	exchange,
-	appCoins = {}
-) => [
-	{
-		title: 'Assets',
-		key: 'symbol',
-		render: (data) => {
-			const selectedAsset =
-				_cloneDeep(allCoins.filter((list) => list.symbol === data.symbol)[0]) ||
-				{};
-			if (!data.id && selectedAsset.id) {
-				delete selectedAsset.id;
-			}
-			if (!selectedAsset.symbol) {
-				selectedAsset.symbol = data.symbol;
-			}
-			return (
-				<div
-					className="coin-symbol-wrapper"
-					onClick={() => handlePreview(selectedAsset)}
-				>
-					<div className="d-flex align-items-center">
-						<Coin
-							iconId={appCoins?.[data.symbol]?.icon_id || selectedAsset.icon_id}
-						/>
-						<div className="ml-2 fullName">{selectedAsset.fullname}</div>
-					</div>
-					{data.id && data.verified ? (
-						<IconToolTip type="success" tip="" animation={false} />
-					) : data.id && !data.verified ? (
-						<IconToolTip
-							type="warning"
-							tip="This asset is in pending verification"
-							onClick={(e) => {
-								if (
-									selectedAsset.created_by === _get(constants, 'info.user_id')
-								) {
-									handleEdit(selectedAsset, e);
-								}
-							}}
-						/>
-					) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
-						<div className="config-content">
-							(
-							<span
-								className="link"
-								onClick={(e) => handleEdit(selectedAsset, e)}
-							>
-								Configure
-							</span>
-							)
-							<IconToolTip
-								type="settings"
-								tip="Click to complete the asset configuration"
-								onClick={(e) => handleEdit(selectedAsset, e)}
-							/>
-						</div>
-					) : null}
-				</div>
-			);
-		},
-	},
-	{
-		title: 'Status',
-		dataIndex: 'verified',
-		key: 'verified',
-		className: 'balance-column',
-		render: (verified, data) => {
-			const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
-			if (
-				verified &&
-				(exchange.plan === 'basic' ||
-					exchange.plan === 'crypto' ||
-					exchange.plan === 'fiat' ||
-					exchange.plan === 'boost')
-			) {
-				if (
-					(exchange.plan === 'basic' && basicCoins.includes(data.symbol)) ||
-					((exchange.plan === 'crypto' ||
-						exchange.plan === 'fiat' ||
-						exchange.plan === 'boost') &&
-						data &&
-						(data.type === 'blockchain' || data.type === 'fiat'))
-				) {
-					return (
-						<div>
-							<CheckOutlined className="status-verified" />
-							verified
-						</div>
-					);
-				} else if (
-					exchange.plan === 'basic' &&
-					data &&
-					data.type === 'blockchain'
-				) {
-					return (
-						<div>
-							{' '}
-							<img
-								alt="crypto-pro"
-								className="plan-img"
-								src={STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']}
-							></img>
-							Crypto Pro required{' '}
-							<Link to="/admin/billing" className="text-link">
-								(Upgrade)
-							</Link>
-						</div>
-					);
-				} else {
-					return (
-						<div>
-							{' '}
-							<img
-								alt="fiat-ramp"
-								className="plan-img"
-								src={STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']}
-							></img>
-							Fiat Ramp or Boost required{' '}
-							<Link to="/admin/billing" className="text-link">
-								(Upgrade)
-							</Link>
-						</div>
-					);
-				}
-			} else {
-				return <div>pending</div>;
-			}
-		},
-	},
-];
 
 class Assets extends Component {
 	constructor(props) {
@@ -206,6 +68,8 @@ class Assets extends Component {
 			submitting: false,
 			isWithdrawalEdit: false,
 			isTableLoading: true,
+			removeAssetData: null,
+			isRemoveVisible: false,
 			isFiat: '',
 			assetType: '',
 			currentScreen: 'step1',
@@ -617,6 +481,15 @@ class Assets extends Component {
 		}
 	};
 
+	handleInlineRemove = (asset) => {
+		this.setState({ removeAssetData: asset, isRemoveVisible: true });
+	};
+
+	handleInlineRemoveConfirm = async (symbol) => {
+		await this.handleDelete(symbol);
+		this.setState({ isRemoveVisible: false, removeAssetData: null });
+	};
+
 	handleEdit = (asset, event) => {
 		if (event) {
 			event.preventDefault();
@@ -642,9 +515,7 @@ class Assets extends Component {
 
 	handleFilterValues = (filterValues) => {
 		this.setState({ filterValues }, () => {
-			if (filterValues === '') {
-				this.onClickFilter(false);
-			}
+			this.onClickFilter(filterValues !== '');
 		});
 	};
 
@@ -657,7 +528,6 @@ class Assets extends Component {
 	onClickFilter = (isClearField = true) => {
 		const { filterValues } = this.state;
 		const { allCoins, exchange } = this.props;
-		this.setState({ isLoading: true });
 		const coinData = allCoins.filter((val) =>
 			exchange.coins.includes(val.symbol)
 		);
@@ -673,7 +543,6 @@ class Assets extends Component {
 		} else {
 			this.setState({ coins: coinData });
 		}
-		this.debounceLoading();
 	};
 
 	handleEditData = (data) => {
@@ -780,6 +649,7 @@ class Assets extends Component {
 							isConfigure
 							coinFormData={selectedAsset}
 							user_id={user_id}
+							isOwner={showConfigureButton}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleEdit={this.handleEditData}
@@ -789,18 +659,23 @@ class Assets extends Component {
 							isLoading={isLoading}
 							onSave={this.applyConfirmation}
 							saveLoading={saveLoading}
+							onClose={() =>
+								this.setState({ isConfigure: false, isPreview: true })
+							}
 						/>
 					</div>
-					<div>
-						<Button
-							type="primary"
-							className="configure-btn green-btn"
-							onClick={this.applyConfirmation}
-							loading={saveLoading}
-						>
-							Save
-						</Button>
-					</div>
+					{showConfigureButton && (
+						<div>
+							<Button
+								type="primary"
+								className="configure-btn green-btn"
+								onClick={this.applyConfirmation}
+								loading={saveLoading}
+							>
+								Save
+							</Button>
+						</div>
+					)}
 				</div>
 			);
 		} else if (isPreview) {
@@ -823,20 +698,18 @@ class Assets extends Component {
 							isLoading={isLoading}
 							selectedMarkupAsset={this.props.selectedMarkupAsset}
 							setSelectedMarkupAsset={this.props.setSelectedMarkupAsset}
-							onConfigure={showConfigureButton ? this.handleConfigure : null}
+							onConfigure={this.handleConfigure}
 						/>
 					</div>
 					<div>
 						<div className="d-flex">
-							{showConfigureButton && (
-								<Button
-									type="primary"
-									className="green-btn"
-									onClick={this.handleConfigure}
-								>
-									Configure
-								</Button>
-							)}
+							<Button
+								type="primary"
+								className="green-btn"
+								onClick={this.handleConfigure}
+							>
+								Configure
+							</Button>
 							<div className="separator" />
 							{/* {showMintAndBurnButtons && (
 								<Fragment>
@@ -988,12 +861,10 @@ class Assets extends Component {
 			width,
 			isConfirm,
 			isPresetConfirm,
-			exchangeBalance,
-			exchange,
 			isLoading,
 			isModalClosable,
 		} = this.state;
-		const { allCoins, constants } = this.props;
+		const { allCoins } = this.props;
 		return (
 			<div className="admin-asset-wrapper">
 				{isPreview || isConfigure ? (
@@ -1007,15 +878,9 @@ class Assets extends Component {
 									className="w-75 asset-filter-input"
 									size="small"
 									allowClear
-									placeholder="Input name or symbol"
+									prefix={<SearchOutlined style={{ opacity: 0.45 }} />}
+									placeholder="Search name or symbol"
 								/>
-								<Button
-									onClick={this.onClickFilter}
-									className="green-btn no-border asset-filter-button"
-									size="small"
-								>
-									Filter
-								</Button>
 							</div>
 							<Button
 								type="primary"
@@ -1025,26 +890,74 @@ class Assets extends Component {
 								Create/add asset
 							</Button>
 						</div>
-						<div className="table-wrapper">
-							<Table
-								className="assets-table"
-								rowClassName="assets-table-row"
-								size="small"
-								columns={getColumns(
-									allCoins,
-									constants,
-									exchangeBalance,
-									this.handleEdit,
-									this.handlePreview,
-									exchange,
-									this.props.appCoins
-								)}
-								rowKey={(data, index) => index}
-								dataSource={coins}
-								loading={isLoading}
-								pagination={false}
-							/>
-						</div>
+						{isLoading ? (
+							<div className="d-flex justify-content-center p-5">
+								<Spin />
+							</div>
+						) : (
+							<div
+								style={{
+									display: 'flex',
+									flexWrap: 'wrap',
+									gap: 12,
+									padding: '12px 0',
+								}}
+							>
+								{coins.map((coinItem, index) => {
+									const selectedAsset =
+										_cloneDeep(
+											allCoins.filter(
+												(list) => list.symbol === coinItem.symbol
+											)[0]
+										) || {};
+									if (!selectedAsset.symbol) {
+										selectedAsset.symbol = coinItem.symbol;
+									}
+									const appCoins = this.props.appCoins || {};
+									return (
+										<div
+											key={index}
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												background: 'rgba(255,255,255,0.05)',
+												border: '1px solid rgba(255,255,255,0.15)',
+												borderRadius: 4,
+												padding: '6px 10px',
+												cursor: 'pointer',
+											}}
+										>
+											<div
+												style={{ display: 'flex', alignItems: 'center' }}
+												onClick={() => this.handlePreview(selectedAsset)}
+											>
+												<Coin
+													iconId={
+														appCoins[coinItem.symbol]?.icon_id ||
+														selectedAsset.icon_id
+													}
+												/>
+												<span style={{ margin: '0 6px' }}>
+													{(coinItem.symbol || '').toUpperCase()}
+												</span>
+											</div>
+											<CloseOutlined
+												style={{
+													marginLeft: 6,
+													fontSize: 10,
+													color: '#ff4d4f',
+													cursor: 'pointer',
+												}}
+												onClick={(e) => {
+													e.stopPropagation();
+													this.handleInlineRemove(selectedAsset);
+												}}
+											/>
+										</div>
+									);
+								})}
+							</div>
+						)}
 					</Fragment>
 				)}
 				<Modal
@@ -1067,6 +980,28 @@ class Assets extends Component {
 					handleApply={this.handleApply}
 					handleClose={this.handleConfirmationClose}
 				/>
+				{this.state.isRemoveVisible && this.state.removeAssetData ? (
+					<Modal
+						visible={this.state.isRemoveVisible}
+						footer={null}
+						onCancel={() =>
+							this.setState({ isRemoveVisible: false, removeAssetData: null })
+						}
+					>
+						<RemoveConfirmation
+							onCancel={() =>
+								this.setState({
+									isRemoveVisible: false,
+									removeAssetData: null,
+								})
+							}
+							onHandleRemoveAsset={this.handleInlineRemoveConfirm}
+							removeCoin={this.state.removeAssetData}
+							removeContent="Assets"
+							isLoading={this.state.submitting}
+						/>
+					</Modal>
+				) : null}
 			</div>
 		);
 	}

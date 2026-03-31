@@ -347,6 +347,7 @@ class CreatePair extends Component {
 						exchange={exchange}
 						pairs={pairs}
 						getMyExchange={getMyExchange}
+						handleChange={this.handleChange}
 					/>
 				);
 			case 'pair-selection':

@@ -141,8 +141,24 @@ const DepositComponent = ({
 		}
 	}, [address, isTag]);
 
+	const singleNetworkDepositDisabled = (() => {
+		if (!getDepositCurrency || !coins[getDepositCurrency]?.network)
+			return false;
+		const networks = coins[getDepositCurrency].network
+			.split(',')
+			.filter(Boolean);
+		if (networks.length === 1) {
+			return (
+				coin_customizations?.[getDepositCurrency]?.network_overrides?.[
+					networks[0].trim()
+				]?.allow_deposit === false
+			);
+		}
+		return false;
+	})();
+
 	useEffect(() => {
-		if (getDepositCurrency && !isDeposit) {
+		if (getDepositCurrency && (!isDeposit || singleNetworkDepositDisabled)) {
 			setSelectedAsset('');
 			setIsDisbaleDeposit(true);
 			setCurrStep({
@@ -154,7 +170,7 @@ const DepositComponent = ({
 		} else {
 			setIsDisbaleDeposit(false);
 		}
-	}, [getDepositCurrency, isDeposit]);
+	}, [getDepositCurrency, isDeposit, singleNetworkDepositDisabled]);
 
 	useEffect(() => {
 		if (selectedAsset) {
@@ -228,10 +244,19 @@ const DepositComponent = ({
 
 	const onHandleChangeNetwork = (val) => {
 		if (val) {
-			setCurrStep((prev) => ({ ...prev, stepThree: true }));
-			setDepositNetworkOptions(val);
-			updateAddress(val, true);
-			setDepositNetwork(val);
+			const isNetworkDepositDisabled =
+				coin_customizations?.[getDepositCurrency]?.network_overrides?.[val]
+					?.allow_deposit === false;
+			if (isNetworkDepositDisabled) {
+				setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
+				setDepositNetworkOptions(val);
+				setDepositNetwork(val);
+			} else {
+				setCurrStep((prev) => ({ ...prev, stepThree: true }));
+				setDepositNetworkOptions(val);
+				updateAddress(val, true);
+				setDepositNetwork(val);
+			}
 		} else if (!val) {
 			setCurrStep((prev) => ({ ...prev, stepThree: false, stepFour: false }));
 		}
@@ -553,18 +578,33 @@ const DepositComponent = ({
 										onClear={() => onHandleClear('network')}
 									>
 										{coinLength &&
-											coinLength.map((data, inx) => (
-												<Option key={inx} value={data}>
-													<div className="d-flex gap-1">
-														<div>
-															{renderNetworkWithLabel(
-																coins[data]?.icon_id,
-																data
+											coinLength.map((data, inx) => {
+												const isNetworkDepositDisabled =
+													coin_customizations?.[getDepositCurrency]
+														?.network_overrides?.[data]?.allow_deposit ===
+													false;
+												return (
+													<Option
+														key={inx}
+														value={data}
+														disabled={isNetworkDepositDisabled}
+													>
+														<div className="d-flex gap-1">
+															<div>
+																{renderNetworkWithLabel(
+																	coins[data]?.icon_id,
+																	data
+																)}
+															</div>
+															{isNetworkDepositDisabled && (
+																<span className="ml-1 secondary-text">
+																	({STRINGS['LEVELS.BLOCKED']})
+																</span>
 															)}
 														</div>
-													</div>
-												</Option>
-											))}
+													</Option>
+												);
+											})}
 									</Select>
 									{(coinLength &&
 										coinLength.length === 1 &&
@@ -634,6 +674,23 @@ const DepositComponent = ({
 								{renderLabel('ACCORDIAN.ADDRESS')}
 							</span>
 						</div>
+						{getDepositNetworkOptions &&
+							coin_customizations?.[getDepositCurrency]?.network_overrides?.[
+								getDepositNetworkOptions
+							]?.allow_deposit === false && (
+								<div className="d-flex mb-3">
+									<div className="withdraw-deposit-icon-wrapper">
+										<img
+											src={STATIC_ICONS['CLOCK']}
+											className="withdraw-deposit-icon"
+											alt="disabled"
+										/>
+									</div>
+									<span className="withdraw-deposit-content">
+										{renderLabel('ACCORDIAN.DISABLED_DEPOSIT_CONTENT')}
+									</span>
+								</div>
+							)}
 						{((coinLength && coinLength.length === 1 && !isDisbaleDeposit) ||
 							(currStep.stepTwo && !coinLength) ||
 							currStep.stepThree) &&

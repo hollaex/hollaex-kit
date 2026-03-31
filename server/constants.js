@@ -173,6 +173,13 @@ const overrideNetworkFields = () => {
 				...configuration?.kit?.fiat_fees?.[coin.symbol]
 			};
 		}
+		const networkOverrides = configuration?.kit?.coin_customizations?.[coin.symbol]?.network_overrides;
+		if (networkOverrides) {
+			configuration.coins[coin.symbol] = {
+				...configuration.coins[coin.symbol],
+				network_overrides: networkOverrides
+			};
+		}
 	}
 };
 
