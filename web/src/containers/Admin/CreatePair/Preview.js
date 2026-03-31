@@ -43,6 +43,7 @@ const Preview = ({
 	onConfigure,
 	onSave,
 	saveLoading,
+	handleChange,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -238,6 +239,18 @@ const Preview = ({
 								<Select
 									value={editedStatus}
 									onChange={(val) => setEditedStatus(val)}
+									style={{ width: 160 }}
+								>
+									{STATUS_OPTIONS.map((s) => (
+										<Select.Option key={s} value={s}>
+											{s}
+										</Select.Option>
+									))}
+								</Select>
+							) : !isPreview && !isConfigure && handleChange ? (
+								<Select
+									value={formData.status || 'full'}
+									onChange={(val) => handleChange(val, 'status')}
 									style={{ width: 160 }}
 								>
 									{STATUS_OPTIONS.map((s) => (

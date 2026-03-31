@@ -218,30 +218,36 @@ const RenderContentForm = ({
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form d-flex">
 						<div className="w-100">
-							{!coinObject?.allow_deposit && currentCurrency && (
-								<div className="d-flex">
-									<div className="withdraw-deposit-icon-wrapper">
-										<Image
-											iconId={'CLOCK'}
-											icon={ICONS['CLOCK']}
-											svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
-										/>
+							{(!coinObject?.allow_deposit ||
+								coinObject?.network_overrides?.[selectedNetwork]
+									?.allow_deposit === false) &&
+								currentCurrency && (
+									<div className="d-flex">
+										<div className="withdraw-deposit-icon-wrapper">
+											<Image
+												iconId={'CLOCK'}
+												icon={ICONS['CLOCK']}
+												svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+											/>
+										</div>
+										<span className="withdraw-deposit-content">
+											{renderLabel('ACCORDIAN.DISABLED_DEPOSIT_CONTENT')}
+										</span>
 									</div>
-									<span className="withdraw-deposit-content">
-										{renderLabel('ACCORDIAN.DISABLED_DEPOSIT_CONTENT')}
-									</span>
-								</div>
-							)}
-							{currentCurrency && coinObject?.allow_deposit && (
-								<div className="d-flex align-items-center">
-									<Image
-										iconId={'DEPOSIT_BITCOIN'}
-										icon={ICONS['DEPOSIT_BITCOIN']}
-										wrapperClassName="form_currency-ball margin-aligner"
-									/>
-									{titleSection}
-								</div>
-							)}
+								)}
+							{currentCurrency &&
+								coinObject?.allow_deposit &&
+								coinObject?.network_overrides?.[selectedNetwork]
+									?.allow_deposit !== false && (
+									<div className="d-flex align-items-center">
+										<Image
+											iconId={'DEPOSIT_BITCOIN'}
+											icon={ICONS['DEPOSIT_BITCOIN']}
+											wrapperClassName="form_currency-ball margin-aligner"
+										/>
+										{titleSection}
+									</div>
+								)}
 							<DepositComponent
 								updateAddress={updateAddress}
 								depositAddress={depositAddress}

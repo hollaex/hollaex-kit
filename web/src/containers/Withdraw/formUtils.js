@@ -161,9 +161,11 @@ export const generateFormValues = (
 		onChange: (e) => handleMethodChange(e),
 	};
 	if (networks && !isEmail) {
+		const coinNetworkOverrides = coins[symbol]?.network_overrides;
 		const networkOptions = networks.map((network) => ({
 			value: network,
 			label: getNetworkNameByKey(network),
+			disabled: coinNetworkOverrides?.[network]?.allow_withdrawal === false,
 		}));
 		fields.network = {
 			type: 'select',

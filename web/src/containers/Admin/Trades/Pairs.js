@@ -1,21 +1,21 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Button, Table, Modal, Breadcrumb, message } from 'antd';
-import { CloseCircleFilled, CloseOutlined } from '@ant-design/icons';
+import { Button, Modal, Breadcrumb, message } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
-import Coins from '../Coins';
+import RemoveConfirmation from '../Confirmation';
 import IconToolTip from '../IconToolTip';
+import { Coin } from 'components';
 import { getTabParams } from '../AdminFinancials/Assets';
 import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 import { setAllPairs, setCoins } from 'actions/assetActions';
 import { storePair, updateAssetPairs } from './actions';
-import { STATIC_ICONS } from 'config/icons';
 import { getAllPairs, updateExchange } from '../AdminFinancials/action';
 
 const { Item } = Breadcrumb;
@@ -54,107 +54,6 @@ const filterOptions = [
 	},
 ];
 
-const renderTrade = (isActive) => {
-	return (
-		<div>
-			{isActive ? (
-				<div className="d-flex">
-					<img
-						src={STATIC_ICONS.VERIFICATION_VERIFIED}
-						className="active-status-icon"
-						alt="active_icon"
-					/>
-					<div>Active</div>
-				</div>
-			) : (
-				<div className="d-flex align-items-center">
-					<CloseCircleFilled style={{ color: '#808080', marginRight: '5px' }} />
-					<div>Inactive</div>
-				</div>
-			)}
-		</div>
-	);
-};
-
-const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
-	{
-		title: 'Markets',
-		dataIndex: 'symbol',
-		key: 'symbol',
-		render: (symbol, { fullname = '', verified, basename, name, ...rest }) => {
-			const pairData = symbol ? symbol.split('-') : name.split('-');
-			let pair_base = pairData.length ? pairData[0] : '';
-			let pair_2 = pairData.length ? pairData[1] : '';
-			const pair_base_data =
-				allCoins.filter((data) => data.symbol === pair_base)[0] || {};
-			const pair2_data =
-				allCoins.filter((data) => data.symbol === pair_2)[0] || {};
-			let filterPair = pairs.filter((pair) => pair.code === rest.code)[0] || {};
-			return (
-				<div
-					className="coin-symbol-wrapper"
-					onClick={() =>
-						handlePreview({
-							...filterPair,
-							verified,
-							pair_base,
-							pair_2,
-							pair_base_data,
-							pair2_data,
-						})
-					}
-				>
-					<div className="coin-title pairs">{pair_base_data.fullname}</div>
-					<div className="config-content content-space2">
-						<Coins
-							color={pair_base_data.meta ? pair_base_data.meta.color : ''}
-							type={pair_base.toLowerCase()}
-							small={true}
-						/>
-						<div className="icon-wrapper">
-							{renderStatus(pair_base_data, _get(constants, 'info.user_id'))}
-						</div>
-					</div>
-					<div className="content-space1">
-						<CloseOutlined />
-					</div>
-					<div className="config-content content-space1">
-						<Coins
-							color={pair2_data.meta ? pair2_data.meta.color : ''}
-							type={pair_2.toLowerCase()}
-							small={true}
-						/>
-						<div className="icon-wrapper">
-							{renderStatus(pair2_data, _get(constants, 'info.user_id'))}
-						</div>
-					</div>
-					<span className="content-space2 pairs">{pair2_data.fullname}</span>
-					{verified ? (
-						<IconToolTip type="success" tip="" animation={false} />
-					) : (
-						<IconToolTip
-							type="warning"
-							tip="This asset is in pending verification"
-						/>
-					)}
-				</div>
-			);
-		},
-	},
-	{
-		title: 'Pro Trade',
-		key: 'proTrade',
-		render: () =>
-			renderTrade(constants.features && constants.features.pro_trade),
-	},
-	{
-		title: 'Quick Trade',
-		key: 'quickTrade',
-		render: () =>
-			renderTrade(constants.features && constants.features.quick_trade),
-	},
-];
-
 class Pairs extends Component {
 	constructor(props) {
 		super(props);
@@ -173,6 +72,8 @@ class Pairs extends Component {
 			coins: [],
 			buttonSubmitting: false,
 			saveLoading: false,
+			removePairData: null,
+			isRemoveVisible: false,
 		};
 	}
 
@@ -329,6 +230,15 @@ class Pairs extends Component {
 			}
 			this.setState({ buttonSubmitting: false });
 		}
+	};
+
+	handleInlineRemove = (pairData) => {
+		this.setState({ removePairData: pairData, isRemoveVisible: true });
+	};
+
+	handleInlineRemoveConfirm = async (formData) => {
+		await this.handleDelete(formData);
+		this.setState({ isRemoveVisible: false, removePairData: null });
 	};
 
 	handleApply = async () => {
@@ -563,17 +473,91 @@ class Pairs extends Component {
 							Create/add market
 						</Button>
 					</div>
-					<div className="table-wrapper">
-						<Table
-							columns={COLUMNS(
-								allPairs,
-								allCoins,
-								this.handlePreview,
-								constants
-							)}
-							rowKey={(data, index) => index}
-							dataSource={this.state.pairs}
-						/>
+					<div
+						style={{
+							display: 'flex',
+							flexWrap: 'wrap',
+							gap: 12,
+							padding: '12px 0',
+						}}
+					>
+						{this.state.pairs.map((pairItem, index) => {
+							const pairData = pairItem.symbol
+								? pairItem.symbol.split('-')
+								: pairItem.name
+								? pairItem.name.split('-')
+								: [];
+							const pair_base = pairData[0] || '';
+							const pair_2 = pairData[1] || '';
+							const pair_base_data =
+								allCoins.filter((d) => d.symbol === pair_base)[0] || {};
+							const pair2_data =
+								allCoins.filter((d) => d.symbol === pair_2)[0] || {};
+							const filterPair =
+								allPairs.filter((p) => p.code === pairItem.code)[0] || {};
+							const appCoins = this.props.appCoins || {};
+							return (
+								<div
+									key={index}
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										background: 'rgba(255,255,255,0.05)',
+										border: '1px solid rgba(255,255,255,0.15)',
+										borderRadius: 4,
+										padding: '6px 10px',
+										cursor: 'pointer',
+										position: 'relative',
+									}}
+								>
+									<div
+										style={{ display: 'flex', alignItems: 'center' }}
+										onClick={() =>
+											this.handlePreview({
+												...filterPair,
+												verified: pairItem.verified,
+												pair_base,
+												pair_2,
+												pair_base_data,
+												pair2_data,
+											})
+										}
+									>
+										<Coin
+											iconId={
+												appCoins[pair_base]?.icon_id || pair_base_data.icon_id
+											}
+										/>
+										<span style={{ margin: '0 4px' }}>
+											{pair_base.toUpperCase()}
+										</span>
+										<span style={{ margin: '0 4px' }}>/</span>
+										<span style={{ margin: '0 4px' }}>
+											{pair_2.toUpperCase()}
+										</span>
+										<Coin
+											iconId={appCoins[pair_2]?.icon_id || pair2_data.icon_id}
+										/>
+									</div>
+									<CloseOutlined
+										style={{
+											marginLeft: 10,
+											fontSize: 10,
+											color: '#ff4d4f',
+											cursor: 'pointer',
+										}}
+										onClick={(e) => {
+											e.stopPropagation();
+											this.handleInlineRemove({
+												pair_base,
+												pair_2,
+												name: pairItem.name,
+											});
+										}}
+									/>
+								</div>
+							);
+						})}
 					</div>
 					<div className="orderbook-footer-content">
 						<div>Don't see your market?</div>
@@ -648,6 +632,28 @@ class Pairs extends Component {
 					handleApply={this.handleApply}
 					handleClose={this.handleApplyClose}
 				/>
+				{this.state.isRemoveVisible && this.state.removePairData ? (
+					<Modal
+						visible={this.state.isRemoveVisible}
+						footer={null}
+						onCancel={() =>
+							this.setState({ isRemoveVisible: false, removePairData: null })
+						}
+					>
+						<RemoveConfirmation
+							onCancel={() =>
+								this.setState({
+									isRemoveVisible: false,
+									removePairData: null,
+								})
+							}
+							onHandleRemoveMarket={this.handleInlineRemoveConfirm}
+							removePair={this.state.removePairData}
+							removeContent="Markets"
+							isLoading={this.state.buttonSubmitting}
+						/>
+					</Modal>
+				) : null}
 			</div>
 		);
 	}
@@ -663,6 +669,7 @@ const mapStateToProps = (state) => {
 		allPairs: state.asset.allPairs,
 		allCoins: state.asset.allCoins,
 		constants: state.app.constants,
+		appCoins: state.app.coins,
 	};
 };
 
