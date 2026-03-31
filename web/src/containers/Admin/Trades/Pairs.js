@@ -57,8 +57,8 @@ const filterOptions = [
 const renderTrade = (isActive) => {
 	return (
 		<div>
-			{isActive
-				? <div className="d-flex">
+			{isActive ? (
+				<div className="d-flex">
 					<img
 						src={STATIC_ICONS.VERIFICATION_VERIFIED}
 						className="active-status-icon"
@@ -66,14 +66,15 @@ const renderTrade = (isActive) => {
 					/>
 					<div>Active</div>
 				</div>
-				: <div className="d-flex align-items-center">
+			) : (
+				<div className="d-flex align-items-center">
 					<CloseCircleFilled style={{ color: '#808080', marginRight: '5px' }} />
 					<div>Inactive</div>
 				</div>
-			}
+			)}
 		</div>
-	)
-}
+	);
+};
 
 const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
 	{
@@ -123,7 +124,9 @@ const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
 							type={pair_2.toLowerCase()}
 							small={true}
 						/>
-						<div className="icon-wrapper">{renderStatus(pair2_data, _get(constants, 'info.user_id'))}</div>
+						<div className="icon-wrapper">
+							{renderStatus(pair2_data, _get(constants, 'info.user_id'))}
+						</div>
 					</div>
 					<span className="content-space2 pairs">{pair2_data.fullname}</span>
 					{verified ? (
@@ -141,13 +144,15 @@ const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
 	{
 		title: 'Pro Trade',
 		key: 'proTrade',
-		render: () => (renderTrade(constants.features && constants.features.pro_trade)),
+		render: () =>
+			renderTrade(constants.features && constants.features.pro_trade),
 	},
 	{
 		title: 'Quick Trade',
 		key: 'quickTrade',
-		render: () => (renderTrade(constants.features && constants.features.quick_trade)),
-	}
+		render: () =>
+			renderTrade(constants.features && constants.features.quick_trade),
+	},
 ];
 
 class Pairs extends Component {
@@ -172,8 +177,7 @@ class Pairs extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.pairs.length &&
-			this.props.allPairs.length) {
+		if (this.props.pairs.length && this.props.allPairs.length) {
 			let pairs = this.props.allPairs.filter((data) =>
 				this.props.pairs.includes(data.name)
 			);
@@ -188,8 +192,11 @@ class Pairs extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs)) ||
-			(JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs))) {
+		if (
+			JSON.stringify(this.props.allPairs) !==
+				JSON.stringify(prevProps.allPairs) ||
+			JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs)
+		) {
 			let pairs = this.props.allPairs.filter((data) =>
 				this.props.pairs.includes(data.name)
 			);
@@ -242,7 +249,7 @@ class Pairs extends Component {
 		});
 		const tabParams = getTabParams();
 		if (tabParams.isOpenPairModal) {
-			this.props.router.replace("/admin/trade?tab=1&isViewTabs=true");
+			this.props.router.replace('/admin/trade?tab=1&isViewTabs=true');
 		}
 	};
 
@@ -302,13 +309,19 @@ class Pairs extends Component {
 		try {
 			let formProps = {
 				id: exchange.id,
-				pairs: pairs.filter((data) => data !== `${formData.pair_base}-${formData.pair_2}`)
-			}
+				pairs: pairs.filter(
+					(data) => data !== `${formData.pair_base}-${formData.pair_2}`
+				),
+			};
 			await updateExchange(formProps);
 			await this.props.getMyExchange();
 			await this.getPairs();
 			message.success('Pair removed successfully');
-			this.setState({ isPreview: false, isConfigure: false, buttonSubmitting: false });
+			this.setState({
+				isPreview: false,
+				isConfigure: false,
+				buttonSubmitting: false,
+			});
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
@@ -378,7 +391,10 @@ class Pairs extends Component {
 				}
 				let coins = exchange.coins || [];
 
-				if (!this.props.allPairs.filter((data) => data.name === formData.name).length) {
+				if (
+					!this.props.allPairs.filter((data) => data.name === formData.name)
+						.length
+				) {
 					await storePair(formData);
 					await this.getPairs();
 				}
@@ -387,8 +403,8 @@ class Pairs extends Component {
 					let formProps = {
 						id: exchange.id,
 						coins,
-						pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`]
-					}
+						pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`],
+					};
 					await updateExchange(formProps);
 					await this.props.getMyExchange();
 				}
@@ -462,9 +478,16 @@ class Pairs extends Component {
 							onDelete={this.handleDelete}
 							user_id={_get(constants, 'info.user_id')}
 							buttonSubmitting={this.state.buttonSubmitting}
+							onConfigure={
+								this.state.previewData.created_by ===
+								_get(constants, 'info.user_id')
+									? this.handleConfigure
+									: null
+							}
 						/>
 						<div>
-							{this.state.previewData.created_by === _get(constants, 'info.user_id') ? (
+							{this.state.previewData.created_by ===
+							_get(constants, 'info.user_id') ? (
 								<Button
 									type="primary"
 									className="configure-btn green-btn"
@@ -491,6 +514,8 @@ class Pairs extends Component {
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
 							buttonSubmitting={this.state.buttonSubmitting}
+							onSave={this.handleApplyConfirmation}
+							saveLoading={this.state.saveLoading}
 						/>
 						<div>
 							<Button
@@ -511,9 +536,17 @@ class Pairs extends Component {
 					<div className="orderbook-content mb-4">
 						<div className="title">Active orderbook based markets</div>
 						<div className="info-text">
-							<div>Below is list of markets that utilize an orderbook for transactions.</div>
-							<div>These markets are visible if they are marked 'Active' and not visible when marked 'inactive'.</div>
-							<div>Click to view market details and change their visibility.</div>
+							<div>
+								Below is list of markets that utilize an orderbook for
+								transactions.
+							</div>
+							<div>
+								These markets are visible if they are marked 'Active' and not
+								visible when marked 'inactive'.
+							</div>
+							<div>
+								Click to view market details and change their visibility.
+							</div>
 						</div>
 					</div>
 					<div className="filter-header">
@@ -532,14 +565,22 @@ class Pairs extends Component {
 					</div>
 					<div className="table-wrapper">
 						<Table
-							columns={COLUMNS(allPairs, allCoins, this.handlePreview, constants)}
+							columns={COLUMNS(
+								allPairs,
+								allCoins,
+								this.handlePreview,
+								constants
+							)}
 							rowKey={(data, index) => index}
 							dataSource={this.state.pairs}
 						/>
 					</div>
 					<div className="orderbook-footer-content">
 						<div>Don't see your market?</div>
-						<div>Check for unfinished or pending markets <Link to="/admin/trade?tab=0">here.</Link></div>
+						<div>
+							Check for unfinished or pending markets{' '}
+							<Link to="/admin/trade?tab=0">here.</Link>
+						</div>
 					</div>
 				</Fragment>
 			);

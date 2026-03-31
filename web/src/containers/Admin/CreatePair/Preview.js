@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Button, message, Modal, Select } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -40,6 +40,9 @@ const Preview = ({
 	pairs,
 	getMyExchange,
 	buttonSubmitting = false,
+	onConfigure,
+	onSave,
+	saveLoading,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +52,16 @@ const Preview = ({
 
 	const currentStatus =
 		formData.status || (formData.active ? 'active' : 'inactive');
+
+	useEffect(() => {
+		if (isConfigure) {
+			setEditedStatus(currentStatus);
+			setIsEditingStatus(true);
+		} else {
+			setIsEditingStatus(false);
+			setEditedStatus(null);
+		}
+	}, [isConfigure]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const handleStatusConfigure = () => {
 		setEditedStatus(currentStatus);
@@ -257,11 +270,36 @@ const Preview = ({
 							<div className="title">Manage</div>
 							<div className="d-flex">
 								<div className="btn-wrapper">
-									{isEditingStatus ? (
+									{isConfigure && onSave ? (
+										<Button
+											type="primary"
+											className="green-btn"
+											style={{ minWidth: 120 }}
+											onClick={() => {
+												if (editedStatus) {
+													formData.status = editedStatus;
+												}
+												onSave();
+											}}
+											loading={saveLoading}
+										>
+											Save
+										</Button>
+									) : isPreview && onConfigure ? (
+										<Button
+											type="primary"
+											className="green-btn"
+											style={{ minWidth: 120 }}
+											onClick={onConfigure}
+										>
+											Configure
+										</Button>
+									) : isEditingStatus ? (
 										<div className="d-flex">
 											<Button
 												type="primary"
 												className="green-btn"
+												style={{ minWidth: 120 }}
 												onClick={handleStatusSave}
 												loading={isSavingStatus}
 											>
@@ -279,6 +317,7 @@ const Preview = ({
 										<Button
 											type="primary"
 											className="green-btn"
+											style={{ minWidth: 120 }}
 											onClick={handleStatusConfigure}
 										>
 											Configure
