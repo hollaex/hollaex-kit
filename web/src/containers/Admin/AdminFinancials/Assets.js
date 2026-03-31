@@ -787,6 +787,8 @@ class Assets extends Component {
 							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 							isLoading={isLoading}
+							onSave={this.applyConfirmation}
+							saveLoading={saveLoading}
 						/>
 					</div>
 					<div>
@@ -821,6 +823,7 @@ class Assets extends Component {
 							isLoading={isLoading}
 							selectedMarkupAsset={this.props.selectedMarkupAsset}
 							setSelectedMarkupAsset={this.props.setSelectedMarkupAsset}
+							onConfigure={showConfigureButton ? this.handleConfigure : null}
 						/>
 					</div>
 					<div>

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table, Select, Checkbox } from 'antd';
+import { Button, Modal, Tabs, message, Table, Checkbox } from 'antd';
 import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -53,6 +53,9 @@ const Final = ({
 	selectedMarkupAsset = {},
 	exchangeCoins,
 	setSelectedMarkupAsset = () => {},
+	onSave,
+	saveLoading,
+	onConfigure,
 }) => {
 	let isUpdateRequired = false;
 	if (
@@ -1056,6 +1059,31 @@ const Final = ({
 					{isPreview || isConfigure ? (
 						<div className="preview-detail-container">
 							<div className="title">Manage</div>
+							{isConfigure && onSave ? (
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										style={{ minWidth: 120 }}
+										onClick={onSave}
+										loading={saveLoading}
+									>
+										Save
+									</Button>
+								</div>
+							) : null}
+							{isPreview && onConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										style={{ minWidth: 120 }}
+										onClick={onConfigure}
+									>
+										Configure
+									</Button>
+								</div>
+							) : null}
 							<div className="btn-wrapper">
 								<Button
 									type="danger"
