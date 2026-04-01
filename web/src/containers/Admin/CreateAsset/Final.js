@@ -214,6 +214,7 @@ const Final = ({
 					coin_customizations: {
 						...existingCustomizations,
 						[coinFormData.symbol]: {
+							fee_markup: 0,
 							...existingCustomizations[coinFormData.symbol],
 							network_overrides: networkOverrides,
 						},
@@ -510,7 +511,7 @@ const Final = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const isPendingAsset = !coinCustomizations[coinFormData?.symbol];
+	const isPendingAsset = !coinFormData?.verified;
 
 	return (
 		<Tabs
@@ -1581,10 +1582,11 @@ const Final = ({
 													...coinCustomizations,
 													[selectedCoin.symbol]: {
 														symbol: selectedCoin.symbol,
+														fee_markup: 0,
 														...coinCustomizations[selectedCoin.symbol],
 														fee_markups: {
-															...coinCustomizations[selectedCoin.symbol]
-																.fee_markups,
+															...coinCustomizations?.[selectedCoin.symbol]
+																?.fee_markups,
 															[selectedCoin.net.toLowerCase()]: {
 																withdrawal: {
 																	...coinCustomizations?.[selectedCoin?.symbol]
