@@ -55,7 +55,11 @@ class ThemeSettingsModal extends Component {
 						size="small"
 						ghost
 						icon={!this.isRemoved(value) ? <CloseOutlined /> : <UndoOutlined />}
-						className="operator-controls__all-strings-settings-button"
+						className={`${
+							this?.isDefault(value)
+								? 'operator-controls__theme-settings-button-disabled'
+								: 'operator-controls__all-strings-settings-button'
+						}`}
 						disabled={this.isDefault(value)}
 						onClick={() => {
 							!this.isRemoved(value)
@@ -63,7 +67,13 @@ class ThemeSettingsModal extends Component {
 								: this.revert(value);
 						}}
 					/>
-					<span className="ml-2">
+					<span
+						className={`ml-2 ${
+							this?.isDefault(value)
+								? 'operator-controls__theme-settings-button-default'
+								: ''
+						}`}
+					>
 						{!this.isRemoved(value) ? 'Remove' : 'Removed'}
 					</span>
 				</Fragment>
