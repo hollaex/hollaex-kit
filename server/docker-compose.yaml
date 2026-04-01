@@ -36,8 +36,8 @@ services:
       - ./tools/hollaex-kit.env.local
     entrypoint:
       - /bin/sh
-      - -c 
-      - pm2-runtime start ecosystem.config.js --env development;
+      - -c
+      - cp /app/.package-lock.json.build /app/package-lock.json && pm2-runtime start ecosystem.config.js --env development;
     volumes:
       - ./api:/app/api
       - ./config:/app/config
@@ -57,6 +57,7 @@ services:
       - /app/utils/hollaex-network-lib/node_modules
       - /app/utils/hollaex-tools-lib/node_modules
       - ./init.js:/app/init.js
+      - ./package-lock.json:/app/package-lock.json
       - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
       - hollaex-kit-db

@@ -14,11 +14,26 @@ const network = new Network({
 		console.log(init);
 		console.log(network.exchange_id)
 
-		// const order = await network.mintAsset(88, 'btc', 10)
-		const order = await network.updatePendingMint('25ecad86-86ab-4218-ab27-a8301e2bf75d', {
-			status: true,
-			onhold: false
-		})
+		const order = await network.createOrder(
+			88,
+			'btc-usdt',
+			'sell',
+			0.0001,
+			'limit',
+			100000,
+			{
+				fee_structure: {
+					maker: 0.1,
+					taker: 0.2
+				},
+				fee_coin: null
+			}
+			// {
+			// 	stop: null,
+			// 	meta: null,
+			// 	additionalHeaders: null
+			// }
+		);
 		console.log(order)
 
 		// const totalBalance = await network.getBalance();
@@ -26,11 +41,11 @@ const network = new Network({
 
 		// const balance = await network.getUserBalance(88);
 		// console.log(balance)
-		// console.log('connecting')
-		// network.connect(['wallet:88']);
-		// network.ws.on('message', (data) => {
-		// 	console.log(data)
-		// })
+		console.log('connecting')
+		network.connect(['wallet:88']);
+		network.ws.on('message', (data) => {
+			console.log(data)
+		})
 
 	} catch (err) {
 		console.log(err)

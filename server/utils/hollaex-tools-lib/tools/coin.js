@@ -64,7 +64,10 @@ const updateCoin = async (
 		network: null,
 		standard: null,
 		allowDeposit: null,
-		allowWithdrawal: null
+		allowWithdrawal: null,
+		category: null,
+		isRisky: null,
+		marketCap: null
 	},
 	opts = {
 		additionalHeaders: null

@@ -414,30 +414,36 @@ class Form extends Component {
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form d-flex">
 							<div className="w-100">
-								{!coinObject?.allow_withdrawal && this.state.currency && (
-									<div className="d-flex mb-5">
-										<div className="withdraw-deposit-icon-wrapper">
-											<Image
-												iconId={'CLOCK'}
-												icon={ICONS['CLOCK']}
-												svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
-											/>
+								{(!coinObject?.allow_withdrawal ||
+									coinObject?.network_overrides?.[selectedNetwork]
+										?.allow_withdrawal === false) &&
+									this.state.currency && (
+										<div className="d-flex mb-5">
+											<div className="withdraw-deposit-icon-wrapper">
+												<Image
+													iconId={'CLOCK'}
+													icon={ICONS['CLOCK']}
+													svgWrapperClassName="action_notification-svg withdraw-deposit-icon"
+												/>
+											</div>
+											<span className="withdraw-deposit-content">
+												{renderLabel('ACCORDIAN.DISABLED_WITHDRAW_CONTENT')}
+											</span>
 										</div>
-										<span className="withdraw-deposit-content">
-											{renderLabel('ACCORDIAN.DISABLED_WITHDRAW_CONTENT')}
-										</span>
-									</div>
-								)}
-								{this.state.currency && coinObject?.allow_withdrawal && (
-									<div className="d-flex">
-										<Image
-											iconId="WITHDRAW"
-											icon={ICONS['WITHDRAW']}
-											wrapperClassName="form_currency-ball margin-aligner"
-										/>
-										{withdrawInformation}
-									</div>
-								)}
+									)}
+								{this.state.currency &&
+									coinObject?.allow_withdrawal &&
+									coinObject?.network_overrides?.[selectedNetwork]
+										?.allow_withdrawal !== false && (
+										<div className="d-flex">
+											<Image
+												iconId="WITHDRAW"
+												icon={ICONS['WITHDRAW']}
+												wrapperClassName="form_currency-ball margin-aligner"
+											/>
+											{withdrawInformation}
+										</div>
+									)}
 								<RenderWithdraw
 									pinnedAssets={pinnedAssets}
 									assets={assets}

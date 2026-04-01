@@ -43,6 +43,7 @@ const handleCurrencyDeposit = (req, res) => {
 		onhold,
 		rejected,
 		created_at,
+		updated_at,
 		network,
 		fee,
 		description,
@@ -115,7 +116,9 @@ const handleCurrencyDeposit = (req, res) => {
 					network,
 					fee,
 					fee_coin,
-					description
+					description,
+					created_at,
+					updated_at
 				};
 
 				publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({

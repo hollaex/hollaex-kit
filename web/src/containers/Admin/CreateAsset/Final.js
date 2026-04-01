@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs, message, Table } from 'antd';
+import { Button, Modal, Tabs, message, Table, Checkbox, Switch } from 'antd';
 import { ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -53,7 +53,16 @@ const Final = ({
 	selectedMarkupAsset = {},
 	exchangeCoins,
 	setSelectedMarkupAsset = () => {},
+	onSave,
+	saveLoading,
+	onConfigure,
+	isOwner: isOwnerProp,
 }) => {
+	const isOwner =
+		isOwnerProp !== undefined
+			? isOwnerProp
+			: coinFormData.owner_id === user_id ||
+			  coinFormData.created_by === user_id;
 	let isUpdateRequired = false;
 	if (
 		(exchange &&
@@ -101,6 +110,124 @@ const Final = ({
 	const [isEditNetworkVisible, setIsEditNetworkVisible] = useState(false);
 	const [editableNetwork, setEditableNetwork] = useState('');
 	const [isSavingNetwork, setIsSavingNetwork] = useState(false);
+	const [isEditingDetails, setIsEditingDetails] = useState(false);
+	const [editDetails, setEditDetails] = useState({});
+	const [isSavingDetails, setIsSavingDetails] = useState(false);
+	const [networkOverrides, setNetworkOverrides] = useState({});
+	const [isSavingNetworkOverrides, setIsSavingNetworkOverrides] = useState(
+		false
+	);
+	const handleDetailsConfigure = () => {
+		setEditDetails({
+			description: coinFormData.description || '',
+			category: coinFormData.category || '',
+			is_risky: coinFormData.is_risky || false,
+			market_cap: coinFormData.market_cap || '',
+		});
+		setIsEditingDetails(true);
+	};
+
+	const handleDetailsCancel = () => {
+		setEditDetails({});
+		setIsEditingDetails(false);
+	};
+
+	const handleDetailsSave = async () => {
+		try {
+			setIsSavingDetails(true);
+			const payload = {
+				code: coinFormData.code || (coinFormData.symbol || '').toLowerCase(),
+				description: editDetails.description || null,
+				category: editDetails.category || null,
+				is_risky: editDetails.is_risky,
+				market_cap: editDetails.market_cap
+					? Number(editDetails.market_cap)
+					: null,
+			};
+			await updateAssetCoins(payload);
+			if (handleEdit) {
+				handleEdit({
+					...coinFormData,
+					description: editDetails.description,
+					category: editDetails.category,
+					is_risky: editDetails.is_risky,
+					market_cap: editDetails.market_cap
+						? Number(editDetails.market_cap)
+						: null,
+				});
+			}
+			setIsEditingDetails(false);
+			setEditDetails({});
+			message.success('Asset details updated successfully');
+		} catch (error) {
+			message.error(error?.data?.message || 'Failed to update asset details');
+		} finally {
+			setIsSavingDetails(false);
+		}
+	};
+
+	const coinSymbol = coinFormData?.symbol;
+	const coinNetwork = coinFormData?.network;
+	const coinCustomizationsConfig = constants?.coin_customizations;
+
+	useEffect(() => {
+		if (coinSymbol && coinNetwork) {
+			const existing =
+				coinCustomizationsConfig?.[coinSymbol]?.network_overrides || {};
+			const networks = coinNetwork
+				.split(',')
+				.map((n) => n.trim())
+				.filter(Boolean);
+			const merged = {};
+			networks.forEach((net) => {
+				merged[net] = {
+					allow_deposit:
+						existing[net]?.allow_deposit !== undefined
+							? existing[net].allow_deposit
+							: true,
+					allow_withdrawal:
+						existing[net]?.allow_withdrawal !== undefined
+							? existing[net].allow_withdrawal
+							: true,
+				};
+			});
+			setNetworkOverrides(merged);
+		}
+	}, [coinSymbol, coinNetwork, coinCustomizationsConfig]);
+
+	const handleNetworkOverrideChange = (network, field, value) => {
+		setNetworkOverrides((prev) => ({
+			...prev,
+			[network]: {
+				...prev[network],
+				[field]: value,
+			},
+		}));
+	};
+
+	const handleSaveNetworkOverrides = async () => {
+		try {
+			setIsSavingNetworkOverrides(true);
+			const existingCustomizations = constants?.coin_customizations || {};
+			await updateConstants({
+				kit: {
+					coin_customizations: {
+						...existingCustomizations,
+						[coinFormData.symbol]: {
+							...existingCustomizations[coinFormData.symbol],
+							network_overrides: networkOverrides,
+						},
+					},
+				},
+			});
+			message.success('Network deposit/withdrawal settings saved.');
+			requesCoinConfiguration();
+		} catch (error) {
+			message.error(error?.data?.message || 'Failed to save network settings');
+		} finally {
+			setIsSavingNetworkOverrides(false);
+		}
+	};
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
@@ -234,7 +361,6 @@ const Final = ({
 		}
 	};
 
-	const isOwner = coinFormData.owner_id === user_id;
 	const networkMap = {
 		eth: 'Ethereum (ETH)',
 		trx: 'Tron (TRX)',
@@ -481,7 +607,7 @@ const Final = ({
 								type={(coinFormData.symbol || '').toLowerCase()}
 								color={meta.color}
 							/>
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									<div className="edit-content">
 										<b>Color: </b>
@@ -514,7 +640,7 @@ const Final = ({
 							) : null}
 						</div>
 						<div className="preview-content">
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									{coinFormData.logo ? (
 										<img
@@ -556,7 +682,7 @@ const Final = ({
 									className="icon-preview"
 								/>
 							)}
-							{isConfigure ? (
+							{isConfigure && isOwner ? (
 								<Fragment>
 									<div className="edit-content">
 										<b>Icon: </b>
@@ -641,7 +767,7 @@ const Final = ({
 								<b>Contract:</b> {coinFormData.contract}
 							</div>
 						) : null}
-						{!isConfigure ? (
+						{!(isConfigure && isOwner) ? (
 							<div>
 								<b>Color:</b> {meta.color}
 							</div>
@@ -654,6 +780,110 @@ const Final = ({
 								>
 									Edit
 								</Button>
+							</div>
+						)}
+					</div>
+					<div className="preview-detail-container">
+						<div className="title">Details</div>
+						{isEditingDetails ? (
+							<div>
+								<div className="mb-3">
+									<b>Description:</b>
+									<Input.TextArea
+										rows={3}
+										value={editDetails.description}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												description: e.target.value,
+											})
+										}
+										placeholder="Enter asset description"
+									/>
+								</div>
+								<div className="mb-3">
+									<b>Category:</b>
+									<Input
+										value={editDetails.category}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												category: e.target.value,
+											})
+										}
+										placeholder="e.g. defi, layer1, stablecoin"
+									/>
+								</div>
+								<div className="mb-3">
+									<Checkbox
+										checked={editDetails.is_risky}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												is_risky: e.target.checked,
+											})
+										}
+									>
+										<b>Is Risky</b>
+									</Checkbox>
+								</div>
+								<div className="mb-3">
+									<b>Market Cap:</b>
+									<Input
+										type="number"
+										value={editDetails.market_cap}
+										onChange={(e) =>
+											setEditDetails({
+												...editDetails,
+												market_cap: e.target.value,
+											})
+										}
+										placeholder="Enter market cap value"
+									/>
+								</div>
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										onClick={handleDetailsSave}
+										loading={isSavingDetails}
+									>
+										Save
+									</Button>
+									<div className="separator"></div>
+									<Button
+										onClick={handleDetailsCancel}
+										disabled={isSavingDetails}
+									>
+										Cancel
+									</Button>
+								</div>
+							</div>
+						) : (
+							<div>
+								<div>
+									<b>Description:</b> {coinFormData.description || '-'}
+								</div>
+								<div>
+									<b>Category:</b> {coinFormData.category || '-'}
+								</div>
+								<div>
+									<b>Is Risky:</b> {coinFormData.is_risky ? 'Yes' : 'No'}
+								</div>
+								<div>
+									<b>Market Cap:</b> {coinFormData.market_cap || '-'}
+								</div>
+								{isConfigure && isOwner ? (
+									<div className="btn-wrapper">
+										<Button
+											className="green-btn"
+											type="primary"
+											onClick={handleDetailsConfigure}
+										>
+											Edit
+										</Button>
+									</div>
+								) : null}
 							</div>
 						)}
 					</div>
@@ -714,7 +944,7 @@ const Final = ({
 						{/* <div>
 					<b>Decimal points:</b> {meta.decimal_points}
 				</div> */}
-						{isConfigure ? (
+						{isConfigure && isOwner ? (
 							<div className="btn-wrapper">
 								<Button
 									className="green-btn"
@@ -739,7 +969,7 @@ const Final = ({
 										(net) => networkMap[net.toLowerCase()] || net.toUpperCase()
 									)
 									.join(', ')}
-								{isConfigure ? (
+								{isConfigure && isOwner ? (
 									<div className="btn-wrapper">
 										<Button
 											className="green-btn"
@@ -758,6 +988,80 @@ const Final = ({
 							<div>-</div>
 						)}
 					</div>
+					{isConfigure && coinFormData.network && (
+						<div className="preview-detail-container">
+							<div className="title">Deposit & Withdrawal</div>
+							<div className="description-small mb-2">
+								Control deposit and withdrawal access per network for{' '}
+								{coinFormData.symbol?.toUpperCase()}.
+							</div>
+							{coinFormData.network
+								?.split(',')
+								.map((net) => net.trim())
+								.filter(Boolean)
+								.map((net) => (
+									<div
+										key={net}
+										className="d-flex align-items-center justify-content-between mb-2"
+										style={{ maxWidth: 420 }}
+									>
+										<span style={{ opacity: 0.7, minWidth: 140 }}>
+											{networkMap[net.toLowerCase()] || net.toUpperCase()}
+										</span>
+										<div className="d-flex align-items-center">
+											<span
+												className="mr-2"
+												style={{ fontSize: 12, opacity: 0.6 }}
+											>
+												Deposit
+											</span>
+											<Switch
+												size="small"
+												checked={networkOverrides[net]?.allow_deposit !== false}
+												onChange={(checked) =>
+													handleNetworkOverrideChange(
+														net,
+														'allow_deposit',
+														checked
+													)
+												}
+											/>
+										</div>
+										<div className="d-flex align-items-center">
+											<span
+												className="mr-2"
+												style={{ fontSize: 12, opacity: 0.6 }}
+											>
+												Withdrawal
+											</span>
+											<Switch
+												size="small"
+												checked={
+													networkOverrides[net]?.allow_withdrawal !== false
+												}
+												onChange={(checked) =>
+													handleNetworkOverrideChange(
+														net,
+														'allow_withdrawal',
+														checked
+													)
+												}
+											/>
+										</div>
+									</div>
+								))}
+							<div className="btn-wrapper mt-2">
+								<Button
+									className="green-btn"
+									type="primary"
+									onClick={handleSaveNetworkOverrides}
+									loading={isSavingNetworkOverrides}
+								>
+									Save
+								</Button>
+							</div>
+						</div>
+					)}
 					<div className="preview-detail-container">
 						<div className="title">Withdrawal Fee</div>
 						<div>
@@ -778,13 +1082,12 @@ const Final = ({
 									Go to markup fees
 								</span>
 							</div>
-							{isConfigure && (
+							{isConfigure && isOwner && (
 								<div className="btn-wrapper">
 									<Button
 										className="green-btn mb-3"
 										type="primary"
 										onClick={() => handleWithdrawalEdit('withdraw')}
-										disabled={!isOwner}
 									>
 										Edit
 									</Button>
@@ -805,13 +1108,12 @@ const Final = ({
 										Go to markup fees
 									</span>
 								</div>
-								{isConfigure && (
+								{isConfigure && isOwner && (
 									<div className="btn-wrapper">
 										<Button
 											className="green-btn"
 											type="primary"
 											onClick={() => handleWithdrawalEdit('deposit')}
-											disabled={!isOwner}
 										>
 											Edit
 										</Button>
@@ -900,21 +1202,39 @@ const Final = ({
 					{isPreview || isConfigure ? (
 						<div className="preview-detail-container">
 							<div className="title">Manage</div>
-							<div className="btn-wrapper">
-								<Button
-									type="danger"
-									onClick={() => setIsVisible(true)}
-									disabled={submitting}
-								>
-									Remove
-								</Button>
-								<div className="separator"></div>
-								<div className="description-small remove">
-									Removing this coin will delist this coin from your exchange.
-									Make sure you remove any associated pairs first. Use with
-									caution!
+							{isConfigure ? (
+								<div className="btn-wrapper">
+									<Button style={{ minWidth: 120 }} onClick={onClose}>
+										Cancel
+									</Button>
+									{isOwner && onSave && (
+										<>
+											<div className="separator"></div>
+											<Button
+												type="primary"
+												className="green-btn"
+												style={{ minWidth: 120 }}
+												onClick={onSave}
+												loading={saveLoading}
+											>
+												Save
+											</Button>
+										</>
+									)}
 								</div>
-							</div>
+							) : null}
+							{isPreview && onConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										type="primary"
+										className="green-btn"
+										style={{ minWidth: 120 }}
+										onClick={onConfigure}
+									>
+										Configure
+									</Button>
+								</div>
+							) : null}
 						</div>
 					) : null}
 					{!isPreview && !isConfigure ? (

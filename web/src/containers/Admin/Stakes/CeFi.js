@@ -1081,6 +1081,20 @@ const CeFi = ({ coins, features, kit }) => {
 							value={stakePoolCreation.max_amount}
 						/>
 					</div>
+					{stakePoolCreation.min_amount &&
+						stakePoolCreation.max_amount &&
+						stakePoolCreation.min_amount > stakePoolCreation.max_amount && (
+							<div
+								style={{
+									color: '#ff4d4f',
+									fontWeight: 'bold',
+									marginBottom: 10,
+								}}
+							>
+								Minimum stake amount cannot be greater than maximum stake
+								amount.
+							</div>
+						)}
 				</>
 			);
 		} else if (step === 6) {
@@ -1291,11 +1305,11 @@ const CeFi = ({ coins, features, kit }) => {
 									</div>
 
 									<div>
-										Max size: {stakePoolCreation.min_amount}{' '}
+										Max size: {stakePoolCreation.max_amount}{' '}
 										{stakePoolCreation.currency}
 									</div>
 									<div>
-										Min size: {stakePoolCreation.max_amount}{' '}
+										Min size: {stakePoolCreation.min_amount}{' '}
 										{stakePoolCreation.currency}
 									</div>
 								</div>
@@ -1794,6 +1808,9 @@ const CeFi = ({ coins, features, kit }) => {
 										: !stakePoolCreation.duration)) ||
 								(step === 5 && !stakePoolCreation.min_amount) ||
 								(step === 5 && !stakePoolCreation.max_amount) ||
+								(step === 5 &&
+									stakePoolCreation.min_amount >
+										stakePoolCreation.max_amount) ||
 								(step === 7 && !stakePoolCreation.account_id)
 							}
 						>
