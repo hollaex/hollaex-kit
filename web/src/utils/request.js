@@ -6,6 +6,7 @@ import { getToken, getDashToken } from './token';
 import { getNetWorkURL } from 'actions/appActions';
 
 import { onHandleError } from './initialize';
+import { startNetworkTrace, stopNetworkTrace } from '../config/firebase';
 /**
  * Parses the JSON returned by a network request
  *
@@ -120,10 +121,17 @@ export const requestDashAuthenticated = (
  * @return {object}           The response data
  */
 const request = (url, options, apiUrl = API_URL) => {
-	return fetch(`${apiUrl}${url}`, options)
-		.then(checkStatus)
+	const fullUrl = `${apiUrl}${url}`;
+	const trace = startNetworkTrace(fullUrl);
+
+	return fetch(fullUrl, options)
+		.then((response) => {
+			stopNetworkTrace(trace);
+			return checkStatus(response);
+		})
 		.then(parseJSON)
 		.catch((error) => {
+			stopNetworkTrace(trace);
 			console.error(error);
 			onHandleError(error);
 			throw error;

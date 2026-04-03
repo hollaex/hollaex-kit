@@ -11,7 +11,6 @@ import {
 	TooManyRequestError,
 } from 'utils/utils';
 import './_ErrorBoundary.scss';
-import { captureError } from '../../config/elastic-rum';
 
 class ErrorBoundary extends Component {
 	constructor(props) {
@@ -24,13 +23,6 @@ class ErrorBoundary extends Component {
 	}
 
 	componentDidCatch(error, errorInfo) {
-		if (window?.elasticRum) {
-			captureError(error, {
-				context: 'error-boundary',
-				componentStack: errorInfo?.componentStack,
-				componentName: this.props?.componentName || 'Unknown',
-			});
-		}
 		console.error(error, errorInfo);
 	}
 
