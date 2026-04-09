@@ -447,12 +447,12 @@ class Container extends Component {
 					op: 'subscribe',
 					args: [
 						'trade',
+						'price',
 						'wallet',
 						'order',
 						'deposit',
 						'usertrade',
 						'p2pChat',
-						'price',
 					],
 				})
 			);

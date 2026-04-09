@@ -9188,6 +9188,13 @@ table th {
   color: #ffffff !important;
   border-color: #ffffff !important; }
 
+.operator-controls__theme-settings-button-disabled {
+  color: #ffffff80 !important;
+  border-color: #ffffff80 !important; }
+
+.operator-controls__theme-settings-button-default {
+  color: #ffffff80 !important; }
+
 .operator-controls__table .ant-select-arrow,
 .operator-controls__table .ant-select-selector {
   color: #ffffff !important;
