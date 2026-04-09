@@ -167,8 +167,8 @@ const validateExchangeStake = (stake) => {
 	if (new BigNumber(stake.max_amount).comparedTo(new BigNumber(stake.min_amount)) !== 1) {
 		throw new Error('Stake minimum amount cannot be bigger than maximum amount');
 	}
-	if (new BigNumber(stake.apy).comparedTo(0) !== 1) {
-		throw new Error('Stake apy must be bigger than zero.');
+	if (new BigNumber(stake.apy).comparedTo(0) === -1) {
+		throw new Error('Stake apy cannot be negative.');
 	}
 	if (stake.duration !== null && new BigNumber(stake.duration).comparedTo(0) !== 1) {
 		throw new Error('Stake duration must be bigger than zero.');
