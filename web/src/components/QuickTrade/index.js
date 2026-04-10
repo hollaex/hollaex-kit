@@ -89,6 +89,7 @@ const QuickTrade = ({
 	cancelOrder,
 	cancelAllOrders,
 	wsPriceData = {},
+	broker,
 }) => {
 	const getTargetOptions = (source) =>
 		sourceOptions.filter((key) => {
@@ -205,6 +206,9 @@ const QuickTrade = ({
 	const isQuickTradeLimitOrder = !!(
 		quicktradePairs[symbol] || quicktradePairs[flippedPair]
 	);
+
+	const isOtcBrokerOrder =
+		broker?.length && broker?.some((otcBroker) => otcBroker?.symbol === symbol);
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -1886,6 +1890,7 @@ const QuickTrade = ({
 							limitOrderPriceDisplay={limitOrderPriceDisplay}
 							isLimitOrderWithPrice={isLimitOrderWithPrice}
 							conversionPriceDisplay={conversionPriceDisplay}
+							isOtcBrokerOrder={isOtcBrokerOrder}
 						/>
 					) : (
 						<QuoteResult
@@ -1934,6 +1939,7 @@ const mapStateToProps = (store) => {
 		isActiveFavQuickTrade: store.app.isActiveFavQuickTrade,
 		transactionPair: store.app.transactionPair,
 		wsPriceData: store.asset.wsPriceData,
+		broker: store.app.broker,
 	};
 };
 

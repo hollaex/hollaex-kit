@@ -28,6 +28,7 @@ const ReviewOrder = ({
 	limitOrderPriceDisplay,
 	isLimitOrderWithPrice,
 	conversionPriceDisplay,
+	isOtcBrokerOrder,
 }) => {
 	const showTimer = time && expiry;
 
@@ -122,6 +123,14 @@ const ReviewOrder = ({
 		return null;
 	};
 
+	const renderConversionRateLabel = () => {
+		if (isLimitOrderWithPrice)
+			return STRINGS['QUICK_TRADE_COMPONENT.LIMIT_ORDER_CONVERSION_TEXT'];
+		else if (isOtcBrokerOrder)
+			return STRINGS['QUICK_TRADE_COMPONENT.OTC_BROKER_CONVERSION_TEXT'];
+		return STRINGS['QUICK_TRADE_COMPONENT.NO_OTC_BROKER_CONVERSION_TEXT'];
+	};
+
 	useEffect(() => {
 		if (!showTimer) return;
 
@@ -199,12 +208,14 @@ const ReviewOrder = ({
 							text={STRINGS['SPEND_AMOUNT']}
 							amount={sourceAmount}
 							decimalPoint={sourceDecimalPoint}
+							isQuickTrade={true}
 						/>
 						<ReviewBlock
 							symbol={selectedTarget}
 							text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 							amount={targetAmount}
 							decimalPoint={targetDecimalPoint}
+							isQuickTrade={true}
 						/>
 						{isQuickTradeLimitOrder && displayPrice && (
 							<div className="d-flex flex-column align-items-end">
@@ -225,17 +236,9 @@ const ReviewOrder = ({
 								</div>
 								{sourceAmount && displayPrice?.price && targetAmount && (
 									<div className="quote_content review-block-wrapper w-100 text-right pt-3 important-text">
-										<span className="bold">
-											{STRINGS['QUICK_TRADE_COMPONENT.CONVERSION_TEXT']}
-										</span>
-										:{' '}
+										<span className="bold">{renderConversionRateLabel()}</span>:{' '}
 										<div>
-											{formatToCurrency(
-												sourceAmount,
-												sourceDecimalPoint,
-												sourceAmount < 1 && countDecimals(sourceAmount) > 8
-											)}{' '}
-											{displayPrice?.quote?.toUpperCase()} /{' '}
+											{sourceAmount} {selectedSource?.toUpperCase() || ''} /{' '}
 											{formatToCurrency(
 												displayPrice?.price,
 												0,
@@ -243,15 +246,9 @@ const ReviewOrder = ({
 													countDecimals(displayPrice?.price) > 8
 											)}{' '}
 											{displayPrice?.quote?.toUpperCase()} ={' '}
+											<span className="bold">{targetAmount} </span>
 											<span className="bold">
-												{formatToCurrency(
-													targetAmount,
-													targetDecimalPoint,
-													targetAmount < 1 && countDecimals(targetAmount) > 8
-												)}{' '}
-											</span>
-											<span className="bold">
-												{displayPrice?.base?.toUpperCase()}
+												{selectedTarget?.toUpperCase() || ''}
 											</span>
 										</div>
 									</div>
