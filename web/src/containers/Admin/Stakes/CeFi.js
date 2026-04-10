@@ -1081,20 +1081,19 @@ const CeFi = ({ coins, features, kit }) => {
 							value={stakePoolCreation.max_amount}
 						/>
 					</div>
-					{stakePoolCreation.min_amount &&
-						stakePoolCreation.max_amount &&
-						stakePoolCreation.min_amount > stakePoolCreation.max_amount && (
-							<div
-								style={{
-									color: '#ff4d4f',
-									fontWeight: 'bold',
-									marginBottom: 10,
-								}}
-							>
-								Minimum stake amount cannot be greater than maximum stake
-								amount.
-							</div>
-						)}
+					{stakePoolCreation?.min_amount &&
+					stakePoolCreation?.max_amount &&
+					stakePoolCreation?.min_amount > stakePoolCreation?.max_amount ? (
+						<div
+							style={{
+								color: '#ff4d4f',
+								fontWeight: 'bold',
+								marginBottom: 10,
+							}}
+						>
+							Minimum stake amount cannot be greater than maximum stake amount.
+						</div>
+					) : null}
 				</>
 			);
 		} else if (step === 6) {
@@ -1801,7 +1800,10 @@ const CeFi = ({ coins, features, kit }) => {
 								(step === 1 && !stakePoolCreation.currency) ||
 								(step === 1 && !stakePoolCreation.reward_currency) ||
 								(step === 2 && !stakePoolCreation.name) ||
-								(step === 3 && !stakePoolCreation.apy) ||
+								(step === 3 &&
+									(stakePoolCreation?.apy < 0 ||
+										stakePoolCreation?.apy === null ||
+										stakePoolCreation?.apy === undefined)) ||
 								(step === 3 &&
 									(stakePoolCreation.perpetual_stake
 										? false

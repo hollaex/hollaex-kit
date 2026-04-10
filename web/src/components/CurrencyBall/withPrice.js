@@ -10,6 +10,7 @@ const CurrencyBallWithPrice = ({
 	size = 'm',
 	coins = {},
 	min,
+	isQuickTrade = false,
 }) => {
 	const { increment_unit, icon_id } = coins[symbol] || DEFAULT_COIN_DATA;
 	const minValue = min ?? increment_unit;
@@ -20,7 +21,9 @@ const CurrencyBallWithPrice = ({
 				<Coin iconId={icon_id} type="CS10" />
 			</div>
 			<div className="with_price-block_amount-value d-flex">
-				{formatCurrencyByIncrementalUnit(amount, minValue)}
+				{isQuickTrade
+					? amount
+					: formatCurrencyByIncrementalUnit(amount, minValue)}
 			</div>
 		</div>
 	);
