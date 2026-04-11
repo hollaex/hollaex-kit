@@ -8,6 +8,7 @@ const {
 } = require('../../constants');
 const { storeData, restoreData } = require('./utils');
 const { isUserBanned } = require('./ban');
+const { safeJsonParse } = require('../../utils');
 const moment = require('moment');
 const { subscriber, publisher } = require('../../db/pubsub');
 const { getChannels } = require('../channel');
@@ -22,18 +23,24 @@ subscriber.subscribe(P2P_CHAT_MESSAGE_CHANNEL);
 
 subscriber.on('message', (channel, data) => {
 	if (channel === CHAT_MESSAGE_CHANNEL) {
-		data = JSON.parse(data);
-		if (data.type === 'message') {
-			MESSAGES.push(data.data);
-		} else if (data.type === 'deleteMessage') {
-			MESSAGES.splice(data.data, 1);
+		const parsed = safeJsonParse(data);
+		if (!parsed || typeof parsed.type !== 'string') {
+			return;
 		}
-	} else if(P2P_CHAT_MESSAGE_CHANNEL) {
-		data = JSON.parse(data);
-		if (data.type === 'message') { 
-			publishP2PChatMessage('addMessage', data.data);
-		} else if(data.type === 'status') {
-			publishP2PChatMessage('getStatus', data.data);
+		if (parsed.type === 'message') {
+			MESSAGES.push(parsed.data);
+		} else if (parsed.type === 'deleteMessage') {
+			MESSAGES.splice(parsed.data, 1);
+		}
+	} else if (channel === P2P_CHAT_MESSAGE_CHANNEL) {
+		const parsed = safeJsonParse(data);
+		if (!parsed || typeof parsed.type !== 'string') {
+			return;
+		}
+		if (parsed.type === 'message') {
+			publishP2PChatMessage('addMessage', parsed.data);
+		} else if (parsed.type === 'status') {
+			publishP2PChatMessage('getStatus', parsed.data);
 		}
 	}
 });

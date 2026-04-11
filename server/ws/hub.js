@@ -8,6 +8,7 @@ const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, updatePriceData, resetPublicData } = require('./publicData');
 const { writePriceToRedis } = require('./priceStore');
+const { safeJsonParse } = require('../utils');
 const WebSocket = require('ws');
 
 let networkNodeLib = null;
@@ -16,7 +17,12 @@ const hubConnected = () => wsConnected;
 
 subscriber.on('message', (channel, message) => {
 	if (channel === WS_HUB_CHANNEL) {
-		const { action } = JSON.parse(message);
+		const parsed = safeJsonParse(message);
+		if (!parsed || typeof parsed.action !== 'string') {
+			loggerWebsocket.error('ws/hub subscriber invalid message', message.toString());
+			return;
+		}
+		const { action } = parsed;
 		switch (action) {
 			case 'restart':
 				loggerWebsocket.info(
