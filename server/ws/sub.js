@@ -330,6 +330,12 @@ const terminateClosedChannels = (ws) => {
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
+
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('p2pChat', ws.auth.sub.id), ws);
+		} catch (err) {
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+		}
 	}
 };
 
