@@ -4,6 +4,17 @@ const moment = require('moment');
 const { isDate } = require('lodash');
 const requestCache = new Map();
 const cachePeriods = { 'charts': 10, 'oracle': 30, 'minichart': 60 };
+const MAX_CACHE_TTL_MS = 120 * 1000;
+const CACHE_SWEEP_INTERVAL_MS = 60 * 1000;
+
+setInterval(() => {
+	const now = Date.now();
+	for (const [key, entry] of requestCache) {
+		if (now - entry.timestamp > MAX_CACHE_TTL_MS) {
+			requestCache.delete(key);
+		}
+	}
+}, CACHE_SWEEP_INTERVAL_MS).unref();
 
 const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
 	const requestObj = { headers, url, json: true };
