@@ -1865,7 +1865,7 @@ const QuickTrade = ({
 				{showModal &&
 					(isReview ? (
 						<ReviewOrder
-							onCloseDialog={onCloseDialog}
+							onCloseDialog={() => onCloseDialog()}
 							onExecuteTrade={() => onExecuteTrade(token)}
 							selectedSource={selectedSource}
 							sourceDecimalPoint={
@@ -1899,7 +1899,7 @@ const QuickTrade = ({
 							fetching={submitting}
 							error={error}
 							data={data}
-							onClose={onCloseDialog}
+							onClose={() => onCloseDialog()}
 							onConfirm={() => goTo('/wallet')}
 						/>
 					))}
