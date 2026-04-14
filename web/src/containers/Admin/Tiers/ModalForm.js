@@ -315,6 +315,20 @@ class NewTierForm extends Component {
 	};
 
 	saveForm = (id) => {
+		const { tierData } = this.state;
+		const { isNew } = this.props;
+
+		if (isNew) {
+			if (!tierData.name || !tierData.name.trim()) {
+				message.error('Tier name is required');
+				return;
+			}
+			if (!tierData.description || !tierData.description.trim()) {
+				message.error('Tier description is required');
+				return;
+			}
+		}
+
 		const {
 			pendingPublishIcons: { [id]: published = {} },
 		} = this.state;
