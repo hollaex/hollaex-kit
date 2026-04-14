@@ -262,7 +262,6 @@ const Roles = ({ constants, user, coins, setRolesList, router }) => {
 		const selectedRole =
 			roles.find((role) => role?.value === formProps.role) || {};
 		const { permission = '', description = '', color } = selectedRole;
-		setButtonSubmitting(true);
 		setRolePayload({
 			role_id: formProps.role,
 			user_id,
@@ -270,22 +269,7 @@ const Roles = ({ constants, user, coins, setRolesList, router }) => {
 			permission,
 			color,
 		});
-		updateRole({ otp_code: '', ...formProps }, { user_id })
-			.then((res) => {
-				requestInitRole();
-				handleClose();
-				setButtonSubmitting(false);
-			})
-			.catch((err) => {
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				if (_error.toLowerCase().indexOf('otp') > -1) {
-					setOtpDialogIsOpen(true);
-				} else {
-					message.error(_error);
-				}
-				setButtonSubmitting(false);
-			});
+		setOtpDialogIsOpen(true);
 	};
 
 	const renderContent = (type, onTypeChange, isUpgrade) => {
@@ -754,31 +738,12 @@ const Roles = ({ constants, user, coins, setRolesList, router }) => {
 										Back
 									</Button>
 									<Button
-										onClick={async () => {
-											try {
-												if (!rolePayload.user_id || !rolePayload.role_id) {
-													message.error('Please select all the inputs');
-													return;
-												}
-												await updateRole(
-													{ role: rolePayload.role_id, otp_code: '' },
-													{ user_id: rolePayload.user_id }
-												);
-												setRolePayload({});
-												setDisplayAssignRole(false);
-												requestInitRole();
-												message.success('Role Assigned');
-											} catch (err) {
-												const _error =
-													err.data && err.data.message
-														? err.data.message
-														: err.message;
-												if (_error.toLowerCase().indexOf('otp') > -1) {
-													setOtpDialogIsOpen(true);
-												} else {
-													message.error(_error);
-												}
+										onClick={() => {
+											if (!rolePayload.user_id || !rolePayload.role_id) {
+												message.error('Please select all the inputs');
+												return;
 											}
+											setOtpDialogIsOpen(true);
 										}}
 										type="default"
 										disabled={!user.otp_enabled}
