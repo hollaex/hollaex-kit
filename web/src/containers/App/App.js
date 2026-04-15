@@ -261,7 +261,8 @@ class App extends Component {
 		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
 			storeTools(tools);
 		}
-		const { themeOptions, router } = this.props;
+		const { themeOptions, router, defaults } = this.props;
+		const defaultTheme = defaults?.theme || themeOptions[0]?.value;
 		const isValidTheme = themeOptions.some(
 			(option) => option.value === this.props?.router?.location?.query?.theme
 		);
@@ -273,7 +274,7 @@ class App extends Component {
 				router.replace(newUrl);
 			}
 		} else if (params.has('theme') && !isValidTheme) {
-			params.set('theme', 'dark');
+			params.set('theme', defaultTheme);
 			const currentUrl = window.location.href.split('?')[0];
 			const newUrl = `${currentUrl}?${params.toString()}`;
 			this.props.router.replace(newUrl);

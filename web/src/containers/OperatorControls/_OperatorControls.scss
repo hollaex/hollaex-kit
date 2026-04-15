@@ -390,6 +390,15 @@ $operator-controls__panel-border-color: #a7a7a7;
 	border-color: $operator-controls__panel-text-color !important;
 }
 
+.operator-controls__theme-settings-button-disabled {
+	color: $operator-controls__panel-text-color-pale-inactive !important;
+	border-color: $operator-controls__panel-text-color-pale-inactive !important;
+}
+
+.operator-controls__theme-settings-button-default {
+	color: $operator-controls__panel-text-color-pale-inactive !important;
+}
+
 .operator-controls__table {
 	.ant-select-arrow,
 	.ant-select-selector {
