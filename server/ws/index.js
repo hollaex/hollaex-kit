@@ -48,6 +48,10 @@ wss.on('connection', (ws, req) => {
 				throw new Error(WS_WRONG_INPUT);
 			}
 
+			if (!message || typeof message !== 'object' || Array.isArray(message)) {
+				throw new Error(WS_WRONG_INPUT);
+			}
+
 			const { op, args } = message;
 
 			// Rate limit: exclude ping (keepalive) from counting

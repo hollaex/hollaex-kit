@@ -12,7 +12,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClick = () => {
 		const theme =
-			options[0].value === selected ? options[1].value : options[0].value;
+			options[0]?.value === selected ? options[1]?.value : options[0]?.value;
 		toggle(theme);
 	};
 
@@ -46,8 +46,8 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						<div
 							onClick={handleClick}
 							className={classnames('toggle-action_button', {
-								left: options[0].value === selected,
-								right: options[1].value === selected,
+								left: options[0]?.value === selected,
+								right: options[1]?.value === selected,
 							})}
 						>
 							<div className="toggle-action_button-display" />

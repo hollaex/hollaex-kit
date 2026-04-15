@@ -265,12 +265,15 @@ const Tiers = ({
 		setData(data);
 	};
 	const handleAdd = () => {
+		const newLevel = Object.keys(userTiers).length + 1;
 		setOpen(true);
 		setNew(true);
 		setType('new-tier-confirm');
 		setData({
-			id: Object.keys(userTiers).length + 1,
-			level: Object.keys(userTiers).length + 1,
+			id: newLevel,
+			level: newLevel,
+			name: '',
+			description: '',
 			icon: '',
 			deposit_limit: 0,
 			withdrawal_limit: 0,
@@ -314,8 +317,8 @@ const Tiers = ({
 		setData(data);
 	};
 	const handleSaveTiers = () => {
-		let formProps = { ...editData };
-		delete formProps.id;
+		const { level, name, icon, description, note, fees } = editData;
+		const formProps = { level, name, icon, description, note, fees };
 		setButttonSubmitting(true);
 		addNewTier(formProps)
 			.then((res) => {

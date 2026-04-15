@@ -10,6 +10,7 @@ const { User, Status, Tier, Broker, QuickTrade, TransactionLimit, Role } = requi
 const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
+const { safeJsonParse } = require('./utils');
 const {
 	INIT_CHANNEL,
 	CONFIGURATION_CHANNEL,
@@ -35,7 +36,12 @@ const getNodeLib = () => nodeLib;
 
 subscriber.on('message', async (channel, message) => {
 	if (channel === INIT_CHANNEL) {
-		const { type } = JSON.parse(message);
+		const parsed = safeJsonParse(message);
+		if (!parsed || typeof parsed.type !== 'string') {
+			loggerInit.error('init subscriber invalid message', message.toString());
+			return;
+		}
+		const { type } = parsed;
 		const delay = (ms) => {
 			return new Promise((resolve) => setTimeout(resolve, ms));
 		};
