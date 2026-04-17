@@ -87,23 +87,17 @@ checkStatus()
 
 			// Custom error handler that returns JSON
 			app.use(function (err, req, res, next) {
-				const statusCode = (err && err.statusCode && Number.isInteger(err.statusCode)) ? err.statusCode : 500;
-				const response = {
-					message: (err && err.message) ? String(err.message) : 'Internal Server Error',
-					statusCode
-				};
-
-				logger.error('app/errorHandler', {
-					message: response.message,
-					statusCode,
-					err: err && err.stack ? err.stack : err
-				});
-
-				if (process.env.NODE_ENV !== 'production') {
-					response.error = err;
+				if (typeof err !== 'object') {
+					// If the object is not an Error, create a representation that appears to be
+					err = {
+						message: String(err) // Coerce to string
+					};
+				} else {
+					// Ensure that err.message is enumerable (It is not by default)
+					Object.defineProperty(err, 'message', { enumerable: true });
 				}
-
-				res.status(statusCode).json(response);
+				res.statusCode = 500;
+				res.json(err);
 			});
 
 
