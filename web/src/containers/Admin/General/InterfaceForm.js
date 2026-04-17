@@ -82,6 +82,7 @@ const InterfaceForm = ({
 				ultimate_fiat: !!values.ultimate_fiat,
 				apps: !!values.apps,
 				announcement: !!values.announcement,
+				sms_verification: !!values.sms_verification,
 			};
 			const balance_history_config = {
 				currency: balanceHistoryCurrency.currency || 'usdt',
@@ -1046,6 +1047,24 @@ const InterfaceForm = ({
 											<div className="d-flex justify-content-between">
 												<div className="small-text">
 													(Give your users extra exchange applications)
+												</div>
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Item>
+						</div>
+						<div className="interface-item">
+							<Item name="sms_verification" valuePropName="checked">
+								<Checkbox className="mt-3">
+									<div className="d-flex align-items-center">
+										<div className="ml-2 checkbox-txt">
+											<div id="sms_verification">SMS verification</div>
+											<div className="d-flex justify-content-between">
+												<div className="small-text">
+													(Allow users to receive action verification codes via
+													SMS. Requires an active SMS plugin and a verified user
+													phone number.)
 												</div>
 											</div>
 										</div>

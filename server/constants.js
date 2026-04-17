@@ -381,8 +381,12 @@ exports.SETTING_KEYS = [
 	'risk',
 	'chat',
 	'app',
-	'watchlist'
+	'watchlist',
+	'verification_method'
 ];
+
+exports.VERIFICATION_METHODS = ['email', 'sms'];
+exports.DEFAULT_VERIFICATION_METHOD = 'email';
 
 exports.OMITTED_USER_FIELDS = [
 	'password',

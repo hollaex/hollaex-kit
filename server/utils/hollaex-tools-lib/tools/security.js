@@ -62,6 +62,7 @@ const bcrypt = require('bcryptjs');
 const { all } = require('bluebird');
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
+const { sendVerificationCode } = require('./verification');
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
 const otp = require('otp');
@@ -254,12 +255,13 @@ async function sendConfirmationEmail(userId, domain) {
 	// the previous one is invalidated by overwrite
 	await client.setexAsync(`ConfirmationEmail:${userId}`, 60 * 5, code);
 
-	sendEmail(
-		MAILTYPE.CONFIRM_EMAIL,
-		user.email,
-		{ code },
-		user.settings,
-		domain);
+	await sendVerificationCode(user, {
+		action_type: 'confirm_email',
+		verification_code: code,
+		emailType: MAILTYPE.CONFIRM_EMAIL,
+		emailData: { code },
+		domain
+	});
 }
 
 async function confirmByEmail(userId, givenCode) {
@@ -342,15 +344,17 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 					})
 				);
 			}
-			sendEmail(
-				version === 'v3' ? MAILTYPE.CHANGE_PASSWORD_CODE : MAILTYPE.CHANGE_PASSWORD,
-				email,
-				version === 'v3'
+			await sendVerificationCode(user, {
+				action_type: 'change_password',
+				verification_code: code,
+				emailType: version === 'v3'
+					? MAILTYPE.CHANGE_PASSWORD_CODE
+					: MAILTYPE.CHANGE_PASSWORD,
+				emailData: version === 'v3'
 					? { code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` }
 					: { code, ip },
-				user.settings,
 				domain
-			);
+			});
 			return;
 		});
 };
@@ -473,14 +477,19 @@ const sendResetPasswordCode = (email, captcha, ip, domain, version, headers = {}
 					time: new Date().toISOString()
 				})
 			).then(() => {
-				sendEmail(
-					version === 'v3' || version === 'v4' ? MAILTYPE.RESET_PASSWORD_CODE : MAILTYPE.RESET_PASSWORD,
-					email,
-					{ code, ip, freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true` },
-					user.settings,
+				return sendVerificationCode(user, {
+					action_type: 'reset_password',
+					verification_code: code,
+					emailType: version === 'v3' || version === 'v4'
+						? MAILTYPE.RESET_PASSWORD_CODE
+						: MAILTYPE.RESET_PASSWORD,
+					emailData: {
+						code,
+						ip,
+						freeze_account_link: `${domain}/confirm-login?token=${code}&prompt=false&freeze_account=true`
+					},
 					domain
-				);
-				return;
+				});
 			});
 		});
 };
