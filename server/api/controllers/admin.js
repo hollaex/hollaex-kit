@@ -2095,7 +2095,8 @@ const putUserInfo = (req, res) => {
 			'phone_number',
 			'dob',
 			'address',
-			'id_data'
+			'id_data',
+			'verification_method'
 		]
 	);
 

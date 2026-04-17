@@ -14,6 +14,7 @@ const exchange = require('./exchange');
 const broker = require('./broker');
 const stake = require('./stake');
 const p2p = require('./p2p');
+const verification = require('./verification');
 
 module.exports = {
 	...common,
@@ -29,5 +30,6 @@ module.exports = {
 	exchange,
 	broker,
 	stake,
-	p2p
+	p2p,
+	verification
 };

@@ -619,15 +619,15 @@ const loginPost = async (req, res) => {
 				JSON.stringify(data)
 			);
 
-			sendEmail(
-				version === 'v3'
+			await toolsLib.verification.sendVerificationCode(user, {
+				action_type: 'login_verification',
+				verification_code,
+				emailType: version === 'v3' || version === 'v4'
 					? MAILTYPE.SUSPICIOUS_LOGIN_CODE
 					: MAILTYPE.SUSPICIOUS_LOGIN,
-				user.email,
-				data,
-				user.settings,
+				emailData: data,
 				domain
-			);
+			});
 			throw new Error('Suspicious login detected, please check your email.');
 		}
 

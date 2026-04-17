@@ -82,6 +82,7 @@ const {
 	CRYPTO_ADDRESS_FIELDS,
 	ID_FIELDS,
 	SETTING_KEYS,
+	VERIFICATION_METHODS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
@@ -99,6 +100,7 @@ const {
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
+const { isSmsPluginActive } = require('./plugin');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -1275,6 +1277,11 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 				(!isString(newSettings[key]) || getKitConfig().valid_languages.indexOf(newSettings[key]) === -1)
 			) {
 				throw new Error('Invalid language given');
+			} else if (
+				key === 'verification_method' &&
+				(!isString(newSettings[key]) || VERIFICATION_METHODS.indexOf(newSettings[key]) === -1)
+			) {
+				throw new Error(`verification_method must be one of: ${VERIFICATION_METHODS.join(', ')}`);
 			}
 			joinedSettings[key] = newSettings[key];
 		} else if (has(userSettings, key)) {
@@ -1286,23 +1293,39 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	return joinedSettings;
 };
 
-const updateUserSettings = (userOpts = {}, settings = {}) => {
-	return getUser(userOpts, false)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			if (Object.keys(settings).length > 0) {
-				settings = joinSettings(user.dataValues.settings, settings);
-			}
-			return user.update({ settings }, {
-				fields: ['settings'],
-				returning: true
-			});
-		})
-		.then((user) => {
-			return omitUserFields(user.dataValues);
-		});
+const validateSmsVerificationEligibility = async (user) => {
+	if (!user.phone_number) {
+		throw new Error('A verified phone number is required to use SMS verification');
+	}
+	if (!getKitConfig()?.features?.sms_verification) {
+		throw new Error('SMS verification feature is not enabled on this exchange');
+	}
+	const active = await isSmsPluginActive();
+	if (!active) {
+		throw new Error('No active SMS plugin is installed on this exchange');
+	}
+};
+
+const updateUserSettings = async (userOpts = {}, settings = {}) => {
+	const user = await getUser(userOpts, false);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (has(settings, 'verification_method') && settings.verification_method === 'sms') {
+		await validateSmsVerificationEligibility(user.dataValues);
+	}
+
+	let nextSettings = settings;
+	if (Object.keys(settings).length > 0) {
+		nextSettings = joinSettings(user.dataValues.settings, settings);
+	}
+
+	const updated = await user.update({ settings: nextSettings }, {
+		fields: ['settings'],
+		returning: true
+	});
+	return omitUserFields(updated.dataValues);
 };
 
 const INITIAL_SETTINGS = () => {
@@ -2097,6 +2120,7 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 	}
 
 	const updateData = { user_id: userId };
+	let verificationMethodUpdate = null;
 
 	for (const field in data) {
 		const value = data[field];
@@ -2135,22 +2159,56 @@ const updateUserInfo = async (userId, data = {}, auditInfo) => {
 					};
 				}
 				break;
+			case 'verification_method':
+				if (isString(value) && VERIFICATION_METHODS.indexOf(value) !== -1) {
+					verificationMethodUpdate = value;
+				}
+				break;
 			default:
 				break;
 		}
 	}
 
-	if (isEmpty(updateData)) {
+	if (Object.keys(updateData).length <= 1 && verificationMethodUpdate === null) {
 		throw new Error('No fields to update');
 	}
+
+	const isClearingPhoneNumber =
+		has(updateData, 'phone_number') && !updateData.phone_number;
+
+	if (verificationMethodUpdate === 'sms') {
+		const phoneAfterUpdate = has(updateData, 'phone_number')
+			? updateData.phone_number
+			: user.dataValues.phone_number;
+		await validateSmsVerificationEligibility({
+			...user.dataValues,
+			phone_number: phoneAfterUpdate
+		});
+	}
+
 	const oldValues = { user_id: userId };
 	Object.keys(updateData).forEach(key => { oldValues[key] = user.dataValues[key]; });
 	const previousUserData = omitUserFields(user.dataValues);
 
-	await user.update(
-		updateData,
-		{ fields: Object.keys(updateData) }
-	);
+	if (Object.keys(updateData).length > 1) {
+		await user.update(
+			updateData,
+			{ fields: Object.keys(updateData).filter((k) => k !== 'user_id') }
+		);
+	}
+
+	if (verificationMethodUpdate !== null || isClearingPhoneNumber) {
+		const nextMethod = isClearingPhoneNumber
+			? 'email'
+			: verificationMethodUpdate;
+		if (nextMethod) {
+			await updateUserSettings(
+				{ kit_id: userId },
+				{ verification_method: nextMethod }
+			);
+			await user.reload();
+		}
+	}
 
 	publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 		type: 'user',

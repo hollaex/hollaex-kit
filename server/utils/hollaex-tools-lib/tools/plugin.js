@@ -55,7 +55,28 @@ const getPlugin = (name, opts = {}) => {
 	});
 };
 
+const SMS_PLUGIN_CACHE_TTL_MS = 60 * 1000;
+let smsPluginCache = { value: null, expiresAt: 0 };
+
+const isSmsPluginActive = async () => {
+	const now = Date.now();
+	if (smsPluginCache.value !== null && now < smsPluginCache.expiresAt) {
+		return smsPluginCache.value;
+	}
+
+	const plugin = await dbQuery.findOne('plugin', {
+		where: { type: 'phone', enabled: true },
+		raw: true,
+		attributes: ['id']
+	});
+
+	const active = !!plugin;
+	smsPluginCache = { value: active, expiresAt: now + SMS_PLUGIN_CACHE_TTL_MS };
+	return active;
+};
+
 module.exports = {
 	getPaginatedPlugins,
-	getPlugin
+	getPlugin,
+	isSmsPluginActive
 };

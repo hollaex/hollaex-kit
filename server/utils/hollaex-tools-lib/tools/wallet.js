@@ -1,9 +1,9 @@
 'use strict';
 
 const { SERVER_PATH } = require('../constants');
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
+const { sendVerificationCode } = require('./verification');
 const { verifyOtpBeforeAction } = require('./security');
 const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig } = require('./common');
 const {
@@ -198,11 +198,18 @@ const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 		})
 	);
 
-	const { email, amount, fee, fee_coin, fee_markup, currency, address, network } = data;
-	sendEmail(
-		version === 'v3' || version === 'v4' ? MAILTYPE.WITHDRAWAL_REQUEST_CODE : MAILTYPE.WITHDRAWAL_REQUEST,
-		email,
-		{
+	const { amount, fee, fee_coin, fee_markup, currency, address, network } = data;
+	// Fire-and-forget to avoid adding the isSmsPluginActive() / sendEmail round
+	// trip to the withdrawal request's HTTP response latency. The helper
+	// internally catches and logs all failures (email, publish, plugin lookup),
+	// so nothing can escape as an unhandled rejection.
+	sendVerificationCode(user, {
+		action_type: 'withdrawal',
+		verification_code: token,
+		emailType: version === 'v3' || version === 'v4'
+			? MAILTYPE.WITHDRAWAL_REQUEST_CODE
+			: MAILTYPE.WITHDRAWAL_REQUEST,
+		emailData: {
 			amount,
 			fee,
 			fee_markup,
@@ -214,9 +221,8 @@ const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 			network,
 			freeze_account_link: `${domain}/confirm-login?token=${token}&prompt=false&freeze_account=true`
 		},
-		user.settings,
 		domain
-	);
+	});
 	return data;
 };
 

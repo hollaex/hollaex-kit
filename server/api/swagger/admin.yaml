@@ -1223,6 +1223,16 @@ paths:
                 properties:
                   status:
                     type: number
+              verification_method:
+                type: string
+                enum:
+                  - email
+                  - sms
+                description: >-
+                  Channel used to deliver the user's verification codes. Setting
+                  to "sms" requires the user to have a phone_number, the
+                  sms_verification exchange feature to be enabled, and an active
+                  SMS plugin.
       responses:
         200:
           description: Success

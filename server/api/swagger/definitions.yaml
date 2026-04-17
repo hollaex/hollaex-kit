@@ -290,6 +290,16 @@ definitions:
         items:
           type: string
         description: List of trading pair symbols for the user's watchlist
+      verification_method:
+        type: string
+        enum:
+          - email
+          - sms
+        default: email
+        description: >-
+          Channel used for user-initiated verification codes (e.g. withdrawal request).
+          "sms" requires a verified phone_number, an active SMS plugin, and the
+          sms_verification exchange feature to be enabled.
   ChangePassword:
     type: object
     required:
@@ -1166,6 +1176,8 @@ definitions:
         type: boolean
       onhold:
         type: boolean
+      dismissed:
+        type: boolean
       user_id:
         type: number
       rejected:
@@ -1209,6 +1221,8 @@ definitions:
         type: boolean
       user_id:
         type: number
+      dismissed:
+        type: boolean
       rejected:
         type: boolean
       created_at:

@@ -40,7 +40,8 @@ const SETTINGS_DATA_DEFAULT = {
 	},
 	chat: {
 		set_username: false
-	}
+	},
+	verification_method: 'email'
 };
 
 const BANK_DATA_DEFAULT = [];
