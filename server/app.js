@@ -85,19 +85,26 @@ checkStatus()
 				});
 			}
 
-			// Custom error handler that returns JSON
+			// Custom error handler that logs full error server-side
+			// and returns only a sanitized message to the client.
 			app.use(function (err, req, res, next) {
-				if (typeof err !== 'object') {
-					// If the object is not an Error, create a representation that appears to be
-					err = {
-						message: String(err) // Coerce to string
-					};
-				} else {
-					// Ensure that err.message is enumerable (It is not by default)
-					Object.defineProperty(err, 'message', { enumerable: true });
+				logger.error(
+					'app/errorHandler',
+					req && req.uuid,
+					req && req.method,
+					req && req.originalUrl,
+					err
+				);
+
+				let message = 'Internal server error';
+				if (err && typeof err.message === 'string' && err.message) {
+					message = err.message;
+				} else if (typeof err === 'string') {
+					message = err;
 				}
+
 				res.statusCode = 500;
-				res.json(err);
+				res.json({ message });
 			});
 
 
