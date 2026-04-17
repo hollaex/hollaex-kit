@@ -41,6 +41,7 @@ const handleCurrencyDeposit = (req, res) => {
 		address,
 		is_confirmed,
 		onhold,
+		dismissed,
 		rejected,
 		created_at,
 		updated_at,
@@ -65,6 +66,8 @@ const handleCurrencyDeposit = (req, res) => {
 		address,
 		'is_confirmed',
 		is_confirmed,
+		'dismissed',
+		dismissed,
 		'rejected',
 		rejected,
 		'created_at',
@@ -91,7 +94,7 @@ const handleCurrencyDeposit = (req, res) => {
 			if (toolsLib.getKitCoin(currency).display_name) {
 				coinName = toolsLib.getKitCoin(currency).display_name;
 			}
-			if (rejected) {
+			if (rejected || dismissed) {
 				sendEmail(
 					MAILTYPE.DEPOSIT_CANCEL,
 					user.email,
@@ -172,6 +175,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 		address,
 		is_confirmed,
 		fee,
+		dismissed,
 		rejected,
 		created_at,
 		network,
@@ -191,7 +195,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 			if (toolsLib.getKitCoin(currency).display_name) {
 				coinName = toolsLib.getKitCoin(currency).display_name;
 			}
-			if (rejected) {
+			if (rejected || dismissed) {
 				sendEmail(
 					MAILTYPE.DEPOSIT_CANCEL,
 					user.email,
