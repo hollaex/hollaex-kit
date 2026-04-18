@@ -996,7 +996,7 @@ const getAllUsersAdmin = (opts = {
 						[Op.like]: `%${opts.search}%`
 					}
 				},
-				getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
+				{ id_data: { number: opts.search } }
 			]
 		};
 	}
@@ -1685,7 +1685,7 @@ const updateUserNote = (userId, note, auditInfo) => {
 
 const updateUserDiscount = (userId, discount, auditInfo) => {
 	if (discount < 0 || discount > 100) {
-		return reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 1`));
+		return Promise.reject(new Error(`Invalid discount rate ${discount}. Min: 0. Max: 100`));
 	}
 
 	return getUserByKitId(userId, false)
@@ -3644,6 +3644,7 @@ const fetchUserProfitLossInfo = async (user_id, opts = { period: 7 }) => {
 				break;
 			case '3m':
 				dateThreshold.subtract(3, 'months');
+				break;
 			case '6m':
 				dateThreshold.subtract(6, 'months');
 				break;
@@ -5369,7 +5370,6 @@ const issueSharedaccountToken = async ({ sharedKitId, sharedaccountId, ip, heade
  * Pause a sharedaccount link by setting active=false and revoke sessions of the shared user
  */
 const pauseSharedaccount = async (mainKitId, sharedaccountId) => {
-	console.log(mainKitId, sharedaccountId);
 	const main = await getUserByKitId(mainKitId, false);
 	if (!main) throw new Error(USER_NOT_FOUND);
 
