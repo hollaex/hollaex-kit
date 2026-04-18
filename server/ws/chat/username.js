@@ -40,17 +40,7 @@ const changeUsername = async (id) => {
 		}
 	);
 };
-const getUserIdByUsername = (username) => {
-	return User.findOne({
-		where: { username },
-		attributes: ['id', 'username']
-	}).then((user) => {
-		return user.id;
-	});
-};
-
 module.exports = {
 	getUsername,
-	getUserIdByUsername,
 	changeUsername
 };

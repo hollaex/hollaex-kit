@@ -216,7 +216,7 @@ class Chat extends Component {
 		);
 	};
 
-	banUser = (username) => {
+	banUser = (user_id) => {
 		const { chatWs } = this.state;
 		chatWs.send(
 			JSON.stringify({
@@ -224,7 +224,7 @@ class Chat extends Component {
 				args: [
 					{
 						action: 'banUser',
-						data: username,
+						data: user_id,
 					},
 				],
 			})

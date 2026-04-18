@@ -209,8 +209,8 @@
 			"title": "رجسٹریشن – تصدیقی کوڈ"
 		},
 		"SET_EMAIL_CODE": {
-			"html": "<div><p>Dear ${name}</p><p>You requested to add this email address to your exchange account. Use the verification code below to confirm.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>This code expires in a few minutes. If you did not request this change, you can ignore this email.</p><p>Regards<br />${api_name} team</p></div>",
-			"title": "Confirm your new email"
+			"html": "<div><p>محترم ${name}</p><p>آپ نے اپنے ایکسچینج اکاؤنٹ میں یہ ای میل ایڈریس شامل کرنے کی درخواست کی ہے۔ تصدیق کے لیے نیچے دیا گیا تصدیقی کوڈ استعمال کریں۔</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>یہ کوڈ چند منٹ میں ختم ہو جائے گا۔ اگر آپ نے یہ تبدیلی نہیں مانگی، تو اس ای میل کو نظر انداز کر سکتے ہیں۔</p><p>تعظیم کے ساتھ<br />${api_name} ٹیم</p></div>",
+			"title": "اپنی نئی ای میل کی تصدیق کریں"
 		}
 	}
 }

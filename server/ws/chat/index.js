@@ -62,6 +62,7 @@ const addMessage = (username, verification_level, userId, message) => {
 	if (!isUserBanned(userId)) {
 		const data = {
 			id: `${timestamp}-${username}`,
+			user_id: userId,
 			username,
 			verification_level,
 			message,
