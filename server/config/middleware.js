@@ -123,7 +123,39 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'signup');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'signup ip');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+	// Per-account signup limiter: keyed by email or phone_number so a single
+	// target (regardless of source IP) cannot be hit more than `total` times
+	// in the window. Requests with neither identifier fall through to a
+	// shared 'unknown' bucket; those are rejected by the controller anyway.
+	limiter({
+		path: '/v2/signup',
+		method: 'post',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			const swaggerVal = req.swagger && req.swagger.params && req.swagger.params.signup
+				&& req.swagger.params.signup.value;
+			const swaggerEmail = swaggerVal && swaggerVal.email;
+			const swaggerPhone = swaggerVal && swaggerVal.phone_number;
+			const bodyEmail = req.body && req.body.email;
+			const bodyPhone = req.body && req.body.phone_number;
+			const rawEmail = (swaggerEmail || bodyEmail || '').toString().trim().toLowerCase();
+			const rawPhone = (swaggerPhone || bodyPhone || '').toString().trim();
+			const account = rawEmail
+				? `email:${rawEmail}`
+				: rawPhone
+					? `phone:${rawPhone}`
+					: 'unknown';
+			req.rateLimitAccount = account;
+			opts.lookup = 'rateLimitAccount';
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'signup account');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
@@ -138,22 +170,33 @@ const rateLimitMiddleware = (app) => {
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
+	// Per-account login limiter: keyed by email or phone_number so brute-force
+	// attempts against a single account from rotating IPs are throttled.
 	limiter({
 		path: '/v2/login',
 		method: 'post',
 		total: 8,
 		expire: 1000 * 60 * 2,
 		lookup: (req, res, opts, next) => {
-			const swaggerEmail = req.swagger && req.swagger.params && req.swagger.params.authentication
-				&& req.swagger.params.authentication.value && req.swagger.params.authentication.value.email;
+			const swaggerVal = req.swagger && req.swagger.params && req.swagger.params.authentication
+				&& req.swagger.params.authentication.value;
+			const swaggerEmail = swaggerVal && swaggerVal.email;
+			const swaggerPhone = swaggerVal && swaggerVal.phone_number;
 			const bodyEmail = req.body && req.body.email;
-			const email = (swaggerEmail || bodyEmail || 'unknown').toLowerCase();
-			req.rateLimitEmail = email;
-			opts.lookup = 'rateLimitEmail';
+			const bodyPhone = req.body && req.body.phone_number;
+			const rawEmail = (swaggerEmail || bodyEmail || '').toString().trim().toLowerCase();
+			const rawPhone = (swaggerPhone || bodyPhone || '').toString().trim();
+			const account = rawEmail
+				? `email:${rawEmail}`
+				: rawPhone
+					? `phone:${rawPhone}`
+					: 'unknown';
+			req.rateLimitAccount = account;
+			opts.lookup = 'rateLimitAccount';
 			return next();
 		},
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login email');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login account');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
