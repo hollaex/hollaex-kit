@@ -84,6 +84,7 @@ const UseFilters = ({
 			],
 		},
 		email_verified: { type: 'boolean', label: 'Email Verified' },
+		phone_number_verified: { type: 'boolean', label: 'Phone Verified' },
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
 	};
 

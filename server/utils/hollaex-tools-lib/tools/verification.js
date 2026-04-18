@@ -10,6 +10,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { getKitConfig } = require('./common');
 const { isSmsPluginActive } = require('./plugin');
 const { logger } = require(`${SERVER_PATH}/config/logger`);
+const { isEmail } = require('validator');
 
 const getEffectiveVerificationMethod = async (user, deps = {}) => {
 	const _getKitConfig = deps.getKitConfig || getKitConfig;
@@ -72,7 +73,7 @@ const sendVerificationCode = async (user, {
 		method = 'email';
 	}
 
-	if (method === 'email' && emailType) {
+	if (method === 'email' && emailType && isEmail(user.email)) {
 		try {
 			sendEmail(emailType, user.email, emailData, user.settings, domain);
 		} catch (err) {

@@ -41,6 +41,7 @@ const {
 	ACCOUNT_NOT_VERIFIED,
 	INVALID_VERIFICATION_LEVEL,
 	USER_EMAIL_NOT_VERIFIED,
+	USER_PHONE_NOT_VERIFIED,
 	VERIFICATION_CODE_EXPIRED,
 	NO_DATA_FOR_CSV,
 	PROVIDE_USER_CREDENTIALS,
@@ -78,7 +79,9 @@ const {
 	NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE,
 	PHONE_NUMBER_EXISTS,
 	SET_EMAIL_NOT_ELIGIBLE,
-	VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL
+	VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL,
+	USER_HAS_NO_PHONE,
+	USER_PHONE_ALREADY_VERIFIED
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -106,7 +109,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isSmsPluginActive } = require('./plugin');
 const { sendVerificationCode } = require('./verification');
 const { isValidPassword, createSession } = require('./security');
@@ -149,15 +152,6 @@ const generateVerificationCode = (version) => {
 
 const PHONE_SIGNUP_EMAIL_SUFFIX = '_sms';
 
-const syntheticEmailHost = () => {
-	try {
-		const u = new URL(getDomain());
-		return u.hostname || 'localhost';
-	} catch (e) {
-		return 'localhost';
-	}
-};
-
 const normalizeSignupPhoneDigits = (raw) => {
 	if (raw == null) {
 		return null;
@@ -170,19 +164,16 @@ const normalizeSignupPhoneDigits = (raw) => {
 	if (!digits || digits.length < 8 || digits.length > 15) {
 		return null;
 	}
-	return digits;
+	return `+${digits}`;
 };
 
-// Kit DB stores synthetic phone-signup emails as `<digits>_sms` (no @ on purpose
-// so it cannot collide with a real email and the suffix marks the user as a
-// phone-signup synthetic account). The HollaEx network requires a strictly
-// RFC-valid email, so for the network call only we build `<digits>@<host>`.
-const buildSyntheticEmailFromPhoneDigits = (digits) => {
+// Synthetic phone-signup emails are stored as `<digits>_sms` (no @ on purpose
+// so they cannot collide with a real email and the suffix marks the user as a
+// phone-signup synthetic account). The same value is also sent to the network.
+// normalizedPhone is in +<digits> format; strip the + for the email key.
+const buildSyntheticEmailFromPhoneDigits = (normalizedPhone) => {
+	const digits = normalizedPhone.replace(/\D/g, '');
 	return `${digits}${PHONE_SIGNUP_EMAIL_SUFFIX}`.toLowerCase();
-};
-
-const buildSyntheticNetworkEmailFromPhoneDigits = (digits) => {
-	return `${digits}@${syntheticEmailHost()}`.toLowerCase();
 };
 
 const isPhoneSignupSyntheticUser = (user = {}) => {
@@ -249,11 +240,14 @@ const signUpUser = async (email, password, opts = {}, version) => {
 	try {
 		let user = await dbQuery.findOne('user', {
 			where: { email },
-			attributes: ['id', 'email', 'email_verified', 'phone_number', 'settings', 'meta']
+			attributes: ['id', 'email', 'email_verified', 'phone_number', 'phone_number_verified', 'settings', 'meta']
 		});
 
 		if (user) {
-			if (user.email_verified) {
+			const alreadyVerified = isPhoneSignup
+				? user.phone_number_verified
+				: user.email_verified;
+			if (alreadyVerified) {
 				throw new Error(USER_EXISTS);
 			}
 			existingUser = true;
@@ -285,18 +279,16 @@ const signUpUser = async (email, password, opts = {}, version) => {
 					email,
 					password: resolvedPassword,
 					verification_level: 1,
-					email_verified: opts.email_verified || false,
+					email_verified: isPhoneSignup ? false : (opts.email_verified || false),
+					phone_number_verified: false,
 					settings: userSettings,
 					phone_number: isPhoneSignup ? normalizedPhoneDigits : '',
 					meta: userMeta,
 					google_id: opts.google_id || null
 				}, { transaction });
 
-				const networkEmail = isPhoneSignup
-					? buildSyntheticNetworkEmailFromPhoneDigits(normalizedPhoneDigits)
-					: email;
 				const [networkUser, updatedUser] = await all([
-					createUserOnNetwork(networkEmail),
+					createUserOnNetwork(email),
 					createdUser
 				]);
 
@@ -354,7 +346,7 @@ const verifyUser = (email, code, domain) => {
 			return all([
 				verificationCode,
 				dbQuery.findOne('user',
-					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified', 'meta'] }),
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified', 'phone_number_verified', 'meta'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
@@ -362,7 +354,11 @@ const verifyUser = (email, code, domain) => {
 				throw new Error(USER_NOT_FOUND);
 			}
 
-			if (user.email_verified) {
+			const isPhoneChannel = isPhoneSignupSyntheticUser(user.dataValues || user);
+			const alreadyVerified = isPhoneChannel
+				? user.phone_number_verified
+				: user.email_verified;
+			if (alreadyVerified) {
 				throw new Error(USER_VERIFIED);
 			}
 
@@ -375,11 +371,12 @@ const verifyUser = (email, code, domain) => {
 			}
 
 			client.delAsync(`verification_code:user${verificationCode.code}`);
+			const fieldToUpdate = isPhoneChannel ? 'phone_number_verified' : 'email_verified';
 			return all([
 				user,
 				user.update(
-					{ email_verified: true },
-					{ fields: ['email_verified'] }
+					{ [fieldToUpdate]: true },
+					{ fields: [fieldToUpdate] }
 				)
 			]);
 		})
@@ -485,7 +482,12 @@ const createUser = (
 const createUserOnNetwork = (email, opts = {
 	additionalHeaders: null
 }) => {
-	if (!isEmail(email)) {
+	// Phone-signup users are stored on the network with the synthetic
+	// `<digits>_sms` placeholder (no `@`), so they will not pass an
+	// RFC email check. Allow either a real email or that placeholder.
+	const isSyntheticPhoneSignup = typeof email === 'string'
+		&& email.endsWith(PHONE_SIGNUP_EMAIL_SUFFIX);
+	if (!isSyntheticPhoneSignup && !isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
 
@@ -500,9 +502,16 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 			}
 			if (user.verification_level === 0) {
 				throw new Error(USER_NOT_VERIFIED);
-			} else if (getKitConfig().email_verification_required && !user.email_verified) {
-				throw new Error(USER_EMAIL_NOT_VERIFIED);
-			} else if (!user.activated) {
+			} else if (getKitConfig().email_verification_required) {
+				if (isPhoneSignupSyntheticUser(user.dataValues || user)) {
+					if (!user.phone_number_verified) {
+						throw new Error(USER_PHONE_NOT_VERIFIED);
+					}
+				} else if (!user.email_verified) {
+					throw new Error(USER_EMAIL_NOT_VERIFIED);
+				}
+			}
+			if (!user.activated) {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 			return all([
@@ -904,6 +913,7 @@ const getAllUsersAdmin = (opts = {
 	verification_level: null,
 	max_verification_level: null,
 	email_verified: null,
+	phone_number_verified: null,
 	otp_enabled: null,
 	phone_number: null,
 	kyc: null,
@@ -919,6 +929,7 @@ const getAllUsersAdmin = (opts = {
 		user_id,
 		gender,
 		email_verified,
+		phone_number_verified,
 		otp_enabled,
 		dob_start_date,
 		dob_end_date,
@@ -945,6 +956,7 @@ const getAllUsersAdmin = (opts = {
 			...(user_id != null && { id: user_id }),
 			...((dob_start_date != null || dob_end_date != null) && { dob: dob_timeframe }),
 			...(email_verified != null && { email_verified }),
+			...(phone_number_verified != null && { phone_number_verified }),
 			...(gender != null && { gender }),
 			...(otp_enabled != null && { otp_enabled }),
 			[Op.and]: [],
@@ -1069,7 +1081,7 @@ const getAllUsersAdmin = (opts = {
 	}
 
 	if (opts.format) {
-		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta', 'role'];
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'phone_number_verified', 'discount', 'meta', 'role'];
 		return dbQuery.fetchAllRecords('user', query)
 			.then(async ({ count, data }) => {
 				if (opts.id || opts.search) {
@@ -1218,7 +1230,11 @@ const getUserByPhoneNumber = (phone_number, rawData = true, networkData = false,
 	if (!phone_number || typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any')) {
 		return reject(new Error('Provide valid phone number'));
 	}
-	return getUser({ phone_number: phone_number.trim() }, rawData, networkData, opts);
+	const normalized = normalizeSignupPhoneDigits(phone_number);
+	if (!normalized) {
+		return reject(new Error('Provide valid phone number'));
+	}
+	return getUser({ phone_number: normalized }, rawData, networkData, opts);
 };
 
 const freezeUserById = (userId) => {
@@ -1633,6 +1649,25 @@ const verifyUserEmailByKitId = (kitId) => {
 			return user.update(
 				{ email_verified: true },
 				{ fields: ['email_verified'], returning: true }
+			);
+		});
+};
+
+const verifyUserPhoneByKitId = (kitId) => {
+	return getUserByKitId(kitId, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			if (!user.phone_number) {
+				throw new Error(USER_HAS_NO_PHONE);
+			}
+			if (user.phone_number_verified) {
+				throw new Error(USER_PHONE_ALREADY_VERIFIED);
+			}
+			return user.update(
+				{ phone_number_verified: true },
+				{ fields: ['phone_number_verified'], returning: true }
 			);
 		});
 };
@@ -5475,6 +5510,7 @@ module.exports = {
 	getUserByAffiliationCode,
 	checkAffiliation,
 	verifyUserEmailByKitId,
+	verifyUserPhoneByKitId,
 	generateAffiliationCode,
 	updateUserMeta,
 	mapNetworkIdToKitId,

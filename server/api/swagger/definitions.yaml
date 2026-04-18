@@ -353,7 +353,6 @@ definitions:
     type: object
     required:
       - password
-      - email
     properties:
       password:
         type: string
@@ -361,6 +360,9 @@ definitions:
       email:
         type: string
         maxLength: 256
+      phone_number:
+        type: string
+        maxLength: 32
   LoginsResponse:
     type: object
     properties:

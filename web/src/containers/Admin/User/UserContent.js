@@ -24,6 +24,7 @@ import BankData from './BankData';
 import AboutData from './AboutData';
 import Referrals from './Referrals';
 import VerifyEmailConfirmation from './VerifyEmailConfirmation';
+import VerifyPhoneConfirmation from './VerifyPhoneConfirmation';
 import ActivationConfirmation from './ActivationConfirmation';
 import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
@@ -32,6 +33,7 @@ import {
 	flagUser,
 	activateUser,
 	verifyUser,
+	verifyUserPhone,
 	recoverUser,
 	deleteUser,
 	requestTiers,
@@ -59,6 +61,7 @@ const { Item } = Breadcrumb;
 class UserContent extends Component {
 	state = {
 		showVerifyEmailModal: false,
+		showVerifyPhoneModal: false,
 		showRecoverModal: false,
 		showDeleteModal: false,
 		userTiers: {},
@@ -314,6 +317,24 @@ class UserContent extends Component {
 		this.props.setIsEmailVerifiedUser(false);
 	};
 
+	verifyUserPhone = () => {
+		const { userInformation = {}, refreshData } = this.props;
+		const postValues = {
+			user_id: parseInt(userInformation.id, 10),
+		};
+
+		verifyUserPhone(postValues)
+			.then((res) => {
+				refreshData({ ...postValues, phone_number_verified: true });
+				this.setState({ showVerifyPhoneModal: false });
+			})
+			.catch((err) => {
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+	};
+
 	handleRecoverUser = () => {
 		const { userInformation = {} } = this.props;
 		const postValues = {
@@ -361,6 +382,12 @@ class UserContent extends Component {
 		});
 	};
 
+	openVerifyPhoneModal = () => {
+		this.setState({
+			showVerifyPhoneModal: true,
+		});
+	};
+
 	openRecoverUserModel = () => {
 		this.setState({
 			showRecoverModal: true,
@@ -386,6 +413,8 @@ class UserContent extends Component {
 		if (modalType === 'verifyEmailModal') {
 			this.setState({ showVerifyEmailModal: false });
 			this.props.setIsEmailVerifiedUser(false);
+		} else if (modalType === 'verifyPhoneModal') {
+			this.setState({ showVerifyPhoneModal: false });
 		} else if (modalType === 'deleteConfirmationModal') {
 			this.setState({ showDeleteModal: false });
 			this.props.setIsActiveDeleteUser(false);
@@ -451,6 +480,7 @@ class UserContent extends Component {
 
 		const {
 			showVerifyEmailModal,
+			showVerifyPhoneModal,
 			showRecoverModal,
 			showDeleteModal,
 			userTiers,
@@ -608,6 +638,7 @@ class UserContent extends Component {
 								flagUser={this.flagUser}
 								freezeAccount={this.freezeAccount}
 								verifyEmail={this.openVerifyEmailModal}
+								verifyPhone={this.openVerifyPhoneModal}
 								recoverUser={this.openRecoverUserModel}
 								deleteUser={this.openDeleteUserModel}
 								kycPluginName={kycPluginName}
@@ -725,6 +756,12 @@ class UserContent extends Component {
 					visible={showVerifyEmailModal}
 					onCancel={() => this.onHandleCancel('verifyEmailModal')}
 					onConfirm={this.verifyUserEmail}
+					userData={userInformation}
+				/>
+				<VerifyPhoneConfirmation
+					visible={showVerifyPhoneModal}
+					onCancel={() => this.onHandleCancel('verifyPhoneModal')}
+					onConfirm={this.verifyUserPhone}
 					userData={userInformation}
 				/>
 				<ActivationConfirmation

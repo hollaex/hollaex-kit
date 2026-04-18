@@ -205,6 +205,15 @@ export const verifyUser = (values) => {
 	return requestAuthenticated('/admin/verify-email', options);
 };
 
+export const verifyUserPhone = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/verify-phone', options);
+};
+
 export const recoverUser = (values) => {
 	const options = {
 		method: 'POST',

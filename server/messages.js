@@ -297,3 +297,6 @@ exports.INVALID_NUMBER = 'Value is not a number';
 exports.INVALID_AUTOTRADE_CONFIG = 'This pair does not exist';
 exports.SUBACCOUNT_CANNOT_GENERATE_ADDRESS = 'Subaccounts cannot generate deposit addresses';
 exports.WITHDRAWAL_LIMIT_ERROR = 'You have reached your withdrawal limit for your tier';
+exports.USER_PHONE_NOT_VERIFIED = 'User phone number is not verified';
+exports.USER_HAS_NO_PHONE = 'User has no phone number';
+exports.USER_PHONE_ALREADY_VERIFIED = 'User phone number already verified';

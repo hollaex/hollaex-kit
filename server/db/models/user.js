@@ -109,6 +109,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
+			phone_number_verified: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
 			otp_enabled: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
