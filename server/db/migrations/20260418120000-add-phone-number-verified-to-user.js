@@ -7,6 +7,13 @@ module.exports = {
 			allowNull: false,
 			defaultValue: false
 		});
+
+		await queryInterface.sequelize.query(
+			`UPDATE "Users"
+				SET phone_number_verified = true
+				WHERE phone_number IS NOT NULL
+				AND phone_number <> ''`
+		);
 	},
 
 	down: async (queryInterface) => {
