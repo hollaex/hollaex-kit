@@ -1,5 +1,6 @@
 'use strict';
 
+// add new messages to the end of the file and make sure there is a correspnding entry in the lang-messages.js file
 exports.INSUFFICIENT_BALANCE_ORDER =
 	'Insufficient balance to perform the order';
 exports.MISSING_ORDER = 'Missing order';
