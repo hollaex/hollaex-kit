@@ -689,7 +689,12 @@
 			"POPUP_ORDER_PARTIALLY_FILLED": "Mostrar pop up cuando el pedido se ha llenado parcialmente",
 			"POPUP_NEW_ORDER_CREATED": "Mostrar ventana emergente cuando se haya realizado un nuevo pedido",
 			"POPUP_ORDER_CANCELLED": "Mostrar ventana emergente al cancelar pedidos",
-			"TRADE_POPUPS": "Pop ups de Cambio"
+			"VERIFICATION_METHOD": "Método de verificación",
+			"VERIFICATION_METHOD_EMAIL": "Correo electrónico",
+			"VERIFICATION_METHOD_SMS": "SMS",
+			"VERIFICATION_SMS_REQUIRES_PHONE": "Añade un número de teléfono a tu cuenta para activar la verificación por SMS.",
+			"TRADE_POPUPS": "Pop ups de Cambio",
+			"VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL": "Establece un correo electrónico real para habilitar la verificación por correo."
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "Todas las señales de audio",

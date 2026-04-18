@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>محترم ${name}</p><p>اپنا رجسٹریشن مکمل کرنے کے لیے، براہ کرم نیچے دیا گیا کوڈ استعمال کرکے اپنا ای میل تصدیق کریں۔</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>اس کوڈ کو رجسٹریشن صفحے پر درج کریں تاکہ آپ کی رجسٹریشن مکمل ہو سکے۔ کوڈ محدود مدت کے لیے کارآمد ہے۔</p><p>اگر آپ کو کسی سوال کا سامنا ہو، تو بس اس ای میل کا جواب دیں۔</p><p>سلام<br>ٹیم ${api_name}</p></div>",
 			"title": "رجسٹریشن – تصدیقی کوڈ"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>Dear ${name}</p><p>You requested to add this email address to your exchange account. Use the verification code below to confirm.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>This code expires in a few minutes. If you did not request this change, you can ignore this email.</p><p>Regards<br />${api_name} team</p></div>",
+			"title": "Confirm your new email"
 		}
 	}
 }

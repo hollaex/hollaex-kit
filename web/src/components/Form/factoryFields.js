@@ -9,6 +9,7 @@ import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
 import ToggleField from './FormFields/ToggleField';
+import SegmentedOptionField from './FormFields/SegmentedOptionField';
 import DumbField from './FormFields/DumbFieldForm';
 import PinInput from './FormFields/PinInput';
 
@@ -60,6 +61,8 @@ const renderFields = (fields = {}, callback) => {
 						return <Field component={TextAreaField} {...commonProps} />;
 					case 'toggle':
 						return <Field component={ToggleField} {...commonProps} />;
+					case 'segmented-option':
+						return <Field component={SegmentedOptionField} {...commonProps} />;
 					case 'pin':
 						return <Field component={PinInput} {...commonProps} />;
 					case 'text':

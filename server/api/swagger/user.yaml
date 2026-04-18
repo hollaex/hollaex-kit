@@ -109,6 +109,65 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/set-email:
+    x-swagger-router-controller: user
+    post:
+      operationId: requestUserSetEmail
+      description: >
+        Step 1 of 2 Request a verification code to be sent to a new real email address.
+        Only available for users who signed up with phone (synthetic `_sms` email) while
+        SMS verification is enabled on the exchange.
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SetEmailRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+  /user/set-email/confirm:
+    x-swagger-router-controller: user
+    post:
+      operationId: confirmUserSetEmail
+      description: Step 2 of 2 Confirm new email with the code sent to that address
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SetEmailConfirm"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
   /user/change-password:
     x-swagger-router-controller: user
     post:

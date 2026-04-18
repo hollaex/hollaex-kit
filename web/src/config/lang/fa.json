@@ -558,7 +558,12 @@
 			"TRADE_POPUPS": "اعلان های مربوط به معاملات",
 			"POPUP_ORDER_CONFIRMATION": "تاییدیه ثبت سفارش ",
 			"POPUP_ORDER_COMPLETED": "اعلان تکمیل سفارش",
-			"POPUP_ORDER_PARTIALLY_FILLED": "اعلان تکمیل بخشی از سفارش"
+			"POPUP_ORDER_PARTIALLY_FILLED": "اعلان تکمیل بخشی از سفارش",
+			"VERIFICATION_METHOD": "روش تأیید",
+			"VERIFICATION_METHOD_EMAIL": "ایمیل",
+			"VERIFICATION_METHOD_SMS": "پیامک",
+			"VERIFICATION_SMS_REQUIRES_PHONE": "برای فعال‌سازی تأیید پیامکی، شماره تلفن را به حساب خود اضافه کنید.",
+			"VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL": "برای فعال‌سازی تأیید ایمیل، یک ایمیل واقعی تنظیم کنید."
 		},
 		"AUDIO_CUE_FORM": {
 			"ORDERS_COMPLETED_AUDIO": "وقتی سفارش تکمیل شد یک اعلان صوتی پخش شود",

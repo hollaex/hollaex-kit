@@ -7345,6 +7345,10 @@ table th {
   border-bottom: 2px solid var(--calculated_secondary-border);
   margin-bottom: 3rem !important; }
 
+.verification-method-row {
+  margin-bottom: 0.65rem;
+  border-bottom: none; }
+
 .portfolio-wrapper {
   width: 32rem; }
   .portfolio-wrapper .icon_title-wrapper .icon_title-svg {
@@ -20533,9 +20537,59 @@ table th {
   .direction_rtl .toggle_button-wrapper .toggle-content .selected {
     font-family: inherit; }
 
+.segmented-option-field {
+  display: inline-flex;
+  align-items: stretch;
+  border: 2px solid var(--calculated_important-border);
+  border-radius: calc(14px + 2px);
+  overflow: hidden;
+  background: transparent;
+  flex-shrink: 0;
+  max-width: 100%; }
+  .segmented-option-field__row {
+    flex-wrap: nowrap;
+    gap: 0.5rem; }
+  .segmented-option-field__segment {
+    min-width: 3.35rem;
+    padding: 2px 0.45rem;
+    font-size: 11px;
+    font-family: "Raleway Medium";
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border: none;
+    background: transparent;
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    line-height: 14px; }
+    .segmented-option-field__segment:not(:last-child) {
+      border-right: 1px solid var(--calculated_important-border); }
+    .segmented-option-field__segment--active {
+      background-color: var(--labels_important-active-labels-text-graphics);
+      color: var(--base_background);
+      font-family: "Raleway Extrabold";
+      font-weight: bold; }
+    .segmented-option-field__segment:disabled {
+      cursor: not-allowed;
+      opacity: 0.4; }
+    .segmented-option-field__segment:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 1px var(--specials_buttons-links-and-highlights); }
+    .segmented-option-field__segment:focus:not(:focus-visible) {
+      box-shadow: none; }
+  .segmented-option-field__tooltip-anchor {
+    display: inline-flex;
+    vertical-align: middle;
+    max-width: 100%; }
+
 .toggle-disabled {
   cursor: not-allowed;
   opacity: 0.35; }
+
+.layout-mobile .segmented-option-field__segment {
+  min-width: 3rem;
+  padding: 2px 0.35rem;
+  font-size: 10px; }
 
 .layout-mobile .toggle_button-wrapper .toggle-content .toggle-action_button {
   width: 42px; }

@@ -1054,24 +1054,6 @@ const InterfaceForm = ({
 								</Checkbox>
 							</Item>
 						</div>
-						<div className="interface-item">
-							<Item name="sms_verification" valuePropName="checked">
-								<Checkbox className="mt-3">
-									<div className="d-flex align-items-center">
-										<div className="ml-2 checkbox-txt">
-											<div id="sms_verification">SMS verification</div>
-											<div className="d-flex justify-content-between">
-												<div className="small-text">
-													(Allow users to receive action verification codes via
-													SMS. Requires an active SMS plugin and a verified user
-													phone number.)
-												</div>
-											</div>
-										</div>
-									</div>
-								</Checkbox>
-							</Item>
-						</div>
 						{isUpgrade && (
 							<div className="d-flex">
 								<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
@@ -1096,6 +1078,27 @@ const InterfaceForm = ({
 							</div>
 						)}
 					</div>
+					<Item name="sms_verification" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={icons['VERIFICATION_PHONE_NEW']}
+										className="feature-sms-icon"
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									<div id="sms_verification">SMS verification</div>
+									<div className="d-flex justify-content-between">
+										<div className="small-text">
+											(Allow users to receive action verification codes via SMS
+											instead of Email)
+										</div>
+									</div>
+								</div>
+							</div>
+						</Checkbox>
+					</Item>
 				</div>
 				<div className="confirm-button-wrapper">
 					<FormButton

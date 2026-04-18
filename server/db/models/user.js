@@ -200,7 +200,16 @@ module.exports = function (sequelize, DataTypes) {
 
 	User.beforeCreate((user) => {
 		user.email = user.email.toLowerCase();
-		user.username = user.email.substr(0, user.email.indexOf('@'));
+		const atIndex = user.email.indexOf('@');
+		if (atIndex > 0) {
+			user.username = user.email.substr(0, atIndex);
+		} else {
+			// Phone-signup synthetic emails are stored as `<digits>_sms` (no `@`).
+			// Strip the suffix so the username is just the phone digits.
+			user.username = user.email.endsWith('_sms')
+				? user.email.slice(0, -4)
+				: user.email;
+		}
 		user.affiliation_code = generateAffiliationCode();
 		const isVirtualEmail = typeof user.email === 'string' && user.email.endsWith('_virtual');
 		if (!user.password) {

@@ -229,12 +229,28 @@
 	fill-opacity: 0.5;
 }
 
+.interface-box .feature-sms-icon {
+	width: 36px;
+	margin: 4px 19px;
+	fill-opacity: 0.5;
+}
+
+.interface-box .feature-sms-icon svg {
+	width: 100%;
+	height: 100%;
+}
+
+.interface-box .feature-sms-icon .verification-phone {
+	fill: #808080;
+}
+
 .feature-apps-icon .apps {
 	fill: #808080 !important;
 }
 
 .interface-box .ant-checkbox-wrapper-checked .feature-icon,
-.interface-box .ant-checkbox-wrapper-checked .feature-chat-icon {
+.interface-box .ant-checkbox-wrapper-checked .feature-chat-icon,
+.interface-box .ant-checkbox-wrapper-checked .feature-sms-icon {
 	stroke: #ffffff;
 	fill-opacity: 1;
 }
@@ -242,6 +258,13 @@
 .interface-box .ant-checkbox-wrapper-checked .feature-apps-icon {
 	fill: #ffffff !important;
 	fill-opacity: 1;
+}
+
+.interface-box
+	.ant-checkbox-wrapper-checked
+	.feature-sms-icon
+	.verification-phone {
+	fill: #ffffff;
 }
 
 .feature-apps-icon .apps {

@@ -280,6 +280,50 @@ const rateLimitMiddleware = (app) => {
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
+
+	// Two-step "set new real email" flow for phone-signup synthetic users.
+	// Step 1 sends a verification code to the requested email and is throttled
+	// tightly because each call costs a real outbound email.
+	limiter({
+		path: '/v2/user/set-email',
+		method: 'post',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
+				opts.lookup = 'headers.authorization';
+			} else {
+				opts.lookup = 'headers.x-forwarded-for';
+			}
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'set-email');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// Step 2 confirms the code. The tools-layer already enforces a 5-attempt
+	// lockout per pending request via Redis; this transport-level limit is
+	// defense in depth against attackers cycling sessions/IPs.
+	limiter({
+		path: '/v2/user/set-email/confirm',
+		method: 'post',
+		total: 10,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
+				opts.lookup = 'headers.authorization';
+			} else {
+				opts.lookup = 'headers.x-forwarded-for';
+			}
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'set-email confirm');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
 };
 
 module.exports = {

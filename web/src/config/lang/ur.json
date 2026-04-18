@@ -530,7 +530,12 @@
 			"POPUP_ORDER_COMPLETED": "آرڈر مکمل ہونے پر پاپ اپ دکھائیں۔",
 			"POPUP_ORDER_PARTIALLY_FILLED": "جب آرڈر جزوی طور پر بھر جائے تو پاپ اپ دکھائیں۔",
 			"POPUP_NEW_ORDER_CREATED": "جب نیا آرڈر دیا جائے تو پاپ اپ دکھائیں۔",
-			"POPUP_ORDER_CANCELLED": "آرڈرز کینسل کرتے وقت پاپ اپ دکھائیں۔"
+			"POPUP_ORDER_CANCELLED": "آرڈرز کینسل کرتے وقت پاپ اپ دکھائیں۔",
+			"VERIFICATION_METHOD": "تصدیق کا طریقہ",
+			"VERIFICATION_METHOD_EMAIL": "ای میل",
+			"VERIFICATION_METHOD_SMS": "ایس ایم ایس",
+			"VERIFICATION_SMS_REQUIRES_PHONE": "ایس ایم ایس تصدیق فعال کرنے کے لیے اپنے اکاؤنٹ میں فون نمبر شامل کریں۔",
+			"VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL": "ای میل تصدیق فعال کرنے کے لیے حقیقی ای میل سیٹ کریں۔"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "تمام آڈیو اشارے",

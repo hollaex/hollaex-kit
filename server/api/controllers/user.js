@@ -36,7 +36,9 @@ const {
 	SUBACCOUNT_CANNOT_GENERATE_ADDRESS,
 	PASSWORD_SET,
 	PASSWORD_NOT_SET,
-	USER_REGISTERED_EMAIL_CODE
+	USER_REGISTERED_EMAIL_CODE,
+	USER_REGISTERED_SMS_CODE,
+	SIGNUP_EMAIL_OR_PHONE_NOT_BOTH
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
@@ -97,7 +99,8 @@ const signUpUser = (req, res) => {
 	const {
 		password,
 		captcha,
-		referral
+		referral,
+		phone_number: phoneNumberRaw
 	} = req.swagger.params.signup.value;
 
 	let { email, version } = req.swagger.params.signup.value;
@@ -109,16 +112,55 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	email = email.toLowerCase().trim();
+	const phone_number =
+		phoneNumberRaw != null && String(phoneNumberRaw).trim().length > 0
+			? String(phoneNumberRaw).trim()
+			: undefined;
+	const emailTrim =
+		email != null && String(email).trim().length > 0
+			? String(email).trim().toLowerCase()
+			: undefined;
+
+	if (phone_number && emailTrim) {
+		const messageObj = errorMessageConverter(
+			{ message: SIGNUP_EMAIL_OR_PHONE_NOT_BOTH },
+			req?.auth?.sub?.lang
+		);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+	if (!phone_number && !emailTrim) {
+		const messageObj = errorMessageConverter(
+			{ message: PROVIDE_VALID_EMAIL },
+			req?.auth?.sub?.lang
+		);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+
+	const signupEmail = emailTrim || null;
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip, req.headers);
 		})
-		.then(() => toolsLib.user.signUpUser(email, password, { referral }, version))
+		.then(() =>
+			toolsLib.user.signUpUser(signupEmail, password, { referral, phone_number }, version)
+		)
 		.then(() => {
 			const requiresVerification = toolsLib.getKitConfig().email_verification_required;
-			const successMessage = requiresVerification ? USER_REGISTERED_EMAIL_CODE : USER_REGISTERED;
+			let successMessage = USER_REGISTERED;
+			if (requiresVerification) {
+				successMessage = phone_number
+					? USER_REGISTERED_SMS_CODE
+					: USER_REGISTERED_EMAIL_CODE;
+			}
 			const messageObj = errorMessageConverter({ message: successMessage }, req?.auth?.sub?.lang);
 			return res.status(201).json({
 				message: messageObj?.message,
@@ -210,7 +252,7 @@ const getVerifyUser = (req, res) => {
 		email = email.toLowerCase();
 		promiseQuery = toolsLib.database.findOne('user', {
 			where: { email },
-			attributes: ['id', 'email', 'email_verified']
+			attributes: ['id', 'email', 'email_verified', 'phone_number', 'settings', 'meta']
 		}).then(async (user) => {
 			if (user.email_verified) {
 				throw new Error(USER_VERIFIED);
@@ -232,13 +274,24 @@ const getVerifyUser = (req, res) => {
 				}
 				toolsLib.user.storeVerificationCode(user, verificationCode);
 
-				sendEmail(
-					version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
-					email,
-					verificationCode,
-					{},
-					domain
-				);
+				const phoneSignup = toolsLib.user.isPhoneSignupSyntheticUser(user);
+				if (phoneSignup && user.phone_number) {
+					await toolsLib.user.validateSmsVerificationEligibility(user);
+					await toolsLib.verification.sendVerificationCode(user, {
+						action_type: 'signup',
+						verification_code: verificationCode,
+						emailType: version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+						domain
+					});
+				} else {
+					sendEmail(
+						version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+						email,
+						verificationCode,
+						{},
+						domain
+					);
+				}
 			}
 			return res.json({
 				email,
@@ -267,6 +320,53 @@ const getVerifyUser = (req, res) => {
 
 			const messageObj = errorMessageConverter({ message: VERIFICATION_EMAIL_MESSAGE }, req?.auth?.sub?.lang);
 			return res.status(200).json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		});
+};
+
+const requestUserSetEmail = (req, res) => {
+	const { email } = req.swagger.params.data.value;
+	const domain = req.headers['x-real-origin'];
+	const userId = req.auth.sub.id;
+
+	toolsLib.user.requestUserSetEmail(userId, email, domain)
+		.then((result) => {
+			const messageObj = errorMessageConverter(
+				{ message: result.message },
+				req?.auth?.sub?.lang
+			);
+			return res.json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/requestUserSetEmail', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		});
+};
+
+const confirmUserSetEmail = (req, res) => {
+	const { code } = req.swagger.params.data.value;
+	const userId = req.auth.sub.id;
+
+	toolsLib.user.confirmUserSetEmail(userId, code)
+		.then((user) => {
+			return res.json(user);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/confirmUserSetEmail', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({
 				message: messageObj?.message,
 				lang: messageObj?.lang,
 				code: messageObj?.code
@@ -2742,6 +2842,8 @@ module.exports = {
 	signUpUser,
 	signUpUserWithGoogle,
 	getVerifyUser,
+	requestUserSetEmail,
+	confirmUserSetEmail,
 	verifyUser,
 	loginPost,
 	loginWithGoogle,

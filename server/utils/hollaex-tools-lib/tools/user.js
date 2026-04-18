@@ -71,7 +71,14 @@ const {
 	INVALID_AUTOTRADE_CONFIG,
 	GOOGLE_TOKEN_INVALID_ISSUER,
 	GOOGLE_TOKEN_EXPIRED,
-	NOT_AUTHORIZED
+	NOT_AUTHORIZED,
+	PROVIDE_VALID_PHONE,
+	SIGNUP_EMAIL_OR_PHONE_NOT_BOTH,
+	SMS_SIGNUP_NOT_AVAILABLE,
+	NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE,
+	PHONE_NUMBER_EXISTS,
+	SET_EMAIL_NOT_ELIGIBLE,
+	VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -101,6 +108,7 @@ const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, getAssetsPrices, getRoles, getKitSecrets, sendCustomEmail, emailHtmlBoilerplate, getDomain, updateKitConfigSecrets, sleep, getKitCoins, getKitCoin, subscribedToCoin, getQuickTrades } = require('./common');
 const { isSmsPluginActive } = require('./plugin');
+const { sendVerificationCode } = require('./verification');
 const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -139,13 +147,68 @@ const generateVerificationCode = (version) => {
 	return uuid();
 };
 
+const PHONE_SIGNUP_EMAIL_SUFFIX = '_sms';
+
+const syntheticEmailHost = () => {
+	try {
+		const u = new URL(getDomain());
+		return u.hostname || 'localhost';
+	} catch (e) {
+		return 'localhost';
+	}
+};
+
+const normalizeSignupPhoneDigits = (raw) => {
+	if (raw == null) {
+		return null;
+	}
+	const str = String(raw).trim();
+	if (!str) {
+		return null;
+	}
+	const digits = str.replace(/\D/g, '');
+	if (!digits || digits.length < 8 || digits.length > 15) {
+		return null;
+	}
+	return digits;
+};
+
+// Kit DB stores synthetic phone-signup emails as `<digits>_sms` (no @ on purpose
+// so it cannot collide with a real email and the suffix marks the user as a
+// phone-signup synthetic account). The HollaEx network requires a strictly
+// RFC-valid email, so for the network call only we build `<digits>@<host>`.
+const buildSyntheticEmailFromPhoneDigits = (digits) => {
+	return `${digits}${PHONE_SIGNUP_EMAIL_SUFFIX}`.toLowerCase();
+};
+
+const buildSyntheticNetworkEmailFromPhoneDigits = (digits) => {
+	return `${digits}@${syntheticEmailHost()}`.toLowerCase();
+};
+
+const isPhoneSignupSyntheticUser = (user = {}) => {
+	if (!user) {
+		return false;
+	}
+	if (user.meta && user.meta.phone_signup === true) {
+		return true;
+	}
+	if (!user.email || typeof user.email !== 'string') {
+		return false;
+	}
+	return user.email.endsWith(PHONE_SIGNUP_EMAIL_SUFFIX);
+};
+
 const signUpUser = async (email, password, opts = {}, version) => {
 	if (!getKitConfig().new_user_is_activated) {
 		throw new Error(SIGNUP_NOT_AVAILABLE);
 	}
 
-	if (!email || !isEmail(email)) {
-		throw new Error(PROVIDE_VALID_EMAIL);
+	const rawPhone =
+		opts && opts.phone_number != null ? String(opts.phone_number).trim() : '';
+	const isPhoneSignup = rawPhone.length > 0;
+
+	if (isPhoneSignup && email) {
+		throw new Error(SIGNUP_EMAIL_OR_PHONE_NOT_BOTH);
 	}
 
 	const hasPassword = typeof password === 'string' && password.length > 0;
@@ -157,13 +220,36 @@ const signUpUser = async (email, password, opts = {}, version) => {
 		resolvedPassword = password;
 	}
 
-	email = email.toLowerCase();
+	let normalizedPhoneDigits = null;
+	if (isPhoneSignup) {
+		if (!getKitConfig()?.features?.sms_verification) {
+			throw new Error(SMS_SIGNUP_NOT_AVAILABLE);
+		}
+		const smsActive = await isSmsPluginActive();
+		if (!smsActive) {
+			throw new Error(NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE);
+		}
+		if (!isMobilePhone(rawPhone, 'any')) {
+			throw new Error(PROVIDE_VALID_PHONE);
+		}
+		normalizedPhoneDigits = normalizeSignupPhoneDigits(rawPhone);
+		if (!normalizedPhoneDigits) {
+			throw new Error(PROVIDE_VALID_PHONE);
+		}
+		email = buildSyntheticEmailFromPhoneDigits(normalizedPhoneDigits);
+	} else {
+		if (!email || !isEmail(email)) {
+			throw new Error(PROVIDE_VALID_EMAIL);
+		}
+		email = email.toLowerCase();
+	}
+
 	let existingUser = false;
 
 	try {
 		let user = await dbQuery.findOne('user', {
 			where: { email },
-			attributes: ['id', 'email', 'email_verified']
+			attributes: ['id', 'email', 'email_verified', 'phone_number', 'settings', 'meta']
 		});
 
 		if (user) {
@@ -172,19 +258,45 @@ const signUpUser = async (email, password, opts = {}, version) => {
 			}
 			existingUser = true;
 		} else {
+			if (isPhoneSignup) {
+				// Synthetic email is deterministic from the digits, so an
+				// unverified-resend on the same phone is already caught by the
+				// email lookup above. This guards against a different account
+				// (e.g. one that added this phone number later) already owning
+				// the same `phone_number` value.
+				const phoneTaken = await dbQuery.findOne('user', {
+					where: { phone_number: normalizedPhoneDigits },
+					attributes: ['id']
+				});
+				if (phoneTaken) {
+					throw new Error(PHONE_NUMBER_EXISTS);
+				}
+			}
 			user = await getModel('sequelize').transaction(async (transaction) => {
+				const userSettings = {
+					...INITIAL_SETTINGS(),
+					...(isPhoneSignup ? { verification_method: 'sms' } : {})
+				};
+				const userMeta = isPhoneSignup
+					? { ...(isPlainObject(opts.meta) ? opts.meta : {}), phone_signup: true }
+					: (isPlainObject(opts.meta) ? opts.meta : {});
+
 				const createdUser = await getModel('user').create({
 					email,
 					password: resolvedPassword,
 					verification_level: 1,
 					email_verified: opts.email_verified || false,
-					settings: INITIAL_SETTINGS(),
-					// Optional OAuth fields (ignored unless provided)
+					settings: userSettings,
+					phone_number: isPhoneSignup ? normalizedPhoneDigits : '',
+					meta: userMeta,
 					google_id: opts.google_id || null
 				}, { transaction });
 
+				const networkEmail = isPhoneSignup
+					? buildSyntheticNetworkEmailFromPhoneDigits(normalizedPhoneDigits)
+					: email;
 				const [networkUser, updatedUser] = await all([
-					createUserOnNetwork(email),
+					createUserOnNetwork(networkEmail),
 					createdUser
 				]);
 
@@ -207,12 +319,20 @@ const signUpUser = async (email, password, opts = {}, version) => {
 			}));
 		}
 
-		sendEmail(
-			version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
-			email,
-			verificationCode,
-			{}
-		);
+		if (isPhoneSignup) {
+			await sendVerificationCode(user, {
+				action_type: 'signup',
+				verification_code: verificationCode,
+				emailType: version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP
+			});
+		} else {
+			sendEmail(
+				version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+				email,
+				verificationCode,
+				{}
+			);
+		}
 		if (!existingUser && opts.referral && isString(opts.referral)) {
 			checkAffiliation(opts.referral, user.id);
 		}
@@ -234,7 +354,7 @@ const verifyUser = (email, code, domain) => {
 			return all([
 				verificationCode,
 				dbQuery.findOne('user',
-					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified'] }),
+					{ where: { id: verificationCode.id }, attributes: ['id', 'email', 'settings', 'network_id', 'email_verified', 'meta'] }),
 			]);
 		})
 		.then(([verificationCode, user]) => {
@@ -271,13 +391,17 @@ const verifyUser = (email, code, domain) => {
 					user_id: user.id
 				}
 			}));
-			sendEmail(
-				MAILTYPE.WELCOME,
-				user.email,
-				{},
-				user.settings,
-				domain
-			);
+			const meta = user.meta || (user.get && user.get('meta'));
+			const skipWelcome = meta && meta.phone_signup === true;
+			if (!skipWelcome) {
+				sendEmail(
+					MAILTYPE.WELCOME,
+					user.email,
+					{},
+					user.settings,
+					domain
+				);
+			}
 			return user;
 		});
 };
@@ -1302,7 +1426,7 @@ const validateSmsVerificationEligibility = async (user) => {
 	}
 	const active = await isSmsPluginActive();
 	if (!active) {
-		throw new Error('No active SMS plugin is installed on this exchange');
+		throw new Error(NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE);
 	}
 };
 
@@ -1310,6 +1434,12 @@ const updateUserSettings = async (userOpts = {}, settings = {}) => {
 	const user = await getUser(userOpts, false);
 	if (!user) {
 		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (has(settings, 'verification_method') && settings.verification_method === 'email') {
+		if (isPhoneSignupSyntheticUser(user.dataValues)) {
+			throw new Error(VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL);
+		}
 	}
 
 	if (has(settings, 'verification_method') && settings.verification_method === 'sms') {
@@ -1353,8 +1483,142 @@ const INITIAL_SETTINGS = () => {
 		chat: {
 			set_username: false
 		},
-		watchlist: []
+		watchlist: [],
+		verification_method: 'email'
 	};
+};
+
+const SET_EMAIL_REDIS_PREFIX = 'set_email:user:';
+
+const safeEqualStrings = (a, b) => {
+	if (typeof a !== 'string' || typeof b !== 'string') {
+		return false;
+	}
+	const aBuf = Buffer.from(a, 'utf8');
+	const bBuf = Buffer.from(b, 'utf8');
+	if (aBuf.length !== bBuf.length) {
+		return false;
+	}
+	return crypto.timingSafeEqual(aBuf, bBuf);
+};
+
+const requestUserSetEmail = async (kitUserId, newEmail, domain) => {
+	const user = await getUser({ kit_id: kitUserId }, false);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	if (!getKitConfig()?.features?.sms_verification) {
+		throw new Error(SMS_SIGNUP_NOT_AVAILABLE);
+	}
+	const smsActive = await isSmsPluginActive();
+	if (!smsActive) {
+		throw new Error(NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE);
+	}
+	if (!isPhoneSignupSyntheticUser(user.dataValues)) {
+		throw new Error(SET_EMAIL_NOT_ELIGIBLE);
+	}
+	newEmail = newEmail?.toLowerCase()?.trim();
+	if (!newEmail || !isEmail(newEmail)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+	if (newEmail === user.email) {
+		throw new Error(EMAIL_IS_SAME);
+	}
+	const isExists = await dbQuery.findOne('user', {
+		where: { email: newEmail },
+		attributes: ['id']
+	});
+	if (isExists) {
+		throw new Error(EMAIL_EXISTS);
+	}
+	const code = crypto.randomInt(100000, 1000000).toString();
+	await client.setexAsync(
+		`${SET_EMAIL_REDIS_PREFIX}${user.id}`,
+		5 * 60,
+		JSON.stringify({ code, new_email: newEmail })
+	);
+	sendEmail(MAILTYPE.SET_EMAIL_CODE, newEmail, code, user.settings, domain);
+	return { message: 'Verification code sent' };
+};
+
+const confirmUserSetEmail = async (kitUserId, code) => {
+	const user = await getUser({ kit_id: kitUserId }, false);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	const key = `${SET_EMAIL_REDIS_PREFIX}${user.id}`;
+	const raw = await client.getAsync(key);
+	if (!raw) {
+		throw new Error(VERIFICATION_CODE_EXPIRED);
+	}
+	let pending;
+	try {
+		pending = JSON.parse(raw);
+	} catch (e) {
+		await client.delAsync(key);
+		throw new Error(INVALID_VERIFICATION_CODE);
+	}
+	if (!pending || typeof pending.code !== 'string') {
+		await client.delAsync(key);
+		throw new Error(INVALID_VERIFICATION_CODE);
+	}
+	if (typeof code !== 'string' || !safeEqualStrings(pending.code, code)) {
+		throw new Error(INVALID_VERIFICATION_CODE);
+	}
+	const { new_email: newEmail } = pending;
+	if (!isPhoneSignupSyntheticUser(user.dataValues)) {
+		throw new Error(SET_EMAIL_NOT_ELIGIBLE);
+	}
+	if (!newEmail || !isEmail(newEmail)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+	const isExists = await dbQuery.findOne('user', {
+		where: { email: newEmail },
+		attributes: ['id']
+	});
+	if (isExists) {
+		throw new Error(EMAIL_EXISTS);
+	}
+
+	const nextMeta = { ...(user.meta || {}) };
+	delete nextMeta.phone_signup;
+
+	// Re-derive username from the new real email so the user no longer carries
+	// the phone-digit username assigned at synthetic signup time.
+	const atIndex = newEmail.indexOf('@');
+	const nextUsername = atIndex > 0 ? newEmail.substr(0, atIndex) : newEmail;
+
+	const updated = await user.update(
+		{
+			email: newEmail,
+			email_verified: true,
+			meta: nextMeta,
+			username: nextUsername
+		},
+		{ fields: ['email', 'email_verified', 'meta', 'username'], returning: true }
+	);
+	// Revoke sessions only after the DB update succeeds, so a failed update
+	// doesn't log the user out for nothing. Failures here are logged but not
+	// surfaced — the email change has already been committed.
+	try {
+		await revokeAllUserSessions(user.id);
+	} catch (err) {
+		loggerUser.error(
+			'tools/user/confirmUserSetEmail revokeAllUserSessions failed',
+			err.message
+		);
+	}
+	await client.delAsync(key);
+
+	publisher.publish(EVENTS_CHANNEL, JSON.stringify({
+		type: 'user',
+		data: {
+			action: 'set_email',
+			user_id: user.id
+		}
+	}));
+
+	return omitUserFields(updated.dataValues);
 };
 
 const verifyUserEmailByKitId = (kitId) => {
@@ -5231,6 +5495,10 @@ module.exports = {
 	changeKitUserEmail,
 	storeVerificationCode,
 	signUpUser,
+	requestUserSetEmail,
+	confirmUserSetEmail,
+	isPhoneSignupSyntheticUser,
+	validateSmsVerificationEligibility,
 	verifyUser,
 	getAllAffiliations,
 	applyEarningRate,

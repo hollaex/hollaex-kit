@@ -293,12 +293,80 @@ $placeholder--font-weight: bold;
 	}
 }
 
+.segmented-option-field {
+	display: inline-flex;
+	align-items: stretch;
+	border: $toggle-border solid $colors-main-border;
+	border-radius: calc(#{$toggle-size} + #{$toggle-border});
+	overflow: hidden;
+	background: transparent;
+	flex-shrink: 0;
+	max-width: 100%;
+
+	&__row {
+		flex-wrap: nowrap;
+		gap: 0.5rem;
+	}
+
+	&__segment {
+		min-width: 3.35rem;
+		padding: #{$toggle-margin} 0.45rem;
+		font-size: 11px;
+		font-family: $raleway-medium--font-family;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		border: none;
+		background: transparent;
+		color: $colors-deactivate-color2;
+		cursor: pointer;
+		transition: background-color 0.2s ease, color 0.2s ease;
+		line-height: #{$toggle-size};
+
+		&:not(:last-child) {
+			border-right: 1px solid $colors-main-border;
+		}
+
+		&--active {
+			background-color: $colors-main-black;
+			color: $app-background-color;
+			font-family: $raleway-extrabold--font-family;
+			font-weight: bold;
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: 0.4;
+		}
+
+		&:focus {
+			outline: none;
+			box-shadow: inset 0 0 0 1px $colors-notifications-blue;
+		}
+
+		&:focus:not(:focus-visible) {
+			box-shadow: none;
+		}
+	}
+
+	&__tooltip-anchor {
+		display: inline-flex;
+		vertical-align: middle;
+		max-width: 100%;
+	}
+}
+
 .toggle-disabled {
 	cursor: not-allowed;
 	opacity: 0.35;
 }
 
 .layout-mobile {
+	.segmented-option-field__segment {
+		min-width: 3rem;
+		padding: #{$toggle-margin} 0.35rem;
+		font-size: 10px;
+	}
+
 	.toggle_button-wrapper {
 		.toggle-content {
 			.toggle-action_button {

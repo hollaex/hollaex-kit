@@ -14,6 +14,19 @@ exports.USER_NOT_ACTIVATED = 'User is not activated';
 exports.USER_EXISTS = 'User already exists';
 exports.USER_REGISTERED = 'User successfully registered';
 exports.USER_REGISTERED_EMAIL_CODE = 'Please confirm the verification code sent to your email';
+exports.USER_REGISTERED_SMS_CODE = 'Please confirm the verification code sent to your phone';
+exports.SIGNUP_EMAIL_OR_PHONE_NOT_BOTH =
+	'Provide either email or phone_number for sign up, not both';
+exports.SMS_SIGNUP_NOT_AVAILABLE =
+	'Phone sign up requires SMS verification to be enabled on this exchange';
+exports.NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE =
+	'No active SMS plugin is installed on this exchange';
+exports.PHONE_NUMBER_EXISTS =
+	'An account with this phone number already exists';
+exports.SET_EMAIL_NOT_ELIGIBLE =
+	'Adding a verified email this way is only available for phone sign-up accounts';
+exports.VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL =
+	'Set a real email address on your account to enable email verification';
 exports.INVALID_CREDENTIALS = 'Incorrect credentials.';
 exports.USER_VERIFIED = 'User is now verified';
 // Google OAuth messages

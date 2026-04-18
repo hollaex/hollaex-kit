@@ -43,11 +43,19 @@ definitions:
   SignupAuthentication:
     type: object
     required:
-      - email
+      - password
+    description: >
+      Email signup requires `email`. Phone signup (SMS verification) requires `phone_number`
+      and must not include `email`. Phone signup requires exchange `sms_verification` feature
+      and an active SMS (phone) plugin.
     properties:
       email:
         type: string
         maxLength: 256
+      phone_number:
+        type: string
+        maxLength: 32
+        description: E.164 or local phone for SMS-based signup (optional; mutually exclusive with email)
       password:
         type: string
         format: password
@@ -55,12 +63,34 @@ definitions:
       referral:
         type: string
         maxLength: 256
+      captcha:
+        type: string
+        maxLength: 2048
       version:
         type: string
         enum:
           - v2
           - v3
           - v4
+  SetEmailRequest:
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
+        format: email
+        maxLength: 256
+        description: New real email address to confirm (two-step flow; code sent to this address)
+  SetEmailConfirm:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+        maxLength: 64
+        description: Verification code received by email
   GoogleAuthentication:
     type: object
     required:

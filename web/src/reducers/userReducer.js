@@ -132,6 +132,7 @@ const INITIAL_STATE = {
 			popup_warning: true,
 		},
 		apps: [],
+		verification_method: 'email',
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,

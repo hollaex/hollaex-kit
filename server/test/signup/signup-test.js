@@ -20,6 +20,20 @@ describe('Signup Flow', async () => {
         response.should.be.json;
     });
 
+    it('Integration Test - should reject signup with both email and phone_number', async () => {
+        const testUser = {
+            email: getNewUserCredentials().email,
+            phone_number: '+15551234567',
+            password: getNewUserCredentials().password,
+            long_term: true
+        };
+        const response = await request()
+            .post(`/v2/signup/`)
+            .send(testUser);
+        response.should.have.status(400);
+        response.should.be.json;
+    });
+
     it('Integration Test -should return error for wrong email', async () => {
         const testUser = {
             email: `${generateFuzz(5)}`,
