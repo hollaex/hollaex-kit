@@ -203,6 +203,12 @@ paths:
           required: false
           type: string
           maxLength: 256
+        - name: phone_number
+          in: query
+          description: User's phone number (alternative to email for phone-signup users)
+          required: false
+          type: string
+          maxLength: 32
         - name: resend
           in: query
           description: Resend email to user
@@ -262,6 +268,10 @@ paths:
               email:
                 type: string
                 maxLength: 256
+              phone_number:
+                type: string
+                maxLength: 32
+                description: Phone number (alternative to email for phone-signup users)
       responses:
         200:
           description: Success

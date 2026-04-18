@@ -611,7 +611,12 @@
 			"POPUP_ORDER_COMPLETED": "أظهر نافذة منبثقة عند اكتمال الطلب",
 			"POPUP_ORDER_PARTIALLY_FILLED": "أظهر نافذة منبثقة عند تنفيذ الطلب جزئيًا",
 			"POPUP_NEW_ORDER_CREATED": "إظهار النافذة المنبثقة عند تقديم طلب جديد",
-			"POPUP_ORDER_CANCELLED": "إظهار النافذة المنبثقة عند إلغاء الطلبات"
+			"POPUP_ORDER_CANCELLED": "إظهار النافذة المنبثقة عند إلغاء الطلبات",
+			"VERIFICATION_METHOD": "طريقة التحقق",
+			"VERIFICATION_METHOD_EMAIL": "البريد الإلكتروني",
+			"VERIFICATION_METHOD_SMS": "رسالة نصية",
+			"VERIFICATION_SMS_REQUIRES_PHONE": "أضف رقم هاتف إلى حسابك لتفعيل التحقق عبر الرسائل القصيرة.",
+			"VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL": "عيّن عنوان بريد إلكتروني حقيقي لتمكين التحقق عبر البريد."
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "جميع إشارات الصوت",

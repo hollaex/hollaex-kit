@@ -185,6 +185,13 @@ export const constructSettings = (state = {}, settings) => {
 		settingsData.theme = settings.theme;
 	}
 
+	if (
+		settings.verification_method === 'email' ||
+		settings.verification_method === 'sms'
+	) {
+		settingsData.verification_method = settings.verification_method;
+	}
+
 	return settingsData;
 };
 

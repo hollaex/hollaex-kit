@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>${name} 様</p><p>登録を完了するには、以下のコードを使用してメールの確認を行ってください。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>このコードを登録ページに入力して登録を完了してください。コードは期限付きで有効です。</p><p>質問がある場合は、このメールに返信してください。</p><p>よろしくお願いいたします。<br />${api_name}チーム</p></div>",
 			"title": "サインアップ確認コード"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>${name} 様</p><p>取引所アカウントにこのメールアドレスを追加するリクエストを受け取りました。下記の確認コードをご使用のうえ、確認を完了してください。</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>このコードは数分で期限切れとなります。この変更をリクエストしていない場合は、このメールを無視してください。</p><p>よろしくお願いいたします<br />${api_name} チーム</p></div>",
+			"title": "新しいメールアドレスを確認してください"
 		}
 	}
 }

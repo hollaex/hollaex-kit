@@ -43,6 +43,20 @@ import { isLoggedIn } from 'utils/token';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
+const isPhoneSignupSyntheticEmailUser = (user = {}) => {
+	if (!user) {
+		return false;
+	}
+	if (user.meta && user.meta.phone_signup === true) {
+		return true;
+	}
+	const e = user.email;
+	if (!e || typeof e !== 'string') {
+		return false;
+	}
+	return e.endsWith('_sms');
+};
+
 class UserSettings extends Component {
 	state = {
 		sections: [],
@@ -189,9 +203,6 @@ class UserSettings extends Component {
 				label: value,
 			})),
 		});
-		const usernameFormValues = generateUsernameFormValues(
-			settings.chat.set_username
-		);
 		const languageFormValue = generateLanguageFormValues(
 			constants.valid_languages
 		);
@@ -202,12 +213,16 @@ class UserSettings extends Component {
 		const smsPluginEnabled = (plugins || []).some(
 			(plugin) => plugin?.type === 'phone'
 		);
+		const usernameFormValues = generateUsernameFormValues(
+			settings.chat.set_username
+		);
 		const notificationFormValues = generateNotificationFormValues(
 			DEFAULT_TOGGLE_OPTIONS,
 			{
 				smsFeatureEnabled: !!features?.sms_verification,
 				smsPluginEnabled,
 				hasPhoneNumber: !!user?.phone_number,
+				isSyntheticEmail: isPhoneSignupSyntheticEmailUser(user),
 			}
 		);
 		const audioFormValues = generateAudioCueFormValues(DEFAULT_TOGGLE_OPTIONS);
@@ -252,7 +267,12 @@ class UserSettings extends Component {
 						formFields={notificationFormValues}
 						initialValues={{
 							...settings.notification,
-							verification_method: settings.verification_method || 'email',
+							...(notificationFormValues.verification_method
+								? {
+										verification_method:
+											settings.verification_method || 'email',
+								  }
+								: {}),
 						}}
 						ICONS={ICONS}
 					/>
@@ -384,7 +404,14 @@ class UserSettings extends Component {
 			case 'notification': {
 				const { verification_method, ...notificationValues } = formProps;
 				settings.notification = notificationValues;
-				if (verification_method) {
+				const blockEmailForSynthetic =
+					verification_method === 'email' &&
+					isPhoneSignupSyntheticEmailUser(this.props.user);
+				if (
+					verification_method !== undefined &&
+					verification_method !== null &&
+					!blockEmailForSynthetic
+				) {
 					settings.verification_method = verification_method;
 				}
 				break;
@@ -442,10 +469,10 @@ class UserSettings extends Component {
 	};
 
 	onSubmitUsername = (values) => {
-		return setUsername(values)
+		return setUsername({ username: values.username })
 			.then(() => {
 				this.props.setUsernameStore(values.username);
-				this.onSubmitSettings({ set_username: true }, 'chat');
+				return this.onSubmitSettings({ set_username: true }, 'chat');
 			})
 			.catch((err) => {
 				const _error =

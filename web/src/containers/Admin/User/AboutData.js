@@ -472,6 +472,7 @@ const AboutData = ({
 	flagUser,
 	freezeAccount,
 	verifyEmail,
+	verifyPhone,
 	recoverUser,
 	deleteUser,
 	onChangeSuccess,
@@ -751,6 +752,39 @@ const AboutData = ({
 							</Fragment>
 						)}
 					</div>
+					{userData.phone_number ? (
+						<div className="about-info d-flex align-items-center justify-content-center">
+							{userData.phone_number_verified ? (
+								<Fragment>
+									<div className="about-info-content" id="user-phone-verified">
+										<div>Phone verification</div>
+										<div>Verified</div>
+									</div>
+									<div className={'about-icon-active'}>
+										<ReactSVG
+											src={STATIC_ICONS.USER_EMAIL_VERIFIED}
+											className={'about-icon'}
+										/>
+									</div>
+								</Fragment>
+							) : (
+								<Fragment>
+									<div>
+										<div>Phone verification</div>
+										<div className="info-link" onClick={verifyPhone}>
+											Mark as verified
+										</div>
+									</div>
+									<div>
+										<ReactSVG
+											src={STATIC_ICONS.USER_EMAIL_UNVERIFIED}
+											className={'about-icon'}
+										/>
+									</div>
+								</Fragment>
+							)}
+						</div>
+					) : null}
 					<div className="about-info d-flex align-items-center justify-content-center">
 						{userData.otp_enabled ? (
 							<Fragment>

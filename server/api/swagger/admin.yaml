@@ -1081,6 +1081,10 @@ paths:
           required: false
           type: boolean
         - in: query
+          name: phone_number_verified
+          required: false
+          type: boolean
+        - in: query
           name: otp_enabled
           required: false
           type: boolean
@@ -2263,8 +2267,43 @@ paths:
         - in: body
           name: data
           description: Upgrade data
+          required: true
           schema:
             type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+  /admin/verify-phone:
+    x-swagger-router-controller: admin
+    post:
+      description: Verify phone number of user
+      operationId: verifyPhoneUser
+      tags:
+        - Admin
+      parameters:
+        - in: body
+          name: data
+          description: Upgrade data
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
             properties:
               user_id:
                 type: integer
@@ -5067,6 +5106,10 @@ paths:
           type: number
         - in: query
           name: email_verified
+          required: false
+          type: boolean
+        - in: query
+          name: phone_number_verified
           required: false
           type: boolean
         - in: query

@@ -124,14 +124,14 @@
 			"html": "<div><p><p>Lieber ${name} </p></p><p>Ihr Konto wurde wegen zu vieler Anmeldeversuche für ${login_timeout} Minuten gesperrt.<br />Wenn ja Machen Sie diese Anmeldeversuche nicht, melden Sie dies sofort und ändern Sie Ihre Anmeldeinformationen so schnell wie möglich.</p><p> Grüße<br> ${api_name} Team </p></div>",
 			"title": "Ihr Konto ist gesperrt"
 		},
-        "USER_DELETED": {
-            "html": "<div><p><p>Lieber ${name} </p></p><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
-            "title": "Antrag auf Kontolöschung"
-        },
-        "SUBACCOUNT_REMOVED": {
-            "html": "<div><p>Sehr geehrte/r ${name}</p><p>Ihr Unterkonto <strong>${sub_email}</strong> wurde aus Ihrem Konto entfernt.</p><p>Hinweis: Das Unterkonto wurde deaktiviert und hat keinen Zugriff mehr auf die Plattform. Wenn dies nicht beabsichtigt war, kontaktieren Sie bitte den Support.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
-            "title": "Unterkonto entfernt"
-        },
+		"USER_DELETED": {
+			"html": "<div><p><p>Lieber ${name} </p></p><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
+			"title": "Antrag auf Kontolöschung"
+		},
+		"SUBACCOUNT_REMOVED": {
+			"html": "<div><p>Sehr geehrte/r ${name}</p><p>Ihr Unterkonto <strong>${sub_email}</strong> wurde aus Ihrem Konto entfernt.</p><p>Hinweis: Das Unterkonto wurde deaktiviert und hat keinen Zugriff mehr auf die Plattform. Wenn dies nicht beabsichtigt war, kontaktieren Sie bitte den Support.</p><p> Mit freundlichen Grüßen<br> ${api_name} team </p></div>",
+			"title": "Unterkonto entfernt"
+		},
 		"OTP_DISABLED": {
 			"html": "<div> <p> Lieber/Liebe ${name} </p> <p> Wir haben festgestellt, dass Ihre <b>Zwei-Faktor-Authentifizierung (2FA) deaktiviert wurde</b> auf Ihrem Konto. Es wird dringend empfohlen, die 2FA erneut zu aktivieren, um Ihr Konto zu sichern.</p> <div> <div>Zeit: ${time}</div> <div>Land: ${country}</div> <div>IP-Adresse: ${ip}</div> </div> <p> Wenn dies nicht Sie waren, kontaktieren Sie uns bitte sofort. </p> <p> Mit freundlichen Grüßen<br> Team ${api_name} </p> </div>",
 			"title": "OTP Deaktiviert"
@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>Sehr geehrte/r ${name}</p><p>Zur Abschließung Ihrer Registrierung verifizieren Sie bitte Ihre E‑Mail-Adresse mit dem folgenden Code.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Geben Sie diesen Code auf der Registrierungsseite ein, um sich zu registrieren. Der Code ist nur begrenzt gültig.</p><p>Bei Fragen antworten Sie gerne einfach auf diese E‑Mail.</p><p>Mit freundlichen Grüßen<br>${api_name}-Team</p></div>",
 			"title": "Registrierung – Bestätigungscode"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>Hallo ${name}</p><p>Sie haben angefordert, diese E-Mail-Adresse zu Ihrem Börsen-Konto hinzuzufügen. Verwenden Sie den unten stehenden Bestätigungscode, um zu bestätigen.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>Dieser Code läuft in wenigen Minuten ab. Wenn Sie diese Änderung nicht angefordert haben, können Sie diese E-Mail ignorieren.</p><p>Mit freundlichen Grüßen<br />Das ${api_name}-Team</p></div>",
+			"title": "Bestätigen Sie Ihre neue E-Mail-Adresse"
 		}
 	}
 }

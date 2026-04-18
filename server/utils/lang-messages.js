@@ -2,6 +2,7 @@
 
 const messages = {
 	'Missing order': {
+		'code': 10,
 		'en': 'Missing order',
 		'de': 'Bestellung fehlt',
 		'es': 'Pedido perdido',
@@ -21,6 +22,7 @@ const messages = {
 		'zh': '缺失订单'
 	},
 	'Invalid user.': {
+		'code': 11,
 		'en': 'Invalid user.',
 		'de': 'Ungültiger Benutzer.',
 		'es': 'Usuario no válido.',
@@ -40,6 +42,7 @@ const messages = {
 		'zh': '无效用户。'
 	},
 	'User not found': {
+		'code': 12,
 		'en': 'User not found',
 		'de': 'Benutzer nicht gefunden',
 		'es': 'Usuario no encontrado',
@@ -59,6 +62,7 @@ const messages = {
 		'zh': '找不到用户'
 	},
 	'Password updated.': {
+		'code': 13,
 		'en': 'Password updated.',
 		'de': 'Passwort aktualisiert.',
 		'es': 'Contraseña actualizada.',
@@ -78,6 +82,7 @@ const messages = {
 		'zh': '密码已更新。'
 	},
 	'User already recovered': {
+		'code': 14,
 		'en': 'User already recovered',
 		'de': 'Benutzer bereits wiederhergestellt',
 		'es': 'Usuario ya recuperado',
@@ -97,6 +102,7 @@ const messages = {
 		'zh': '用户已恢复'
 	},
 	'User is not registered on the network': {
+		'code': 15,
 		'en': 'User is not registered on the network',
 		'de': 'Benutzer ist nicht im Netzwerk registriert',
 		'es': 'El usuario no está registrado en la red',
@@ -116,6 +122,7 @@ const messages = {
 		'zh': '用户未在网络上注册'
 	},
 	'User email is not verified': {
+		'code': 16,
 		'en': 'User email is not verified',
 		'de': 'Die Benutzer-E-Mail ist nicht verifiziert',
 		'es': 'El correo electrónico del usuario no está verificado',
@@ -135,6 +142,7 @@ const messages = {
 		'zh': '用户电子邮件未经验证'
 	},
 	'Sign up not available': {
+		'code': 17,
 		'en': 'Sign up not available',
 		'de': 'Registrierung nicht verfügbar',
 		'es': 'Registro no disponible',
@@ -154,6 +162,7 @@ const messages = {
 		'zh': '注册不可用'
 	},
 	'User is not verified': {
+		'code': 18,
 		'en': 'User is not verified',
 		'de': 'Benutzer ist nicht verifiziert',
 		'es': 'El usuario no está verificado',
@@ -173,6 +182,7 @@ const messages = {
 		'zh': '用户未验证'
 	},
 	'User is not activated': {
+		'code': 19,
 		'en': 'User is not activated',
 		'de': 'User is not activated',
 		'es': 'User is not activated',
@@ -192,6 +202,7 @@ const messages = {
 		'zh': 'User is not activated'
 	},
 	'User already exists': {
+		'code': 20,
 		'en': 'User already exists',
 		'de': 'Benutzer existiert bereits',
 		'es': 'El usuario ya existe',
@@ -211,6 +222,7 @@ const messages = {
 		'zh': '用户已存在'
 	},
 	'User successfully registered': {
+		'code': 21,
 		'en': 'User successfully registered',
 		'de': 'Benutzer erfolgreich registriert',
 		'es': 'Usuario registrado exitosamente',
@@ -230,6 +242,7 @@ const messages = {
 		'zh': '用户注册成功'
 	},
 	'Incorrect credentials.': {
+		'code': 22,
 		'en': 'Incorrect credentials.',
 		'de': 'Falsche Anmeldeinformationen.',
 		'es': 'Credenciales incorrectas.',
@@ -249,6 +262,7 @@ const messages = {
 		'zh': '凭证不正确。'
 	},
 	'Incorrect credentials. You have 5 more attempts left': {
+		'code': 23,
 		'en': 'Incorrect credentials. You have 5 more attempts left',
 		'de': 'Falsche Anmeldeinformationen. Sie haben noch 5 Versuche übrig',
 		'es': 'Credenciales incorrectas. Te quedan 5 intentos más',
@@ -268,6 +282,7 @@ const messages = {
 		'zh': '凭证不正确。您还有5次尝试机会'
 	},
 	'Incorrect credentials. You have 4 more attempts left': {
+		'code': 24,
 		'en': 'Incorrect credentials. You have 4 more attempts left',
 		'de': 'Falsche Anmeldeinformationen. Sie haben noch 4 Versuche übrig',
 		'es': 'Credenciales incorrectas. Te quedan 4 intentos más',
@@ -287,6 +302,7 @@ const messages = {
 		'zh': '凭证不正确。您还有4次尝试机会'
 	},
 	'Incorrect credentials. You have 3 more attempts left': {
+		'code': 25,
 		'en': 'Incorrect credentials. You have 3 more attempts left',
 		'de': 'Falsche Anmeldeinformationen. Sie haben noch 3 Versuche übrig',
 		'es': 'Credenciales incorrectas. Te quedan 3 intentos más',
@@ -306,6 +322,7 @@ const messages = {
 		'zh': '凭证不正确。您还有3次尝试机会'
 	},
 	'Incorrect credentials. You have 2 more attempts left': {
+		'code': 26,
 		'en': 'Incorrect credentials. You have 2 more attempts left',
 		'de': 'Falsche Anmeldeinformationen. Sie haben noch 2 Versuche übrig',
 		'es': 'Credenciales incorrectas. Te quedan 2 intentos más',
@@ -325,6 +342,7 @@ const messages = {
 		'zh': '凭证不正确。您还有2次尝试机会'
 	},
 	'Incorrect credentials. You have 1 more attempt left': {
+		'code': 27,
 		'en': 'Incorrect credentials. You have 1 more attempt left',
 		'de': 'Falsche Anmeldeinformationen. Sie haben noch 1 Versuche übrig',
 		'es': 'Credenciales incorrectas. Te quedan 1 intentos más',
@@ -344,6 +362,7 @@ const messages = {
 		'zh': '凭证不正确。您还有1次尝试机会'
 	},
 	'User is now verified': {
+		'code': 28,
 		'en': 'User is now verified',
 		'de': 'Benutzer ist jetzt verifiziert',
 		'es': 'El usuario está ahora verificado',
@@ -363,6 +382,7 @@ const messages = {
 		'zh': '用户现在已验证'
 	},
 	'Invalid password. It has to contain at least 8 characters, at least one digit and one character.': {
+		'code': 29,
 		'en': 'Invalid password. It has to contain at least 8 characters, at least one digit and one character.',
 		'de': 'Ungültiges Passwort. Es muss mindestens 8 Zeichen, mindestens eine Ziffer und ein Zeichen enthalten.',
 		'es': 'Contraseña no válida. Debe contener al menos 8 caracteres, al menos un dígito y un carácter.',
@@ -382,6 +402,7 @@ const messages = {
 		'zh': '无效密码。 必须至少包含8个字符，至少一个数字和一个字符。'
 	},
 	'A verification code has been sent to your email with the code if your email is in the system': {
+		'code': 30,
 		'en': 'A verification code has been sent to your email with the code if your email is in the system',
 		'de': 'Ein Bestätigungscode wurde an Ihre E-Mail gesendet, falls Ihre E-Mail im System vorhanden ist',
 		'es': 'Se ha enviado un código de verificación a su correo electrónico con el código si su correo electrónico está en el sistema',
@@ -401,6 +422,7 @@ const messages = {
 		'zh': '如果您的电子邮件在系统中，验证代码已发送到您的电子邮件中'
 	},
 	'Please provide a valid email': {
+		'code': 31,
 		'en': 'Please provide a valid email',
 		'de': 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
 		'es': 'Por favor, proporcione un correo electrónico válido',
@@ -420,6 +442,7 @@ const messages = {
 		'zh': '请提供有效的电子邮件地址'
 	},
 	'Provide a valid email or a valid verification code': {
+		'code': 32,
 		'en': 'Provide a valid email or a valid verification code',
 		'de': 'Geben Sie eine gültige E-Mail-Adresse oder einen gültigen Bestätigungscode ein',
 		'es': 'Proporcione un correo electrónico válido o un código de verificación válido',
@@ -439,6 +462,7 @@ const messages = {
 		'zh': '提供有效的电子邮件地址或有效的验证代码'
 	},
 	'Invalid verification code': {
+		'code': 33,
 		'en': 'Invalid verification code',
 		'de': 'Ungültiger Bestätigungscode',
 		'es': 'Código de verificación no válido',
@@ -458,6 +482,7 @@ const messages = {
 		'zh': '无效的验证代码'
 	},
 	'Deposit confirmed': {
+		'code': 34,
 		'en': 'Deposit confirmed',
 		'de': 'Einzahlung bestätigt',
 		'es': 'Depósito confirmado',
@@ -477,6 +502,7 @@ const messages = {
 		'zh': '存款已确认'
 	},
 	'Deposit already confirmed': {
+		'code': 35,
 		'en': 'Deposit already confirmed',
 		'de': 'Einzahlung bereits bestätigt',
 		'es': 'Depósito ya confirmado',
@@ -496,6 +522,7 @@ const messages = {
 		'zh': '存款已经确认'
 	},
 	'Error requesting the deposit information': {
+		'code': 36,
 		'en': 'Error requesting the deposit information',
 		'de': 'Fehler beim Abrufen der Einzahlungsinformationen',
 		'es': 'Error al solicitar la información de depósito',
@@ -515,6 +542,7 @@ const messages = {
 		'zh': '请求存款信息时发生错误'
 	},
 	'Amount is out of the limits': {
+		'code': 37,
 		'en': 'Amount is out of the limits',
 		'de': 'Betrag überschreitet die Grenzen',
 		'es': 'El monto está fuera de los límites',
@@ -534,6 +562,7 @@ const messages = {
 		'zh': '金额超出了限制'
 	},
 	'Invalid status': {
+		'code': 38,
 		'en': 'Invalid status',
 		'de': 'Ungültiger Status',
 		'es': 'Estado no válido',
@@ -553,6 +582,7 @@ const messages = {
 		'zh': '无效状态'
 	},
 	'Error confirming the deposit': {
+		'code': 39,
 		'en': 'Error confirming the deposit',
 		'de': 'Fehler beim Bestätigen der Einzahlung',
 		'es': 'Error al confirmar el depósito',
@@ -572,6 +602,7 @@ const messages = {
 		'zh': '确认存款时发生错误'
 	},
 	'Error confirming the payment': {
+		'code': 40,
 		'en': 'Error confirming the payment',
 		'de': 'Fehler bei der Bestätigung der Zahlung',
 		'es': 'Error al confirmar el pago',
@@ -591,6 +622,7 @@ const messages = {
 		'zh': '确认付款时出错'
 	},
 	'User can not perform this operation. Required user data has not been verified': {
+		'code': 41,
 		'en': 'User can not perform this operation. Required user data has not been verified',
 		'de': 'Der Benutzer kann diese Operation nicht ausführen. Erforderliche Benutzerdaten wurden nicht verifiziert',
 		'es': 'El usuario no puede realizar esta operación. Los datos de usuario requeridos no han sido verificados',
@@ -610,6 +642,7 @@ const messages = {
 		'zh': '用户无法执行此操作。必需的用户数据尚未验证'
 	},
 	'Deposit request confirmed': {
+		'code': 42,
 		'en': 'Deposit request confirmed',
 		'de': 'Einzahlungsanforderung bestätigt',
 		'es': 'Solicitud de depósito confirmada',
@@ -629,6 +662,7 @@ const messages = {
 		'zh': '存款请求已确认'
 	},
 	'Deposit completed': {
+		'code': 43,
 		'en': 'Deposit completed',
 		'de': 'Einzahlung abgeschlossen',
 		'es': 'Depósito completado',
@@ -648,6 +682,7 @@ const messages = {
 		'zh': '存款已完成'
 	},
 	'Insufficent balance.': {
+		'code': 44,
 		'en': 'Insufficient balance.',
 		'de': 'Unzureichendes Guthaben.',
 		'es': 'Saldo insuficiente.',
@@ -667,6 +702,7 @@ const messages = {
 		'zh': '余额不足。'
 	},
 	'Withdrawal token is incorrect': {
+		'code': 45,
 		'en': 'Withdrawal token is incorrect',
 		'de': 'Abhebe-Token ist falsch',
 		'es': 'El token de retiro es incorrecto',
@@ -686,6 +722,7 @@ const messages = {
 		'zh': '提款令牌不正确'
 	},
 	'Unauthorized withdrawal token': {
+		'code': 46,
 		'en': 'Unauthorized withdrawal token',
 		'de': 'Unberechtigter Abhebe-Token',
 		'es': 'Token de retiro no autorizado',
@@ -705,6 +742,7 @@ const messages = {
 		'zh': '未授权的提款令牌'
 	},
 	'Expired withdrawal token': {
+		'code': 47,
 		'en': 'Expired withdrawal token',
 		'de': 'Abgelaufener Abhebe-Token',
 		'es': 'Token de retiro caducado',
@@ -724,6 +762,7 @@ const messages = {
 		'zh': '过期的提款令牌'
 	},
 	'Token not found': {
+		'code': 48,
 		'en': 'Token not found',
 		'de': 'Token nicht gefunden',
 		'es': 'Token no encontrado',
@@ -743,6 +782,7 @@ const messages = {
 		'zh': '未找到令牌'
 	},
 	'Token is already revoked': {
+		'code': 49,
 		'en': 'Token is already revoked',
 		'de': 'Token wurde bereits widerrufen',
 		'es': 'El token ya ha sido revocado',
@@ -762,6 +802,7 @@ const messages = {
 		'zh': '令牌已被撤销'
 	},
 	'Token is successfully revoked': {
+		'code': 50,
 		'en': 'Token is successfully revoked',
 		'de': 'Token wurde erfolgreich widerrufen',
 		'es': 'El token ha sido revocado con éxito',
@@ -781,6 +822,7 @@ const messages = {
 		'zh': '令牌已成功撤销'
 	},
 	'OTP must be enabled to create a token': {
+		'code': 51,
 		'en': 'OTP must be enabled to create a token',
 		'de': 'OTP muss aktiviert sein, um einen Token zu erstellen',
 		'es': 'Se debe habilitar OTP para crear un token',
@@ -800,6 +842,7 @@ const messages = {
 		'zh': '必须启用OTP才能创建令牌'
 	},
 	'Invalid OTP Code': {
+		'code': 52,
 		'en': 'Invalid OTP Code',
 		'de': 'Invalid OTP Code',
 		'es': 'Invalid OTP Code',
@@ -819,6 +862,7 @@ const messages = {
 		'zh': 'Invalid OTP Code'
 	},
 	'OTP not found': {
+		'code': 53,
 		'en': 'OTP not found',
 		'de': 'OTP nicht gefunden',
 		'es': 'OTP no encontrado',
@@ -838,6 +882,7 @@ const messages = {
 		'zh': '未找到OTP'
 	},
 	'Internal error. Withdrawal failed. Please try again in few minutes.': {
+		'code': 54,
 		'en': 'Internal error. Withdrawal failed. Please try again in few minutes.',
 		'de': 'Interner Fehler. Abhebung fehlgeschlagen. Bitte versuchen Sie es in wenigen Minuten erneut.',
 		'es': 'Error interno. El retiro falló. Por favor, inténtelo de nuevo en unos minutos.',
@@ -857,6 +902,7 @@ const messages = {
 		'zh': '内部错误。提款失败。请稍后再试几分钟。'
 	},
 	'The fee is set really off. Please change your fee.': {
+		'code': 55,
 		'en': 'The fee is set really off. Please change your fee.',
 		'de': 'Die Gebühr ist wirklich hoch. Bitte ändern Sie Ihre Gebühr.',
 		'es': 'La tarifa está realmente alta. Por favor, cambie su tarifa.',
@@ -876,6 +922,7 @@ const messages = {
 		'zh': '费用设置得太高。请更改您的费用。'
 	},
 	'Transaction has absurd fees': {
+		'code': 56,
 		'en': 'Transaction has absurd fees',
 		'de': 'Die Transaktion hat absurde Gebühren',
 		'es': 'La transacción tiene tarifas absurdas',
@@ -895,6 +942,7 @@ const messages = {
 		'zh': '交易的费用荒谬'
 	},
 	'Transaction is suspicious': {
+		'code': 57,
 		'en': 'Transaction is suspicious',
 		'de': 'Transaktion ist verdächtig',
 		'es': 'La transacción es sospechosa',
@@ -914,6 +962,7 @@ const messages = {
 		'zh': '交易可疑'
 	},
 	'Invalid symbols': {
+		'code': 58,
 		'en': 'Invalid symbols',
 		'de': 'Ungültige Symbole',
 		'es': 'Símbolos inválidos',
@@ -933,6 +982,7 @@ const messages = {
 		'zh': '无效符号'
 	},
 	'Order size is out of the limits': {
+		'code': 59,
 		'en': 'Order size is out of the limits',
 		'de': 'Auftragsgröße überschreitet die Grenzen',
 		'es': 'El tamaño del pedido está fuera de los límites',
@@ -952,6 +1002,7 @@ const messages = {
 		'zh': '订单大小超出限制'
 	},
 	'Token has been used': {
+		'code': 60,
 		'en': 'Token has been used',
 		'de': 'Token wurde verwendet',
 		'es': 'El token ha sido utilizado',
@@ -971,6 +1022,7 @@ const messages = {
 		'zh': '令牌已被使用'
 	},
 	'Quote has expired': {
+		'code': 61,
 		'en': 'Quote has expired',
 		'de': 'Angebot ist abgelaufen',
 		'es': 'La cotización ha caducado',
@@ -990,6 +1042,7 @@ const messages = {
 		'zh': '报价已过期'
 	},
 	'Invalid quote': {
+		'code': 62,
 		'en': 'Invalid quote',
 		'de': 'Ungültiges Angebot',
 		'es': 'Cotización inválida',
@@ -1009,6 +1062,7 @@ const messages = {
 		'zh': '无效报价'
 	},
 	'Error calculating the quote': {
+		'code': 63,
 		'en': 'Error calculating the quote',
 		'de': 'Fehler beim Berechnen des Angebots',
 		'es': 'Error al calcular la cotización',
@@ -1028,6 +1082,7 @@ const messages = {
 		'zh': '计算报价时出错'
 	},
 	'The order with the current size can not be filled': {
+		'code': 64,
 		'en': 'The order with the current size can not be filled',
 		'de': 'Die Bestellung mit der aktuellen Größe kann nicht gefüllt werden',
 		'es': 'El pedido con el tamaño actual no se puede completar',
@@ -1047,6 +1102,7 @@ const messages = {
 		'zh': '当前尺寸的订单无法填写'
 	},
 	'The order with the current size is too small to be filled': {
+		'code': 65,
 		'en': 'The order with the current size is too small to be filled',
 		'de': 'Die Bestellung mit der aktuellen Größe ist zu klein, um gefüllt zu werden',
 		'es': 'El pedido con el tamaño actual es demasiado pequeño para ser completado',
@@ -1066,6 +1122,7 @@ const messages = {
 		'zh': '当前尺寸的订单太小，无法填写'
 	},
 	'The order with the current price can not be filled': {
+		'code': 66,
 		'en': 'The order with the current price can not be filled',
 		'de': 'Die Bestellung mit dem aktuellen Preis kann nicht gefüllt werden',
 		'es': 'El pedido con el precio actual no se puede completar',
@@ -1085,6 +1142,7 @@ const messages = {
 		'zh': '当前价格的订单无法填写'
 	},
 	'Insufficient balance to perform the order': {
+		'code': 67,
 		'en': 'Insufficient balance to perform the order',
 		'de': 'Unzureichendes Guthaben, um die Bestellung auszuführen',
 		'es': 'Saldo insuficiente para completar el pedido',
@@ -1104,6 +1162,7 @@ const messages = {
 		'zh': '余额不足以执行订单'
 	},
 	'Deposit user do not match.': {
+		'code': 68,
 		'en': 'Deposit user do not match.',
 		'de': 'Einzahlungsnutzer stimmen nicht überein.',
 		'es': 'El usuario del depósito no coincide.',
@@ -1123,6 +1182,7 @@ const messages = {
 		'zh': '存款用户不匹配。'
 	},
 	'Card used for payment does not match the user card': {
+		'code': 69,
 		'en': 'Card used for payment does not match the user card',
 		'de': 'Die für die Zahlung verwendete Karte entspricht nicht der Benutzerkarte',
 		'es': 'La tarjeta utilizada para el pago no coincide con la tarjeta del usuario',
@@ -1142,6 +1202,7 @@ const messages = {
 		'zh': '用于付款的卡与用户卡不匹配'
 	},
 	'User data is pending verification': {
+		'code': 70,
 		'en': 'User data is pending verification',
 		'de': 'Benutzerdaten werden noch überprüft',
 		'es': 'Los datos del usuario están pendientes de verificación',
@@ -1161,6 +1222,7 @@ const messages = {
 		'zh': '用户数据正在等待验证'
 	},
 	'User already verified': {
+		'code': 71,
 		'en': 'User already verified',
 		'de': 'Benutzer bereits überprüft',
 		'es': 'Usuario ya verificado',
@@ -1180,6 +1242,7 @@ const messages = {
 		'zh': '用户已经验证'
 	},
 	'Card Number has no linked name': {
+		'code': 72,
 		'en': 'Card Number has no linked name',
 		'de': 'Kartennummer hat keinen verknüpften Namen',
 		'es': 'El número de tarjeta no tiene nombre vinculado',
@@ -1199,6 +1262,7 @@ const messages = {
 		'zh': '卡号没有关联的名称'
 	},
 	'Invalid Card number': {
+		'code': 73,
 		'en': 'Invalid Card number',
 		'de': 'Ungültige Kartennummer',
 		'es': 'Número de tarjeta inválido',
@@ -1237,6 +1301,7 @@ const messages = {
 		'zh': '\'开始日期\'不能发生在\'结束日期\'之后'
 	},
 	'Invalid date format': {
+		'code': 74,
 		'en': 'Invalid date format',
 		'de': 'Ungültiges Datumsformat',
 		'es': 'Formato de fecha inválido',
@@ -1256,6 +1321,7 @@ const messages = {
 		'zh': '无效的日期格式'
 	},
 	'Card Owner and Sheba Name do not match': {
+		'code': 75,
 		'en': 'Card Owner and Sheba Name do not match',
 		'de': 'Karteninhaber und Sheba-Name stimmen nicht überein',
 		'es': 'El propietario de la tarjeta y el nombre de Sheba no coinciden',
@@ -1275,6 +1341,7 @@ const messages = {
 		'zh': '持卡人和 Sheba 名称不匹配'
 	},
 	'Missing Card Owner': {
+		'code': 76,
 		'en': 'Missing Card Owner',
 		'de': 'Fehlender Karteninhaber',
 		'es': 'Propietario de la tarjeta faltante',
@@ -1294,6 +1361,7 @@ const messages = {
 		'zh': '缺少卡主'
 	},
 	'You are not allowed to change your information': {
+		'code': 77,
 		'en': 'You are not allowed to change your information',
 		'de': 'Sie dürfen Ihre Informationen nicht ändern',
 		'es': 'No se te permite cambiar tu información',
@@ -1313,6 +1381,7 @@ const messages = {
 		'zh': '您不被允许更改您的信息'
 	},
 	'Not allowed to create new banks': {
+		'code': 78,
 		'en': 'Not allowed to create new banks',
 		'de': 'Neue Banken dürfen nicht erstellt werden',
 		'es': 'No se permite crear nuevos bancos',
@@ -1332,6 +1401,7 @@ const messages = {
 		'zh': '不允许创建新银行'
 	},
 	'You are now allowed to upgrade your level. Please contact support.': {
+		'code': 79,
 		'en': 'You are now allowed to upgrade your level. Please contact support.',
 		'de': 'Sie dürfen jetzt Ihr Level aktualisieren. Bitte kontaktieren Sie den Support.',
 		'es': 'Ahora se te permite mejorar tu nivel. Por favor, contacta con soporte.',
@@ -1351,6 +1421,7 @@ const messages = {
 		'zh': '您现在被允许升级您的级别。请联系支持。'
 	},
 	'You are not eligible for level upgrade.': {
+		'code': 80,
 		'en': 'You are not eligible for level upgrade.',
 		'de': 'Sie sind nicht für ein Level-Upgrade berechtigt.',
 		'es': 'No tienes derecho a mejorar de nivel.',
@@ -1370,6 +1441,7 @@ const messages = {
 		'zh': '您不符合升级级别的条件。'
 	},
 	'Service not available': {
+		'code': 81,
 		'en': 'Service not available',
 		'de': 'Dienst nicht verfügbar',
 		'es': 'Servicio no disponible',
@@ -1389,6 +1461,7 @@ const messages = {
 		'zh': '服务不可用'
 	},
 	'Invalid captcha': {
+		'code': 82,
 		'en': 'Invalid captcha',
 		'de': 'Invalid captcha',
 		'es': 'Invalid captcha',
@@ -1408,6 +1481,7 @@ const messages = {
 		'zh': 'Invalid captcha'
 	},
 	'Invalid username. Username must be 3-15 characters length and only contains lowercase charaters, numbers or underscore': {
+		'code': 83,
 		'en': 'Invalid username. Username must be 3-15 characters length and only contains lowercase characters, numbers, or underscores',
 		'de': 'Ungültiger Benutzername. Benutzername muss 3-15 Zeichen lang sein und darf nur Kleinbuchstaben, Zahlen oder Unterstriche enthalten',
 		'es': 'Nombre de usuario no válido. El nombre de usuario debe tener una longitud de 3 a 15 caracteres y solo puede contener caracteres en minúscula, números o guiones bajos',
@@ -1427,6 +1501,7 @@ const messages = {
 		'zh': '无效的用户名。用户名必须为3到15个字符，并且只能包含小写字符、数字或下划线'
 	},
 	'Username can not be changed': {
+		'code': 84,
 		'en': 'Username cannot be changed',
 		'de': 'Benutzername kann nicht geändert werden',
 		'es': 'El nombre de usuario no se puede cambiar',
@@ -1446,6 +1521,7 @@ const messages = {
 		'zh': '用户名无法更改'
 	},
 	'Username is already taken. Select a different username': {
+		'code': 85,
 		'en': 'Username is already taken. Select a different username',
 		'de': 'Benutzername ist bereits vergeben. Wählen Sie einen anderen Benutzernamen',
 		'es': 'El nombre de usuario ya está en uso. Seleccione un nombre de usuario diferente',
@@ -1465,6 +1541,7 @@ const messages = {
 		'zh': '用户名已被使用。请选择一个不同的用户名'
 	},
 	'No user is related to the transaction': {
+		'code': 86,
 		'en': 'No user is related to the transaction',
 		'de': 'Es ist kein Benutzer mit der Transaktion verbunden',
 		'es': 'Ningún usuario está relacionado con la transacción',
@@ -1484,6 +1561,7 @@ const messages = {
 		'zh': '没有用户与交易相关联'
 	},
 	'Address does not match transaction address': {
+		'code': 87,
 		'en': 'Address does not match transaction address',
 		'de': 'Adresse stimmt nicht mit der Transaktionsadresse überein',
 		'es': 'La dirección no coincide con la dirección de la transacción',
@@ -1503,6 +1581,7 @@ const messages = {
 		'zh': '地址与交易地址不符'
 	},
 	'More than one user is using this address': {
+		'code': 88,
 		'en': 'More than one user is using this address',
 		'de': 'Mehr als ein Benutzer verwendet diese Adresse',
 		'es': 'Más de un usuario está usando esta dirección',
@@ -1522,6 +1601,7 @@ const messages = {
 		'zh': '有多个用户正在使用此地址'
 	},
 	'This service is not supported': {
+		'code': 89,
 		'en': 'This service is not supported',
 		'de': 'Dieser Dienst wird nicht unterstützt',
 		'es': 'Este servicio no está soportado',
@@ -1541,6 +1621,7 @@ const messages = {
 		'zh': '此服务不受支持'
 	},
 	'Unspecified': {
+		'code': 90,
 		'en': 'Unspecified',
 		'de': 'Nicht spezifiziert',
 		'es': 'No especificado',
@@ -1560,6 +1641,7 @@ const messages = {
 		'zh': '未指定'
 	},
 	'Multiple API Key methods are provided': {
+		'code': 91,
 		'en': 'Multiple API Key methods are provided',
 		'de': 'Mehrere API-Schlüsselmethoden werden bereitgestellt',
 		'es': 'Se proporcionan múltiples métodos de clave API',
@@ -1579,6 +1661,7 @@ const messages = {
 		'zh': '提供了多个API密钥方法'
 	},
 	'Access Denied: API Key is not provided': {
+		'code': 92,
 		'en': 'Access Denied: API Key is not provided',
 		'de': 'Zugriff verweigert: API-Schlüssel fehlt',
 		'es': 'Acceso denegado: no se proporciona la clave API',
@@ -1598,6 +1681,7 @@ const messages = {
 		'zh': '拒绝访问：未提供API密钥'
 	},
 	'Access Denied: API request is expired': {
+		'code': 93,
 		'en': 'Access Denied: API request is expired',
 		'de': 'Zugriff verweigert: API-Anforderung ist abgelaufen',
 		'es': 'Acceso denegado: la solicitud de la API ha caducado',
@@ -1617,6 +1701,7 @@ const messages = {
 		'zh': '拒绝访问：API请求已过期'
 	},
 	'Access Denied: API Signature is not provided': {
+		'code': 94,
 		'en': 'Access Denied: API Signature is not provided',
 		'de': 'Zugriff verweigert: API-Signatur fehlt',
 		'es': 'Acceso denegado: no se proporciona la firma API',
@@ -1636,6 +1721,7 @@ const messages = {
 		'zh': '拒绝访问：未提供API签名'
 	},
 	'Access Denied: Invalid API Key': {
+		'code': 95,
 		'en': 'Access Denied: Invalid API Key',
 		'de': 'Zugriff verweigert: Ungültiger API-Schlüssel',
 		'es': 'Acceso denegado: clave API no válida',
@@ -1655,6 +1741,7 @@ const messages = {
 		'zh': '拒绝访问：无效的API密钥'
 	},
 	'Unauthorized Access. This key does not have the right permissions to access this endpoint': {
+		'code': 96,
 		'en': 'Unauthorized Access. This key does not have the right permissions to access this endpoint',
 		'de': 'Unberechtigter Zugriff. Dieser Schlüssel hat nicht die erforderlichen Berechtigungen, um auf diesen Endpunkt zuzugreifen',
 		'es': 'Acceso no autorizado. Esta clave no tiene los permisos adecuados para acceder a este punto final',
@@ -1674,6 +1761,7 @@ const messages = {
 		'zh': '未经授权访问。此密钥无权访问此终点'
 	},
 	'Unauthorized Access. The IP address you are reaching this endpoint through is not allowed to access this endpoint': {
+		'code': 97,
 		'en': 'Unauthorized Access. The IP address you are reaching this endpoint through is not allowed to access this endpoint',
 		'de': 'Unberechtigter Zugriff. Die IP-Adresse, über die Sie diesen Endpunkt erreichen, darf nicht auf diesen Endpunkt zugreifen',
 		'es': 'Acceso no autorizado. La dirección IP a través de la cual está llegando a este punto final no tiene permitido acceder a este punto final',
@@ -1693,6 +1781,7 @@ const messages = {
 		'zh': '未经授权访问。您通过的IP地址不被允许访问此终点'
 	},
 	'Access Denied: API Key is expired': {
+		'code': 98,
 		'en': 'Access Denied: API Key is expired',
 		'de': 'Zugriff verweigert: API-Schlüssel ist abgelaufen',
 		'es': 'Acceso denegado: la clave API ha caducado',
@@ -1712,6 +1801,7 @@ const messages = {
 		'zh': '拒绝访问：API密钥已过期'
 	},
 	'Access Denied: API Key is frozen': {
+		'code': 99,
 		'en': 'Access Denied: API Key is frozen',
 		'de': 'Zugriff verweigert: API-Schlüssel ist eingefroren',
 		'es': 'Acceso denegado: la clave API está congelada',
@@ -1731,6 +1821,7 @@ const messages = {
 		'zh': '拒绝访问：API密钥已被冻结'
 	},
 	'Access Denied: Invalid API Signature': {
+		'code': 100,
 		'en': 'Access Denied: Invalid API Signature',
 		'de': 'Zugriff verweigert: Ungültige API-Signatur',
 		'es': 'Acceso denegado: firma API no válida',
@@ -1750,6 +1841,7 @@ const messages = {
 		'zh': '拒绝访问：无效的API签名'
 	},
 	'User can have a maximum of three banks': {
+		'code': 101,
 		'en': 'User can have a maximum of three banks',
 		'de': 'Ein Benutzer kann maximal drei Banken haben',
 		'es': 'El usuario puede tener un máximo de tres bancos',
@@ -1769,6 +1861,7 @@ const messages = {
 		'zh': '用户最多可以拥有三家银行'
 	},
 	'Bank account not found': {
+		'code': 102,
 		'en': 'Bank account not found',
 		'de': 'Bankkonto nicht gefunden',
 		'es': 'Cuenta bancaria no encontrada',
@@ -1788,6 +1881,7 @@ const messages = {
 		'zh': '找不到银行帐户'
 	},
 	'Bank account is already verified': {
+		'code': 103,
 		'en': 'Bank account is already verified',
 		'de': 'Bankkonto ist bereits verifiziert',
 		'es': 'La cuenta bancaria ya está verificada',
@@ -1807,6 +1901,7 @@ const messages = {
 		'zh': '银行帐户已经验证'
 	},
 	'Invalid mobile phone number': {
+		'code': 104,
 		'en': 'Invalid mobile phone number',
 		'de': 'Ungültige Mobiltelefonnummer',
 		'es': 'Número de teléfono móvil no válido',
@@ -1826,6 +1921,7 @@ const messages = {
 		'zh': '无效的移动电话号码'
 	},
 	'Missing parameters. ID and email required': {
+		'code': 105,
 		'en': 'Missing parameters. ID and email required',
 		'de': 'Fehlende Parameter. ID und E-Mail erforderlich',
 		'es': 'Parámetros faltantes. ID y correo electrónico requeridos',
@@ -1845,6 +1941,7 @@ const messages = {
 		'zh': '参数缺失。需要ID和电子邮件'
 	},
 	'You are not allowed to upload a document while its pending or approved': {
+		'code': 106,
 		'en': 'You are not allowed to upload a document while its pending or approved',
 		'de': 'Es ist nicht erlaubt, ein Dokument hochzuladen, während es ausstehend oder genehmigt ist',
 		'es': 'No se permite cargar un documento mientras está pendiente o aprobado',
@@ -1864,6 +1961,7 @@ const messages = {
 		'zh': '您不被允许在文件处于挂起或已批准状态时上传文件'
 	},
 	'ID image not found': {
+		'code': 107,
 		'en': 'ID image not found',
 		'de': 'ID-Bild nicht gefunden',
 		'es': 'Imagen de identificación no encontrada',
@@ -1883,6 +1981,7 @@ const messages = {
 		'zh': '找不到身份证图像'
 	},
 	'Error sending SMS': {
+		'code': 108,
 		'en': 'Error sending SMS',
 		'de': 'Fehler beim Senden von SMS',
 		'es': 'Error al enviar el SMS',
@@ -1902,6 +2001,7 @@ const messages = {
 		'zh': '发送短信时出错'
 	},
 	'The phone number provided is incorrect': {
+		'code': 109,
 		'en': 'The phone number provided is incorrect',
 		'de': 'Die angegebene Telefonnummer ist falsch',
 		'es': 'El número de teléfono proporcionado es incorrecto',
@@ -1921,6 +2021,7 @@ const messages = {
 		'zh': '提供的电话号码不正确'
 	},
 	'The code provided is invalid': {
+		'code': 110,
 		'en': 'The code provided is invalid',
 		'de': 'Der bereitgestellte Code ist ungültig',
 		'es': 'El código proporcionado no es válido',
@@ -1940,6 +2041,7 @@ const messages = {
 		'zh': '提供的代码无效'
 	},
 	'The code provided has expired or has been used': {
+		'code': 111,
 		'en': 'The code provided has expired or has been used',
 		'de': 'Der bereitgestellte Code ist abgelaufen oder wurde verwendet',
 		'es': 'El código proporcionado ha caducado o ha sido utilizado',
@@ -1959,6 +2061,7 @@ const messages = {
 		'zh': '提供的代码已过期或已使用'
 	},
 	'Invalid phone number': {
+		'code': 112,
 		'en': 'Invalid phone number',
 		'de': 'Ungültige Telefonnummer',
 		'es': 'Número de teléfono no válido',
@@ -1978,6 +2081,7 @@ const messages = {
 		'zh': '无效的电话号码'
 	},
 	'SMS has been sent': {
+		'code': 113,
 		'en': 'SMS has been sent',
 		'de': 'SMS wurde gesendet',
 		'es': 'El SMS ha sido enviado',
@@ -1997,6 +2101,7 @@ const messages = {
 		'zh': '短信已发送'
 	},
 	'Phone number has been verified': {
+		'code': 114,
 		'en': 'Phone number has been verified',
 		'de': 'Telefonnummer wurde überprüft',
 		'es': 'El número de teléfono ha sido verificado',
@@ -2016,6 +2121,7 @@ const messages = {
 		'zh': '电话号码已验证'
 	},
 	'Welcome!': {
+		'code': 115,
 		'en': 'Welcome!',
 		'de': 'Herzlich willkommen!',
 		'es': '¡Bienvenido!',
@@ -2035,6 +2141,7 @@ const messages = {
 		'zh': '欢迎!'
 	},
 	'unsupported message type': {
+		'code': 116,
 		'en': 'unsupported message type',
 		'de': 'Nicht unterstützter Nachrichtentyp',
 		'es': 'tipo de mensaje no admitido',
@@ -2054,6 +2161,7 @@ const messages = {
 		'zh': '不支持的消息类型'
 	},
 	'message can not be empty': {
+		'code': 117,
 		'en': 'message can not be empty',
 		'de': 'Nachricht darf nicht leer sein',
 		'es': 'el mensaje no puede estar vacío',
@@ -2073,6 +2181,7 @@ const messages = {
 		'zh': '消息不能为空'
 	},
 	'channel format is incorrect. The format is <event>:<exchange>:<symbol>': {
+		'code': 118,
 		'en': 'channel format is incorrect. The format is <event>:<exchange>:<symbol>',
 		'de': 'Kanalformat ist falsch. Das Format lautet <Ereignis>:<Börse>:<Symbol>',
 		'es': 'El formato del canal es incorrecto. El formato es <evento>:<intercambio>:<símbolo>',
@@ -2092,6 +2201,7 @@ const messages = {
 		'zh': '通道格式不正确。格式是<事件>:<交换>:<符号>'
 	},
 	'exchange is not supported': {
+		'code': 119,
 		'en': 'exchange is not supported',
 		'de': 'Börse wird nicht unterstützt',
 		'es': 'el intercambio no es compatible',
@@ -2111,6 +2221,7 @@ const messages = {
 		'zh': '不支持交换'
 	},
 	'event is not supported': {
+		'code': 120,
 		'en': 'Event is not supported',
 		'de': 'Ereignis wird nicht unterstützt',
 		'es': 'Evento no es compatible',
@@ -2130,6 +2241,7 @@ const messages = {
 		'zh': '事件不受支持'
 	},
 	'symbol is not supported': {
+		'code': 121,
 		'en': 'Symbol is not supported',
 		'de': 'Symbol wird nicht unterstützt',
 		'es': 'El símbolo no es compatible',
@@ -2149,6 +2261,7 @@ const messages = {
 		'zh': '符号不受支持'
 	},
 	'Error: wrong input': {
+		'code': 122,
 		'en': 'Error: wrong input',
 		'de': 'Fehler: Falsche Eingabe',
 		'es': 'Error: entrada incorrecta',
@@ -2168,6 +2281,7 @@ const messages = {
 		'zh': '错误: 输入错误'
 	},
 	'Bearer or HMAC authentication required': {
+		'code': 123,
 		'en': 'Bearer or HMAC authentication required',
 		'de': 'Bearer- oder HMAC-Authentifizierung erforderlich',
 		'es': 'Se requiere autenticación Bearer o HMAC',
@@ -2187,6 +2301,7 @@ const messages = {
 		'zh': '需要 Bearer 或 HMAC 认证'
 	},
 	'Already authenticated': {
+		'code': 124,
 		'en': 'Already authenticated',
 		'de': 'Bereits authentifiziert',
 		'es': 'Ya autenticado',
@@ -2206,6 +2321,7 @@ const messages = {
 		'zh': '已经验证'
 	},
 	'Bearer or api-key authentication required': {
+		'code': 125,
 		'en': 'Bearer or api-key authentication required',
 		'de': 'Bearer- oder API-Schlüssel-Authentifizierung erforderlich',
 		'es': 'Se requiere autenticación Bearer o api-key',
@@ -2225,6 +2341,7 @@ const messages = {
 		'zh': '需要 Bearer 或 API 密钥认证'
 	},
 	'User is not authorized to access this endpoint': {
+		'code': 126,
 		'en': 'User is not authorized to access this endpoint',
 		'de': 'Benutzer ist nicht berechtigt, auf diesen Endpunkt zuzugreifen',
 		'es': 'El usuario no está autorizado para acceder a este punto de conexión',
@@ -2244,6 +2361,7 @@ const messages = {
 		'zh': '用户未被授权访问此端点'
 	},
 	'Token is expired': {
+		'code': 127,
 		'en': 'Token is expired',
 		'de': 'Token ist abgelaufen',
 		'es': 'El token ha caducado',
@@ -2263,6 +2381,7 @@ const messages = {
 		'zh': '令牌已过期'
 	},
 	'Token is invalid': {
+		'code': 128,
 		'en': 'Token is invalid',
 		'de': 'Token ist ungültig',
 		'es': 'El token no es válido',
@@ -2282,6 +2401,7 @@ const messages = {
 		'zh': '令牌无效'
 	},
 	'This account is deactivated': {
+		'code': 129,
 		'en': 'This account is deactivated',
 		'de': 'Dieses Konto ist deaktiviert',
 		'es': 'Esta cuenta está desactivada',
@@ -2301,6 +2421,7 @@ const messages = {
 		'zh': '此帐户已停用'
 	},
 	'Value "limit" must be an integer': {
+		'code': 130,
 		'en': 'Value "limit" must be an integer',
 		'de': 'Wert "limit" muss eine Ganzzahl sein',
 		'es': 'El valor "limit" debe ser un número entero',
@@ -2320,6 +2441,7 @@ const messages = {
 		'zh': '值 "limit" 必须是整数'
 	},
 	'Value "page" must be an integer': {
+		'code': 131,
 		'en': 'Value "page" must be an integer',
 		'de': 'Wert "page" muss eine Ganzzahl sein',
 		'es': 'El valor "page" debe ser un número entero',
@@ -2339,6 +2461,7 @@ const messages = {
 		'zh': '值 "page" 必须是整数'
 	},
 	'Value "order_by" cannot include whitespaces': {
+		'code': 132,
 		'en': 'Value "order_by" cannot include whitespaces',
 		'de': 'Wert "order_by" darf keine Leerzeichen enthalten',
 		'es': 'El valor "order_by" no puede incluir espacios en blanco',
@@ -2358,6 +2481,7 @@ const messages = {
 		'zh': '值 "order_by" 不能包含空格'
 	},
 	'Value "order" must be one of: ["asc", "desc"]': {
+		'code': 133,
 		'en': 'Value "order" must be one of: ["asc", "desc"]',
 		'de': 'Wert "order" muss einer von ["asc", "desc"] sein',
 		'es': 'El valor "order" debe ser uno de: ["asc", "desc"]',
@@ -2377,6 +2501,7 @@ const messages = {
 		'zh': '值 "order" 必须是以下之一：["asc", "desc"]'
 	},
 	'New password must be different from previous password': {
+		'code': 134,
 		'en': 'New password must be different from previous password',
 		'de': 'Das neue Passwort muss sich vom vorherigen Passwort unterscheiden',
 		'es': 'La nueva contraseña debe ser diferente de la contraseña anterior',
@@ -2396,6 +2521,7 @@ const messages = {
 		'zh': '新密码必须与先前的密码不同'
 	},
 	'Code not found': {
+		'code': 135,
 		'en': 'Code not found',
 		'de': 'Code nicht gefunden',
 		'es': 'Código no encontrado',
@@ -2415,6 +2541,7 @@ const messages = {
 		'zh': '未找到代码'
 	},
 	'Code is already used': {
+		'code': 136,
 		'en': 'Code is already used',
 		'de': 'Code wird bereits verwendet',
 		'es': 'El código ya está en uso',
@@ -2434,6 +2561,7 @@ const messages = {
 		'zh': '代码已被使用'
 	},
 	'Account is not verified': {
+		'code': 137,
 		'en': 'Account is not verified',
 		'de': 'Konto ist nicht verifiziert',
 		'es': 'La cuenta no está verificada',
@@ -2453,6 +2581,7 @@ const messages = {
 		'zh': '帐户未经验证'
 	},
 	'No new data given': {
+		'code': 138,
 		'en': 'No new data given',
 		'de': 'Keine neuen Daten angegeben',
 		'es': 'No se han proporcionado nuevos datos',
@@ -2472,6 +2601,7 @@ const messages = {
 		'zh': '未提供新数据'
 	},
 	'Cannot send email to support at this time': {
+		'code': 139,
 		'en': 'Cannot send email to support at this time',
 		'de': 'Kann derzeit keine E-Mail an den Support senden',
 		'es': 'No se puede enviar un correo electrónico al soporte en este momento',
@@ -2491,6 +2621,7 @@ const messages = {
 		'zh': '目前无法发送电子邮件给支持'
 	},
 	'Masked value given': {
+		'code': 140,
 		'en': 'Masked value given',
 		'de': 'Maskierter Wert angegeben',
 		'es': 'Se ha proporcionado un valor enmascarado',
@@ -2510,6 +2641,7 @@ const messages = {
 		'zh': '给定了掩码值'
 	},
 	'No data to convert to CSV': {
+		'code': 141,
 		'en': 'No data to convert to CSV',
 		'de': 'Keine Daten zum Konvertieren in CSV',
 		'es': 'No hay datos para convertir a CSV',
@@ -2529,6 +2661,7 @@ const messages = {
 		'zh': '没有数据转换为CSV'
 	},
 	'User email is already verified': {
+		'code': 142,
 		'en': 'User email is already verified',
 		'de': 'Die E-Mail des Benutzers wurde bereits verifiziert',
 		'es': 'El correo electrónico del usuario ya está verificado',
@@ -2548,6 +2681,7 @@ const messages = {
 		'zh': '用户电子邮件已经验证'
 	},
 	'Verification code expired. Please request a new verification code': {
+		'code': 143,
 		'en': 'Verification code expired. Please request a new verification code',
 		'de': 'Verifizierungscode abgelaufen. Bitte fordern Sie einen neuen Verifizierungscode an',
 		'es': 'El código de verificación ha caducado. Por favor solicite un nuevo código de verificación',
@@ -2624,6 +2758,7 @@ const messages = {
 		'zh': '请提供用户的网络ID'
 	},
 	'Main admin account cannot be deactivated': {
+		'code': 144,
 		'en': 'Main admin account cannot be deactivated',
 		'de': 'Hauptadministratorkonto kann nicht deaktiviert werden',
 		'es': 'La cuenta de administrador principal no se puede desactivar',
@@ -2643,6 +2778,7 @@ const messages = {
 		'zh': '主管理员帐户无法停用'
 	},
 	'User account is already deactivated': {
+		'code': 145,
 		'en': 'User account is already deactivated',
 		'de': 'Benutzerkonto ist bereits deaktiviert',
 		'es': 'La cuenta de usuario ya está desactivada',
@@ -2662,6 +2798,7 @@ const messages = {
 		'zh': '用户帐户已被停用'
 	},
 	'User account is not deactivated': {
+		'code': 146,
 		'en': 'User account is not deactivated',
 		'de': 'Benutzerkonto ist nicht deaktiviert',
 		'es': 'La cuenta de usuario no está desactivada',
@@ -2681,6 +2818,7 @@ const messages = {
 		'zh': '用户帐户未被停用'
 	},
 	'Main admin account role cannot be changed': {
+		'code': 147,
 		'en': 'Main admin account role cannot be changed',
 		'de': 'Die Rolle des Hauptadministratorkontos kann nicht geändert werden',
 		'es': 'El rol de la cuenta de administrador principal no se puede cambiar',
@@ -2700,6 +2838,7 @@ const messages = {
 		'zh': '主管理员帐户角色无法更改'
 	},
 	'Please provide a table name': {
+		'code': 148,
 		'en': 'Please provide a table name',
 		'de': 'Bitte geben Sie einen Tabellennamen an',
 		'es': 'Por favor proporcione un nombre de tabla',
@@ -2719,6 +2858,7 @@ const messages = {
 		'zh': '请提供表格名称'
 	},
 	'Broker pair could not be found': {
+		'code': 149,
 		'en': 'Broker pair could not be found',
 		'de': 'Broker-Paar konnte nicht gefunden werden',
 		'es': 'No se pudo encontrar el par de brokers',
@@ -2738,6 +2878,7 @@ const messages = {
 		'zh': '找不到经纪人对'
 	},
 	'Size should be between minimum and maximum set size of broker': {
+		'code': 150,
 		'en': 'Size should be between minimum and maximum set size of broker',
 		'de': 'Die Größe sollte zwischen der minimalen und maximalen festgelegten Größe des Brokers liegen',
 		'es': 'El tamaño debe estar entre el tamaño mínimo y máximo establecido del bróker',
@@ -2757,6 +2898,7 @@ const messages = {
 		'zh': '尺寸应介于经纪人设置的最小和最大尺寸之间'
 	},
 	'Broker pair is paused': {
+		'code': 151,
 		'en': 'Broker pair is paused',
 		'de': 'Broker-Paar ist pausiert',
 		'es': 'El par de brokers está pausado',
@@ -2776,6 +2918,7 @@ const messages = {
 		'zh': '经纪人对已暂停'
 	},
 	'Broker pair could not be deleted while unpaused': {
+		'code': 152,
 		'en': 'Broker pair could not be deleted while unpaused',
 		'de': 'Broker-Paar kann nicht gelöscht werden, während es fortgesetzt wird',
 		'es': 'No se puede eliminar el par de brokers mientras está activo',
@@ -2795,6 +2938,7 @@ const messages = {
 		'zh': '当未暂停时，不能删除经纪人对'
 	},
 	'A deal for this symbol alreadys exists': {
+		'code': 153,
 		'en': 'A deal for this symbol already exists',
 		'de': 'Ein Deal für dieses Symbol existiert bereits',
 		'es': 'Ya existe un acuerdo para este símbolo',
@@ -2814,6 +2958,7 @@ const messages = {
 		'zh': '此符号的交易已存在'
 	},
 	'Broker formula not found': {
+		'code': 154,
 		'en': 'Broker formula not found',
 		'de': 'Broker-Formel nicht gefunden',
 		'es': 'Fórmula del corredor no encontrada',
@@ -2833,6 +2978,7 @@ const messages = {
 		'zh': '未找到经纪人公式'
 	},
 	'Spread is missing': {
+		'code': 155,
 		'en': 'Spread is missing',
 		'de': 'Spread fehlt',
 		'es': 'Falta el spread',
@@ -2852,6 +2998,7 @@ const messages = {
 		'zh': '缺少点差'
 	},
 	'Rebalance symbol for hedge account is missing': {
+		'code': 156,
 		'en': 'Rebalance symbol for hedge account is missing',
 		'de': 'Rebalancierungssymbol für Hedge-Konto fehlt',
 		'es': 'Falta el símbolo de rebalanceo para la cuenta de cobertura',
@@ -2871,6 +3018,7 @@ const messages = {
 		'zh': '缺少对冲账户的再平衡符号'
 	},
 	'Cannot create a dynamic broker without required fields': {
+		'code': 157,
 		'en': 'Cannot create a dynamic broker without required fields',
 		'de': 'Ein dynamischer Broker kann ohne erforderliche Felder nicht erstellt werden',
 		'es': 'No se puede crear un broker dinámico sin los campos requeridos',
@@ -2890,6 +3038,7 @@ const messages = {
 		'zh': '没有必填字段，无法创建动态经纪人'
 	},
 	'Selected exchange is not supported by your exchange plan': {
+		'code': 158,
 		'en': 'Selected exchange is not supported by your exchange plan',
 		'de': 'Ausgewählter Austausch wird nicht von Ihrem Austauschplan unterstützt',
 		'es': 'El intercambio seleccionado no está soportado por su plan de intercambio',
@@ -2909,6 +3058,7 @@ const messages = {
 		'zh': '您选择的交易所不受您的交易计划支持'
 	},
 	'Cannot create a dynamic broker with Basic plan': {
+		'code': 159,
 		'en': 'Cannot create a dynamic broker with Basic plan',
 		'de': 'Ein dynamischer Broker kann nicht mit dem Basic-Plan erstellt werden',
 		'es': 'No se puede crear un broker dinámico con el plan básico',
@@ -2928,6 +3078,7 @@ const messages = {
 		'zh': '无法使用基本计划创建动态经纪人'
 	},
 	'Symbol not found': {
+		'code': 160,
 		'en': 'Symbol not found',
 		'de': 'Symbol nicht gefunden',
 		'es': 'Símbolo no encontrado',
@@ -2947,6 +3098,7 @@ const messages = {
 		'zh': '未找到符号'
 	},
 	'invalid token type': {
+		'code': 161,
 		'en': 'Invalid token type',
 		'de': 'Ungültiger Token-Typ',
 		'es': 'Tipo de token no válido',
@@ -2966,6 +3118,7 @@ const messages = {
 		'zh': '无效的令牌类型'
 	},
 	'no auth token sent': {
+		'code': 162,
 		'en': 'No auth token sent',
 		'de': 'Kein Authentifizierungstoken gesendet',
 		'es': 'No se ha enviado ningún token de autenticación',
@@ -2985,6 +3138,7 @@ const messages = {
 		'zh': '没有发送身份验证令牌'
 	},
 	'Admin cannot disable whitelisting feature': {
+		'code': 163,
 		'en': 'Admin cannot disable whitelisting feature',
 		'de': 'Admin kann die Whitelisting-Funktion nicht deaktivieren',
 		'es': 'El administrador no puede desactivar la función de lista blanca',
@@ -3004,6 +3158,7 @@ const messages = {
 		'zh': '管理员无法禁用白名单功能'
 	},
 	'Admin needs to provide whitelisted IP(s)': {
+		'code': 164,
 		'en': 'Admin needs to provide whitelisted IP(s)',
 		'de': 'Der Administrator muss die IP(s) auf die Whitelist setzen',
 		'es': 'El administrador debe proporcionar IP(s) en la lista blanca',
@@ -3023,6 +3178,7 @@ const messages = {
 		'zh': '管理员需要提供列入白名单的 IP 地址'
 	},
 	'Session not found': {
+		'code': 165,
 		'en': 'Session not found',
 		'de': 'Sitzung nicht gefunden',
 		'es': 'Sesión no encontrada',
@@ -3042,6 +3198,7 @@ const messages = {
 		'zh': '找不到会话'
 	},
 	'Session already revoked': {
+		'code': 166,
 		'en': 'Session already revoked',
 		'de': 'Sitzung bereits widerrufen',
 		'es': 'La sesión ya ha sido revocada',
@@ -3061,6 +3218,7 @@ const messages = {
 		'zh': '会话已撤销'
 	},
 	'this session does not belong to you': {
+		'code': 167,
 		'en': 'This session does not belong to you',
 		'de': 'Diese Sitzung gehört nicht dir',
 		'es': 'Esta sesión no te pertenece',
@@ -3080,6 +3238,7 @@ const messages = {
 		'zh': '此会话不属于您'
 	},
 	'Uniswap could not find price for this pair': {
+		'code': 168,
 		'en': 'Uniswap could not find price for this pair',
 		'de': 'Uniswap konnte keinen Preis für dieses Paar finden',
 		'es': 'Uniswap no pudo encontrar el precio para este par',
@@ -3099,6 +3258,7 @@ const messages = {
 		'zh': 'Uniswap无法找到此交易对的价格'
 	},
 	'Market pair(s) in the formula is in wrong format': {
+		'code': 169,
 		'en': 'Market pair(s) in the formula is in wrong format',
 		'de': 'Marktpaar(e) in der Formel haben das falsche Format',
 		'es': 'El par de mercado(s) en la fórmula está en un formato incorrecto',
@@ -3118,6 +3278,7 @@ const messages = {
 		'zh': '公式中的市场对格式错误'
 	},
 	'You attempted to login too many times, please wait for a while to try again': {
+		'code': 170,
 		'en': 'You attempted to login too many times, please wait for a while to try again',
 		'de': 'Sie haben sich zu oft angemeldet. Bitte warten Sie eine Weile und versuchen Sie es erneut.',
 		'es': 'Has intentado iniciar sesión demasiadas veces. Por favor, espera un tiempo para intentarlo de nuevo.',
@@ -3137,6 +3298,7 @@ const messages = {
 		'zh': '您尝试登录次数过多，请稍候再试一次'
 	},
 	'Order not executed, Price abnormality detected': {
+		'code': 171,
 		'en': 'Order not executed, Price abnormality detected',
 		'de': 'Auftrag nicht ausgeführt, Preisunregelmäßigkeit festgestellt',
 		'es': 'Orden no ejecutada, se detectó una anomalía en el precio',
@@ -3156,6 +3318,7 @@ const messages = {
 		'zh': '订单未执行，检测到价格异常'
 	},
 	'Coin inputs are missing': {
+		'code': 172,
 		'en': 'Coin inputs are missing',
 		'de': 'Münzeingaben fehlen',
 		'es': 'Faltan entradas de monedas',
@@ -3175,6 +3338,7 @@ const messages = {
 		'zh': '硬币输入丢失'
 	},
 	'Coin amount inputs are missing': {
+		'code': 173,
 		'en': 'Coin amount inputs are missing',
 		'de': 'Münzmengeingaben fehlen',
 		'es': 'Faltan entradas de cantidad de monedas',
@@ -3194,6 +3358,7 @@ const messages = {
 		'zh': '硬币金额输入丢失'
 	},
 	'Amount cannot be negative': {
+		'code': 174,
 		'en': 'Amount cannot be negative',
 		'de': 'Betrag kann nicht negativ sein',
 		'es': 'El monto no puede ser negativo',
@@ -3213,6 +3378,7 @@ const messages = {
 		'zh': '金额不能为负数'
 	},
 	'Quick trade config not found': {
+		'code': 175,
 		'en': 'Quick trade config not found',
 		'de': 'Schnelle Handelskonfiguration nicht gefunden',
 		'es': 'Configuración de comercio rápido no encontrada',
@@ -3232,6 +3398,7 @@ const messages = {
 		'zh': '找不到快速交易配置'
 	},
 	'Quick trade type not supported': {
+		'code': 176,
 		'en': 'Quick trade type not supported',
 		'de': 'Schneller Handelstyp nicht unterstützt',
 		'es': 'Tipo de comercio rápido no compatible',
@@ -3251,6 +3418,7 @@ const messages = {
 		'zh': '不支持快速交易类型'
 	},
 	'Price could not found': {
+		'code': 177,
 		'en': 'Price could not found',
 		'de': 'Preis konnte nicht gefunden werden',
 		'es': 'Precio no encontrado',
@@ -3270,6 +3438,7 @@ const messages = {
 		'zh': '找不到价格'
 	},
 	'Invalid price': {
+		'code': 178,
 		'en': 'Invalid price',
 		'de': 'Ungültiger Preis',
 		'es': 'Precio no válido',
@@ -3289,6 +3458,7 @@ const messages = {
 		'zh': '无效价格'
 	},
 	'Invalid size': {
+		'code': 179,
 		'en': 'Invalid size',
 		'de': 'Ungültige Größe',
 		'es': 'Tamaño no válido',
@@ -3308,6 +3478,7 @@ const messages = {
 		'zh': '无效大小'
 	},
 	'Request can not be processed': {
+		'code': 180,
 		'en': 'Request can not be processed',
 		'de': 'Anfrage kann nicht verarbeitet werden',
 		'es': 'La solicitud no puede ser procesada',
@@ -3327,6 +3498,7 @@ const messages = {
 		'zh': '请求无法处理'
 	},
 	'Quote expiry time cannot be smaller than 10': {
+		'code': 181,
 		'en': 'Quote expiry time cannot be smaller than 10',
 		'de': 'Angebotsverfallszeit darf nicht kleiner als 10 sein',
 		'es': 'El tiempo de caducidad de la cotización no puede ser menor que 10',
@@ -3346,6 +3518,7 @@ const messages = {
 		'zh': '报价过期时间不能小于10'
 	},
 	'cannot be used for dust, check if the coins are locked': {
+		'code': 182,
 		'en': 'This feature is not available for dust, please check if the coins are locked.',
 		'de': 'Diese Funktion kann nicht für Staub verwendet werden. Bitte überprüfen Sie, ob die Münzen gesperrt sind.',
 		'es': 'Esta función no se puede usar para polvo, por favor verifique si las monedas están bloqueadas.',
@@ -3365,6 +3538,7 @@ const messages = {
 		'zh': '此功能不能用于灰尘，请检查硬币是否被锁定。'
 	},
 	'Coin Configuration not found': {
+		'code': 183,
 		'en': 'Coin Configuration not found.',
 		'de': 'Münzkonfiguration nicht gefunden.',
 		'es': 'Configuración de moneda no encontrada.',
@@ -3384,6 +3558,7 @@ const messages = {
 		'zh': '找不到硬币配置。'
 	},
 	'Withdrawal fee cannot be smaller than what is defined in network': {
+		'code': 184,
 		'en': 'Withdrawal fee cannot be smaller than what is defined in network',
 		'de': 'Abhebungsgebühr darf nicht kleiner sein als das im Netzwerk definierte Minimum',
 		'es': 'La comisión de retiro no puede ser menor que la definida en la red',
@@ -3403,6 +3578,7 @@ const messages = {
 		'zh': '提款手续费不能低于网络定义的金额'
 	},
 	'Deposit fee cannot be smaller than what is defined in network': {
+		'code': 185,
 		'en': 'Deposit fee cannot be smaller than what is defined in network',
 		'de': 'Die Einzahlungsgebühr darf nicht kleiner sein als das im Netzwerk definierte Minimum',
 		'es': 'La comisión de depósito no puede ser menor que la definida en la red',
@@ -3422,6 +3598,7 @@ const messages = {
 		'zh': '存款手续费不能低于网络定义的金额'
 	},
 	'Status cannot be other than uninitialized when creating stake pool for the first time': {
+		'code': 186,
 		'en': 'Status cannot be other than uninitialized when creating stake pool for the first time',
 		'de': 'Der Status darf beim ersten Erstellen eines Stake-Pools nicht anders als nicht initialisiert sein',
 		'es': 'El estado no puede ser otro que no inicializado al crear un pool de stake por primera vez',
@@ -3441,6 +3618,7 @@ const messages = {
 		'zh': '第一次创建质押池时，状态不能为未初始化之外的其他状态'
 	},
 	'Onboarding cannot be true when creating stake pool for the first time': {
+		'code': 187,
 		'en': 'Onboarding cannot be true when creating stake pool for the first time',
 		'de': 'Die Einführung kann beim ersten Erstellen eines Stake-Pools nicht aktiviert werden',
 		'es': 'La integración no puede ser verdadera al crear un pool de participación por primera vez',
@@ -3460,6 +3638,7 @@ const messages = {
 		'zh': '第一次创建质押池时，引导流程不能为真'
 	},
 	'Cannot creation stake pool with perpetual duration and early stake set to true': {
+		'code': 188,
 		'en': 'Cannot creation stake pool with perpetual duration and early stake set to true',
 		'de': 'Kann keinen Stake-Pool mit unbefristeter Laufzeit und früher Einsatz festlegen',
 		'es': 'No se puede crear un pool de participación con duración perpetua y una apuesta temprana establecida en verdadero',
@@ -3479,6 +3658,7 @@ const messages = {
 		'zh': '无法创建永久期限且将早期抵押设为true的抵押池'
 	},
 	'account id does not exist in the server': {
+		'code': 189,
 		'en': 'Account ID does not exist in the server',
 		'de': 'Kontonummer existiert nicht auf dem Server',
 		'es': 'El ID de la cuenta no existe en el servidor',
@@ -3498,6 +3678,7 @@ const messages = {
 		'zh': '帐号ID在服务器上不存在'
 	},
 	'funding account does not have enough coins for the max amount set for the stake pool': {
+		'code': 190,
 		'en': 'Funding account does not have enough coins for the max amount set for the stake pool',
 		'de': 'Das Finanzierungskonto verfügt nicht über genügend Münzen für den maximal festgelegten Betrag für den Pool',
 		'es': 'La cuenta de financiamiento no tiene suficientes monedas para el monto máximo establecido para el pool de participación',
@@ -3517,6 +3698,7 @@ const messages = {
 		'zh': '资金账户没有足够的硬币用于质押池设定的最大金额'
 	},
 	'Stake pool not found': {
+		'code': 191,
 		'en': 'Stake pool not found',
 		'de': 'Stake-Pool nicht gefunden',
 		'es': 'Pool de participación no encontrado',
@@ -3536,6 +3718,7 @@ const messages = {
 		'zh': '未找到质押池'
 	},
 	'Cannot modify terminated stake pool': {
+		'code': 192,
 		'en': 'Cannot modify terminated stake pool',
 		'de': 'Kann den beendeten Stake-Pool nicht ändern',
 		'es': 'No se puede modificar el pool de participación terminado',
@@ -3555,6 +3738,7 @@ const messages = {
 		'zh': '无法修改已终止的质押池'
 	},
 	'Cannot modify the fields when the stake pool is not uninitialized': {
+		'code': 193,
 		'en': 'Cannot modify the fields when the stake pool is not uninitialized',
 		'de': 'Kann die Felder nicht ändern, wenn der Stake-Pool nicht initialisiert ist',
 		'es': 'No se pueden modificar los campos cuando el pool de participación no está sin inicializar',
@@ -3574,6 +3758,7 @@ const messages = {
 		'zh': '当质押池未初始化时，无法修改字段'
 	},
 	'Onboarding cannot be active while the status is uninitialized': {
+		'code': 194,
 		'en': 'Onboarding cannot be active while the status is uninitialized',
 		'de': 'Die Einführung kann nicht aktiviert werden, solange der Status nicht initialisiert ist',
 		'es': 'El proceso de integración no puede estar activo mientras el estado no esté inicializado',
@@ -3593,6 +3778,7 @@ const messages = {
 		'zh': '状态未初始化时，无法激活引导流程'
 	},
 	'Cannot terminated stake pool while it is not paused': {
+		'code': 195,
 		'en': 'Cannot terminate stake pool while it is not paused',
 		'de': 'Kann den Stake-Pool nicht beenden, solange er nicht angehalten ist',
 		'es': 'No se puede terminar el pool de participación mientras no esté en pausa',
@@ -3612,6 +3798,7 @@ const messages = {
 		'zh': '在未暂停时无法终止质押池'
 	},
 	'There is not enough balance in the funding account. You cannot settle this stake pool': {
+		'code': 196,
 		'en': 'There is not enough balance in the funding account. You cannot settle this stake pool',
 		'de': 'Es gibt nicht genügend Guthaben auf dem Finanzierungskonto. Sie können diesen Stake-Pool nicht abwickeln',
 		'es': 'No hay suficiente saldo en la cuenta de financiación. No puedes liquidar este pool de participación',
@@ -3631,6 +3818,7 @@ const messages = {
 		'zh': '资金账户余额不足。您无法结算此质押池'
 	},
 	'Stake pool does not exist': {
+		'code': 197,
 		'en': 'Stake pool does not exist',
 		'de': 'Stake-Pool existiert nicht',
 		'es': 'El pool de participación no existe',
@@ -3650,6 +3838,7 @@ const messages = {
 		'zh': '质押池不存在'
 	},
 	'Stake pool is not active for accepting users': {
+		'code': 198,
 		'en': 'Stake pool is not active for accepting users',
 		'de': 'Stake-Pool ist nicht aktiv für die Annahme von Benutzern',
 		'es': 'El pool de participación no está activo para aceptar usuarios',
@@ -3669,6 +3858,7 @@ const messages = {
 		'zh': '质押池未激活以接受用户'
 	},
 	'Cannot stake in a pool that is not active': {
+		'code': 199,
 		'en': 'Cannot stake in a pool that is not active',
 		'de': 'Kann nicht in einen inaktiven Pool setzen',
 		'es': 'No se puede apostar en un pool que no está activo',
@@ -3688,6 +3878,7 @@ const messages = {
 		'zh': '无法在未激活的池中押注'
 	},
 	'You do not have enough funds for the amount set': {
+		'code': 200,
 		'en': 'You do not have enough funds for the amount set',
 		'de': 'Sie haben nicht genügend Geld für den festgelegten Betrag',
 		'es': 'No tienes suficientes fondos para la cantidad establecida',
@@ -3707,6 +3898,7 @@ const messages = {
 		'zh': '您没有足够的资金用于设定的金额'
 	},
 	'the amount is higher than the max amount set for the stake pool': {
+		'code': 201,
 		'en': 'The amount is higher than the max amount set for the stake pool',
 		'de': 'Der Betrag ist höher als der maximal festgelegte Betrag für den Stake-Pool',
 		'es': 'La cantidad es mayor que la cantidad máxima establecida para el pool de participación',
@@ -3726,6 +3918,7 @@ const messages = {
 		'zh': '金额高于设定的质押池的最高金额'
 	},
 	'the amount is lower than the min amount set for the stake pool': {
+		'code': 202,
 		'en': 'The amount is lower than the min amount set for the stake pool',
 		'de': 'Der Betrag ist niedriger als der für den Stake-Pool festgelegte Mindestbetrag',
 		'es': 'El monto es menor que el monto mínimo establecido para el pool de participación',
@@ -3745,6 +3938,7 @@ const messages = {
 		'zh': '金额低于为质押池设置的最小金额'
 	},
 	'Staker does not exist': {
+		'code': 203,
 		'en': 'Staker does not exist',
 		'de': 'Staker existiert nicht',
 		'es': 'El apostador no existe',
@@ -3764,6 +3958,7 @@ const messages = {
 		'zh': '质押者不存在'
 	},
 	'Cannot have more than 12 active stakes': {
+		'code': 204,
 		'en': 'Cannot have more than 12 active stakes',
 		'de': 'Es können nicht mehr als 12 aktive Einsätze haben',
 		'es': 'No se pueden tener más de 12 apuestas activas',
@@ -3783,6 +3978,7 @@ const messages = {
 		'zh': '不能拥有超过12个活跃投注'
 	},
 	'Stake pool is not active for unstaking': {
+		'code': 205,
 		'en': 'Stake pool is not active for unstaking',
 		'de': 'Stake-Pool ist nicht aktiv zum Entstaken',
 		'es': 'El pool de participación no está activo para retirarse',
@@ -3802,6 +3998,7 @@ const messages = {
 		'zh': '质押池未激活以进行解质押'
 	},
 	'Cannot unstake in a pool that is not active': {
+		'code': 206,
 		'en': 'Cannot unstake in a pool that is not active',
 		'de': 'Kann in einem inaktiven Pool nicht entsetzt werden',
 		'es': 'No se puede retirar la participación en un pool que no está activo',
@@ -3821,6 +4018,7 @@ const messages = {
 		'zh': '无法在未激活的池中解除质押'
 	},
 	'Suspicious login detected, please check your email.': {
+		'code': 207,
 		'en': 'Suspicious login detected, please check your email.',
 		'de': 'Verdächtiger Login erkannt, bitte überprüfen Sie Ihre E-Mails.',
 		'es': 'Se ha detectado un inicio de sesión sospechoso, por favor revise su correo electrónico.',
@@ -3840,6 +4038,7 @@ const messages = {
 		'zh': '检测到可疑登录，请检查您的电子邮件。'
 	},
 	'Cannot unstake, period is not over': {
+		'code': 208,
 		'en': 'Cannot unstake, period is not over',
 		'de': 'Kann nicht entstaken, Zeitraum ist nicht abgelaufen',
 		'es': 'No se puede retirar la participación, el período no ha terminado',
@@ -3859,6 +4058,7 @@ const messages = {
 		'zh': '无法解除质押，期限尚未结束'
 	},
 	'Your current exchange plan does not support cefi staking feature': {
+		'code': 209,
 		'en': 'Your current exchange plan does not support cefi staking feature',
 		'de': 'Ihr aktueller Börsenplan unterstützt das cefi-Staking-Feature nicht',
 		'es': 'Su plan de intercambio actual no admite la función de participación cefi',
@@ -3878,6 +4078,7 @@ const messages = {
 		'zh': '您当前的交易计划不支持 cefi 质押功能'
 	},
 	'There is no price for asset for rewarding in Oracle': {
+		'code': 210,
 		'en': 'There is no price for asset for rewarding in Oracle',
 		'de': 'Es gibt keinen Preis für Vermögenswerte zur Belohnung im Oracle',
 		'es': 'No hay precio para el activo para recompensar en Oracle',
@@ -3897,6 +4098,7 @@ const messages = {
 		'zh': '在Oracle中没有资产的价格用于奖励'
 	},
 	'Reward currency cannot be same as the main currency': {
+		'code': 211,
 		'en': 'Reward currency cannot be same as the main currency',
 		'de': 'Die Belohnungswährung darf nicht dieselbe sein wie die Hauptwährung',
 		'es': 'La moneda de recompensa no puede ser la misma que la moneda principal',
@@ -3916,6 +4118,7 @@ const messages = {
 		'zh': '奖励货币不能与主要货币相同'
 	},
 	'Cannot change admin email': {
+		'code': 212,
 		'en': 'Cannot change admin email',
 		'de': 'Administrativen E-Mail kann nicht geändert werden',
 		'es': 'No se puede cambiar el correo electrónico del administrador',
@@ -3935,6 +4138,7 @@ const messages = {
 		'zh': '不能更改管理员电子邮件'
 	},
 	'New email cannot be same as the existing one': {
+		'code': 213,
 		'en': 'New email cannot be same as the existing one',
 		'de': 'Neue E-Mail darf nicht dieselbe sein wie die bestehende',
 		'es': 'El nuevo correo electrónico no puede ser igual que el existente',
@@ -3954,6 +4158,7 @@ const messages = {
 		'zh': '新电子邮件不能与现有电子邮件相同'
 	},
 	'This email already exists': {
+		'code': 214,
 		'en': 'This email already exists',
 		'de': 'Diese E-Mail existiert bereits',
 		'es': 'Este correo electrónico ya existe',
@@ -3973,6 +4178,7 @@ const messages = {
 		'zh': '此电子邮件已存在'
 	},
 	'Cannot change deleted email': {
+		'code': 215,
 		'en': 'Cannot change deleted email',
 		'de': 'Gelöschte E-Mail kann nicht geändert werden',
 		'es': 'No se puede cambiar el correo electrónico eliminado',
@@ -3992,6 +4198,7 @@ const messages = {
 		'zh': '无法更改已删除的电子邮件'
 	},
 	'Failed to get the quote': {
+		'code': 216,
 		'en': 'Failed to get the quote',
 		'de': 'Angebot konnte nicht abgerufen werden',
 		'es': 'No se pudo obtener la cotización',
@@ -4011,6 +4218,7 @@ const messages = {
 		'zh': '获取报价失败'
 	},
 	'This feature is not active on the exchange': {
+		'code': 217,
 		'en': 'This feature is not active on the exchange',
 		'de': 'Diese Funktion ist an der Börse nicht aktiv',
 		'es': 'Esta característica no está activa en el intercambio',
@@ -4030,6 +4238,7 @@ const messages = {
 		'zh': '该功能在交易所上不活跃'
 	},
 	'Google token expired': {
+		'code': 218,
 		'en': 'Google token expired',
 		'de': 'Google-Token abgelaufen',
 		'es': 'El token de Google ha caducado',
@@ -4049,6 +4258,7 @@ const messages = {
 		'zh': 'Google 令牌已过期'
 	},
 	'Invalid Google token issuer': {
+		'code': 219,
 		'en': 'Invalid Google token issuer',
 		'de': 'Ungültiger Aussteller des Google-Tokens',
 		'es': 'Emisor de token de Google no válido',
@@ -4068,6 +4278,7 @@ const messages = {
 		'zh': '无效的 Google 令牌颁发者'
 	},
 	'Google account mismatch': {
+		'code': 220,
 		'en': 'Google account mismatch',
 		'de': 'Google-Konto stimmt nicht überein',
 		'es': 'La cuenta de Google no coincide',
@@ -4087,6 +4298,7 @@ const messages = {
 		'zh': 'Google 帐户不匹配'
 	},
 	'Subaccounts cannot generate deposit addresses': {
+		'code': 221,
 		'en': 'Subaccounts cannot generate deposit addresses',
 		'de': 'Unterkonten können keine Einzahlungsadressen erstellen',
 		'es': 'Las subcuentas no pueden generar direcciones de depósito',
@@ -4106,6 +4318,7 @@ const messages = {
 		'zh': '子账户无法生成充值地址'
 	},
 	'Reset password request is sent if the user exists.': {
+		'code': 222,
 		'en': 'Reset password request is sent if the user exists.',
 		'de': 'Reset password request is sent if the user exists.',
 		'es': 'Reset password request is sent if the user exists.',
@@ -4125,6 +4338,7 @@ const messages = {
 		'zh': 'Reset password request is sent if the user exists.'
 	},
 	'Password is successfully set': {
+		'code': 223,
 		'en': 'Password is successfully set',
 		'de': 'Password ist erfolgreich gesetzt',
 		'es': 'La contraseña se ha establecido correctamente',
@@ -4144,6 +4358,7 @@ const messages = {
 		'zh': '密码已成功设置'
 	},
 	'Password is already set': {
+		'code': 224,
 		'en': 'Password already set',
 		'de': 'Password bereits gesetzt',
 		'es': 'La contraseña ya está establecida',
@@ -4162,45 +4377,8 @@ const messages = {
 		'vi': 'Mật khẩu đã được thiết lập',
 		'zh': '密码已设置'
 	},
-	'Password is not set': {
-		'en': 'Password is not set',
-		'de': 'Passwort ist nicht gesetzt',
-		'es': 'La contraseña no está configurada',
-		'fa': 'رمز عبور تنظیم نشده است',
-		'fr': 'Le mot de passe n’est pas défini',
-		'id': 'Kata sandi belum ditetapkan',
-		'it': 'La password non è impostata',
-		'ja': 'パスワードが設定されていません',
-		'ko': '비밀번호가 설정되어 있지 않습니다',
-		'mn': 'Нууц үг тохируулаагүй байна',
-		'nl': 'Wachtwoord is niet ingesteld',
-		'pt': 'A senha não está definida',
-		'ru': 'Пароль не установлен',
-		'tr': 'Şifre ayarlanmadı',
-		'ur': 'پاس ورڈ سیٹ نہیں ہے',
-		'vi': 'Mật khẩu chưa được đặt',
-		'zh': '未设置密码'
-	},
-	'Please confirm the verification code sent to your email': {
-		'en': 'Please confirm the verification code sent to your email',
-		'de': 'Bitte bestätigen Sie den an Ihre E-Mail gesendeten Bestätigungscode',
-		'es': 'Por favor confirme el código de verificación enviado a su correo electrónico',
-		'fa': 'لطفاً کد تأیید ارسال‌شده به ایمیل خود را تأیید کنید',
-		'fr': 'Veuillez confirmer le code de vérification envoyé à votre adresse e-mail',
-		'id': 'Silakan konfirmasi kode verifikasi yang dikirim ke email Anda',
-		'it': 'Per favore conferma il codice di verifica inviato alla tua email',
-		'ja': 'メールに送信された確認コードを確認してください',
-		'ko': '이메일로 전송된 인증 코드를 확인해 주세요',
-		'mn': 'И-мэйлээр илгээсэн баталгаажуулах кодыг баталгаажуулна уу',
-		'nl': 'Bevestig de verificatiecode die naar je e-mail is gestuurd',
-		'pt': 'Por favor, confirme o código de verificação enviado para o seu e-mail',
-		'ru': 'Пожалуйста, подтвердите код проверки, отправленный на вашу почту',
-		'tr': 'Lütfen e-postanıza gönderilen doğrulama kodunu onaylayın',
-		'ur': 'براہ کرم اپنے ای میل پر بھیجا گیا تصدیقی کوڈ تصدیق کریں',
-		'vi': 'Vui lòng xác nhận mã xác minh được gửi đến email của bạn',
-		'zh': '请确认发送到您邮箱的验证码'
-	},
 	'Referral code is required': {
+		'code': 227,
 		'en': 'Referral code is required',
 		'de': 'Referralcode ist erforderlich',
 		'es': 'Se requiere código de referido',
@@ -4220,6 +4398,7 @@ const messages = {
 		'zh': '推荐码为必填项'
 	},
 	'You have reached your withdrawal limit for your tier': {
+		'code': 228,
 		'en': 'You have reached your withdrawal limit for your tier',
 		'de': 'Sie haben das Auszahlungslimit für Ihre Stufe erreicht',
 		'es': 'Has alcanzado el límite de retiro de tu nivel',
@@ -4237,7 +4416,348 @@ const messages = {
 		'ur': 'آپ اپنے درجے کے لیے مقرر کردہ نکاسی کی حد تک پہنچ چکے ہیں',
 		'vi': 'Bạn đã đạt đến giới hạn rút tiền cho cấp của mình',
 		'zh': '您已达到当前等级的提现限额'
+	},
+	'Password is not set': {
+		'code': 229,
+		'en': 'Password is not set',
+		'de': 'Passwort ist nicht gesetzt',
+		'es': 'La contraseña no está configurada',
+		'fa': 'رمز عبور تنظیم نشده است',
+		'fr': 'Le mot de passe n’est pas défini',
+		'id': 'Kata sandi belum ditetapkan',
+		'it': 'La password non è impostata',
+		'ja': 'パスワードが設定されていません',
+		'ko': '비밀번호가 설정되어 있지 않습니다',
+		'mn': 'Нууц үг тохируулаагүй байна',
+		'nl': 'Wachtwoord is niet ingesteld',
+		'pt': 'A senha não está definida',
+		'ru': 'Пароль не установлен',
+		'tr': 'Şifre ayarlanmadı',
+		'ur': 'پاس ورڈ سیٹ نہیں ہے',
+		'vi': 'Mật khẩu chưa được đặt',
+		'zh': '未设置密码'
+	},
+	'Please confirm the verification code sent to your email': {
+		'code': 230,
+		'en': 'Please confirm the verification code sent to your email',
+		'de': 'Bitte bestätigen Sie den an Ihre E-Mail gesendeten Bestätigungscode',
+		'es': 'Por favor confirme el código de verificación enviado a su correo electrónico',
+		'fa': 'لطفاً کد تأیید ارسال‌شده به ایمیل خود را تأیید کنید',
+		'fr': 'Veuillez confirmer le code de vérification envoyé à votre adresse e-mail',
+		'id': 'Silakan konfirmasi kode verifikasi yang dikirim ke email Anda',
+		'it': 'Per favore conferma il codice di verifica inviato alla tua email',
+		'ja': 'メールに送信された確認コードを確認してください',
+		'ko': '이메일로 전송된 인증 코드를 확인해 주세요',
+		'mn': 'И-мэйлээр илгээсэн баталгаажуулах кодыг баталгаажуулна уу',
+		'nl': 'Bevestig de verificatiecode die naar je e-mail is gestuurd',
+		'pt': 'Por favor, confirme o código de verificação enviado para o seu e-mail',
+		'ru': 'Пожалуйста, подтвердите код проверки, отправленный на вашу почту',
+		'tr': 'Lütfen e-postanıza gönderilen doğrulama kodunu onaylayın',
+		'ur': 'براہ کرم اپنے ای میل پر بھیجا گیا تصدیقی کوڈ تصدیق کریں',
+		'vi': 'Vui lòng xác nhận mã xác minh được gửi đến email của bạn',
+		'zh': '请确认发送到您邮箱的验证码'
+	},
+	'Please confirm the verification code sent to your phone': {
+		'code': 231,
+		'en': 'Please confirm the verification code sent to your phone',
+		'de': 'Bitte bestätigen Sie den an Ihr Telefon gesendeten Bestätigungscode',
+		'es': 'Por favor confirme el código de verificación enviado a su teléfono',
+		'fa': 'لطفاً کد تأیید ارسال‌شده به تلفن خود را تأیید کنید',
+		'fr': 'Veuillez confirmer le code de vérification envoyé à votre téléphone',
+		'id': 'Silakan konfirmasi kode verifikasi yang dikirim ke ponsel Anda',
+		'it': 'Per favore conferma il codice di verifica inviato al tuo telefono',
+		'ja': '電話に送信された確認コードを確認してください',
+		'ko': '휴대폰으로 전송된 인증 코드를 확인해 주세요',
+		'mn': 'Утсанд илгээсэн баталгаажуулах кодыг баталгаажуулна уу',
+		'nl': 'Bevestig de verificatiecode die naar je telefoon is gestuurd',
+		'pt': 'Por favor, confirme o código de verificação enviado para o seu telefone',
+		'ru': 'Пожалуйста, подтвердите код проверки, отправленный на ваш телефон',
+		'tr': 'Lütfen telefonunuza gönderilen doğrulama kodunu onaylayın',
+		'ur': 'براہ کرم اپنے فون پر بھیجا گیا تصدیقی کوڈ تصدیق کریں',
+		'vi': 'Vui lòng xác nhận mã xác minh được gửi đến điện thoại của bạn',
+		'zh': '请确认发送到您手机的验证码'
+	},
+	'User phone number is not verified': {
+		'code': 232,
+		'en': 'User phone number is not verified',
+		'de': 'Benutzertelefonnummer ist nicht verifiziert',
+		'es': 'El número de teléfono del usuario no está verificado',
+		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
+		'fr': 'Le numéro de téléphone de l\'utilisateur n\'est pas vérifié',
+		'id': 'Nomor telepon pengguna tidak terverifikasi',
+		'it': 'Il numero di telefono dell\'utente non è verificato',
+		'ja': 'ユーザーの電話番号が未確認です',
+		'ko': '사용자 전화번호가 인증되지 않았습니다',
+		'mn': 'Хувийн дугаарыг баталгаажуулсан биш байна',
+		'nl': 'Het telefoonnummer van de gebruiker is niet geverifieerd',
+		'pt': 'O número de telefone do usuário não está verificado',
+		'ru': 'Номер телефона пользователя не подтвержден',
+		'tr': 'Kullanıcının telefon numarası doğrulanmamış',
+		'ur': 'صارف کے فون نمبر تصدیق نہیں ہوئے',
+		'vi': 'Số điện thoại của người dùng chưa được xác minh',
+		'zh': '用户手机号码未验证'
+	},
+	'User has no phone number': {
+		'code': 233,
+		'en': 'User has no phone number',
+		'de': 'Benutzer hat kein Telefonnummer',
+		'es': 'El usuario no tiene número de teléfono',
+		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
+		'fr': 'L\'utilisateur n\'a pas de numéro de téléphone',
+		'id': 'Pengguna tidak memiliki nomor telepon',
+		'it': 'L\'utente non ha un numero di telefono',
+		'ja': 'ユーザーに電話番号がありません',
+		'ko': '사용자에게 전화번호가 없습니다',
+		'mn': 'Хувийн дугаарыг баталгаажуулсан биш байна',
+		'nl': 'De gebruiker heeft geen telefoonnummer',
+		'pt': 'O usuário não tem número de telefone',
+		'ru': 'У пользователя нет номера телефона',
+		'tr': 'Kullanıcının telefon numarası yok',
+		'ur': 'صارف کے فون نمبر نہیں ہے',
+		'vi': 'Người dùng không có số điện thoại',
+		'zh': '用户没有手机号码'
+	},
+	'User phone number already verified': {
+		'code': 234,
+		'en': 'User phone number already verified',
+		'de': 'Benutzertelefonnummer ist bereits verifiziert',
+		'es': 'El número de teléfono del usuario ya está verificado',
+		'fa': 'شما به سقف برداشت مجاز سطح خود رسیده‌اید',
+		'fr': 'Le numéro de téléphone de l\'utilisateur est déjà vérifié',
+		'id': 'Nomor telepon pengguna sudah terverifikasi',
+		'it': 'Il numero di telefono dell\'utente è già verificato',
+		'ja': 'ユーザーの電話番号はすでに確認されています',
+		'ko': '사용자 전화번호가 이미 인증되었습니다',
+		'mn': 'Хувийн дугаарыг баталгаажуулсан байна',
+		'nl': 'Het telefoonnummer van de gebruiker is al geverifieerd',
+		'pt': 'O número de telefone do usuário já está verificado',
+		'ru': 'Номер телефона пользователя уже подтвержден',
+		'tr': 'Kullanıcının telefon numarası zaten doğrulandı',
+		'ur': 'صارف کے فون نمبر پہلے ہی تصدیق شدہ ہے',
+		'vi': 'Số điện thoại của người dùng đã được xác minh',
+		'zh': '用户手机号码已验证'
+	},
+	'Provide either email or phone_number for sign up, not both': {
+		'code': 235,
+		'en': 'Provide either email or phone_number for sign up, not both',
+		'de': 'Geben Sie zur Anmeldung entweder eine E-Mail-Adresse oder eine Telefonnummer an, nicht beides',
+		'es': 'Proporcione un correo electrónico o un número de teléfono para el registro, no ambos',
+		'fa': 'برای ثبت‌نام، یکی از ایمیل یا شماره تلفن را وارد کنید، نه هر دو',
+		'fr': 'Indiquez une adresse e-mail ou un numéro de téléphone pour l\'inscription, mais pas les deux',
+		'id': 'Berikan email atau nomor telepon untuk pendaftaran, bukan keduanya',
+		'it': 'Fornisci un\'email o un numero di telefono per la registrazione, non entrambi',
+		'ja': 'サインアップにはメールアドレスまたは電話番号のいずれか一方を入力してください。両方は不可です',
+		'ko': '가입 시 이메일 또는 전화번호 중 하나만 입력하세요. 둘 다 입력할 수 없습니다',
+		'mn': 'Бүртгүүлэхдээ имэйл эсвэл утасны дугаараас зөвхөн нэгийг өгнө үү, хоёуланг нь биш',
+		'nl': 'Geef voor aanmelding een e-mailadres óf een telefoonnummer op, niet beide',
+		'pt': 'Forneça um e-mail ou número de telefone para o cadastro, não ambos',
+		'ru': 'Для регистрации укажите либо электронную почту, либо номер телефона, но не оба',
+		'tr': 'Kayıt için e-posta veya telefon numarasından yalnızca birini girin, ikisini birden değil',
+		'ur': 'سائن اپ کے لیے ای میل یا فون نمبر میں سے ایک فراہم کریں، دونوں نہیں',
+		'vi': 'Cung cấp email hoặc số điện thoại để đăng ký, không phải cả hai',
+		'zh': '注册时请仅提供电子邮件或电话号码，不能两者都填写'
+	},
+	'Phone sign up requires SMS verification to be enabled on this exchange': {
+		'code': 236,
+		'en': 'Phone sign up requires SMS verification to be enabled on this exchange',
+		'de': 'Für die Anmeldung per Telefon muss die SMS-Verifizierung an dieser Börse aktiviert sein',
+		'es': 'El registro por teléfono requiere que la verificación por SMS esté habilitada en este intercambio',
+		'fa': 'ثبت‌نام با شماره تلفن نیازمند فعال‌سازی تأیید پیامکی در این صرافی است',
+		'fr': 'L\'inscription par téléphone nécessite que la vérification par SMS soit activée sur cet échange',
+		'id': 'Pendaftaran melalui telepon memerlukan verifikasi SMS yang diaktifkan di bursa ini',
+		'it': 'La registrazione tramite telefono richiede che la verifica SMS sia abilitata su questo exchange',
+		'ja': '電話番号でのサインアップには、この取引所でSMS認証が有効になっている必要があります',
+		'ko': '전화번호 가입은 이 거래소에서 SMS 인증이 활성화되어 있어야 합니다',
+		'mn': 'Утсаар бүртгүүлэхийн тулд энэ биржид SMS баталгаажуулалт идэвхжүүлсэн байх шаардлагатай',
+		'nl': 'Aanmelden met telefoon vereist dat sms-verificatie is ingeschakeld op deze beurs',
+		'pt': 'O cadastro por telefone requer que a verificação por SMS esteja habilitada nesta corretora',
+		'ru': 'Для регистрации по телефону на этой бирже должна быть включена SMS-верификация',
+		'tr': 'Telefon ile kayıt için bu borsada SMS doğrulamasının etkinleştirilmiş olması gerekir',
+		'ur': 'فون سے سائن اپ کے لیے اس ایکسچینج پر SMS تصدیق کا فعال ہونا ضروری ہے',
+		'vi': 'Đăng ký qua điện thoại yêu cầu xác minh SMS được bật trên sàn giao dịch này',
+		'zh': '通过电话注册需要在此交易所启用短信验证'
+	},
+	'No active SMS plugin is installed on this exchange': {
+		'code': 237,
+		'en': 'No active SMS plugin is installed on this exchange',
+		'de': 'An dieser Börse ist kein aktives SMS-Plugin installiert',
+		'es': 'No hay un plugin de SMS activo instalado en este intercambio',
+		'fa': 'هیچ افزونه پیامک فعالی در این صرافی نصب نشده است',
+		'fr': 'Aucun plugin SMS actif n\'est installé sur cet échange',
+		'id': 'Tidak ada plugin SMS aktif yang terpasang di bursa ini',
+		'it': 'Nessun plugin SMS attivo è installato su questo exchange',
+		'ja': 'この取引所には有効なSMSプラグインがインストールされていません',
+		'ko': '이 거래소에 활성화된 SMS 플러그인이 설치되어 있지 않습니다',
+		'mn': 'Энэ биржид идэвхтэй SMS залгаас суулгаагүй байна',
+		'nl': 'Op deze beurs is geen actieve sms-plug-in geïnstalleerd',
+		'pt': 'Nenhum plugin de SMS ativo está instalado nesta corretora',
+		'ru': 'На этой бирже не установлен активный SMS-плагин',
+		'tr': 'Bu borsada etkin bir SMS eklentisi yüklü değil',
+		'ur': 'اس ایکسچینج پر کوئی فعال SMS پلگ ان انسٹال نہیں ہے',
+		'vi': 'Không có tiện ích SMS đang hoạt động được cài đặt trên sàn giao dịch này',
+		'zh': '此交易所未安装活动的短信插件'
+	},
+	'An account with this phone number already exists': {
+		'code': 238,
+		'en': 'An account with this phone number already exists',
+		'de': 'Ein Konto mit dieser Telefonnummer existiert bereits',
+		'es': 'Ya existe una cuenta con este número de teléfono',
+		'fa': 'حسابی با این شماره تلفن از قبل وجود دارد',
+		'fr': 'Un compte avec ce numéro de téléphone existe déjà',
+		'id': 'Akun dengan nomor telepon ini sudah ada',
+		'it': 'Esiste già un account con questo numero di telefono',
+		'ja': 'この電話番号のアカウントは既に存在します',
+		'ko': '이 전화번호로 등록된 계정이 이미 존재합니다',
+		'mn': 'Энэ утасны дугаартай данс аль хэдийн бий',
+		'nl': 'Er bestaat al een account met dit telefoonnummer',
+		'pt': 'Já existe uma conta com este número de telefone',
+		'ru': 'Учетная запись с этим номером телефона уже существует',
+		'tr': 'Bu telefon numarasıyla bir hesap zaten mevcut',
+		'ur': 'اس فون نمبر کے ساتھ ایک اکاؤنٹ پہلے سے موجود ہے',
+		'vi': 'Tài khoản với số điện thoại này đã tồn tại',
+		'zh': '此电话号码的账户已存在'
+	},
+	'Adding a verified email this way is only available for phone sign-up accounts': {
+		'code': 239,
+		'en': 'Adding a verified email this way is only available for phone sign-up accounts',
+		'de': 'Das Hinzufügen einer verifizierten E-Mail-Adresse auf diese Weise ist nur für per Telefon registrierte Konten verfügbar',
+		'es': 'Agregar un correo electrónico verificado de esta manera solo está disponible para cuentas registradas por teléfono',
+		'fa': 'افزودن ایمیل تأیید‌شده به این روش فقط برای حساب‌های ثبت‌شده با شماره تلفن در دسترس است',
+		'fr': 'L\'ajout d\'une adresse e-mail vérifiée de cette manière n\'est disponible que pour les comptes inscrits par téléphone',
+		'id': 'Menambahkan email terverifikasi dengan cara ini hanya tersedia untuk akun pendaftaran melalui telepon',
+		'it': 'L\'aggiunta di un\'e-mail verificata in questo modo è disponibile solo per gli account registrati tramite telefono',
+		'ja': 'この方法で認証済みメールアドレスを追加できるのは、電話番号で登録されたアカウントのみです',
+		'ko': '이 방법으로 인증된 이메일을 추가하는 것은 전화번호로 가입한 계정에만 가능합니다',
+		'mn': 'Ийм аргаар баталгаажсан имэйл нэмэх нь зөвхөн утсаар бүртгүүлсэн данснуудад боломжтой',
+		'nl': 'Op deze manier een geverifieerd e-mailadres toevoegen is alleen mogelijk voor accounts die via telefoon zijn aangemeld',
+		'pt': 'Adicionar um e-mail verificado dessa forma está disponível apenas para contas cadastradas por telefone',
+		'ru': 'Добавление подтверждённой электронной почты этим способом доступно только для учётных записей, зарегистрированных по телефону',
+		'tr': 'Bu şekilde doğrulanmış bir e-posta eklemek yalnızca telefonla kayıtlı hesaplar için kullanılabilir',
+		'ur': 'اس طریقے سے تصدیق شدہ ای میل شامل کرنا صرف فون سائن اپ اکاؤنٹس کے لیے دستیاب ہے',
+		'vi': 'Thêm email đã xác minh theo cách này chỉ khả dụng cho các tài khoản đăng ký bằng điện thoại',
+		'zh': '通过此方式添加已验证的电子邮件仅适用于通过电话注册的账户'
+	},
+	'Set a real email address on your account to enable email verification': {
+		'code': 240,
+		'en': 'Set a real email address on your account to enable email verification',
+		'de': 'Legen Sie eine echte E-Mail-Adresse für Ihr Konto fest, um die E-Mail-Verifizierung zu aktivieren',
+		'es': 'Configure una dirección de correo electrónico real en su cuenta para habilitar la verificación por correo',
+		'fa': 'برای فعال‌سازی تأیید ایمیل، یک آدرس ایمیل واقعی برای حساب خود تنظیم کنید',
+		'fr': 'Définissez une adresse e-mail valide sur votre compte pour activer la vérification par e-mail',
+		'id': 'Atur alamat email asli pada akun Anda untuk mengaktifkan verifikasi email',
+		'it': 'Imposta un indirizzo e-mail reale sul tuo account per abilitare la verifica e-mail',
+		'ja': 'メール認証を有効にするには、アカウントに実際のメールアドレスを設定してください',
+		'ko': '이메일 인증을 활성화하려면 계정에 실제 이메일 주소를 설정하세요',
+		'mn': 'Имэйл баталгаажуулалтыг идэвхжүүлэхийн тулд дансандаа бодит имэйл хаяг тохируулна уу',
+		'nl': 'Stel een echt e-mailadres in op uw account om e-mailverificatie in te schakelen',
+		'pt': 'Defina um endereço de e-mail real em sua conta para habilitar a verificação por e-mail',
+		'ru': 'Укажите действующий адрес электронной почты в учётной записи, чтобы включить подтверждение по email',
+		'tr': 'E-posta doğrulamasını etkinleştirmek için hesabınıza gerçek bir e-posta adresi ekleyin',
+		'ur': 'ای میل کی تصدیق فعال کرنے کے لیے اپنے اکاؤنٹ میں ایک حقیقی ای میل ایڈریس سیٹ کریں',
+		'vi': 'Đặt một địa chỉ email thực trên tài khoản của bạn để bật xác minh email',
+		'zh': '在您的账户上设置真实电子邮件地址以启用电子邮件验证'
+	},
+	'Please provide a valid phone number': {
+		'code': 241,
+		'en': 'Please provide a valid phone number',
+		'de': 'Bitte geben Sie eine gültige Telefonnummer ein',
+		'es': 'Por favor, proporcione un número de teléfono válido',
+		'fa': 'لطفاً یک شماره تلفن معتبر وارد کنید',
+		'fr': 'Veuillez fournir un numéro de téléphone valide',
+		'id': 'Harap berikan nomor telepon yang valid',
+		'it': 'Si prega di fornire un numero di telefono valido',
+		'ja': '有効な電話番号を入力してください',
+		'ko': '유효한 전화번호를 입력해주세요',
+		'mn': 'Зөв утасны дугаар оруулна уу',
+		'nl': 'Geef een geldig telefoonnummer op',
+		'pt': 'Por favor, forneça um número de telefone válido',
+		'ru': 'Пожалуйста, укажите действительный номер телефона',
+		'tr': 'Lütfen geçerli bir telefon numarası girin',
+		'ur': 'براہ کرم ایک درست فون نمبر فراہم کریں',
+		'vi': 'Vui lòng cung cấp một số điện thoại hợp lệ',
+		'zh': '请提供有效的电话号码'
+	},
+	'Withdrawal disabled for this user': {
+		'code': 242,
+		'en': 'Withdrawal disabled for this user',
+		'de': 'Auszahlung für diesen Benutzer deaktiviert',
+		'es': 'Retiro deshabilitado para este usuario',
+		'fa': 'برداشت برای این کاربر غیرفعال شده است',
+		'fr': 'Retrait désactivé pour cet utilisateur',
+		'id': 'Penarikan dinonaktifkan untuk pengguna ini',
+		'it': 'Prelievo disabilitato per questo utente',
+		'ja': 'このユーザーの出金は無効になっています',
+		'ko': '이 사용자의 출금이 비활성화되었습니다',
+		'mn': 'Энэ хэрэглэгчийн бүртгүүлэх хязгаарт хүрсэн байна',
+		'nl': 'Uitbetaling is voor deze gebruiker uitgeschakeld',
+		'pt': 'Saque desativado para este usuário',
+		'ru': 'Вывод средств для этого пользователя отключен',
+		'tr': 'Bu kullanıcı için çekim devre dışı bırakıldı',
+		'ur': 'اس کے لیے نکاسی غیر فعال ہے',
+		'vi': 'Rút tiền đã bị vô hiệu hóa cho người dùng này',
+		'zh': '此用户的提现已禁用'
+	},
+	'Address label already exists in the payload': {
+		'code': 243,
+		'en': 'Address label already exists in the payload',
+		'de': 'Adressbezeichnung existiert bereits in der Nutzlast',
+		'es': 'La etiqueta de dirección ya existe en la carga útil',
+		'fa': 'برچسب آدرس در باره حاوی قبلا وجود دارد',
+		'fr': 'La balise d\'adresse existe déjà dans la charge utile',
+		'id': 'Label alamat sudah ada dalam payload',
+		'it': 'La label dell\'indirizzo esiste già nel payload',
+		'ja': 'アドレスラベルはすでにペイロードに存在します',
+		'ko': '주소 라벨이 이미 페이로드에 존재합니다',
+		'mn': 'Энэ биржид идэвхтэй SMS залгаас суулгаагүй байна',
+		'nl': 'Adreslabel bestaat al in de payload',
+		'pt': 'O rótulo de endereço já existe no payload',
+		'ru': 'Метка адреса уже существует в полезной нагрузке',
+		'tr': 'Adres etiketi zaten yükte mevcut',
+		'ur': 'آدرس برچسب پہلے سے موجود ہے',
+		'vi': 'Nhãn địa chỉ đã tồn tại trong payload',
+		'zh': '地址标签已在负载中存在'
+	},
+	'User address book not found': {
+		'code': 244,
+		'en': 'User address book not found',
+		'de': 'Benutzeradressbuch nicht gefunden',
+		'es': 'No se encontró el libro de direcciones del usuario',
+		'fa': 'کتاب آدرس کاربر یافت نشد',
+		'fr': 'L\'adresse de l\'utilisateur n\'a pas été trouvée',
+		'id': 'Buku alamat pengguna tidak ditemukan',
+		'it': 'Il libro degli indirizzi dell\'utente non è stato trovato',
+		'ja': 'ユーザーの住所録が見つかりません',
+		'ko': '사용자 주소록을 찾을 수 없습니다',
+		'mn': 'Хувийн данс оруулгын тоо нь байхгүй байна',
+		'nl': 'Het adresboek van de gebruiker is niet gevonden',
+		'pt': 'O livro de endereços do usuário não foi encontrado',
+		'ru': 'Адресный справочник пользователя не найден',
+		'tr': 'Kullanıcı adres defteri bulunamadı',
+		'ur': 'صارف کے آدرس بوک نہیں ملا',
+		'vi': 'Không tìm thấy sổ địa chỉ của người dùng',
+		'zh': '用户地址簿未找到'
+	},
+	'Payment detail not found': {
+		'code': 245,
+		'en': 'Payment detail not found',
+		'de': 'Zahlungsdetails nicht gefunden',
+		'es': 'Detalle de pago no encontrado',
+		'fa': 'جزئیات پرداخت یافت نشد',
+		'fr': 'Détails de paiement non trouvés',
+		'id': 'Detail pembayaran tidak ditemukan',
+		'it': 'Dettagli del pagamento non trovati',
+		'ja': '支払い詳細が見つかりません',
+		'ko': '결제 상세 정보를 찾을 수 없습니다',
+		'mn': 'Төлөвлөгөөний дэлгэрэнгүй талбар оруулгын тоо нь байхгүй байна',
+		'nl': 'Betalingsdetails niet gevonden',
+		'pt': 'Detalhes de pagamento não encontrados',
+		'ru': 'Детали платежа не найдены',
+		'tr': 'Ödeme detayı bulunamadı',
+		'ur': 'تفصیلات نکاسی نہیں ملا',
+		'vi': 'Chi tiết thanh toán không tìm thấy',
+		'zh': '支付详情未找到'
 	}
+	// add new ones above here
 }
 
 
@@ -4455,17 +4975,22 @@ const functionMessages = {
 	}
 };
 
+functionMessages['Invalid OTP Code'].code = 52;
+functionMessages['Access denied'].code = 1001;
+functionMessages['Invalid symbol'].code = 1002;
+functionMessages['Invalid coin'].code = 1003;
+functionMessages['Invalid amount'].code = 1004;
+functionMessages['Deposits are disabled for coin'].code = 1005;
+functionMessages['Withdrawals are disabled for coin'].code = 1006;
+functionMessages['Verification level must be at or above'].code = 1007;
+functionMessages['Invalid verification level'].code = 1008;
+functionMessages['Communicator operators cannot update value'].code = 1009;
+
 exports.getMessage = (message_type, lang = 'en') => {
-    
-	const message = messages?.[message_type]?.[lang];
-	let code;
-	if (messages?.[message_type]) {
-		const messageTypes = Object.keys(messages);
-		code = messageTypes.indexOf(message_type) + 10;
-	}
+	const entry = messages?.[message_type];
 	return {
-		message,
-		code,
+		message: entry?.[lang],
+		code: entry?.code,
 		lang
 	};
 };

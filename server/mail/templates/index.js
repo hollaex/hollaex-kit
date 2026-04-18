@@ -632,6 +632,11 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME());
 		html = html.replace(/\$\{confirmation_code\}/g, data);
 	}
+	else if (type === MAILTYPE.SET_EMAIL_CODE) {
+		html = html.replace(/\$\{name\}/g, email);
+		html = html.replace(/\$\{api_name\}/g, API_NAME());
+		html = html.replace(/\$\{confirmation_code\}/g, data);
+	}
 	else if (type === MAILTYPE.STAKE_CREATED) {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');

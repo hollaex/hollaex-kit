@@ -109,6 +109,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
+			phone_number_verified: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
 			otp_enabled: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
@@ -200,7 +204,6 @@ module.exports = function (sequelize, DataTypes) {
 
 	User.beforeCreate((user) => {
 		user.email = user.email.toLowerCase();
-		user.username = user.email.substr(0, user.email.indexOf('@'));
 		user.affiliation_code = generateAffiliationCode();
 		const isVirtualEmail = typeof user.email === 'string' && user.email.endsWith('_virtual');
 		if (!user.password) {

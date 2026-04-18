@@ -200,6 +200,7 @@ const getUsersAdmin = (req, res) => {
 		nationality,
 		verification_level,
 		email_verified,
+		phone_number_verified,
 		otp_enabled,
 		phone_number,
 		kyc,
@@ -260,6 +261,7 @@ const getUsersAdmin = (req, res) => {
 		verification_level: verification_level.value,
 		max_verification_level: maxVisibleVerificationLevel,
 		email_verified: email_verified.value,
+		phone_number_verified: phone_number_verified.value,
 		otp_enabled: otp_enabled.value,
 		phone_number: phone_number.value,
 		kyc: kyc.value,
@@ -550,6 +552,31 @@ const verifyEmailUser = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/verifyEmailUser',
+				err.message
+			);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+		});
+};
+
+const verifyPhoneUser = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/verifyPhoneUser auth',
+		req.auth
+	);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	toolsLib.user.verifyUserPhoneByKitId(user_id)
+		.then(() => {
+			toolsLib.user.createAuditLog({ email: req?.auth?.sub?.email, session_id: req?.session_id }, req?.swagger?.apiPath, req?.swagger?.operationPath?.[2], req?.swagger?.params?.data?.value);
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/verifyPhoneUser',
 				err.message
 			);
 			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
@@ -3482,6 +3509,7 @@ const downloadUsersCsv = (req, res) => {
 		nationality,
 		verification_level,
 		email_verified,
+		phone_number_verified,
 		otp_enabled,
 		phone_number,
 		kyc,
@@ -3526,6 +3554,7 @@ const downloadUsersCsv = (req, res) => {
 		nationality: nationality.value,
 		verification_level: verification_level.value,
 		email_verified: email_verified.value,
+		phone_number_verified: phone_number_verified.value,
 		otp_enabled: otp_enabled.value,
 		phone_number: phone_number.value,
 		kyc: kyc.value,
@@ -3863,6 +3892,7 @@ module.exports = {
 	mintAsset,
 	burnAsset,
 	verifyEmailUser,
+	verifyPhoneUser,
 	settleFees,
 	putMint,
 	putBurn,

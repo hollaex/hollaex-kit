@@ -4,6 +4,7 @@ import { InputBox } from './InputBox';
 
 const renderItem = (deleteMessage, banUser, bannedUsers) => ({
 	id,
+	user_id,
 	username,
 	message,
 	...rest
@@ -16,9 +17,9 @@ const renderItem = (deleteMessage, banUser, bannedUsers) => ({
 				</Button>,
 				<Button
 					type="danger"
-					onClick={() => banUser(username)}
+					onClick={() => banUser(user_id)}
 					size="small"
-					disabled={bannedUsers[username]}
+					disabled={bannedUsers[user_id]}
 				>
 					BAN USER
 				</Button>,

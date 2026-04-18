@@ -14,6 +14,7 @@ const {
 	USER_REGISTERED,
 	USER_NOT_FOUND,
 	USER_EMAIL_NOT_VERIFIED,
+	USER_PHONE_NOT_VERIFIED,
 	VERIFICATION_EMAIL_MESSAGE,
 	TOKEN_REMOVED,
 	INVALID_CREDENTIALS,
@@ -36,7 +37,10 @@ const {
 	SUBACCOUNT_CANNOT_GENERATE_ADDRESS,
 	PASSWORD_SET,
 	PASSWORD_NOT_SET,
-	USER_REGISTERED_EMAIL_CODE
+	USER_REGISTERED_EMAIL_CODE,
+	USER_REGISTERED_SMS_CODE,
+	SIGNUP_EMAIL_OR_PHONE_NOT_BOTH,
+	PROVIDE_VALID_PHONE
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS, GET_KIT_SECRETS } = require('../../constants');
 const { all } = require('bluebird');
@@ -92,12 +96,39 @@ const INITIAL_SETTINGS = () => {
 	};
 };
 
+// Shared verification/auth code generator. Keeps email/SMS/passkey flows
+// consistent so that v3/v4 always produce a short human-friendly code
+// (the SUSPICIOUS_LOGIN_CODE / SIGNUP_CODE templates render the value
+// directly to the user). For older clients we fall back to a UUID for
+// signup/verify flows and a base64 token for suspicious-login flows.
+const generateAuthCode = (version, { fallback = 'uuid' } = {}) => {
+	if (version === 'v4') {
+		return crypto.randomInt(100000, 1000000).toString();
+	}
+	if (version === 'v3') {
+		const letters = Array.from({ length: 2 }, () =>
+			String.fromCharCode(65 + crypto.randomInt(0, 26))
+		).join('');
+		const numbers = crypto.randomInt(10000, 100000);
+		return `${letters}-${numbers}`;
+	}
+	if (fallback === 'token') {
+		return crypto
+			.randomBytes(9)
+			.toString('base64')
+			.replace(/[^a-zA-Z0-9]/g, '')
+			.substring(0, 12);
+	}
+	return uuid();
+};
+
 
 const signUpUser = (req, res) => {
 	const {
 		password,
 		captcha,
-		referral
+		referral,
+		phone_number: phoneNumberRaw
 	} = req.swagger.params.signup.value;
 
 	let { email, version } = req.swagger.params.signup.value;
@@ -109,16 +140,55 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	email = email.toLowerCase().trim();
+	const phone_number =
+		phoneNumberRaw != null && String(phoneNumberRaw).trim().length > 0
+			? String(phoneNumberRaw).trim()
+			: undefined;
+	const emailTrim =
+		email != null && String(email).trim().length > 0
+			? String(email).trim().toLowerCase()
+			: undefined;
+
+	if (phone_number && emailTrim) {
+		const messageObj = errorMessageConverter(
+			{ message: SIGNUP_EMAIL_OR_PHONE_NOT_BOTH },
+			req?.auth?.sub?.lang
+		);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+	if (!phone_number && !emailTrim) {
+		const messageObj = errorMessageConverter(
+			{ message: PROVIDE_VALID_EMAIL },
+			req?.auth?.sub?.lang
+		);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+
+	const signupEmail = emailTrim || null;
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
 			return toolsLib.security.checkCaptcha(captcha, ip, req.headers);
 		})
-		.then(() => toolsLib.user.signUpUser(email, password, { referral }, version))
+		.then(() =>
+			toolsLib.user.signUpUser(signupEmail, password, { referral, phone_number }, version)
+		)
 		.then(() => {
 			const requiresVerification = toolsLib.getKitConfig().email_verification_required;
-			const successMessage = requiresVerification ? USER_REGISTERED_EMAIL_CODE : USER_REGISTERED;
+			let successMessage = USER_REGISTERED;
+			if (requiresVerification) {
+				successMessage = phone_number
+					? USER_REGISTERED_SMS_CODE
+					: USER_REGISTERED_EMAIL_CODE;
+			}
 			const messageObj = errorMessageConverter({ message: successMessage }, req?.auth?.sub?.lang);
 			return res.status(201).json({
 				message: messageObj?.message,
@@ -199,6 +269,7 @@ const signUpUserWithGoogle = async (req, res) => {
 
 const getVerifyUser = (req, res) => {
 	let email = req.swagger.params.email.value;
+	const phoneNumberRaw = req.swagger.params.phone_number && req.swagger.params.phone_number.value;
 	const resendEmail = req.swagger.params.resend.value;
 	const version = req.swagger.params.version && req.swagger.params.version.value;
 	const domain = req.headers['x-real-origin'];
@@ -206,39 +277,70 @@ const getVerifyUser = (req, res) => {
 	const captcha = req.swagger.params.captcha && req.swagger.params.captcha.value;
 	let promiseQuery;
 
-	if (email && typeof email === 'string' && isEmail(email)) {
+	const generateCode = () => generateAuthCode(version);
+
+	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any')) {
+		promiseQuery = toolsLib.user.getUserByPhoneNumber(phoneNumberRaw.trim(), false)
+			.then(async (user) => {
+				if (!user) {
+					throw new Error(USER_NOT_FOUND);
+				}
+				if (user.phone_number_verified) {
+					throw new Error(USER_VERIFIED);
+				}
+				if (resendEmail) {
+					await toolsLib.security.checkCaptcha(captcha, ip, req.headers);
+					const verificationCode = generateCode();
+					toolsLib.user.storeVerificationCode(user, verificationCode);
+					await toolsLib.user.validateSmsVerificationEligibility(user);
+					await toolsLib.verification.sendVerificationCode(user, {
+						action_type: 'signup',
+						verification_code: verificationCode,
+						emailType: version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+						domain
+					});
+				}
+				return res.json({
+					phone_number: user.phone_number,
+					message: VERIFICATION_EMAIL_MESSAGE
+				});
+			});
+	} else if (email && typeof email === 'string' && isEmail(email)) {
 		email = email.toLowerCase();
 		promiseQuery = toolsLib.database.findOne('user', {
 			where: { email },
-			attributes: ['id', 'email', 'email_verified']
+			attributes: ['id', 'email', 'email_verified', 'phone_number', 'settings', 'meta']
 		}).then(async (user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.email_verified) {
 				throw new Error(USER_VERIFIED);
 			}
 			if (resendEmail) {
 				// Validate captcha before resending verification email to reduce spam/bot abuse.
 				await toolsLib.security.checkCaptcha(captcha, ip, req.headers);
-				let verificationCode;
-				if (version === 'v4') {
-					verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-				} else if (version === 'v3') {
-					const letters = Array.from({ length: 2 }, () =>
-						String.fromCharCode(65 + crypto.randomInt(0, 26))
-					).join('');
-					const numbers = Math.floor(10000 + Math.random() * 90000);
-					verificationCode = `${letters}-${numbers}`;
-				} else {
-					verificationCode = uuid();
-				}
+				const verificationCode = generateCode();
 				toolsLib.user.storeVerificationCode(user, verificationCode);
 
-				sendEmail(
-					version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
-					email,
-					verificationCode,
-					{},
-					domain
-				);
+				const phoneSignup = toolsLib.user.isPhoneSignupSyntheticUser(user);
+				if (phoneSignup && user.phone_number) {
+					await toolsLib.user.validateSmsVerificationEligibility(user);
+					await toolsLib.verification.sendVerificationCode(user, {
+						action_type: 'signup',
+						verification_code: verificationCode,
+						emailType: version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+						domain
+					});
+				} else {
+					sendEmail(
+						version === 'v3' || version === 'v4' ? MAILTYPE.SIGNUP_CODE : MAILTYPE.SIGNUP,
+						email,
+						verificationCode,
+						{},
+						domain
+					);
+				}
 			}
 			return res.json({
 				email,
@@ -274,18 +376,81 @@ const getVerifyUser = (req, res) => {
 		});
 };
 
+const requestUserSetEmail = (req, res) => {
+	const { email } = req.swagger.params.data.value;
+	const domain = req.headers['x-real-origin'];
+	const userId = req.auth.sub.id;
+
+	toolsLib.user.requestUserSetEmail(userId, email, domain)
+		.then((result) => {
+			const messageObj = errorMessageConverter(
+				{ message: result.message },
+				req?.auth?.sub?.lang
+			);
+			return res.json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/requestUserSetEmail', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		});
+};
+
+const confirmUserSetEmail = (req, res) => {
+	const { code } = req.swagger.params.data.value;
+	const userId = req.auth.sub.id;
+
+	toolsLib.user.confirmUserSetEmail(userId, code)
+		.then((user) => {
+			return res.json(user);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/confirmUserSetEmail', err.message);
+			const messageObj = errorMessageConverter(err, req?.auth?.sub?.lang);
+			return res.status(err.statusCode || 400).json({
+				message: messageObj?.message,
+				lang: messageObj?.lang,
+				code: messageObj?.code
+			});
+		});
+};
+
 const verifyUser = (req, res) => {
-	const { verification_code, email } = req.swagger.params.data.value;
+	const { verification_code, email, phone_number: phoneNumberRaw } = req.swagger.params.data.value;
 	const domain = req.headers['x-real-origin'];
 	const ip = req.headers['x-real-ip'];
 	loggerUser.verbose(
 		req.uuid,
 		'controllers/user/verifyUser',
-		{ verification_code, email },
+		{ verification_code, email, phone_number: phoneNumberRaw },
 		ip
 	);
 
-	toolsLib.user.verifyUser(email, verification_code, domain)
+	let resolveEmail;
+	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any')) {
+		// Phone-signup users don't know their synthetic email — look it up by phone number.
+		resolveEmail = toolsLib.user.getUserByPhoneNumber(phoneNumberRaw.trim())
+			.then((user) => {
+				if (!user) throw new Error(USER_NOT_FOUND);
+				return user.email;
+			});
+	} else if (email) {
+		resolveEmail = Promise.resolve(email);
+	} else {
+		const messageObj = errorMessageConverter({ message: PROVIDE_VALID_EMAIL_CODE }, req?.auth?.sub?.lang);
+		return res.status(400).json({ message: messageObj?.message, lang: messageObj?.lang, code: messageObj?.code });
+	}
+
+	resolveEmail
+		.then((resolvedEmail) => toolsLib.user.verifyUser(resolvedEmail, verification_code, domain))
 		.then(() => {
 			return res.json({ message: USER_VERIFIED });
 		})
@@ -433,6 +598,7 @@ const loginPost = async (req, res) => {
 			ip
 		);
 
+		const isPhoneLogin = !email && !!phone_number;
 		const user = email
 			? await toolsLib.user.getUserByEmail(email)
 			: await toolsLib.user.getUserByPhoneNumber(phone_number);
@@ -445,12 +611,16 @@ const loginPost = async (req, res) => {
 		}
 		if (user.verification_level === 0) {
 			throw new Error(USER_NOT_VERIFIED);
-		} else if (
-			toolsLib.getKitConfig().email_verification_required &&
-			!user.email_verified
-		) {
-			throw new Error(USER_EMAIL_NOT_VERIFIED);
-		} else if (!user.activated) {
+		} else if (toolsLib.getKitConfig().email_verification_required) {
+			if (isPhoneLogin) {
+				if (!user.phone_number_verified) {
+					throw new Error(USER_PHONE_NOT_VERIFIED);
+				}
+			} else if (!user.email_verified) {
+				throw new Error(USER_EMAIL_NOT_VERIFIED);
+			}
+		}
+		if (!user.activated) {
 			throw new Error(USER_NOT_ACTIVATED);
 		}
 
@@ -570,20 +740,7 @@ const loginPost = async (req, res) => {
 		}
 
 		if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
-			let verification_code;
-			if (version === 'v3') {
-				const letters = Array.from({ length: 2 }, () =>
-					String.fromCharCode(65 + crypto.randomInt(0, 26))
-				).join('');
-				const numbers = Math.floor(10000 + Math.random() * 90000);
-				verification_code = `${letters}-${numbers}`;
-			} else {
-				verification_code = crypto
-					.randomBytes(9)
-					.toString('base64')
-					.replace(/[^a-zA-Z0-9]/g, '')
-					.substring(0, 12);
-			}
+			const verification_code = generateAuthCode(version, { fallback: 'token' });
 
 			const loginData = await toolsLib.user.createSuspiciousLogin(
 				user,
@@ -649,7 +806,7 @@ const loginPost = async (req, res) => {
 			})
 		);
 
-		if (!service) {
+		if (!service && isEmail(user.email)) {
 			sendEmail(MAILTYPE.LOGIN, user.email, emailData, user.settings, domain);
 		}
 
@@ -817,7 +974,7 @@ const loginWithGoogle = async (req, res) => {
 		}
 
 		// Send login email notification if not a service login
-		if (!service) {
+		if (!service && isEmail(user.email)) {
 			const data = { ip, time, device, country: '' };
 			sendEmail(MAILTYPE.LOGIN, user.email, data, user.settings, domain);
 		}
@@ -1104,15 +1261,28 @@ const changePassword = (req, res) => {
 };
 
 const setInitialPassword = async (req, res) => {
-	let { email } = req.swagger.params.data.value;
+	let { email, phone_number } = req.swagger.params.data.value;
 	const { password } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
 
-	if (typeof email !== 'string' || !isEmail(email)) {
-		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid email', email, ip, domain, origin, referer);
+	const hasEmail = typeof email === 'string' && email.trim().length > 0;
+	const hasPhone = typeof phone_number === 'string' && phone_number.trim().length > 0;
+
+	if (hasEmail && hasPhone) {
+		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword both email and phone provided', ip, domain, origin, referer);
+		const messageObj = errorMessageConverter({ message: SIGNUP_EMAIL_OR_PHONE_NOT_BOTH }, req?.auth?.sub?.lang);
+		return res.status(400).json({
+			message: messageObj?.message,
+			lang: messageObj?.lang,
+			code: messageObj?.code
+		});
+	}
+
+	if (!hasEmail && !hasPhone) {
+		loggerUser.error(req.uuid, 'controllers/user/setInitialPassword missing email and phone', ip, domain, origin, referer);
 		const messageObj = errorMessageConverter({ message: PROVIDE_VALID_EMAIL }, req?.auth?.sub?.lang);
 		return res.status(400).json({
 			message: messageObj?.message,
@@ -1121,11 +1291,40 @@ const setInitialPassword = async (req, res) => {
 		});
 	}
 
-	email = email.toLowerCase().trim();
-	loggerUser.verbose(req.uuid, 'controllers/user/setInitialPassword', email);
-
 	try {
-		const user = await toolsLib.security.setInitialUserPassword(email, password);
+		let resolvedEmail;
+		if (hasPhone) {
+			const phone = phone_number.trim();
+			if (!isMobilePhone(phone, 'any')) {
+				loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid phone', phone, ip, domain, origin, referer);
+				const messageObj = errorMessageConverter({ message: PROVIDE_VALID_PHONE }, req?.auth?.sub?.lang);
+				return res.status(400).json({
+					message: messageObj?.message,
+					lang: messageObj?.lang,
+					code: messageObj?.code
+				});
+			}
+			loggerUser.verbose(req.uuid, 'controllers/user/setInitialPassword phone', phone);
+			const user = await toolsLib.user.getUserByPhoneNumber(phone, false);
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			resolvedEmail = user.email;
+		} else {
+			if (!isEmail(email)) {
+				loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid email', email, ip, domain, origin, referer);
+				const messageObj = errorMessageConverter({ message: PROVIDE_VALID_EMAIL }, req?.auth?.sub?.lang);
+				return res.status(400).json({
+					message: messageObj?.message,
+					lang: messageObj?.lang,
+					code: messageObj?.code
+				});
+			}
+			resolvedEmail = email.toLowerCase().trim();
+			loggerUser.verbose(req.uuid, 'controllers/user/setInitialPassword', resolvedEmail);
+		}
+
+		await toolsLib.security.setInitialUserPassword(resolvedEmail, password);
 
 		return res.json({ message: PASSWORD_SET });
 	} catch (err) {
@@ -2587,9 +2786,16 @@ const verifyPasskeyLogin = async (req, res) => {
 
 		if (user.verification_level === 0) {
 			throw new Error(USER_NOT_VERIFIED);
-		} else if (toolsLib.getKitConfig().email_verification_required && !user.email_verified) {
-			throw new Error(USER_EMAIL_NOT_VERIFIED);
-		} else if (!user.activated) {
+		} else if (toolsLib.getKitConfig().email_verification_required) {
+			if (toolsLib.user.isPhoneSignupSyntheticUser(user.dataValues || user)) {
+				if (!user.phone_number_verified) {
+					throw new Error(USER_PHONE_NOT_VERIFIED);
+				}
+			} else if (!user.email_verified) {
+				throw new Error(USER_EMAIL_NOT_VERIFIED);
+			}
+		}
+		if (!user.activated) {
 			throw new Error(USER_NOT_ACTIVATED);
 		}
 
@@ -2604,8 +2810,9 @@ const verifyPasskeyLogin = async (req, res) => {
 		}
 
 		if (suspiciousLoginEnabled && suspiciousLogin && SMTP_SERVER()?.length > 0) {
-			const version = 'v2';
-			const verification_code = crypto.randomBytes(9).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 12);
+			const version = req.body?.data?.version || 'v3';
+			const verification_code = generateAuthCode(version, { fallback: 'token' });
+
 			const loginData = await toolsLib.user.createSuspiciousLogin(
 				user,
 				ip,
@@ -2629,7 +2836,15 @@ const verifyPasskeyLogin = async (req, res) => {
 			};
 			await toolsLib.database.client.setexAsync(`user:confirm-login:${verification_code}`, 5 * 60, JSON.stringify(data));
 			await toolsLib.database.client.setexAsync(`user:freeze-account:${verification_code}`, 60 * 60 * 6, JSON.stringify(data));
-			sendEmail(MAILTYPE.SUSPICIOUS_LOGIN, user.email, data, user.settings, domain);
+			await toolsLib.verification.sendVerificationCode(user, {
+				action_type: 'login_verification',
+				verification_code,
+				emailType: version === 'v3' || version === 'v4'
+					? MAILTYPE.SUSPICIOUS_LOGIN_CODE
+					: MAILTYPE.SUSPICIOUS_LOGIN,
+				emailData: data,
+				domain
+			});
 			throw new Error('Suspicious login detected, please check your email.');
 		}
 
@@ -2663,7 +2878,7 @@ const verifyPasskeyLogin = async (req, res) => {
 			data: { action: 'login', user_id: user.id },
 		}));
 
-		if (!req.body?.data?.service) {
+		if (!req.body?.data?.service && isEmail(user.email)) {
 			sendEmail(MAILTYPE.LOGIN, user.email, { ip, time: new Date(), device, country }, user.settings, domain);
 		}
 
@@ -2742,6 +2957,8 @@ module.exports = {
 	signUpUser,
 	signUpUserWithGoogle,
 	getVerifyUser,
+	requestUserSetEmail,
+	confirmUserSetEmail,
 	verifyUser,
 	loginPost,
 	loginWithGoogle,

@@ -203,6 +203,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>尊敬的 ${name}</p><p>为完成注册，请使用以下验证码验证您的邮件。</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>请输入此验证码至注册页面以完成注册。此验证码有效期有限。</p><p>如有疑问，请直接回复此邮件。</p><p>此致<br />${api_name} 团队</p></div>",
 			"title": "注册验证"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>尊敬的 ${name}</p><p>您请求将此电子邮箱地址添加到您的交易所账户。请使用下方的验证码进行确认。</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>该验证码将在几分钟后过期。如果您没有请求此更改，可以忽略此邮件。</p><p>此致<br />${api_name} 团队</p></div>",
+			"title": "确认您的新电子邮箱"
 		}
 	}
 }

@@ -13,9 +13,6 @@ const renderItem = (unbanUser, bannedUsers) => (user_id) => {
 		>
 			<List.Item.Meta
 				title={<span className="text-white">USER ID: {user_id}</span>}
-				description={
-					<span className="text-white">USERNAME: {bannedUsers[user_id]}</span>
-				}
 			/>
 		</List.Item>
 	);
@@ -24,7 +21,7 @@ const renderItem = (unbanUser, bannedUsers) => (user_id) => {
 export const Ban = ({ bannedUsers, unbanUser, banUser }) => {
 	return (
 		<div>
-			<InputBox placeholder="Username" onSearch={banUser} enterButton="BAN" />
+			<InputBox placeholder="User ID" onSearch={banUser} enterButton="BAN" />
 			<List
 				className="banlist"
 				itemLayout="horizontal"

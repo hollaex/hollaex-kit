@@ -1,6 +1,5 @@
 'use strict';
 const { storeData, restoreData } = require('./utils');
-const { getUserIdByUsername } = require('./username');
 const { loggerChat } = require('../../config/logger');
 const { getChannels } = require('../channel');
 const { each } = require('lodash');
@@ -10,14 +9,12 @@ const BANS_KEY = 'WS:BANS';
 
 let BANS = {};
 
-const banUser = (username) => {
-	if (username) {
-		getUserIdByUsername(username).then((id) => {
-			BANS[id] = username;
-			storeData(BANS_KEY, BANS);
-			each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
-				sendBannedUsers(ws);
-			});
+const banUser = (user_id) => {
+	if (user_id) {
+		BANS[user_id] = user_id;
+		storeData(BANS_KEY, BANS);
+		each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+			sendBannedUsers(ws);
 		});
 	}
 };

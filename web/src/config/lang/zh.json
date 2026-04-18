@@ -613,7 +613,12 @@
 			"POPUP_ORDER_COMPLETED": "订单完成时弹窗",
 			"POPUP_ORDER_PARTIALLY_FILLED": "部分订单已满时弹窗",
 			"POPUP_NEW_ORDER_CREATED": "下达新订单时显示弹出窗口",
-			"POPUP_ORDER_CANCELLED": "取消订单时显示弹窗"
+			"POPUP_ORDER_CANCELLED": "取消订单时显示弹窗",
+			"VERIFICATION_METHOD": "验证方式",
+			"VERIFICATION_METHOD_EMAIL": "邮箱",
+			"VERIFICATION_METHOD_SMS": "短信",
+			"VERIFICATION_SMS_REQUIRES_PHONE": "请在账户中添加手机号码以启用短信验证。",
+			"VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL": "设置真实电子邮件地址以启用邮件验证。"
 		},
 		"AUDIO_CUE_FORM": {
 			"ALL_AUDIO": "所有声音提示",

@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>عزيزي/عزيزتي ${name}</p><p>لإكمال تسجيلك، يرجى التحقق من بريدك الإلكتروني باستخدام الرمز أدناه.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>أدخل هذا الرمز في صفحة التسجيل لإكمال التسجيل. الرمز صالح فقط لفترة محدودة.</p><p>إذا كان لديك أي أسئلة، يمكنك الرد مباشرة على هذا البريد.</p><p>تحياتي<br>فريق ${api_name}</p></div>",
 			"title": "تأكيد التسجيل"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>عزيزي ${name}</p><p>لقد طلبت إضافة عنوان البريد الإلكتروني هذا إلى حساب المنصة الخاص بك. استخدم رمز التحقق أدناه للتأكيد.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>تنتهي صلاحية هذا الرمز خلال بضع دقائق. إذا لم تطلب هذا التغيير، يمكنك تجاهل هذه الرسالة.</p><p>مع التحية<br />فريق ${api_name}</p></div>",
+			"title": "تأكيد بريدك الإلكتروني الجديد"
 		}
 	}
 }

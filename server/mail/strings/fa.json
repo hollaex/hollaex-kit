@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>کاربر محترم ${name}</p><p>برای کامل کردن ثبت‌نام، لطفاً با استفاده از کد زیر ایمیل خود را تأیید کنید.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>این کد را در صفحه ثبت‌نام وارد کنید تا ثبت‌نام کامل شود. کد برای مدت محدودی معتبر است.</p><p>اگر سؤال دارید، فقط به همین ایمیل پاسخ دهید.</p><p>با احترام<br>تیم ${api_name}</p></div>",
 			"title": "تایید ثبت‌نام"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>${name} عزیز</p><p>شما درخواست افزودن این آدرس ایمیل به حساب صرافی خود را داده‌اید. برای تأیید، از کد تأیید زیر استفاده کنید.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>این کد تا چند دقیقه دیگر منقضی می‌شود. اگر این تغییر را درخواست نکرده‌اید، می‌توانید این ایمیل را نادیده بگیرید.</p><p>با احترام<br />تیم ${api_name}</p></div>",
+			"title": "تأیید ایمیل جدید شما"
 		}
 	}
 }

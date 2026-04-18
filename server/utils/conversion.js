@@ -45,17 +45,16 @@ const errorMessageConverter = (error, lang) => {
 			const messageKeys = Object.keys(functionMessages);
 			const Index = messageKeys.findIndex((x) => message.startsWith(x));
 			if (Index > -1) {
-				let difference = message.split(' ').filter(x => !(functionMessages[messageKeys[Index]]('')['en'].split(' ')).includes(x));
-				// Prefer reusing the base code from the main message list (if it exists) to avoid
-				// collisions between getMessage() codes and functionMessages() codes.
-				const base = getMessage(messageKeys[Index], normalizedLang);
-				const code =
-					typeof base?.code === 'number'
-						? base.code
-						: 1000 + Index; // dedicated range for functionMessages
+				const fn = functionMessages[messageKeys[Index]];
+				let difference = message.split(' ').filter(x => !(fn('')['en'].split(' ')).includes(x));
+				// Codes are now declared statically on each functionMessages
+				// entry (see lang-messages.js) so they don't drift when new
+				// messages are added. We still fall back to 1000+Index if a
+				// future entry forgets to set its `.code`.
+				const code = typeof fn.code === 'number' ? fn.code : 1000 + Index;
 
 				return (response = {
-					message: functionMessages[messageKeys[Index]](difference)[normalizedLang],
+					message: fn(difference)[normalizedLang],
 					lang: normalizedLang,
 					code,
 				});

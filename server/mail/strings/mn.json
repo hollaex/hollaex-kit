@@ -207,6 +207,10 @@
 		"SIGNUP_CODE": {
 			"html": "<div><p>Хүндэт ${name}</p><p>Бүртгэлээ дуусгахын тулд доорх кодыг ашиглан имэйлийг баталгаажуулна уу.</p><div style=\"padding:1rem;background-color:#f5f5f5;border:1px dashed #999;font-family:monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;margin-bottom:20px;\">${confirmation_code}</div><p>Энэ кодыг бүртгэлийн хуудас дээр оруулж бүртгэлээ дуусгана уу. Код нь тодорхой хугацаанд хүчинтэй.</p><p>Асуулт байвал энэ имэйлд хариу бичнэ үү.</p><p>Хүндэтгэсэн<br />${api_name} баг</p></div>",
 			"title": "Бүртгэл – баталгаажуулах код"
+		},
+		"SET_EMAIL_CODE": {
+			"html": "<div><p>Эрхэм ${name}</p><p>Та энэ имэйл хаягийг биржийн данс руугаа нэмэхийг хүссэн байна. Доорх баталгаажуулах кодыг ашиглан баталгаажуулна уу.</p><div style=\"padding: 1rem; background-color: #f5f5f5; border: 1px dashed #999; font-family: monospace; font-size: 1.5rem; letter-spacing: 4px; text-align: center; margin-bottom: 20px;\">${confirmation_code}</div><p>Энэ код хэдхэн минутын дараа дуусна. Хэрэв та энэ өөрчлөлтийг хүсээгүй бол энэ имэйлийг үл тоомсорлож болно.</p><p>Хүндэтгэсэн<br />${api_name} баг</p></div>",
+			"title": "Шинэ имэйл хаягаа баталгаажуулна уу"
 		}
 	}
 }

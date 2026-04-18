@@ -13,9 +13,10 @@ export const generateNotificationFormValues = (
 		smsFeatureEnabled = false,
 		smsPluginEnabled = false,
 		hasPhoneNumber = false,
+		isSyntheticEmail = false,
 	} = {}
 ) => {
-	const values = {
+	const toggles = {
 		popup_order_confirmation: {
 			type: 'toggle',
 			stringId: 'DEFAULT_TOGGLE_OPTIONS.ON',
@@ -57,28 +58,51 @@ export const generateNotificationFormValues = (
 
 	if (smsFeatureEnabled && smsPluginEnabled) {
 		const smsOptionDisabled = !hasPhoneNumber;
+		const emailRequiresReal =
+			STRINGS[
+				'USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL'
+			] || 'Set a real email address to enable email verification.';
+		const emailLabel =
+			STRINGS['USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD_EMAIL'] ||
+			'Email';
+		const smsLabel =
+			STRINGS['USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD_SMS'] ||
+			'SMS';
+		const smsRequiresPhone =
+			STRINGS[
+				'USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_SMS_REQUIRES_PHONE'
+			] || 'Add a phone number to your account to enable SMS verification.';
 		const options = [
-			{ value: 'email', label: 'Email' },
+			{
+				value: 'email',
+				label: emailLabel,
+				shortLabel: emailLabel,
+				disabled: isSyntheticEmail,
+				hint: isSyntheticEmail ? emailRequiresReal : undefined,
+			},
 			{
 				value: 'sms',
-				label: smsOptionDisabled
-					? 'Phone (SMS) \u2014 add a phone number to enable'
-					: 'Phone (SMS)',
+				label: smsLabel,
+				shortLabel: smsLabel,
 				disabled: smsOptionDisabled,
+				hint: smsOptionDisabled ? smsRequiresPhone : undefined,
 			},
 		];
-		values.verification_method = {
-			type: 'select',
-			stringId: 'USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD',
-			label:
-				STRINGS['USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD'] ||
-				'Verification method',
-			className: 'toggle-wrapper',
-			options,
+		return {
+			verification_method: {
+				type: 'segmented-option',
+				stringId: 'USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD',
+				label:
+					STRINGS['USER_SETTINGS.NOTIFICATION_FORM.VERIFICATION_METHOD'] ||
+					'Verification method',
+				className: 'toggle-wrapper verification-method-row',
+				options,
+			},
+			...toggles,
 		};
 	}
 
-	return values;
+	return toggles;
 };
 
 const Form = ({
