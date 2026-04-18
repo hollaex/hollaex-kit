@@ -42,8 +42,6 @@ definitions:
         type: boolean
   SignupAuthentication:
     type: object
-    required:
-      - password
     description: >
       Email signup requires `email`. Phone signup (SMS verification) requires `phone_number`
       and must not include `email`. Phone signup requires exchange `sms_verification` feature

@@ -103,13 +103,13 @@ const INITIAL_SETTINGS = () => {
 // signup/verify flows and a base64 token for suspicious-login flows.
 const generateAuthCode = (version, { fallback = 'uuid' } = {}) => {
 	if (version === 'v4') {
-		return Math.floor(100000 + Math.random() * 900000).toString();
+		return crypto.randomInt(100000, 1000000).toString();
 	}
 	if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
-		const numbers = Math.floor(10000 + Math.random() * 90000);
+		const numbers = crypto.randomInt(10000, 100000);
 		return `${letters}-${numbers}`;
 	}
 	if (fallback === 'token') {
@@ -311,6 +311,9 @@ const getVerifyUser = (req, res) => {
 			where: { email },
 			attributes: ['id', 'email', 'email_verified', 'phone_number', 'settings', 'meta']
 		}).then(async (user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 			if (user.email_verified) {
 				throw new Error(USER_VERIFIED);
 			}

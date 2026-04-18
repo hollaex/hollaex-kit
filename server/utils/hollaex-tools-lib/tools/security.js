@@ -394,7 +394,7 @@ const createChangePasswordCode = (userId, newPassword, version) => {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
-		const numbers = Math.floor(10000 + Math.random() * 90000);
+		const numbers = crypto.randomInt(10000, 100000);
 		code = `${letters}-${numbers}`;
 	} else {
 		code = crypto.randomBytes(20).toString('hex');
@@ -429,12 +429,12 @@ const createResetPasswordCode = (userId, version) => {
 	let code;
 	//Generate new random code
 	if (version === 'v4') {
-		code = Math.floor(100000 + Math.random() * 900000).toString();
+		code = crypto.randomInt(100000, 1000000).toString();
 	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
-		const numbers = Math.floor(10000 + Math.random() * 90000);
+		const numbers = crypto.randomInt(10000, 100000);
 		code = `${letters}-${numbers}`;
 	} else {
 		code = crypto.randomBytes(20).toString('hex');

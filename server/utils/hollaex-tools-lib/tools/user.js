@@ -139,12 +139,12 @@ const storeVerificationCode = (user, verification_code) => {
 
 const generateVerificationCode = (version) => {
 	if (version === 'v4') {
-		return Math.floor(100000 + Math.random() * 900000).toString();
+		return crypto.randomInt(100000, 1000000).toString();
 	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
-		const numbers = Math.floor(10000 + Math.random() * 90000);
+		const numbers = crypto.randomInt(10000, 100000);
 		return `${letters}-${numbers}`;
 	}
 	return uuid();

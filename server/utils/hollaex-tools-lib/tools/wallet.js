@@ -172,12 +172,12 @@ const withdrawalRequestEmail = async (user, data, domain, ip, version) => {
 	let token;
 
 	if (version === 'v4') {
-		token = Math.floor(100000 + Math.random() * 900000).toString();
+		token = crypto.randomInt(100000, 1000000).toString();
 	} else if (version === 'v3') {
 		const letters = Array.from({ length: 2 }, () =>
 			String.fromCharCode(65 + crypto.randomInt(0, 26))
 		).join('');
-		const numbers = Math.floor(10000 + Math.random() * 90000);
+		const numbers = crypto.randomInt(10000, 100000);
 		token = `${letters}-${numbers}`;
 	} else {
 		token = data.transaction_id || crypto.randomBytes(60).toString('hex');
