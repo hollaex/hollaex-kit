@@ -939,8 +939,7 @@ const loginWithGoogle = async (req, res) => {
 		// Check if user exists, otherwise create it
 		let user = await toolsLib.user.getUserByEmail(email, false);
 		if (!user) {
-			const randomPassword = 'thirdparty';
-			await toolsLib.user.signUpUser(email, randomPassword, {
+			await toolsLib.user.signUpUser(email, 'notset', {
 				google_id: tokenGoogleId,
 				email_verified: true,
 				activated: true

@@ -81,7 +81,8 @@ const {
 	SET_EMAIL_NOT_ELIGIBLE,
 	VERIFICATION_EMAIL_REQUIRES_REAL_EMAIL,
 	USER_HAS_NO_PHONE,
-	USER_PHONE_ALREADY_VERIFIED
+	USER_PHONE_ALREADY_VERIFIED,
+	PASSWORD_NOT_SET
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -494,57 +495,57 @@ const createUserOnNetwork = (email, opts = {
 	return getNodeLib().createUser(email, opts);
 };
 
-const loginUser = (email, password, otp_code, captcha, ip, device, domain, origin, referer, headers = {}) => {
-	return getUserByEmail(email.toLowerCase())
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			}
-			if (user.verification_level === 0) {
-				throw new Error(USER_NOT_VERIFIED);
-			} else if (getKitConfig().email_verification_required) {
-				if (isPhoneSignupSyntheticUser(user.dataValues || user)) {
-					if (!user.phone_number_verified) {
-						throw new Error(USER_PHONE_NOT_VERIFIED);
-					}
-				} else if (!user.email_verified) {
-					throw new Error(USER_EMAIL_NOT_VERIFIED);
-				}
-			}
-			if (!user.activated) {
-				throw new Error(USER_NOT_ACTIVATED);
-			}
-			return all([
-				user,
-				validatePassword(user.password, password)
-			]);
-		})
-		.then(([user, passwordIsValid]) => {
-			if (!passwordIsValid) {
-				throw new Error(INVALID_CREDENTIALS);
-			}
+const loginUser = async (email, password, otp_code, captcha, ip, device, domain, origin, referer, headers = {}) => {
+	const user = await getUserByEmail(email.toLowerCase());
 
-			if (!user.otp_enabled) {
-				return all([user, checkCaptcha(captcha, ip, headers)]);
-			} else {
-				return all([
-					user,
-					verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
-						if (!validOtp) {
-							throw new Error(INVALID_OTP_CODE);
-						} else {
-							return checkCaptcha(captcha, ip, headers);
-						}
-					})
-				]);
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	if (user.verification_level === 0) {
+		throw new Error(USER_NOT_VERIFIED);
+	} else if (getKitConfig().email_verification_required) {
+		if (isPhoneSignupSyntheticUser(user.dataValues || user)) {
+			if (!user.phone_number_verified) {
+				throw new Error(USER_PHONE_NOT_VERIFIED);
 			}
-		})
-		.then(([user]) => {
-			if (ip) {
-				registerUserLogin(user.id, ip, device, domain, origin, referer);
-			}
-			return user;
-		});
+		} else if (!user.email_verified) {
+			throw new Error(USER_EMAIL_NOT_VERIFIED);
+		}
+	}
+	if (!user.activated) {
+		throw new Error(USER_NOT_ACTIVATED);
+	}
+
+	// Require OTP code before captcha to avoid consuming single-use tokens unnecessarily
+	if (user.otp_enabled && !otp_code) {
+		throw new Error(INVALID_OTP_CODE);
+	}
+
+	await checkCaptcha(captcha, ip, headers);
+
+	if (user.otp_enabled) {
+		const validOtp = await verifyOtpBeforeAction(user.id, otp_code);
+		if (!validOtp) {
+			await createUserLogin(user, ip, device, domain, origin, referer, null, false, false);
+			throw new Error(INVALID_OTP_CODE);
+		}
+	}
+
+	if (user.password === 'notset') {
+		throw new Error(PASSWORD_NOT_SET);
+	}
+
+	const passwordIsValid = await validatePassword(user.password, password);
+	if (!passwordIsValid) {
+		await createUserLogin(user, ip, device, domain, origin, referer, null, false, false);
+		throw new Error(INVALID_CREDENTIALS);
+	}
+
+	if (ip) {
+		registerUserLogin(user.id, ip, device, domain, origin, referer);
+	}
+
+	return user;
 };
 
 const registerUserLogin = (
