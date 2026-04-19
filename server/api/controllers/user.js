@@ -279,7 +279,7 @@ const getVerifyUser = (req, res) => {
 
 	const generateCode = () => generateAuthCode(version);
 
-	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any')) {
+	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any', { strictMode: true })) {
 		promiseQuery = toolsLib.user.getUserByPhoneNumber(phoneNumberRaw.trim(), false)
 			.then(async (user) => {
 				if (!user) {
@@ -435,7 +435,7 @@ const verifyUser = (req, res) => {
 	);
 
 	let resolveEmail;
-	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any')) {
+	if (phoneNumberRaw && typeof phoneNumberRaw === 'string' && isMobilePhone(phoneNumberRaw.trim(), 'any', { strictMode: true })) {
 		// Phone-signup users don't know their synthetic email — look it up by phone number.
 		resolveEmail = toolsLib.user.getUserByPhoneNumber(phoneNumberRaw.trim())
 			.then((user) => {
@@ -574,7 +574,7 @@ const loginPost = async (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	if (phone_number && (typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any'))) {
+	if (phone_number && (typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any', { strictMode: true }))) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/user/loginPost invalid phone_number',
@@ -1297,7 +1297,7 @@ const setInitialPassword = async (req, res) => {
 		let resolvedEmail;
 		if (hasPhone) {
 			const phone = phone_number.trim();
-			if (!isMobilePhone(phone, 'any')) {
+			if (!isMobilePhone(phone, 'any', { strictMode: true })) {
 				loggerUser.error(req.uuid, 'controllers/user/setInitialPassword invalid phone', phone, ip, domain, origin, referer);
 				const messageObj = errorMessageConverter({ message: PROVIDE_VALID_PHONE }, req?.auth?.sub?.lang);
 				return res.status(400).json({
