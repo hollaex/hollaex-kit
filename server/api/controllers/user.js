@@ -936,10 +936,13 @@ const loginWithGoogle = async (req, res) => {
 		const email = googleUserData.email.toLowerCase().trim();
 		const tokenGoogleId = googleUserData.google_id || googleUserData.sub;
 
+		// Generate a random password for Google OAuth users
+		const randomPassword = crypto.randomBytes(16).toString('hex');
+
 		// Check if user exists, otherwise create it
 		let user = await toolsLib.user.getUserByEmail(email, false);
 		if (!user) {
-			await toolsLib.user.signUpUser(email, 'thirdparty', {
+			await toolsLib.user.signUpUser(email, randomPassword, {
 				google_id: tokenGoogleId,
 				email_verified: true,
 				activated: true
