@@ -170,6 +170,30 @@ const rateLimitMiddleware = (app) => {
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
+	// Google OAuth signup/login share the same /v2/signup and /v2/login risk
+	// surface (account creation, login attempts), so mirror the per-IP caps.
+	limiter({
+		path: '/v2/signup/google',
+		method: 'post',
+		total: 4,
+		expire: 1000 * 60 * 2,
+		lookup: 'headers.x-forwarded-for',
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'signup google ip');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+	limiter({
+		path: '/v2/login/google',
+		method: 'post',
+		total: 10,
+		expire: 1000 * 60 * 2,
+		lookup: 'headers.x-forwarded-for',
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'login google ip');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
 	// Per-account login limiter: keyed by email or phone_number so brute-force
 	// attempts against a single account from rotating IPs are throttled.
 	limiter({
@@ -364,6 +388,58 @@ const rateLimitMiddleware = (app) => {
 		},
 		onRateLimited: function (req, res, next) {
 			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'set-email confirm');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// /user/activate-otp accepts a 6-digit TOTP code; without throttling, a
+	// stolen session could brute-force the second factor in seconds. Keyed by
+	// Bearer (per-session) with IP fallback for unauthenticated callers.
+	limiter({
+		path: '/v2/user/activate-otp',
+		method: 'post',
+		total: 5,
+		expire: 1000 * 60 * 2,
+		lookup: (req, res, opts, next) => {
+			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
+				opts.lookup = 'headers.authorization';
+			} else {
+				opts.lookup = 'headers.x-forwarded-for';
+			}
+			return next();
+		},
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'activate-otp');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// /user/confirm-withdrawal submits the one-time withdrawal token and is
+	// unauthenticated, so brute-forcing the token from many sessions/IPs is
+	// the main risk. Keyed per-IP as a transport-level cap.
+	limiter({
+		path: '/v2/user/confirm-withdrawal',
+		method: 'post',
+		total: 5,
+		expire: 1000 * 60 * 2,
+		lookup: 'headers.x-forwarded-for',
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'confirm-withdrawal');
+			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
+		}
+	});
+
+	// /user/confirm-login submits the suspicious-login confirmation token
+	// (max 12 chars). Unauthenticated, so cap per-IP to prevent brute-forcing
+	// the short token across requests.
+	limiter({
+		path: '/v2/user/confirm-login',
+		method: 'post',
+		total: 5,
+		expire: 1000 * 60 * 2,
+		lookup: 'headers.x-forwarded-for',
+		onRateLimited: function (req, res, next) {
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'confirm-login');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});

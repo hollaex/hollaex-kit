@@ -153,15 +153,19 @@ const generateVerificationCode = (version) => {
 
 const PHONE_SIGNUP_EMAIL_SUFFIX = '_sms';
 
+// Phone numbers used in the signup / phone-lookup flows must be supplied in
+// E.164 form with an explicit international country code (leading `+`). We
+// reject anything else here so that a value like "5551234567" can never be
+// silently re-written to "+5551234567" and treated as authentic.
 const normalizeSignupPhoneDigits = (raw) => {
 	if (raw == null) {
 		return null;
 	}
 	const str = String(raw).trim();
-	if (!str) {
+	if (!str || str[0] !== '+') {
 		return null;
 	}
-	const digits = str.replace(/\D/g, '');
+	const digits = str.slice(1).replace(/\D/g, '');
 	if (!digits || digits.length < 8 || digits.length > 15) {
 		return null;
 	}
@@ -221,7 +225,10 @@ const signUpUser = async (email, password, opts = {}, version) => {
 		if (!smsActive) {
 			throw new Error(NO_ACTIVE_SMS_PLUGIN_ON_EXCHANGE);
 		}
-		if (!isMobilePhone(rawPhone, 'any')) {
+		// strictMode requires the value to begin with `+` followed by the
+		// international country code, so users cannot sign up with a local
+		// number missing the country code.
+		if (!isMobilePhone(rawPhone, 'any', { strictMode: true })) {
 			throw new Error(PROVIDE_VALID_PHONE);
 		}
 		normalizedPhoneDigits = normalizeSignupPhoneDigits(rawPhone);
@@ -1228,7 +1235,7 @@ const getUserByNetworkId = (network_id, rawData = true, networkData = false, opt
 const getUserByPhoneNumber = (phone_number, rawData = true, networkData = false, opts = {
 	additionalHeaders: null
 }) => {
-	if (!phone_number || typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any')) {
+	if (!phone_number || typeof phone_number !== 'string' || !isMobilePhone(phone_number, 'any', { strictMode: true })) {
 		return reject(new Error('Provide valid phone number'));
 	}
 	const normalized = normalizeSignupPhoneDigits(phone_number);
