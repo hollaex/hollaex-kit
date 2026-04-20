@@ -24,8 +24,7 @@ definitions:
         maxLength: 128
       otp_code:
         type: string
-        minLength: 6
-        maxLength: 6
+        maxLength: 256
       referral:
         type: string
         maxLength: 256
@@ -881,7 +880,6 @@ definitions:
         type: string
       otp_code:
         type: string
-        minLength: 6
         maxLength: 6
   UserMetaPut:
     type: object
