@@ -254,7 +254,7 @@ const rateLimitMiddleware = (app) => {
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
-			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'get eset-password');
+			logger.verbose('config/middleware/rateLimitMiddleware', 'abuse', 'get reset-password');
 			return res.status(429).json({ message: 'Too many requests. Your account is blocked for 2 minutes' });
 		}
 	});
