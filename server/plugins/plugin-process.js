@@ -43,9 +43,24 @@ const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
 const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
+const { GET_KIT_CONFIG } = require('../constants');
 const { checkStatus } = require('../init');
 const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
 const rateLimit = require('express-limiter');
+
+const isPluginConfigReady = () => Boolean(GET_KIT_CONFIG()?.info?.plan);
+
+const waitForPluginConfigReady = async ({ timeoutMs = 30000, intervalMs = 1000 } = {}) => {
+	const startTime = Date.now();
+
+	while (!isPluginConfigReady()) {
+		if (Date.now() - startTime >= timeoutMs) {
+			throw new Error(`Plugin configuration was not ready after ${timeoutMs}ms`);
+		}
+
+		await sleep(intervalMs);
+	}
+};
 
 const initPluginProcess = async ({ PORT }) => {
 
@@ -181,14 +196,18 @@ if (!isMainThread) {
 	);
 	checkStatus()
 		.then(async () => {
-			await sleep(2 * 1000);
+			loggerPlugin.verbose(
+				'plugins/plugin-process',
+				'Plugin thread checkStatus complete, waiting for configuration to be ready'
+			);
+
+			await waitForPluginConfigReady({ timeoutMs: 30000, intervalMs: 200 });
 
 			loggerPlugin.verbose(
 				'plugins/plugin-process',
-				'Plugin thread checkStatus complete'
+				'Plugin thread configuration ready'
 			);
 			try {
-				console.log('workerData', workerData);
 				initPluginProcess(JSON.parse(workerData));
 			} catch (err) {
 				loggerPlugin.error(
@@ -198,11 +217,11 @@ if (!isMainThread) {
 				);
 			}
 		})
-		.catch(() => {
+		.catch((err) => {
 			loggerPlugin.error(
 				'plugins/plugin-process',
 				'API Initialization failed',
-				err.message
+				err && err.message
 			);
 			setTimeout(() => { process.exit(1); }, 1000 * 5);
 		});
