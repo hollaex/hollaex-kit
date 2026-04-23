@@ -11,6 +11,7 @@ const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
 const swaggerTools = require('swagger-tools');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 checkStatus()
 	.then(() => {
@@ -56,6 +57,7 @@ checkStatus()
 
 		swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
+			app.use('/v2/admin/announcements', bodyParser.json({ limit: '2mb' }));
 			app.use(middleware.swaggerMetadata());
 			if (process.env.NODE_ENV !== 'test') {
 				rateLimitMiddleware(app);
