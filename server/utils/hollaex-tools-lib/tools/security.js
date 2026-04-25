@@ -27,7 +27,6 @@ const {
 	API_KEY_INACTIVE,
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
-	API_KEY_OUT_OF_SCOPE,
 	API_KEY_NOT_PERMITTED,
 	API_KEY_NOT_WHITELISTED,
 	API_SIGNATURE_INVALID,
@@ -685,6 +684,21 @@ const checkUserOtpActive = (userId, otpCode) => {
 	});
 };
 
+const isAuthorizationError = (msg = '') => {
+	const messageText = String(msg);
+	const authorizationMessages = [
+		NOT_AUTHORIZED,
+		API_KEY_NOT_PERMITTED,
+		'No permission configured'
+	];
+
+	return authorizationMessages
+		.filter(Boolean)
+		.some((message) => messageText.indexOf(message) > -1);
+};
+
+const getAccessDeniedStatusCode = (msg) => isAuthorizationError(msg) ? 403 : 401;
+
 const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
 
 	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
@@ -721,11 +735,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			let statusCode = 401;
-			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
-				statusCode = 403;
-			}
-			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
+			return req.res.status(getAccessDeniedStatusCode(msg)).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 
@@ -811,11 +821,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			let statusCode = 401;
-			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
-				statusCode = 403;
-			}
-			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
+			return req.res.status(getAccessDeniedStatusCode(msg)).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 	// Swagger endpoint scopes
@@ -884,11 +890,7 @@ const verifyNetworkHmacToken = (req) => {
 
 const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
-		let statusCode = 401;
-		if (msg.indexOf(NOT_AUTHORIZED) > -1) {
-			statusCode = 403;
-		}
-		return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
+		return req.res.status(getAccessDeniedStatusCode(msg)).json({ message: ACCESS_DENIED(msg) });
 	};
 
 	const token = req.headers['authorization'];
@@ -1566,7 +1568,7 @@ const checkUserPermission = (user, requiredPermission) => {
 	const roles = getRoles();
 	const userRole = roles.find(role => role.role_name === (user?.role || user?.sub?.role));
 	if (!userRole) {
-		throw new Error('User role not found');
+		throw new Error(`${NOT_AUTHORIZED} User role not found`);
 	}
 
 	return userRole.permissions.includes(requiredPermission);
